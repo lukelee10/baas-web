@@ -11,17 +11,23 @@
   <br>
   <br>
   <div>
-    Material Icons Samples:
+    <!-- fxHide.xs directive, which states that this part should be shown only on the screen that is greater than extra small -->
+    <div fxHide.xs>
+      Material Icons Samples:
+      <br>
+      <i class="material-icons">videocam</i>
+      <br>
+      <button mat-button color="primary">No Icon in Button</button>
+    </div>
     <br>
-    <i class="material-icons">videocam</i>
     <br>
-    <button mat-button color="primary">No Icon in Button</button>
-    <br>
-    <br>
-    <button mat-raised-button>
-      Submit
-      <i class="material-icons">send</i>
-    </button>
+    <!-- fxHide.gt-xs directive, which states that this part should be hidden only on the screen that is greater than extra small -->
+    <div fxHide.gt-xs>
+      <button mat-raised-button>
+         Submit
+        <i class="material-icons">send</i>
+      </button>
+    </div>
   </div>
 </div>
 <router-outlet></router-outlet>
@@ -46,5 +52,4 @@
      </mat-grid-tile>
       
   </mat-grid-list>
-
 </div>
