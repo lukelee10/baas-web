@@ -1,55 +1,32 @@
 
-<div class="content" role="main" style="text-align: center">
-  <div>
-    <br>
-    <span>{{ title }} app is running!</span>
-  </div>
-  <div>
-    Angular Material Slider Control:  
-    <mat-slider min="1" max="100" step="1" value="50"></mat-slider>    
-  </div>
-  <br>
-  <br>
-  <div>
-    <!-- fxHide.xs directive, which states that this part should be shown only on the screen that is greater than extra small -->
-    <div fxHide.xs>
-      Material Icons Samples:
-      <br>
-      <i class="material-icons">videocam</i>
-      <br>
-      <button mat-button color="primary">No Icon in Button</button>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav role="navigation">
+    <!--this is a place for us to add side-nav code-->
+    <app-sidenav-list (sidenavClose)="sidenav.close()"></app-sidenav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <!--in here all the content must reside. We will add a navigation header as well-->
+    <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
+    <div class="footer" style="padding: 3px;">
+      <mat-grid-list cols="3" rowHeight="4em">
+        <mat-grid-tile [colspan]="1">
+          <div style="text-align:left;">
+            <img src="./../assets/NCTC.png">
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1">
+          <div style="text-align:center; font-weight: bold; font-size: 20px;">
+            (National Counterterrorism Center -- This Footer Goes Away)
+          </div>
+        </mat-grid-tile>
+    
+        <mat-grid-tile [colspan]="1">
+            <div style="text-align:right;">
+              <img src="./../assets/NCTC.png">
+            </div>
+         </mat-grid-tile>
+      </mat-grid-list>
     </div>
-    <br>
-    <br>
-    <!-- fxHide.gt-xs directive, which states that this part should be hidden only on the screen that is greater than extra small -->
-    <div fxHide.gt-xs>
-      <button mat-raised-button>
-         Submit
-        <i class="material-icons">send</i>
-      </button>
-    </div>
-  </div>
-</div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 <router-outlet></router-outlet>
-<div class="footer" style="padding: 3px;">
-  <mat-grid-list cols="3" rowHeight="4em">
-    <mat-grid-tile [colspan]="1">
-      <div style="text-align:left;">
-        <img src="./../assets/NCTC.png">
-      </div>
-    </mat-grid-tile>
-
-    <mat-grid-tile [colspan]="1">
-      <div style="text-align:center; font-weight: bold; font-size: 20px;">
-        (National Counterterrorism Center -- This Footer Goes Away)
-      </div>
-    </mat-grid-tile>
-
-    <mat-grid-tile [colspan]="1">
-        <div style="text-align:right;">
-          <img src="./../assets/NCTC.png">
-        </div>
-     </mat-grid-tile>
-      
-  </mat-grid-list>
-</div>
