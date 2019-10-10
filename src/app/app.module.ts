@@ -2,24 +2,27 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AdminModule } from './admin/admin.module';
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { ErrorpagesModule } from './errorpages/errorpages.module';
 import { MaterialModule } from './material-ui/material.module';
-import { HeaderComponent } from './navigation/header/header.component';
-import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
-
+import { NavigationModule } from './navigation/navigation.module';
+import { RequestsModule } from './requests/requests.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    SidenavListComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    AdminModule,
+    AppRoutingModule,
+    ErrorpagesModule,
+    MaterialModule,
+    NavigationModule,
+    RequestsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

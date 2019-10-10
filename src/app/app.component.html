@@ -6,7 +6,8 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <!--in here all the content must reside. We will add a navigation header as well-->
-    <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
+    <app-top-page-navigation (sidenavToggle)="sidenav.toggle()"></app-top-page-navigation>
+    <router-outlet></router-outlet>
     <div class="footer" style="padding: 3px;">
       <mat-grid-list cols="3" rowHeight="4em">
         <mat-grid-tile [colspan]="1">
@@ -29,4 +30,3 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<router-outlet></router-outlet>

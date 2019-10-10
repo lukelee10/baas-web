@@ -1,12 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: 'app-top-page-navigation',
+  templateUrl: './top-page-navigation.component.html',
+  styleUrls: ['./top-page-navigation.component.scss']
 })
-export class HeaderComponent implements OnInit {
-
+export class TopPageNavigationComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();
 
   constructor() { }
