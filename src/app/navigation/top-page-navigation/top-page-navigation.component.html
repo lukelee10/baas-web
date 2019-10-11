@@ -1,0 +1,42 @@
+<mat-toolbar color="primary">
+  <div>
+    <button mat-icon-button (click)="onToggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <div fxFlex fxLayout>
+    <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+      <li>
+        <a style="cursor: pointer" routerLink="/createrequest">BaaS</a>
+      </li>
+      <li>
+        <button mat-button [matMenuTriggerFor]="menuRequests">Requests</button>
+        <mat-menu #menuRequests="matMenu">
+          <button mat-menu-item routerLink="/createrequest">Create Request</button>
+          <button mat-menu-item routerLink="/requests">Show Request</button>
+        </mat-menu>
+      </li>
+      <li>
+        <button mat-button [matMenuTriggerFor]="menuUserManagement">User Management</button>
+        <mat-menu #menuUserManagement="matMenu">
+          <button routerLink="/createuser" mat-menu-item>Create User</button>
+          <button routerLink="/usermanagement" mat-menu-item>Manager Users</button>
+        </mat-menu>
+      </li>
+      <li>
+        <button mat-button [matMenuTriggerFor]="menuHelp">Help</button>
+        <mat-menu #menuHelp="matMenu">
+          <button mat-menu-item>About</button>
+        </mat-menu>
+      </li>
+    </ul>
+  </div>
+
+  <div fxFlex fxLayout fxLayoutAlign="end">
+    <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+      <li>
+        <button mat-button>Log out</button>
+      </li>
+    </ul>
+</div>
+</mat-toolbar>
