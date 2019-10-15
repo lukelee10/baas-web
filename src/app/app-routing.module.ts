@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CreateRequestComponent } from './requests/create-request/create-request.component';
 import { NewUserComponent } from './admin/new-user/new-user.component';
-import { NotfoundComponent } from './errorpages/notfound/notfound.component';
+import { NotFoundComponent } from './errorpages/notfound/notfound.component';
 import { RequestsComponent } from './requests/requests/requests.component';
 import { UsersMgmtComponent } from './admin/users-mgmt/users-mgmt.component';
 
 
-// The empty path in the sewcond route represents the default path for the application,
+// The empty path in the second route represents the default path for the application,
 // the place to go when the path in the URL is empty, as it typically is at the start.
 // This default route redirects to the route for the /helloPage URL and,
 // therefore, will display the HelloPageComponent.
@@ -41,7 +41,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: NotfoundComponent
+    component: NotFoundComponent
   }
 ];
 
