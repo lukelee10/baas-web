@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './notallowed.component.html',
   styleUrls: ['./notallowed.component.scss']
 })
-export class NotallowedComponent implements OnInit {
+export class NotAllowedComponent implements OnInit {
 
   constructor() { }
 
