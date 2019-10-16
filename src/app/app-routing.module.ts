@@ -6,6 +6,7 @@ import { NewUserComponent } from './admin/new-user/new-user.component';
 import { NotFoundComponent } from './errorpages/notfound/notfound.component';
 import { RequestsComponent } from './requests/requests/requests.component';
 import { UsersMgmtComponent } from './admin/users-mgmt/users-mgmt.component';
+import { TestpageComponent } from 'src/app/testpage/testpage.component';
 
 
 // The empty path in the second route represents the default path for the application,
@@ -33,6 +34,10 @@ const routes: Routes = [
   {
     path: 'usermanagement',
     component: UsersMgmtComponent,
+  },
+  {
+    path: 'testpage',
+    component: TestpageComponent,
   },
   {
     path: '',
