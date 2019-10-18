@@ -17,25 +17,25 @@ import { Subscription } from 'rxjs';
 })
 
 export class NotificationService implements OnDestroy {
+  durationInSeconds = 8;
 
   // Configuration api subscription
   private configState: Subscription;
 
   constructor(
-    private toast: MatSnackBar) { }
+    private matSnackBar: MatSnackBar) { }
 
  /**
   * Display a MatSnackbar notification and return the reference.
   * Will set the duration to the global configuration if present.
   */
   show(message: string, buttonLabel: string = 'OK'): MatSnackBarRef<any> {
-    const toastTimeout = 8000;
-    if (toastTimeout > 0) {
-      return this.toast.open(message, buttonLabel, {
-        duration: toastTimeout
+    if (this.durationInSeconds > 0) {
+      return this.matSnackBar.open(message, buttonLabel, {
+        duration: this.durationInSeconds * 1000,
       });
     } else {
-      return this.toast.open(message, buttonLabel, {
+      return this.matSnackBar.open(message, buttonLabel, {
       });
     }
   }
