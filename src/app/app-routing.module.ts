@@ -1,13 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { CreateRequestComponent } from './requests/create-request/create-request.component';
-import { NewUserComponent } from './admin/new-user/new-user.component';
-import { NotFoundComponent } from './errorpages/notfound/notfound.component';
-import { RequestsComponent } from './requests/requests/requests.component';
-import { UsersMgmtComponent } from './admin/users-mgmt/users-mgmt.component';
-import { TestpageComponent } from 'src/app/testpage/testpage.component';
-
+import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
 // The empty path in the second route represents the default path for the application,
 // the place to go when the path in the URL is empty, as it typically is at the start.
@@ -19,31 +12,13 @@ import { TestpageComponent } from 'src/app/testpage/testpage.component';
 // doesn't match any paths for routes defined earlier in the configuration.
 // This is useful for displaying a "404 - Not Found" page or redirecting to another route.
 const routes: Routes = [
-  {
-    path: 'requests',
-    component: RequestsComponent,
-  },
-  {
-    path: 'createrequest',
-    component: CreateRequestComponent,
-  },
-  {
-    path: 'createuser',
-    component: NewUserComponent,
-  },
-  {
-    path: 'usermanagement',
-    component: UsersMgmtComponent,
-  },
-  {
-    path: 'testpage',
-    component: TestpageComponent,
-  },
-  {
-    path: '',
-    redirectTo: '/createrequest',
-    pathMatch: 'full'
-  },
+  { path: 'auth', loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule) },
+  { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
+  { path: 'resources', loadChildren: () => import('./modules/resources/resources.module').then(m => m.ResourcesModule) },
+  { path: 'responses', loadChildren: () => import('./modules/responses/responses.module').then(m => m.ResponsesModule) },
+  { path: 'requests', loadChildren: () => import('./modules/requests/requests.module').then(m => m.RequestsModule) },
+  // Fallback when no prior routes is matched
+//  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
   {
     path: '**',
     component: NotFoundComponent
