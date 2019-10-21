@@ -3,31 +3,32 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AdminModule } from './admin/admin.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { AdminModule } from './modules/admin/admin.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ErrorPagesModule } from './errorpages/errorpages.module';
-import { MaterialModule } from './material-ui/material.module';
-import { NavigationModule } from './navigation/navigation.module';
-import { RequestsModule } from './requests/requests.module';
-import { TestpageComponent } from './testpage/testpage.component';
+import { SharedModule } from './shared/shared.module';
+
+
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TestpageComponent,
   ],
   imports: [
+    // angular
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+
+    //
+    AuthModule,
+    CoreModule,
     AdminModule,
     AppRoutingModule,
-    ErrorPagesModule,
-    MaterialModule,
-    NavigationModule,
-    RequestsModule
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
