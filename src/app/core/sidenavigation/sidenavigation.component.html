@@ -1,14 +1,7 @@
 <mat-nav-list>
-  <a mat-list-item routerLink="/createrequest" (click)="onSidenavClose()">
-    <mat-icon>home</mat-icon> <span class="nav-caption">Home</span>
-  </a>
-  <a mat-list-item routerLink="/requests" (click)="onSidenavClose()">
-    <mat-icon>receipt</mat-icon> <span class="nav-caption">Requests</span>   
-  </a>
-  <a mat-list-item routerLink="/usermanagement" (click)="onSidenavClose()">
-    <mat-icon>supervisor_account</mat-icon><span class="nav-caption">User Management</span>
-  </a>
-  <a mat-list-item routerLink="/logout" (click)="onSidenavClose()">
-    <mat-icon>exit_to_app</mat-icon><span class="nav-caption">Log Out</span>
+  <a mat-list-item *ngFor="let item of sideNavItems" matTooltip={{item.title}} [routerLink]="[item.link]"
+    routerLinkActive="active" (click)="onSidenavClose()">
+    <mat-icon>{{ item.icon }}</mat-icon>
+    <span class="nav-caption">{{ item.title }}</span>
   </a>
 </mat-nav-list>
