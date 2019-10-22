@@ -8,7 +8,7 @@ import { AdminModule } from './modules/admin/admin.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
-
+import { HttpClientModule } from '@angular/common/http';
 
 import { CoreModule } from './core/core.module';
 
@@ -22,6 +22,7 @@ import { CoreModule } from './core/core.module';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
 
     //
     AuthModule,

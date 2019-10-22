@@ -1,1 +1,92 @@
-<p>login works!</p>
+<div
+  class="container"
+  fxLayout="column"
+  fxLayout.xs="column"
+  fxLayoutAlign="start center"
+  fxLayoutGap="10px"
+  fxLayoutGap.xs="0"
+>
+  <div fxLayout="column" style="border:0px solid " role="banner">
+    <img src="./../assets/baas-logo.png" alt="BaaS Logo" />
+  </div>
+
+  <div
+    fxLayout="column"
+    fxLayoutAlign="start start"
+    fxLayoutGap="10px"
+    class="login-box"
+  >
+    <div
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      fxLayoutGap="5px"
+      style="opacity: 0.8;"
+    >
+      <i class="material-icons" aria-hidden="true">
+        account_circle
+      </i>
+      <h2>Login</h2>
+    </div>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="5px"
+      role="form"
+    >
+      <i
+        class="material-icons"
+        style="opacity: 0.8;"
+        aria-label="Enter you email"
+      >
+        email
+      </i>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Email"
+          [formControl]="email"
+          required
+          aria-label="Enter Email"
+        />
+        <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="5px"
+      role="form"
+    >
+      <i
+        class="material-icons"
+        style="opacity: 0.8;"
+        aria-label="Enter you password"
+      >
+        vpn_key
+      </i>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Password"
+          [type]="hide ? 'password' : 'text'"
+          aria-label="Enter Password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary" style="width:220px">Login</button>
+    <a href="">Forgot Password</a>
+  </div>
+</div>
