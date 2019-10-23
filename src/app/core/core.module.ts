@@ -1,3 +1,4 @@
+import { FooterComponent } from './footer/footer.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SideNavigationComponent } from './sidenavigation/sidenavigation.component';
@@ -8,7 +9,8 @@ import { TopPageNavigationComponent } from './toppagenavigation/toppagenavigatio
 @NgModule({
   declarations: [
     SideNavigationComponent,
-    TopPageNavigationComponent
+    TopPageNavigationComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -16,7 +18,8 @@ import { TopPageNavigationComponent } from './toppagenavigation/toppagenavigatio
   ],
   exports: [
     SideNavigationComponent,
-    TopPageNavigationComponent
+    TopPageNavigationComponent,
+    FooterComponent
   ]
 })
 export class CoreModule { }
