@@ -8,25 +8,5 @@
     <!--in here all the content must reside. We will add a navigation header as well-->
     <app-toppagenavigation (sidenavToggle)="sidenav.toggle()"></app-toppagenavigation>
     <router-outlet></router-outlet>
-    <div class="footer" style="padding: 3px;">
-      <mat-grid-list cols="3" rowHeight="4em">
-        <mat-grid-tile [colspan]="1">
-          <div style="text-align:left;">
-            <img src="./../assets/NCTC.png">
-          </div>
-        </mat-grid-tile>
-        <mat-grid-tile [colspan]="1">
-          <div style="text-align:center; font-weight: bold; font-size: 20px;">
-            National Counterterrorism Center
-          </div>
-        </mat-grid-tile>
-    
-        <mat-grid-tile [colspan]="1">
-            <div style="text-align:right;">
-              <img src="./../assets/NCTC.png">
-            </div>
-         </mat-grid-tile>
-      </mat-grid-list>
-    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
