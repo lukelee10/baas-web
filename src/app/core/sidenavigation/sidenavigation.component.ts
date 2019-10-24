@@ -14,6 +14,7 @@ export class SideNavigationComponent implements OnInit {
     { link: '/responses', title: 'View Responses', icon: 'receipt' },
     { link: '/resources', title: 'Resources', icon: 'pages' },
     { link: '/admin', title: 'Admin', icon: 'supervisor_account' },
+    { link: '/editprofile', title: 'Edit Profile', icon: 'edit' },
     { link: '/logout', title: 'Log Out', icon: 'exit_to_app' }
   ];
 
