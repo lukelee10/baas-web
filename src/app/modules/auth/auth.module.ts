@@ -5,16 +5,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from './../../core/core.module';
 import { SharedModule } from './../../shared/shared.module';
 import { AuthRoutingModule } from './auth-routing.module';
-
-import { LoginComponent } from './login/login.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.component';
 import { LogOutComponent } from './log-out/log-out.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     ForgotPasswordComponent,
-    LogOutComponent
+    LogOutComponent,
+    EditProfileComponent,
   ],
   imports: [
     CoreModule,
