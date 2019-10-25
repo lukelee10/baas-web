@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 
 
 @Component({
@@ -18,5 +18,4 @@ export class LoginComponent implements OnInit {
   getErrorMessage() {
     return this.email.hasError('required') ? 'You must enter a value' :  this.email.hasError('email') ? 'Not a valid email' : '';
   }
-
 }

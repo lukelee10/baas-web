@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from '../shared/material.module';
+
 import { FooterComponent } from './footer/footer.component';
 import { SideNavigationComponent } from './sidenavigation/sidenavigation.component';
 import { TopPageNavigationComponent } from './toppagenavigation/toppagenavigation.component';
