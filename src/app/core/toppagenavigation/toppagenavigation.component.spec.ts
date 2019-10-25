@@ -1,20 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ToppagenavigationComponent } from './toppagenavigation.component';
+import { TopPageNavigationComponent } from './toppagenavigation.component';
 
 describe('ToppagenavigationComponent', () => {
-  let component: ToppagenavigationComponent;
-  let fixture: ComponentFixture<ToppagenavigationComponent>;
+  let component: TopPageNavigationComponent;
+  let fixture: ComponentFixture<TopPageNavigationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToppagenavigationComponent ]
+      declarations: [ TopPageNavigationComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ToppagenavigationComponent);
+    fixture = TestBed.createComponent(TopPageNavigationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

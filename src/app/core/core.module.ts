@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { SideNavigationComponent } from './sidenavigation/sidenavigation.component';
+import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from '../shared/material.module';
 import { FooterComponent } from './footer/footer.component';
@@ -16,7 +17,7 @@ import { TopPageNavigationComponent } from './toppagenavigation/toppagenavigatio
   imports: [
     CommonModule,
     MaterialModule,
-    HttpClientModule
+    RouterModule
   ],
   exports: [
     SideNavigationComponent,

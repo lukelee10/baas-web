@@ -1,45 +1,26 @@
-<mat-toolbar color="primary">
-  <div fxHide.gt-xs>
-    <button mat-icon-button (click)="onToggleSidenav()">
-      <mat-icon>menu</mat-icon>
-    </button>
-  </div>
-  <div>
-    <a style="cursor: pointer" routerLink="/createrequest">BaaS</a>
-  </div>
-  <div fxFlex fxLayout fxHide.xs>
-    <ul fxLayout fxLayoutGap="15px" class="navigation-items">
-      <li>
-        <button mat-button [matMenuTriggerFor]="menuRequests">Requests</button>
-        <mat-menu #menuRequests="matMenu">
-          <button mat-menu-item routerLink="/createrequest">Create Request</button>
-          <button mat-menu-item routerLink="/requests">Show Request</button>
-        </mat-menu>
-      </li>
-      <li>
-        <button mat-button [matMenuTriggerFor]="menuUserManagement">User Management</button>
-        <mat-menu #menuUserManagement="matMenu">
-          <button routerLink="admin/createuser" mat-menu-item>Create User</button>
-          <button routerLink="admin/usermanagement" mat-menu-item>Manager Users</button>
-        </mat-menu>
-      </li>
-      <li>
-        <button mat-button [matMenuTriggerFor]="menuHelp">Help</button>
-        <mat-menu #menuHelp="matMenu">
-          <button mat-menu-item>About</button>
-        </mat-menu>
-      </li>
-      <li>
-        <button mat-button routerLink="testpage">Test Page</button>
-      </li>
-    </ul>
-  </div>
-
-  <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
-    <ul fxLayout fxLayoutGap="15px" class="navigation-items">
-      <li>
-        <button routerLink="/logout" mat-button>Log out</button>
-      </li>
-    </ul>
-</div>
-</mat-toolbar>
+  <mat-toolbar>
+    <div fxHide.gt-xs>
+      <button mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div>
+      <a matTooltip="BaaS" style="cursor: pointer" routerLink="/announcements">
+        <span><img src="../../../assets/images/baasIcon.png" alt='BaaS'></span>
+      </a>
+    </div>
+    <div fxFlex fxLayout fxHide.xs fxLayoutGap="20px">
+      <button mat-button  *ngFor="let item of navItems" matTooltip={{item.title}} [routerLink]="[item.link]"
+        routerLinkActive="active">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        {{ item.title }}
+      </button>
+    </div>
+  
+    <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
+      <button mat-button routerLink="/logout">
+        <mat-icon>exit_to_app</mat-icon>
+        Log out
+      </button>
+    </div>
+  </mat-toolbar>
