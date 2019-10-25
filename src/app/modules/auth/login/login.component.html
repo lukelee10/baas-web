@@ -1,3 +1,85 @@
-<div class="flex-container">
-  <h2>Logged In</h2>
+<div fxLayout="column" fxLayoutAlign="stretch" role="banner">
+  <div
+    fxLayout="column"
+    fxLayoutAlign="start center"
+    fxLayoutGap="10px"
+    role="banner"
+  >
+    <div fxLayout="column" role="banner">
+      <img src="./../assets/baas-logo.png" alt="BaaS Logo" />
+    </div>
+
+    <div
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="10px"
+      class="login-box"
+    >
+      <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="5px"
+        role="form"
+      >
+        <i
+          class="material-icons"
+          style="opacity: 0.8;"
+          aria-label="Enter you email"
+        >
+          email
+        </i>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Email"
+            [formControl]="email"
+            required
+            aria-label="Enter Email"
+          />
+          <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="5px"
+        role="form"
+      >
+        <i
+          class="material-icons"
+          style="opacity: 0.8;"
+          aria-label="Enter you password"
+        >
+          vpn_key
+        </i>
+
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Password"
+            [type]="hide ? 'password' : 'text'"
+            aria-label="Enter Password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <button mat-raised-button color="primary" style="width:220px">
+        Login
+      </button>
+      <br/><br/>
+      <a href="" style="font-size:x-small">FORGOT PASSWORD</a>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
 </div>
