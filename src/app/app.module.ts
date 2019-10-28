@@ -15,14 +15,11 @@ import { AppComponent } from './app.component';
     AppComponent
   ],
   imports: [
-    // angular
     BrowserModule,
     BrowserAnimationsModule,
-
-    //
     AuthModule,
-    CoreModule,
     AdminModule,
+    CoreModule.forRoot(),
     AppRoutingModule,
     SharedModule,
   ],

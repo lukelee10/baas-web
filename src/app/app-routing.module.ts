@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
+import { AuthenticationGuard } from './core/guards/authentication.guard';
 
 // Lazy Loading Feature Modules
 // By default, NgModules are eagerly loaded, which means that as soon as the app loads,
@@ -15,12 +16,41 @@ import { NotFoundComponent } from './shared/components/not-found/not-found.compo
 // doesn't match any paths for routes defined earlier in the configuration.
 // This is useful for displaying a "404 - Not Found" page or redirecting to another route.
 const routes: Routes = [
-  { path: 'auth', loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule) },
-  { path: 'announcements', loadChildren: () => import('./modules/announcements/announcements.module').then(m => m.AnnouncementsModule) },
-  { path: 'admin', loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule) },
-  { path: 'requests', loadChildren: () => import('./modules/requests/requests.module').then(m => m.RequestsModule) },
-  { path: 'resources', loadChildren: () => import('./modules/resources/resources.module').then(m => m.ResourcesModule) },
-  { path: 'responses', loadChildren: () => import('./modules/responses/responses.module').then(m => m.ResponsesModule) },
+  {
+    path: '',
+    redirectTo: '/auth/login',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    canActivate: [AuthenticationGuard],
+    children: [
+      {
+        path: 'auth',
+        loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule)
+      },
+      {
+        path: 'announcements',
+        loadChildren: () => import('./modules/announcements/announcements.module').then(m => m.AnnouncementsModule)
+      },
+      {
+        path: 'admin',
+        loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)
+      },
+      {
+        path: 'requests',
+        loadChildren: () => import('./modules/requests/requests.module').then(m => m.RequestsModule)
+      },
+      {
+        path: 'resources',
+        loadChildren: () => import('./modules/resources/resources.module').then(m => m.ResourcesModule)
+      },
+      {
+        path: 'responses',
+        loadChildren: () => import('./modules/responses/responses.module').then(m => m.ResponsesModule)
+      },
+    ]
+  },
   // Fallback when no prior routes is matched
   {
     path: '**',
