@@ -18,11 +18,6 @@ import { AuthenticationGuard } from './core/guards/authentication.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/auth/login',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
     canActivate: [AuthenticationGuard],
     children: [
       {

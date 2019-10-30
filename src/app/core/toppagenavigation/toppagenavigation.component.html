@@ -20,9 +20,9 @@
       </div>
     
       <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
-        <button mat-button [matMenuTriggerFor]="menuUser" matTooltip="Tester One">
+        <button mat-button [matMenuTriggerFor]="menuUser" matTooltip={{authenticationService.LoggedUser}}>
           <mat-icon>account_circle</mat-icon>
-          Tester One
+          {{ authenticationService.LoggedUser }}
         </button>
         <mat-menu #menuUser="matMenu">
           <button mat-menu-item routerLink="/editprofile" routerLinkActive="active-link">

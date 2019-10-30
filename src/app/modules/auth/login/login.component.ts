@@ -11,7 +11,9 @@ import { AuthenticationService } from './../../../core/services/authentication.s
 
 export class LoginComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
+  passWord = new FormControl('', [Validators.required]);
   hide = true; // #password
+  errorMessage: string;
 
   constructor(
     private router: Router,
@@ -20,7 +22,6 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('Login Component -- ngOnInit');
   }
 
   getErrorMessage() {
@@ -28,13 +29,25 @@ export class LoginComponent implements OnInit {
   }
 
   clickLogin() {
-    this.authenticationSVC.IsAuthenticated = true;
+    this.authenticationSVC.AuthenticateUser(this.email.value, this.passWord.value, this);
+  }
 
-    const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'.toString()];
-    if (returnUrl === undefined) {
-      this.router.navigate(['/announcements']);
-    } else {
-      this.router.navigate([returnUrl]);
+  cognitoCallback(message: string, result: any) {
+    if (message != null) {
+      // error
+      // As per the wireframe, we display all the time 'Unknown User and Password Combination',
+      // which is not a good way implementation, but sometimes ...
+      this.errorMessage = 'Unknown User and Password Combination';
+    } else { // success
+      this.authenticationSVC.IsAuthenticated = true;
+      this.authenticationSVC.LoggedUser = this.email.value;
+
+      const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'.toString()];
+      if (returnUrl === undefined) {
+        this.router.navigate(['/announcements']);
+      } else {
+        this.router.navigate([returnUrl]);
+      }
     }
   }
 }

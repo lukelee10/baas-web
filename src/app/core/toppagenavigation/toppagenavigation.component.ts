@@ -40,7 +40,7 @@ export class TopPageNavigationComponent implements OnInit {
   }
 
   LogOut() {
-    this.authenticationService.IsAuthenticated = false;
+    this.authenticationService.Logout();
     this.router.navigate(['/logout']);
   }
 }
