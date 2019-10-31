@@ -8,7 +8,6 @@
     <div fxLayout="column" role="banner">
       <img src="./../assets/baas-logo.png" alt="BaaS Logo" />
     </div>
-
     <div
       fxLayout="column"
       fxLayoutAlign="start start"
@@ -21,13 +20,7 @@
         fxLayoutGap="5px"
         role="form"
       >
-        <i
-          class="material-icons"
-          style="opacity: 0.8;"
-          aria-label="Enter you email"
-        >
-          email
-        </i>
+        <mat-icon aria-label="Enter you email" matTooltip='Enter you email'>email</mat-icon>
         <mat-form-field>
           <input
             matInput
@@ -46,20 +39,14 @@
         fxLayoutGap="5px"
         role="form"
       >
-        <i
-          class="material-icons"
-          style="opacity: 0.8;"
-          aria-label="Enter you password"
-        >
-          vpn_key
-        </i>
-
+        <mat-icon aria-label="Enter you password" matTooltip='Enter you password'>vpn_key</mat-icon>
         <mat-form-field>
           <input
             matInput
             placeholder="Password"
             [type]="hide ? 'password' : 'text'"
             aria-label="Enter Password"
+            [formControl]="passWord"
           />
           <button
             mat-icon-button
@@ -73,13 +60,22 @@
         </mat-form-field>
       </div>
 
-      <button mat-raised-button color="primary" style="width:220px">
+      <button mat-raised-button color="primary" style="width:220px" (click)="clickLogin()" matTooltip='Login'>
         Login
       </button>
-      <br/><br/>
-      <a href="" style="font-size:x-small">FORGOT PASSWORD</a>
+      <br>
+      <div *ngIf="errorMessage!=null; else blank">
+        <mat-chip-list>
+          <mat-chip color="warn" selected="true" disabled>
+              <mat-icon>error_outline</mat-icon>
+              &nbsp;
+              <strong>{{errorMessage}}</strong>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+      <a href="" style="font-size:x-small" matTooltip='Forgot Password'>FORGOT PASSWORD</a>
     </div>
   </div>
-
+  <ng-template #blank></ng-template>
   <app-footer></app-footer>
 </div>

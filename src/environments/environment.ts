@@ -6,6 +6,12 @@ export const environment = {
   production: false
 };
 
+export const cognito = {
+  userPoolId: 'us-east-1_syFZN0hwf',
+  appClientId: '6j2levppldp0e927spvorhh6h7',
+  awsRegion: 'us-east-1'
+};
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

@@ -1,3 +1,4 @@
+import { AuthenticationGuard } from './../../core/guards/authentication.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -21,10 +22,12 @@ const authRoutes: Routes = [
       },
       {
         path: 'editprofile',
+        canActivate: [AuthenticationGuard],
         component: EditProfileComponent
       },
       {
         path: 'forgotpassword',
+        canActivate: [AuthenticationGuard],
         component: ForgotPasswordComponent
       },
       {

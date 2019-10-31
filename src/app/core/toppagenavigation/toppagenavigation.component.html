@@ -1,37 +1,39 @@
-  <mat-toolbar>
-    <div fxHide.gt-xs>
-      <button mat-icon-button (click)="onToggleSidenav()">
-        <mat-icon>menu</mat-icon>
-      </button>
-    </div>
-    <div>
-      <a matTooltip="BaaS 1.0" style="cursor: pointer" routerLink="/announcements">
-        <span><img src="../../../assets/images/baasIcon.png" alt='BaaS 1.0'></span>
-      </a>
-    </div>
-
-    <div fxFlex fxLayout fxFlexOffset="1" fxHide.xs fxLayoutGap="20px">
-      <button mat-button  *ngFor="let item of navItems" matTooltip={{item.title}} [routerLink]="[item.link]"
-        routerLinkActive="active-link" [ngStyle]="{'color': item.title === 'Admin' ? 'orange' : 'default'}">
-        <mat-icon>{{ item.icon }}</mat-icon>
-        {{ item.title }}
-      </button>
-    </div>
+  <div *ngIf="authenticationService.IsAuthenticated">
+    <mat-toolbar>
+      <div fxHide.gt-xs>
+        <button mat-icon-button (click)="onToggleSidenav()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <div>
+        <a matTooltip="BaaS 1.0" style="cursor: pointer" routerLink="/announcements">
+          <span><img src="../../../assets/images/baasIcon.png" alt='BaaS 1.0'></span>
+        </a>
+      </div>
   
-    <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
-      <button mat-button [matMenuTriggerFor]="menuUser" matTooltip="Tester One">
-        <mat-icon>account_circle</mat-icon>
-        Tester One
-      </button>
-      <mat-menu #menuUser="matMenu">
-        <button mat-menu-item routerLink="/editprofile" routerLinkActive="active-link">
-          <mat-icon>edit</mat-icon>
-          Edit Profile
+      <div fxFlex fxLayout fxFlexOffset="1" fxHide.xs fxLayoutGap="20px">
+        <button mat-button  *ngFor="let item of navItems" matTooltip={{item.title}} [routerLink]="[item.link]"
+          routerLinkActive="active-link" [ngStyle]="{'color': item.title === 'Admin' ? 'orange' : 'default'}">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          {{ item.title }}
         </button>
-        <button mat-menu-item routerLink="/logout" routerLinkActive="active-link">
-          <mat-icon>exit_to_app</mat-icon>
-          Log Out
+      </div>
+    
+      <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
+        <button mat-button [matMenuTriggerFor]="menuUser" matTooltip={{authenticationService.LoggedUser}}>
+          <mat-icon>account_circle</mat-icon>
+          {{ authenticationService.LoggedUser }}
         </button>
-      </mat-menu>
-    </div>
-  </mat-toolbar>
+        <mat-menu #menuUser="matMenu">
+          <button mat-menu-item routerLink="/editprofile" routerLinkActive="active-link">
+            <mat-icon>edit</mat-icon>
+            Edit Profile
+          </button>
+          <button mat-menu-item (click)="LogOut()">
+            <mat-icon>exit_to_app</mat-icon>
+            Log Out
+          </button>
+        </mat-menu>
+      </div>
+    </mat-toolbar>
+  </div>
