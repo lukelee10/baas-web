@@ -1,5 +1,5 @@
 # BaasWeb
-#  REACTS#1925 BaaS 1.0 Login Screen  https://jira.sdosandbox.leidos.com/browse/REACTS-1925 
+#  Branch REACTS#1930 User Agreement Acceptance after Login - BaaS 1.0
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.5.
 
 ## Development server
