@@ -1,14 +1,40 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+/**
+ * This file can be replaced during build by using the `fileReplacements` array.
+ * `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+ * The list of file replacements can be found in `angular.json`.
+ */
 
 export const environment = {
   production: false
 };
 
+/**
+ * BaasDevVer1UserPool Configurations
+ * This is for Developers
+ */
+
+/**
+ * Cognito
+ */
 export const cognito = {
-  userPoolId: 'us-east-1_syFZN0hwf',
-  appClientId: '6j2levppldp0e927spvorhh6h7',
+  userPoolId: 'us-east-1_d0pS2RvfU',
+  appClientId: '1c9hvrl1ckt5m5il817ho69cor',
+  awsRegion: 'us-east-1'
+};
+
+/**
+ * API Gateway
+ */
+export const apiGateway = {
+  url: 'https://2qkxtancaa.execute-api.us-east-1.amazonaws.com/DevVer1',
+  awsRegion: 'us-east-1'
+};
+
+/**
+ * EBS API Gateway
+ */
+export const ebsApiGateway = {
+  url: 'https://ssl.biou.spartansdo.com/ebsMockWeb/tide/_search',
   awsRegion: 'us-east-1'
 };
 
