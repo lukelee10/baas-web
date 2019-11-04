@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from './../services/authentication.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 import { NavItem } from './../../shared/models/nav-item';
 

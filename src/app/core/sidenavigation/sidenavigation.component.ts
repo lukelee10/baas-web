@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from './../services/authentication.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 import { NavItem } from './../../shared/models/nav-item';
 
@@ -42,7 +42,7 @@ export class SideNavigationComponent implements OnInit {
     this.sidenavClose.emit();
 
     if (elementTitle === 'Log Out') {
-      this.authenticationService.IsAuthenticated = false;
+      this.authenticationService.Logout();
       this.router.navigate(['/logout']);
     }
   }
