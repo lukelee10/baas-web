@@ -1,0 +1,23 @@
+.scrollable-div {
+  height: 350px;
+  width: 70vw;
+  min-width: 280px;
+  overflow: auto;
+  float: left;
+  position: relative;
+  margin: 5px;
+  padding: 10pt;
+  box-shadow: inset 0 0 2px ;
+  border: 1px solid grey;
+}
+.scrollable-div::-webkit-scrollbar {
+  width: 12px;
+}
+.scrollable-div::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+
+}
+
+.scrollable-div::-webkit-scrollbar-thumb {
+   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}

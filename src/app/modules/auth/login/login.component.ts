@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { AuthenticationService } from './../../../core/services/authentication.service';
 
 @Component({
@@ -22,6 +23,10 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+      // temp
+      this.email.setValue('admin@baas.devver1');
+      this.passWord.setValue('P@ssw0rd123!');
+      this.clickLogin();
   }
 
   getErrorMessage() {
@@ -44,7 +49,7 @@ export class LoginComponent implements OnInit {
 
       const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'.toString()];
       if (returnUrl === undefined) {
-        this.router.navigate(['/announcements']);
+        this.router.navigate(['/agreements']);
       } else {
         this.router.navigate([returnUrl]);
       }
