@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { CanActivate,
-         CanActivateChild,
-         ActivatedRouteSnapshot,
-         RouterStateSnapshot,
-         UrlTree,
-         Router} from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 import { AuthenticationService } from '../services/authentication.service';
@@ -25,12 +27,14 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):
   Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     // This only checks if a user is authenticated
+
     if (this.authenticationService.IsAuthenticated) {
       return of(true);
     } else {
+      const stateURL = !this.authenticationService.IsAgreementAccepted  ? '/agreements'    : state.url;
       this.router.navigate(['/login'], {
         queryParams: {
-          returnUrl: state.url
+          returnUrl: stateURL
         }
       });
 

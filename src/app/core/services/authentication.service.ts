@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { cognito } from './../../../environments/environment';
+import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 
-import {AuthenticationDetails, CognitoUser, CognitoUserPool} from 'amazon-cognito-identity-js';
+import { cognito } from './../../../environments/environment';
 
 
 export interface Callback {
@@ -11,39 +11,39 @@ export interface Callback {
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthenticationService {
   private isAuthenticated: boolean;
   private loggedUser: string;
   private cognitoUser: CognitoUser;
-
+  private isAgreementAccepted: boolean;
   constructor() {
     this.isAuthenticated = false;
+    this.isAgreementAccepted = false;
   }
 
   AuthenticateUser(userName: string, password: string, callback: any) {
     const authenticationData = {
-      Username : userName,
-      Password : password,
+      Username: userName,
+      Password: password
     };
 
     const authenticationDetails = new AuthenticationDetails(authenticationData);
 
     const poolData = {
-      UserPoolId : cognito.userPoolId,
-      ClientId : cognito.appClientId
+      UserPoolId: cognito.userPoolId,
+      ClientId: cognito.appClientId
     };
 
     const userPool = new CognitoUserPool(poolData);
 
     const userData = {
-      Username : userName,
-      Pool : userPool
+      Username: userName,
+      Pool: userPool
     };
 
     this.cognitoUser = new CognitoUser(userData);
     this.cognitoUser.authenticateUser(authenticationDetails, {
-      onSuccess(result ) {
+      onSuccess(result) {
         const accessToken = result.getAccessToken().getJwtToken(); // we need accessToken for making lamda calls
         callback.cognitoCallback(null, result);
       },
@@ -54,13 +54,20 @@ export class AuthenticationService {
     });
   }
 
-
   get IsAuthenticated(): boolean {
     return this.isAuthenticated;
   }
 
   set IsAuthenticated(value: boolean) {
     this.isAuthenticated = value;
+  }
+
+  get IsAgreementAccepted(): boolean {
+    return this.isAgreementAccepted;
+  }
+
+  set IsAgreementAccepted(value: boolean) {
+    this.isAgreementAccepted = value;
   }
 
   get LoggedUser(): string {
