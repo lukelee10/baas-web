@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
-import { AuthenticationService } from './../../../core/services/authentication.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
+import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private authenticationSVC: AuthenticationService
+    private authenticationSVC: AuthenticationService,
+    private awsLambdaService: AwsLambdaService
   ) { }
 
   ngOnInit() {
@@ -39,9 +41,7 @@ export class LoginComponent implements OnInit {
       // which is not a good way implementation, but sometimes ...
       this.errorMessage = 'Unknown User and Password Combination';
     } else { // success
-      this.authenticationSVC.IsAuthenticated = true;
-      this.authenticationSVC.LoggedUser = this.email.value;
-
+      this.setAuthenticationVals(result);
       const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'.toString()];
       if (returnUrl === undefined) {
         this.router.navigate(['/announcements']);
@@ -49,5 +49,11 @@ export class LoginComponent implements OnInit {
         this.router.navigate([returnUrl]);
       }
     }
+  }
+
+  private setAuthenticationVals(result: any) {
+    this.authenticationSVC.LoggedUser = this.email.value;
+    this.authenticationSVC.JwtToken = result.getIdToken().getJwtToken();
+    this.awsLambdaService.auditLog(this.email.value, 'Login');
   }
 }

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
-import { AdminModule } from './modules/admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CoreModule } from './core/core.module';
@@ -18,10 +18,10 @@ import { AppComponent } from './app.component';
     BrowserModule,
     BrowserAnimationsModule,
     AuthModule,
-    AdminModule,
-    CoreModule.forRoot(),
+    CoreModule,
     AppRoutingModule,
     SharedModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [
