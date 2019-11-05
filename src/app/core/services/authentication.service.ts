@@ -8,9 +8,6 @@ import {AuthenticationDetails, CognitoUser, CognitoUserPool} from 'amazon-cognit
 })
 
 export class AuthenticationService {
-  private loggedUser: string;
-  private cognitoUser: CognitoUser;
-
   constructor() {
   }
 
@@ -34,41 +31,35 @@ export class AuthenticationService {
       Pool : userPool
     };
 
-    this.cognitoUser = new CognitoUser(userData);
-    this.cognitoUser.authenticateUser(authenticationDetails, {
+    const cognitoUser = new CognitoUser(userData);
+    cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess(result ) {
-        this.jwtToken = result.getAccessToken().getJwtToken(); // we need accessToken for making lamda calls
         callback.cognitoCallback(null, result);
       },
-
       onFailure(err) {
         callback.cognitoCallback(err.message || JSON.stringify(err), null);
       }
     });
   }
 
-  get GetJwtToken(): string {
-//    return this.jwtToken;
+  get JwtToken(): string {
     return sessionStorage.getItem('jwtToken');
   }
 
-  set SetJwtToken(value: string) {
-//    this.jwtToken = value;
+  set JwtToken(value: string) {
     sessionStorage.setItem('jwtToken', value);
   }
 
   get IsAuthenticated(): boolean {
-    return this.GetJwtToken === null ? false : true;
-  //  return this.isAuthenticated;
+    return this.JwtToken === null ? false : true;
   }
 
-
   get LoggedUser(): string {
-    return this.loggedUser;
+    return sessionStorage.getItem('loggedUser');
   }
 
   set LoggedUser(value: string) {
-    this.loggedUser = value;
+    sessionStorage.setItem('loggedUser', value);
   }
 
   get isAdmin(): boolean {
@@ -76,8 +67,8 @@ export class AuthenticationService {
   }
 
   Logout() {
-//    this.isAuthenticated = false;
     sessionStorage.removeItem('jwtToken');
-    this.cognitoUser.signOut();
+    sessionStorage.removeItem('loggedUser');
+    sessionStorage.clear();
   }
 }

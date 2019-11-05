@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { AwsLambdaService } from '../services/aws-lambda.service';
 import { AuthenticationService } from '../services/authentication.service';
 
 import { NavItem } from './../../shared/models/nav-item';
@@ -18,6 +19,7 @@ export class TopPageNavigationComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private awsLambdaService: AwsLambdaService,
     public authenticationService: AuthenticationService
   ) { }
 
@@ -40,6 +42,7 @@ export class TopPageNavigationComponent implements OnInit {
   }
 
   LogOut() {
+    this.awsLambdaService.auditLog(this.authenticationService.LoggedUser, 'LogOut');
     this.authenticationService.Logout();
     this.router.navigate(['/logout']);
   }

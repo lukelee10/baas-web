@@ -25,9 +25,9 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot):
   Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     // This only checks if a user is authenticated
-    const test = this.authenticationService.IsAuthenticated;
+    const currentUser = this.authenticationService.IsAuthenticated;
 
-    if (test) {
+    if (currentUser) {
       return of(true);
     } else {
       this.router.navigate(['/login'], {

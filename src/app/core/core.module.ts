@@ -1,10 +1,13 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MaterialModule } from '../shared/material.module';
 
 import { throwIfAlreadyLoaded } from './guards/module-import.guard';
+
+import { HttpTokenInterceptor } from './interceptors/http.token.interceptor';
 
 import { FooterComponent } from './footer/footer.component';
 import { SideNavigationComponent } from './sidenavigation/sidenavigation.component';
@@ -25,6 +28,9 @@ import { TopPageNavigationComponent } from './toppagenavigation/toppagenavigatio
     SideNavigationComponent,
     TopPageNavigationComponent,
     FooterComponent
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true }
   ]
 })
 

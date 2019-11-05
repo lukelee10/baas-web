@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
 
-import { first, finalize } from 'rxjs/operators';
-
-import { AuthenticationService } from './authentication.service';
+import { NotificationService } from './../../shared/services/notification.service';
 
 import { apiGateway } from './../../../environments/environment';
 
@@ -20,42 +13,25 @@ export class AwsLambdaService {
 
   constructor(
     private http: HttpClient,
-    private authenticationService: AuthenticationService
+    private notificationService: NotificationService
   ) {
     this.apiBase = apiGateway.url;
   }
 
-  get GetJwtToken(): string {
-    return this.authenticationService.GetJwtToken;
-  }
+  auditLog(email: string, action: string) {
+    const body = {
+      email,
+      action
+    };
 
-  set SetJwtToken(value: string) {
-    this.authenticationService.SetJwtToken = value;
-  }
-
-
-  auditLogin() {
-    const jwtToken = this.GetJwtToken;
-
-    const headers = new HttpHeaders()
-    .set('Authorization', jwtToken);
-//    .set('X-XSS-Protection', '1; mode=block');
-
-    this.http.post(this.apiBase + '/audit',
-    {
-      email: 'admin@baas.devver1',
-      action: 'Login'
-    },
-    {
-      headers
-    })
+    this.http.post(this.apiBase + '/audit', body)
     .subscribe(
       response => {
-        const test = JSON.stringify(response);
-        console.log('AUDIT LOGIN PASSED' + test);
+        const result = JSON.stringify(response);
       },
       error => {
-        console.log('AUDIT LOGIN FAILED' + JSON.stringify(error));
+        const message = JSON.stringify(error);
+        this.notificationService.show('Audit ' +  action  + ' Failed');
       }
     );
   }

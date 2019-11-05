@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
 
   private setAuthenticationVals(result: any) {
     this.authenticationSVC.LoggedUser = this.email.value;
-    this.authenticationSVC.SetJwtToken = result.getAccessToken().getJwtToken();
-    this.awsLambdaService.auditLogin();
+    this.authenticationSVC.JwtToken = result.getIdToken().getJwtToken();
+    this.awsLambdaService.auditLog(this.email.value, 'Login');
   }
 }
