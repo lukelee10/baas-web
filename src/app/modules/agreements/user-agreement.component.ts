@@ -15,20 +15,16 @@ export class UserAgreementComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-      this.authenticationService.IsAuthenticated = false;
+
   }
 
   clickAccept() {
-    console.log('Accept Click');
     this.authenticationService.IsAgreementAccepted = true;
-    this.authenticationService.IsAuthenticated = true;
     this.router.navigate(['/announcements']);
   }
 
   clickDecline() {
-    console.log('Decline Click');
     this.authenticationService.IsAgreementAccepted = false;
-    this.authenticationService.IsAuthenticated = false;
     this.authenticationService.Logout();
     this.router.navigate(['/logout']);
   }

@@ -1,25 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 
-import { cognito } from './../../../environments/environment';
-
-
-export interface Callback {
-  cognitoCallback(message: string, result: any): void;
-}
+import { cognito } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private isAuthenticated: boolean;
-  private loggedUser: string;
-  private cognitoUser: CognitoUser;
-  private isAgreementAccepted: boolean;
-  constructor() {
-    this.isAuthenticated = false;
-    this.isAgreementAccepted = false;
-  }
+  constructor() {}
 
   AuthenticateUser(userName: string, password: string, callback: any) {
     const authenticationData = {
@@ -41,41 +29,42 @@ export class AuthenticationService {
       Pool: userPool
     };
 
-    this.cognitoUser = new CognitoUser(userData);
-    this.cognitoUser.authenticateUser(authenticationDetails, {
+    const cognitoUser = new CognitoUser(userData);
+    cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess(result) {
-        const accessToken = result.getAccessToken().getJwtToken(); // we need accessToken for making lamda calls
         callback.cognitoCallback(null, result);
       },
-
       onFailure(err) {
         callback.cognitoCallback(err.message || JSON.stringify(err), null);
       }
     });
   }
 
-  get IsAuthenticated(): boolean {
-    return this.isAuthenticated;
+  get JwtToken(): string {
+    return sessionStorage.getItem('jwtToken');
   }
 
-  set IsAuthenticated(value: boolean) {
-    this.isAuthenticated = value;
+  set JwtToken(value: string) {
+    sessionStorage.setItem('jwtToken', value);
   }
-
   get IsAgreementAccepted(): boolean {
-    return this.isAgreementAccepted;
+    return   (/true/i).test(sessionStorage.getItem('agreementAccepted'));
   }
 
   set IsAgreementAccepted(value: boolean) {
-    this.isAgreementAccepted = value;
+    sessionStorage.setItem('agreementAccepted', String(value));
+  }
+
+  get IsAuthenticated(): boolean {
+    return this.JwtToken === null ? false : true;
   }
 
   get LoggedUser(): string {
-    return this.loggedUser;
+    return sessionStorage.getItem('loggedUser');
   }
 
   set LoggedUser(value: string) {
-    this.loggedUser = value;
+    sessionStorage.setItem('loggedUser', value);
   }
 
   get isAdmin(): boolean {
@@ -83,7 +72,8 @@ export class AuthenticationService {
   }
 
   Logout() {
-    this.isAuthenticated = false;
-    this.cognitoUser.signOut();
+    sessionStorage.removeItem('jwtToken');
+    sessionStorage.removeItem('loggedUser');
+    sessionStorage.clear();
   }
 }
