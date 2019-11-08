@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 
 import { cognito } from '../../../environments/environment';
+
+import {AuthenticationDetails, CognitoUser, CognitoUserPool} from 'amazon-cognito-identity-js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  constructor() {}
+  constructor() {
+  }
 
   AuthenticateUser(userName: string, password: string, callback: any) {
     const authenticationData = {
