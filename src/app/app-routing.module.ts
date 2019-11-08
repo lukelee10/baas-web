@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { NotAllowedComponent } from './shared/components/not-allowed/not-allowed.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
 import { AuthenticationGuard } from './core/guards/authentication.guard';
@@ -45,6 +47,11 @@ const routes: Routes = [
         loadChildren: () => import('./modules/responses/responses.module').then(m => m.ResponsesModule)
       },
     ]
+  },
+  // Unauthorized: Access to a resource is denied
+  {
+    path: 'Unauthorized',
+    component: NotAllowedComponent
   },
   // Fallback when no prior routes is matched
   {

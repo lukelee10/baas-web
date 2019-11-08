@@ -1,0 +1,52 @@
+/* Structure */
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Toolbar */
+.spacer {
+  flex: 1 1 auto;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.mat-row:nth-child(even){
+  background-color:white;
+}
+
+.mat-row:nth-child(odd){
+  background-color: rgb(247, 247, 247);
+}
+
+.mat-header-cell, .mat-sort-header {
+  // background-color: navy;
+  color: navy;
+  font-weight: bold;
+}
+
+mat-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  white-space: nowrap;
+  position: relative;
+  top: 1em;
+  padding: 5px;
+}
+
+.data-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
