@@ -25,8 +25,6 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-      this.email.setValue('admin@baas.devver1');
-      this.passWord.setValue('P@ssw0rd123!');
   }
 
   getErrorMessage() {

@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
   styleUrls: ['./user-agreement.component.scss']
 })
 export class UserAgreementComponent implements OnInit {
+  disabledAgreement: boolean = true;
   constructor(
     private router: Router,
     public authenticationService: AuthenticationService
@@ -27,5 +28,8 @@ export class UserAgreementComponent implements OnInit {
     this.authenticationService.IsAgreementAccepted = false;
     this.authenticationService.Logout();
     this.router.navigate(['/logout']);
+  }
+  changeCheck(event){
+     this.disabledAgreement = !event.checked;
   }
 }

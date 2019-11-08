@@ -1,23 +1,32 @@
-.scrollable-div {
-  height: 350px;
-  width: 70vw;
-  min-width: 280px;
-  overflow: auto;
+.ua-div{      
+  width: 80vw;
+  min-width: 280px;  
   float: left;
   position: relative;
   margin: 5px;
-  padding: 10pt;
+  padding: 10pt;  
+  
+}
+.ua-div.scroll{   
+  height: 350px;
+  overflow: auto;  
   box-shadow: inset 0 0 2px ;
   border: 1px solid grey;
 }
-.scrollable-div::-webkit-scrollbar {
+ 
+.ua-div.scroll::-webkit-scrollbar {
   width: 12px;
 }
-.scrollable-div::-webkit-scrollbar-track {
+.ua-div.scroll::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
 
 }
-
-.scrollable-div::-webkit-scrollbar-thumb {
+.ua-div.scroll::-webkit-scrollbar-thumb {
    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1% 15%;
 }
