@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 
@@ -31,7 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   clickLogin() {
-    this.authenticationSVC.AuthenticateUser(this.email.value, this.passWord.value, this);
+     this.authenticationSVC.AuthenticateUser(this.email.value, this.passWord.value, this);
   }
 
   cognitoCallback(message: string, result: any) {
@@ -44,7 +45,7 @@ export class LoginComponent implements OnInit {
       this.setAuthenticationVals(result);
       const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'.toString()];
       if (returnUrl === undefined) {
-        this.router.navigate(['/announcements']);
+        this.router.navigate(['/agreements']);
       } else {
         this.router.navigate([returnUrl]);
       }
