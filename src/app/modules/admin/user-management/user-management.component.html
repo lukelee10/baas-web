@@ -1,9 +1,4 @@
 <div class="container mat-elevation-z8">
-  <div class="data-loading-shade"
-    *ngIf="isLoadingResults">
-    <mat-spinner *ngIf="isLoadingResults" [diameter]="50"></mat-spinner>
-  </div>
-
   <mat-toolbar color="primary">
     <span>{{pageTitle}}</span>
     <span class="spacer"></span>
@@ -54,30 +49,16 @@
       <mat-cell *matCellDef="let row" matTooltip="{{row.UserId}}"> {{row.UserId}} </mat-cell> 
     </ng-container>
 
-    <!-- First Name Column -->
-    <ng-container matColumnDef="Firstname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
-      <mat-cell *matCellDef="let row" matTooltip="{{row.Firstname}}"> {{row.Firstname}} </mat-cell>
+    <!-- Name Column -->
+    <ng-container matColumnDef="Fullname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-cell *matCellDef="let row" matTooltip="{{row.Firstname}}"> {{row.Fullname}} </mat-cell>
     </ng-container>
       
-    <!-- Last Name Column -->
-    <ng-container matColumnDef="Lastname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
-      <mat-cell *matCellDef="let row" matTooltip="{{row.Lastname}}"> {{row.Lastname}} </mat-cell>
-    </ng-container>
-
     <!-- Org/Group Column -->
     <ng-container matColumnDef="Group">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Org/Group</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.Group}} </mat-cell>
-    </ng-container>
-
-    <!-- IsAdmin Column -->
-    <ng-container matColumnDef="IsAdmin">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Is Admin</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <mat-icon *ngIf="row.IsAdmin" aria-hidden="false" aria-label="User is Admin User">check</mat-icon>
-      </mat-cell>
     </ng-container>
 
     <!-- Role Column -->

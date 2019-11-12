@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
+import { LoaderService } from './../../../shared/services/loader.service';
 
 import { BaaSUser } from './../../../shared/models/user';
 
@@ -21,9 +22,7 @@ export class UserManagementComponent implements OnInit {
   dataSource: MatTableDataSource<BaaSUser>;
   selection = new SelectionModel<BaaSUser>(true, []);
 
-  isLoadingResults = true;
-
-  displayedColumns: string[] = ['select', 'UserId', 'Firstname', 'Lastname', 'Group', 'IsAdmin', 'Role', 'Disabled', 'actions'];
+  displayedColumns: string[] = ['select', 'UserId', 'Fullname', 'Group', 'Role', 'Disabled', 'actions'];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -32,9 +31,9 @@ export class UserManagementComponent implements OnInit {
   baasUsers: any;
   usersViewModel: BaaSUser[] = [];
 
-
   constructor(
-    private awsLambdaService: AwsLambdaService
+    private awsLambdaService: AwsLambdaService,
+    private loaderService: LoaderService
   ) { }
 
   ngOnInit() {
@@ -42,21 +41,21 @@ export class UserManagementComponent implements OnInit {
   }
 
   getUsers(): void {
-    this.isLoadingResults = true;
+    this.loaderService.Show('Loading Users...');
     this.awsLambdaService.getUsers()
     .pipe(first())
     .subscribe(
       users => {
-        this.isLoadingResults = false;
         this.baasUsers = users;
         this.getViewModelUsers(users);
         this.dataSource = new MatTableDataSource<BaaSUser>(this.usersViewModel);
         this.dataSource.paginator = this.paginator;
         this.sort.start = 'asc';
         this.dataSource.sort = this.sort;
+        this.loaderService.Hide();
       },
       (err) => {
-        this.isLoadingResults = false;
+        this.loaderService.Hide();
       }
     );
   }
@@ -66,8 +65,7 @@ export class UserManagementComponent implements OnInit {
       this.usersViewModel.push(
         {
           UserId: item.UserId,
-          Firstname: item.Firstname,
-          Lastname: item.Lastname,
+          Fullname: this.getName(item.Firstname, item.Lastname),
           Group: item.Group,
           IsAdmin: item.IsAdmin,
           Role: item.Role,
@@ -117,5 +115,18 @@ export class UserManagementComponent implements OnInit {
   ClearFilter() {
     this.filter.nativeElement.value = '';
     this.applyFilter('');
+  }
+
+  private getName(firstName: string, lastName: string): string {
+    let name = '';
+    if (firstName && lastName) {
+      name = firstName + ' ' + lastName;
+    } else if (firstName && !lastName) {
+      name = firstName;
+    } else if (!firstName && lastName) {
+      name = lastName;
+    }
+
+    return name;
   }
 }

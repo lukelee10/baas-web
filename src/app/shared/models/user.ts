@@ -1,7 +1,6 @@
 export interface BaaSUser {
   UserId: string;
-  Firstname: string;
-  Lastname: string;
+  Fullname: string;
   Group: string;
   IsAdmin: boolean;
   Role: string;
