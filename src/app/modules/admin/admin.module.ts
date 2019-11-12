@@ -5,10 +5,14 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { SharedModule } from './../../shared/shared.module';
 
 import { AdminComponent } from './admin.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { GroupManagementComponent } from './group-management/group-management.component';
 
 @NgModule({
   declarations: [
-    AdminComponent
+    AdminComponent,
+    UserManagementComponent,
+    GroupManagementComponent
   ],
   imports: [
     CommonModule,

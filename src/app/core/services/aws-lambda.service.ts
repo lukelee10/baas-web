@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { NotificationService } from './../../shared/services/notification.service';
 
-import { apiGateway } from './../../../environments/environment';
+import { environment } from './../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,7 @@ export class AwsLambdaService {
     private http: HttpClient,
     private notificationService: NotificationService
   ) {
-    this.apiBase = apiGateway.url;
+    this.apiBase = environment.apiGateway.url;
   }
 
   auditLog(email: string, action: string) {
@@ -34,5 +37,28 @@ export class AwsLambdaService {
         this.notificationService.show('Audit ' +  action  + ' Failed');
       }
     );
+  }
+
+  getUsers(): Observable<any> {
+    return this.http.get(`${this.apiBase}/users`)
+      .pipe(map((res: any) => res), catchError(this.handleError));
+  }
+
+  private handleError(error: any) {
+    if (error instanceof HttpErrorResponse) {
+      let errorMessage = '';
+      try {
+        errorMessage = error.message;
+      } catch (err) {
+        errorMessage = error.statusText;
+      }
+      return throwError(errorMessage);
+    } else {
+      if (error.status) {
+        return throwError(error.status);
+      }
+    }
+
+    return of(error || 'Epic Fail');
   }
 }

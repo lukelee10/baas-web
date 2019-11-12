@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { cognito } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 import {AuthenticationDetails, CognitoUser, CognitoUserPool} from 'amazon-cognito-identity-js';
 
@@ -20,8 +20,8 @@ export class AuthenticationService {
     const authenticationDetails = new AuthenticationDetails(authenticationData);
 
     const poolData = {
-      UserPoolId: cognito.userPoolId,
-      ClientId: cognito.appClientId
+      UserPoolId : environment.cognito.userPoolId,
+      ClientId : environment.cognito.appClientId
     };
 
     const userPool = new CognitoUserPool(poolData);
@@ -76,6 +76,7 @@ export class AuthenticationService {
   Logout() {
     sessionStorage.removeItem('jwtToken');
     sessionStorage.removeItem('loggedUser');
+    sessionStorage.removeItem('agreementAccepted');
     sessionStorage.clear();
   }
 }
