@@ -1,5 +1,7 @@
 # BaasWeb
-#  Branch REACTS#1930 User Agreement Acceptance after Login - BaaS 1.0
+
+# Branch REACTS#1930 User Agreement Acceptance after Login - BaaS 1.0
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.5.
 
 ## Loader Service
@@ -7,9 +9,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 LoaderService service is to show Busy/Loading popup during http requests/lengthy processes.
 
 To use:
+
 1. Add private loaderService: LoaderService in component constructor
 2. this.loaderService.Show(optional message to display in popup); -> to show popup
 3. this.loaderService.Hide(); -> to hide popup window
+
+##Session Timeout REACTS 1923
 
 ## Development server
 
