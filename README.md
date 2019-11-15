@@ -14,7 +14,7 @@ To use:
 2. this.loaderService.Show(optional message to display in popup); -> to show popup
 3. this.loaderService.Hide(); -> to hide popup window
 
-##Session Timeout REACTS 1923
+## Session Timeout REACTS 1923
 
 ## Development server
 
