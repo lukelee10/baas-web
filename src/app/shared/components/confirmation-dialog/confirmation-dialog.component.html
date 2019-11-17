@@ -1,0 +1,12 @@
+<div class="container">
+  <h3 mat-dialog-title>
+    {{options.title}}
+  </h3>
+  <div mat-dialog-content>
+    {{options.message}}
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button class="mat-primary" [mat-dialog-close]="true" cdkFocusInitial>Confirm</button>
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+  </div>
+</div>

@@ -16,7 +16,8 @@
       <mat-icon>person_add</mat-icon>
       Create User
     </button>
-    <button color="warn" mat-button matTooltip="Disable selected users" aria-hidden="false" aria-label="Disable selected users">
+    <button color="warn" mat-button matTooltip="Disable selected users" aria-hidden="false"
+      aria-label="Disable selected users" (click)="onDisableUser()">
       <mat-icon>delete_sweep</mat-icon>
       Disable User(s)
     </button>
@@ -82,7 +83,7 @@
         <button mat-icon-button aria-hidden="false" aria-label="Edit selected user">
           <mat-icon matTooltip="Edit">edit</mat-icon>
         </button>
-        <button mat-icon-button aria-hidden="false" aria-label="Disable selected user">
+        <button mat-icon-button aria-hidden="false" aria-label="Disable selected user" (click)="onDisableUser()">
           <mat-icon color="warn" matTooltip="Disable">delete</mat-icon>
         </button>
       </mat-cell>

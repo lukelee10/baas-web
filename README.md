@@ -11,6 +11,10 @@ To use:
 2. this.loaderService.Show(optional message to display in popup); -> to show popup
 3. this.loaderService.Hide(); -> to hide popup window
 
+## Confirmation Dialog Component
+
+Added the Confirmation Dialog Component to baaS Web.  This is reusuable and shared component, which shows the Confirmation dialog in cases like disable a user etc.,.  This component's Title and Content can be configured from the calling component.  Please see UserManagementComponent in how to use this ConfirmationDialogComponent.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
