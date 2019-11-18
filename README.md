@@ -13,7 +13,26 @@ To use:
 
 ## Confirmation Dialog Component
 
-Added the Confirmation Dialog Component to baaS Web.  This is reusuable and shared component, which shows the Confirmation dialog in cases like disable a user etc.,.  This component's Title and Content can be configured from the calling component.  Please see UserManagementComponent in how to use this ConfirmationDialogComponent.
+Added the Confirmation Dialog Component to baaS Web.  This is reusuable and shared component, which shows the Confirmation dialog in cases like disable a user etc.,.  This component's Title and Content can be configured from the calling component.
+To use:
+1. Import ConfirmationDialogComponent
+2. Add private dialog: MatDialog in component constructor
+3. Add the following chunk of code where ever you want to show the Confirmation Dialog:
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Confirm Disable',
+        message: 'Are you sure you want to disable the user?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        alert('Yes clicked');
+        // DO SOMETHING
+      }
+    });
+  
 
 ## Development server
 

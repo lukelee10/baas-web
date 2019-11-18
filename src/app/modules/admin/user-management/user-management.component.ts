@@ -5,13 +5,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatDialog } from '@angular/material';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { LoaderService } from './../../../shared/services/loader.service';
 
 import { BaaSUser } from './../../../shared/models/user';
-
-import { ConfirmationDialogComponent } from './../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-user-management',
@@ -35,28 +32,11 @@ export class UserManagementComponent implements OnInit {
 
   constructor(
     private awsLambdaService: AwsLambdaService,
-    private loaderService: LoaderService,
-    public dialog: MatDialog
+    private loaderService: LoaderService
   ) { }
 
   ngOnInit() {
     this.getUsers();
-  }
-
-  onDisableUser(): void {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: {
-        title: 'Confirm Disable',
-        message: 'Are you sure you want to disable the user?'
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        alert('Yes clicked');
-        // DO SOMETHING
-      }
-    });
   }
 
   getUsers(): void {
