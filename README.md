@@ -11,6 +11,28 @@ To use:
 2. this.loaderService.Show(optional message to display in popup); -> to show popup
 3. this.loaderService.Hide(); -> to hide popup window
 
+
+## Message Dialog Component
+
+Message Dialog Component is a reusable component.
+1. With this we can avoid using plain old alert javascript
+2. This component is configured for Success, Warning, and Error messages (themes)
+3. To use in a component:
+   * import the MessageDialogComponent
+   * Add private dialog: MatDialog in constructor
+   * After your event (for example after a server call), use the following (similar code)
+      ```
+      // Do Something
+
+      // Then show what happened to the user
+      this.dialog.open(MessageDialogComponent, {
+        data: {
+          message: 'Update not fully successful with warnings; Update not fully successful with warnings',
+          warn: true,
+        }
+      });
+      ```
+
 ## Confirmation Dialog Component
 
 Added the Confirmation Dialog Component to baaS Web.  This is reusuable and shared component, which shows the Confirmation dialog in cases like disable a user etc.,.  This component's Title and Content can be configured from the calling component.
@@ -18,7 +40,7 @@ To use:
 1. Import ConfirmationDialogComponent
 2. Add private dialog: MatDialog in component constructor
 3. Add the following chunk of code where ever you want to show the Confirmation Dialog:
-
+    ```
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
         title: 'Confirm Disable',
@@ -32,7 +54,7 @@ To use:
         // DO SOMETHING
       }
     });
-  
+    ```
 
 ## Development server
 

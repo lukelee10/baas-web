@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {first} from 'rxjs/operators';
 
+import { MatDialog } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -32,7 +33,7 @@ export class UserManagementComponent implements OnInit {
 
   constructor(
     private awsLambdaService: AwsLambdaService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
   ) { }
 
   ngOnInit() {
