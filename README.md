@@ -17,7 +17,23 @@ To use:
 Message Dialog Component is a reusable component.
 1. With this we can avoid using plain old alert javascript
 2. This component is configured for Success, Warning, and Error messages (themes)
-3. Please see UserManagementComponent in how to use MessageDialogComponent
+3. To use in a component:
+   * import the MessageDialogComponent
+   * Add private dialog: MatDialog in constructor
+   * After your event (for example after a server call), use the following (similar code)
+      
+      ```
+      // Do Something
+
+      // Then show what happened to the user
+      this.dialog.open(MessageDialogComponent, {
+        data: {
+          message: 'Update not fully successful with warnings; Update not fully successful with warnings',
+          warn: true,
+        }
+      });
+      ```
+
 
 ## Development server
 
