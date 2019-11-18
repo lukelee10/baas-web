@@ -11,6 +11,14 @@ To use:
 2. this.loaderService.Show(optional message to display in popup); -> to show popup
 3. this.loaderService.Hide(); -> to hide popup window
 
+
+## Message Dialog Component
+
+Message Dialog Component is a reusable component.
+1. With this we can avoid using plain old alert javascript
+2. This component is configured for Success, Warning, and Error messages (themes)
+3. Please see UserManagementComponent in how to use MessageDialogComponent
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

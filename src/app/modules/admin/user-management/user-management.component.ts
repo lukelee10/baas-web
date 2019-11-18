@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {first} from 'rxjs/operators';
 
+import { MatDialog } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,6 +10,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { LoaderService } from './../../../shared/services/loader.service';
 
+import { MessageDialogComponent } from './../../../shared/components/message-dialog/message-dialog.component';
 import { BaaSUser } from './../../../shared/models/user';
 
 @Component({
@@ -33,7 +35,8 @@ export class UserManagementComponent implements OnInit {
 
   constructor(
     private awsLambdaService: AwsLambdaService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -58,6 +61,18 @@ export class UserManagementComponent implements OnInit {
         this.loaderService.Hide();
       }
     );
+  }
+
+  onEdit(): void {
+    // Do Something
+
+    // Then show what happened to the user
+    this.dialog.open(MessageDialogComponent, {
+      data: {
+        message: 'Update not fully successful with warnings; Update not fully successful with warnings',
+//        warn: true,
+      }
+    });
   }
 
   private getViewModelUsers(users: any): void {
