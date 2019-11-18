@@ -4,6 +4,9 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { environment } from 'src/environments/environment';
+
+import { AppGlobalConstants } from './../app-globals';
 
 @Injectable({
   providedIn: 'root'
@@ -17,35 +20,45 @@ export class HttpCallInterceptor implements HttpInterceptor {
     return next.handle(request).do(
       (event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
-          this.printLog(event);
-          if (event.status === 401) {
-            // session time-out error, redire to login
-            this.router.navigate(['/login']);
-          }
+          this.handleEvent(event);
         }
       },
       (err: any) => {
         if (err instanceof HttpErrorResponse) {
-          if (err.status === 401) {
-            // session time-out error, redire to login
-            this.router.navigate(['/login']);
-          }
+          this.handleEvent(err);
         }
       }
     );
   }
 
-  printLog(event) {
-    const currentDate = '[' + new Date().toLocaleString() + '] ';
-    console.log(
-      currentDate +
-        ' ' +
-        'Event Url:' +
-        event.url +
-        ' \n status code: ' +
-        event.status +
-        ' \n status text: ' +
-        event.statusText
-    );
+  handleEvent(event: any) {
+    this.printLog(event);
+    if (event.status === AppGlobalConstants.TimeOutErrorCode) {
+      const currentDate = '[' + new Date().toLocaleString() + '] ';
+      console.log(
+        currentDate + 'Session timedout - Redirecting to Login Page...'
+      );
+      this.router.navigate(['/login']);
+    }
+  }
+
+  printLog(event: any) {
+    if (
+      !environment.production &&
+      (event instanceof HttpResponse || event instanceof HttpErrorResponse)
+    ) {
+      const currentDate = '[' + new Date().toLocaleString() + '] ';
+      const logType = (event instanceof HttpErrorResponse) ? 'ERROR' : 'INFO';
+      console.log(
+        currentDate + logType +
+          ' ' +
+          'Event URL:' +
+          event.url +
+          ' \n status code: ' +
+          event.status +
+          ' \n status text: ' +
+          event.statusText
+      );
+    }
   }
 }
