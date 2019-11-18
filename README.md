@@ -11,6 +11,29 @@ To use:
 2. this.loaderService.Show(optional message to display in popup); -> to show popup
 3. this.loaderService.Hide(); -> to hide popup window
 
+## Confirmation Dialog Component
+
+Added the Confirmation Dialog Component to baaS Web.  This is reusuable and shared component, which shows the Confirmation dialog in cases like disable a user etc.,.  This component's Title and Content can be configured from the calling component.
+To use:
+1. Import ConfirmationDialogComponent
+2. Add private dialog: MatDialog in component constructor
+3. Add the following chunk of code where ever you want to show the Confirmation Dialog:
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Confirm Disable',
+        message: 'Are you sure you want to disable the user?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        alert('Yes clicked');
+        // DO SOMETHING
+      }
+    });
+  
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
