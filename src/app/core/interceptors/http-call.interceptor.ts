@@ -2,17 +2,25 @@ import 'rxjs/add/operator/do';
 
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { MessageDialogComponent } from 'src/app/shared/components/message-dialog/message-dialog.component';
 import { environment } from 'src/environments/environment';
 
+import { AuthenticationService } from '../services/authentication.service';
 import { AppGlobalConstants } from './../app-globals';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpCallInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private dialog: MatDialog,
+    private authenticationService: AuthenticationService
+  ) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -35,9 +43,14 @@ export class HttpCallInterceptor implements HttpInterceptor {
     this.printLog(event);
     if (event.status === AppGlobalConstants.TimeOutErrorCode) {
       const currentDate = '[' + new Date().toLocaleString() + '] ';
-      console.log(
-        currentDate + 'Session timedout - Redirecting to Login Page...'
-      );
+      const dialogRef = this.dialog.open(MessageDialogComponent, {
+        data: {
+          title: 'Session Timeout',
+          message: 'You need to login back to continue your session',
+          warn: true
+        }
+      });
+      this.authenticationService.Logout();
       this.router.navigate(['/login']);
     }
   }
@@ -48,9 +61,10 @@ export class HttpCallInterceptor implements HttpInterceptor {
       (event instanceof HttpResponse || event instanceof HttpErrorResponse)
     ) {
       const currentDate = '[' + new Date().toLocaleString() + '] ';
-      const logType = (event instanceof HttpErrorResponse) ? 'ERROR' : 'INFO';
+      const logType = event instanceof HttpErrorResponse ? 'ERROR' : 'INFO';
       console.log(
-        currentDate + logType +
+        currentDate +
+          logType +
           ' ' +
           'Event URL:' +
           event.url +
