@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AuthenticationGuard } from './core/guards/authentication.guard';
 import { NotAllowedComponent } from './shared/components/not-allowed/not-allowed.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
-
-import { AuthenticationGuard } from './core/guards/authentication.guard';
 
 // Lazy Loading Feature Modules
 // By default, NgModules are eagerly loaded, which means that as soon as the app loads,

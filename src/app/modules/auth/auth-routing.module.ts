@@ -1,11 +1,12 @@
-import { AuthenticationGuard } from './../../core/guards/authentication.guard';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { EditProfileComponent } from '../../modules/auth/edit-profile/edit-profile.component';
+import { AuthenticationGuard } from './../../core/guards/authentication.guard';
 import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.component';
-import { LoginComponent } from './login/login.component';
 import { LogOutComponent } from './log-out/log-out.component';
+import { LoginComponent } from './login/login.component';
+import { NewPasswordComponent } from './new-password/new-password.component';
 
 const authRoutes: Routes = [
   {
@@ -27,8 +28,11 @@ const authRoutes: Routes = [
       },
       {
         path: 'forgotpassword',
-        canActivate: [AuthenticationGuard],
         component: ForgotPasswordComponent
+      },
+      {
+        path: 'newPassword',
+        component: NewPasswordComponent
       },
       {
         path: 'logout',

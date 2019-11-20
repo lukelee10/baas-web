@@ -10,6 +10,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.component';
 import { LoginComponent } from './login/login.component';
 import { LogOutComponent } from './log-out/log-out.component';
+import { NewPasswordComponent } from './new-password/new-password.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { LogOutComponent } from './log-out/log-out.component';
     ForgotPasswordComponent,
     LogOutComponent,
     EditProfileComponent,
+    NewPasswordComponent,
   ],
   imports: [
     CoreModule,
