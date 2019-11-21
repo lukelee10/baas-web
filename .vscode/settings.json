@@ -1,42 +1,35 @@
+.vscode\settings.json
 {
 
-  // VS Code Editor
-  "[typescript]": {
-    "editor.formatOnSave": false,
-    "editor.formatOnPaste": true
-  },
-  "[markdown]": {
-    "editor.formatOnSave": true,
-    "editor.wordWrap": "on",
-    "editor.renderWhitespace": "all",
-    "editor.acceptSuggestionOnEnter": "off"
-  },
-   //PLUG IN: prettier
-   "prettier.arrowParens": "avoid",
-   "prettier.bracketSpacing": true,
-   "prettier.endOfLine": "auto",
-   "prettier.htmlWhitespaceSensitivity": "css",
-   "prettier.ignorePath": ".prettierignore",
-   "prettier.jsxBracketSameLine": true,
-   "prettier.printWidth": 80,
-   "prettier.proseWrap": "preserve",
-   "prettier.quoteProps": "as-needed",
-   "prettier.semi": true,
-   "prettier.singleQuote": true,
-   "prettier.tabWidth": 2,
-   "prettier.trailingComma":"none",
-   "prettier.useTabs": false,
-   "prettier.overrides": [
-     {
-       "prettier.files": "*.html",
-       "prettier.options": {
-         "prettier.singleQuote": false
-       }
-     }
-   ],
+    // VS Code Editor
+    "[typescript]": {
+      "editor.formatOnSave": false,
+      "editor.formatOnPaste": false
+    },
+    "[markdown]": {
+      "editor.formatOnSave": true,
+      "editor.wordWrap": "on",
+      "editor.renderWhitespace": "all",
+      "editor.acceptSuggestionOnEnter": "off"
+    },
+     //PLUG IN: prettier
+     "prettier.arrowParens": "avoid",
+     "prettier.bracketSpacing": true,
+     "prettier.endOfLine": "auto",
+     "prettier.htmlWhitespaceSensitivity": "css",
+     "prettier.ignorePath": ".prettierignore",
+     "prettier.jsxBracketSameLine": true,
+     "prettier.printWidth": 80,
+     "prettier.proseWrap": "preserve",
+     "prettier.quoteProps": "as-needed",
+     "prettier.semi": true,
+     "prettier.singleQuote": true,
+     "prettier.tabWidth": 2,
+     "prettier.trailingComma":"none",
+     "prettier.useTabs": false,
 
-  //PLUG IN: typescript Hero
-  "typescriptHero.imports.organizeOnSave": true,
-  "typescriptHero.imports.organizeSortsByFirstSpecifier": false,
-  "typescriptHero.imports.removeTrailingIndex": true
+    //PLUG IN: typescript Hero
+    "typescriptHero.imports.organizeOnSave": true,
+    "typescriptHero.imports.organizeSortsByFirstSpecifier": false,
+    "typescriptHero.imports.removeTrailingIndex": true
 }

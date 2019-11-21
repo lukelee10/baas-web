@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
+import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import { Observable, Subject } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-
-import {AuthenticationDetails, CognitoUser, CognitoUserPool} from 'amazon-cognito-identity-js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+  private userLoggedIn = new Subject<boolean>();
+
   constructor() {
+    this.userLoggedIn.next(false);
   }
 
   AuthenticateUser(userName: string, password: string, callback: any) {
@@ -20,8 +23,8 @@ export class AuthenticationService {
     const authenticationDetails = new AuthenticationDetails(authenticationData);
 
     const poolData = {
-      UserPoolId : environment.cognito.userPoolId,
-      ClientId : environment.cognito.appClientId
+      UserPoolId: environment.cognito.userPoolId,
+      ClientId: environment.cognito.appClientId
     };
 
     const userPool = new CognitoUserPool(poolData);
@@ -78,5 +81,14 @@ export class AuthenticationService {
     sessionStorage.removeItem('loggedUser');
     sessionStorage.removeItem('agreementAccepted');
     sessionStorage.clear();
+    this.setUserLoggedIn(false);
+  }
+
+  setUserLoggedIn(userLoggedIn: boolean) {
+    this.userLoggedIn.next(userLoggedIn);
+  }
+
+  getUserLoggedIn(): Observable<boolean> {
+    return this.userLoggedIn.asObservable();
   }
 }

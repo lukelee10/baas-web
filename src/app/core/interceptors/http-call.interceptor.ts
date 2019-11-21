@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { MessageDialogComponent } from 'src/app/shared/components/message-dialog/message-dialog.component';
-import { environment } from 'src/environments/environment';
+import { debugLogging } from 'src/environments/environment';
 
 import { AuthenticationService } from '../services/authentication.service';
 import { AppGlobalConstants } from './../app-globals';
@@ -56,13 +56,10 @@ export class HttpCallInterceptor implements HttpInterceptor {
   }
 
   printLog(event: any) {
-    if (
-      !environment.production &&
-      (event instanceof HttpResponse || event instanceof HttpErrorResponse)
-    ) {
+    if  (event instanceof HttpResponse || event instanceof HttpErrorResponse) {
       const currentDate = '[' + new Date().toLocaleString() + '] ';
       const logType = event instanceof HttpErrorResponse ? 'ERROR' : 'INFO';
-      console.log(
+      debugLogging(
         currentDate +
           logType +
           ' ' +

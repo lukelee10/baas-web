@@ -7,14 +7,14 @@
 export const environment = {
   production: false,
 
-/**
- * BaasDevVer1UserPool Configurations
- * This is for Developers
- * These are the default settings point to BaasDevVer1UserPool stack,
- * and these values can be changed if a developer wants to use their own stack
- *
- * For Cognito
- */
+  /**
+   * BaasDevVer1UserPool Configurations
+   * This is for Developers
+   * These are the default settings point to BaasDevVer1UserPool stack,
+   * and these values can be changed if a developer wants to use their own stack
+   *
+   * For Cognito
+   */
   cognito: {
     userPoolId: 'us-east-1_d0pS2RvfU',
     appClientId: '1c9hvrl1ckt5m5il817ho69cor',
@@ -43,8 +43,17 @@ export const environment = {
   }
 };
 
-
-
+/**
+ * This is the debugLogging method.
+ * Use this method when the console logging should only happen in non-production environment.
+ * @param message This is the message parameter to be logged to console
+ * @returns returns void
+ */
+export function debugLogging(message?: any): void {
+  if (!environment.production) {
+    console.log(message);
+  }
+}
 
 /*
  * For easier debugging in development mode, you can import the following file

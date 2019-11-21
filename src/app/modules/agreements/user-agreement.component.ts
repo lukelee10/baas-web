@@ -21,6 +21,7 @@ export class UserAgreementComponent implements OnInit {
 
   clickAccept() {
     this.authenticationService.IsAgreementAccepted = true;
+    this.authenticationService.setUserLoggedIn(true);
     this.router.navigate(['/announcements']);
   }
 
