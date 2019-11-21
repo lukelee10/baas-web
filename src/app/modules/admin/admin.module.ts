@@ -7,12 +7,14 @@ import { SharedModule } from './../../shared/shared.module';
 import { AdminComponent } from './admin.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { GroupManagementComponent } from './group-management/group-management.component';
+import { CreateUserComponent } from './create-user/create-user.component';
 
 @NgModule({
   declarations: [
     AdminComponent,
     UserManagementComponent,
-    GroupManagementComponent
+    GroupManagementComponent,
+    CreateUserComponent
   ],
   imports: [
     CommonModule,
