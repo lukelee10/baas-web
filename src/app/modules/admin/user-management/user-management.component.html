@@ -1,0 +1,96 @@
+<div class="container mat-elevation-z8">
+  <mat-toolbar color="primary">
+    <span>{{pageTitle}}</span>
+    <span class="spacer"></span>
+  </mat-toolbar>
+
+  <div class="form">
+    <mat-form-field>
+      <input matInput #filter (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+    <button mat-button matTooltip="Clear the filter" aria-hidden="false" aria-label="Clear the filter" (click)="ClearFilter()">
+      <mat-icon>clear</mat-icon>
+      Clear Filter
+    </button>
+    <button color="primary" mat-button matTooltip="Create User"  routerLink="newUser" aria-hidden="false" aria-label="Create User">
+      <mat-icon>person_add</mat-icon>
+      Create User
+    </button>
+    <button color="warn" mat-button matTooltip="Disable selected users" aria-hidden="false"
+      aria-label="Disable selected users">
+      <mat-icon>delete_sweep</mat-icon>
+      Disable User(s)
+    </button>
+  </div>
+
+  <mat-table [dataSource]="dataSource" matSort class="mat-cell">
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                      aria-hidden="false"
+                      [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)"
+                      aria-hidden="false"
+                      [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
+    <!-- User ID Column -->
+    <ng-container matColumnDef="UserId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>User ID</mat-header-cell>
+      <mat-cell *matCellDef="let row" matTooltip="{{row.UserId}}"> {{row.UserId}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Fullname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-cell *matCellDef="let row" matTooltip="{{row.Firstname}}"> {{row.Fullname}} </mat-cell>
+    </ng-container>
+
+    <!-- Org/Group Column -->
+    <ng-container matColumnDef="Group">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Org/Group</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.Group}} </mat-cell>
+    </ng-container>
+
+    <!-- Role Column -->
+    <ng-container matColumnDef="Role">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.Role}} </mat-cell>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="Disabled">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Disabled</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-icon *ngIf="row.Disabled" aria-hidden="false" aria-label="Disabled User">check</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button aria-hidden="false" aria-label="Edit selected user">
+          <mat-icon matTooltip="Edit">edit</mat-icon>
+        </button>
+        <button mat-icon-button aria-hidden="false" aria-label="Disable selected user">
+          <mat-icon color="warn" matTooltip="Disable">delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></mat-row>
+  </mat-table>
+  <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>

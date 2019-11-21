@@ -1,35 +1,31 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
-import { AdminModule } from './admin/admin.module';
-import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ErrorPagesModule } from './errorpages/errorpages.module';
-import { MaterialModule } from './material-ui/material.module';
-import { NavigationModule } from './navigation/navigation.module';
-import { RequestsModule } from './requests/requests.module';
-import { TestpageComponent } from './testpage/testpage.component';
+import { AuthModule } from './modules/auth/auth.module';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    TestpageComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AdminModule,
+    AuthModule,
+    CoreModule,
     AppRoutingModule,
-    ErrorPagesModule,
-    MaterialModule,
-    NavigationModule,
-    RequestsModule
+    SharedModule,
+    HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }
