@@ -33,7 +33,7 @@ export class UserManagementComponent implements OnInit {
 
   constructor(
     private awsLambdaService: AwsLambdaService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
   ) { }
 
   ngOnInit() {
