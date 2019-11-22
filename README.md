@@ -1,6 +1,19 @@
 # BaasWeb
 
-# Branch REACTS#1930 User Agreement Acceptance after Login - BaaS 1.0
+## User Agreement Acceptance
+
+After the successful login, the user will be directed to “User Agreement Screen”, only after accepting the user agreement user directed to Landing page.
+
+## Session Timeout
+
+AppGlobalConstants have the following constants
+
+1.  TimeOutErrorCode
+    If Backend Lamda Call returns TimeOutErrorCode then user is logged out and redirected to login screen.
+2.  MaxAllowedIdleTimeInSeconds
+    Maximun number of seconds that user can be idle before trigger his/her timeout counter
+3.  TimeOutInSeconds  
+    Number of seconds that user will be timedout, logged out and redirected to login screen.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.5.
 
@@ -62,10 +75,6 @@ To use:
      }
    });
    ```
-
-## REACTS 1923 Session Time
-
-Logout and Redirect user to login screen after the configured idle time/timeout.
 
 ## Development server
 
