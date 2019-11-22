@@ -11,6 +11,7 @@ import { HttpCallInterceptor } from './core/interceptors/http-call.interceptor';
 import { AuthModule } from './modules/auth/auth.module';
 import { SharedModule } from './shared/shared.module';
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
