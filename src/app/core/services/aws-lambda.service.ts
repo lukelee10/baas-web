@@ -1,12 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
-
-import { NotificationService } from './../../shared/services/notification.service';
+import { catchError, map } from 'rxjs/operators';
 
 import { environment } from './../../../environments/environment';
+import { NotificationService } from './../../shared/services/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +40,30 @@ export class AwsLambdaService {
   getUsers(): Observable<any> {
     return this.http.get(`${this.apiBase}/users`)
       .pipe(map((res: any) => res), catchError(this.handleError));
+  }
+
+  resetPassword(userid: string): void {
+    this.http.post(`${this.apiBase}/forgotpassword`, { userid })
+      .subscribe(
+        data => {
+          console.log("POST Request is successful ", data);
+        },
+        error => {
+          console.log("Error", error);
+        }
+      )
+  }
+
+  confirmPassword(newCredential: any) {
+    this.http.post(`${this.apiBase}/forgotpassword`, newCredential)
+      .subscribe(
+        data => {
+          console.log("POST Request is successful ", data);
+        },
+        error => {
+          console.log("Error", error);
+        }
+      )
   }
 
   private handleError(error: any) {
