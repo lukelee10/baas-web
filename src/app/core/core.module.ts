@@ -7,7 +7,7 @@ import { MaterialModule } from '../shared/material.module';
 
 import { throwIfAlreadyLoaded } from './guards/module-import.guard';
 
-import { HttpTokenInterceptor } from './interceptors/http.token.interceptor';
+import { HttpTokenInterceptor } from './interceptors/http-token.interceptor';
 
 import { FooterComponent } from './footer/footer.component';
 import { SideNavigationComponent } from './sidenavigation/sidenavigation.component';

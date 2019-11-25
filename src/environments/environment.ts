@@ -5,7 +5,6 @@
  */
 import { awsConfig } from './awsConfig';
 
-
 export const environment = {
   production: false,
 
@@ -29,18 +28,6 @@ export const environment = {
    */
   apiGateway: awsConfig.apiGateway
 };
-
-/**
- * This is the debugLogging method.
- * Use this method when the console logging should only happen in non-production environment.
- * @param message This is the message parameter to be logged to console
- * @returns returns void
- */
-export function debugLogging(message?: any): void {
-  if (!environment.production) {
-    console.log(message);
-  }
-}
 
 /*
  * For easier debugging in development mode, you can import the following file

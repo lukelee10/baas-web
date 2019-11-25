@@ -32,9 +32,11 @@ export class MessageDialogComponent implements OnInit {
 
   constructor(
     private cdRef: ChangeDetectorRef,
-    public dialogRef: MatDialogRef<MessageDialogComponent>,
+    private dialogRef: MatDialogRef<MessageDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MessageDialogOptions
-  ) { }
+  ) {
+    dialogRef.disableClose = true;
+   }
 
   ngOnInit() {
     this.options = {...this.data};

@@ -38,6 +38,6 @@ export class TestPageComponent implements OnInit {
   }
 
   clickTest() {
-    this.notificationSvc.show('Your profile information has been updated.');
+    this.notificationSvc.notify('Your profile information has been updated.');
   }
 }

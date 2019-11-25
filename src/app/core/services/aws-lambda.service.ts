@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { Observable, of, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
 
 import { NotificationService } from './../../shared/services/notification.service';
 
 import { environment } from './../../../environments/environment';
+import { AppGlobalConstants } from '../app-global-constants';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class AwsLambdaService {
       },
       error => {
         const message = JSON.stringify(error);
-        this.notificationService.show('Audit ' +  action  + ' Failed');
+        this.notificationService.error(`Audit ${action} Failed`);
       }
     );
   }
@@ -48,7 +49,11 @@ export class AwsLambdaService {
     if (error instanceof HttpErrorResponse) {
       let errorMessage = '';
       try {
-        errorMessage = error.message;
+        if (error.status === AppGlobalConstants.TimeOutErrorCode) {
+          errorMessage = AppGlobalConstants.TimeOutErrorCode.toString();
+        } else {
+          errorMessage = `${error.statusText}: Url is ${error.url}`;
+        }
       } catch (err) {
         errorMessage = error.statusText;
       }
@@ -61,4 +66,23 @@ export class AwsLambdaService {
 
     return of(error || 'Epic Fail');
   }
+
+/*   printLog(event: any) {
+    if  (event instanceof HttpResponse || event instanceof HttpErrorResponse) {
+      const currentDate = '[' + new Date().toLocaleString() + '] ';
+      const logType = event instanceof HttpErrorResponse ? 'ERROR' : 'INFO';
+      this.notificationService.debugLogging(
+        currentDate +
+          logType +
+          ' ' +
+          'Event URL:' +
+          event.url +
+          ' \n status code: ' +
+          event.status +
+          ' \n status text: ' +
+          event.statusText
+      );
+    }
+  }
+ */
 }

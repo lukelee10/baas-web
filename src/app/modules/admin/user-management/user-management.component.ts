@@ -1,13 +1,17 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {first} from 'rxjs/operators';
-
-import { MatDialog } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { Router } from '@angular/router';
+
+import { AuthenticationService } from './../../../core/services/authentication.service';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { LoaderService } from './../../../shared/services/loader.service';
+import { NotificationService } from './../../../shared/services/notification.service';
+
+import { AppGlobalConstants } from './../../../core/app-global-constants';
 
 import { BaaSUser } from './../../../shared/models/user';
 
@@ -32,8 +36,11 @@ export class UserManagementComponent implements OnInit {
   usersViewModel: BaaSUser[] = [];
 
   constructor(
+    private router: Router,
     private awsLambdaService: AwsLambdaService,
     private loaderService: LoaderService,
+    private authenticationService: AuthenticationService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -53,9 +60,17 @@ export class UserManagementComponent implements OnInit {
         this.sort.start = 'asc';
         this.dataSource.sort = this.sort;
         this.loaderService.Hide();
+        this.notificationService.notify('Successful !!!');
       },
       (err) => {
         this.loaderService.Hide();
+        if (err === AppGlobalConstants.TimeOutErrorCode.toString()) {
+          this.notificationService.warning('Session Timeout', 'You need to login back to continue your session');
+          this.authenticationService.Logout();
+          this.router.navigate(['/login']);
+        } else {
+          this.notificationService.error('BaaS - Get Users Failed', err);
+        }
       }
     );
   }

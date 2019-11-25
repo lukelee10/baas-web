@@ -1,6 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { MatSnackBar, MatSnackBarRef } from '@angular/material';
+import { MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material';
 import { Subscription } from 'rxjs';
+
+import { environment } from './../../../environments/environment';
+
+import { MessageDialogComponent } from '../../shared/components/message-dialog/message-dialog.component';
 
 /**
  * Provides an abstract wrapper around showing a MatSnackbar
@@ -17,19 +21,66 @@ import { Subscription } from 'rxjs';
 })
 
 export class NotificationService implements OnDestroy {
-  durationInSeconds = 8;
+  private logLevel: boolean;
+  private durationInSeconds = 5;
 
   // Configuration api subscription
   private configState: Subscription;
 
   constructor(
-    private matSnackBar: MatSnackBar) { }
+    private dialog: MatDialog,
+    private matSnackBar: MatSnackBar
+  ) {
+    this.logLevel = environment.production;
+  }
+
+/**
+ * This is the debugLogging method.
+ * Use this method when the console logging should only happen in non-production environment.
+ * @param message This is the message parameter to be logged to console
+ * @returns returns void
+ */
+  debugLogging(message?: any): void {
+    if (!this.logLevel) {
+      console.log(message);
+    }
+  }
+
+  successful(title?: any, message?: any): void {
+    this.dialog.open(MessageDialogComponent, {
+      data: {
+        title,
+        message,
+        success: true
+      }
+    });
+  }
+
+  warning(title?: any, message?: any): void {
+    this.dialog.open(MessageDialogComponent, {
+      data: {
+        title,
+        message,
+        warn: true
+      }
+    });
+   }
+
+  error(title?: any, message?: any): void {
+    this.dialog.open(MessageDialogComponent, {
+      data: {
+        title,
+        message,
+        error: true
+      }
+    });
+  }
 
  /**
   * Display a MatSnackbar notification and return the reference.
   * Will set the duration to the global configuration if present.
   */
-  show(message: string, buttonLabel: string = 'OK'): MatSnackBarRef<any> {
+  notify(message: string, buttonLabel: string = 'OK'): MatSnackBarRef<any> {
     if (this.durationInSeconds > 0) {
       return this.matSnackBar.open(message, buttonLabel, {
         duration: this.durationInSeconds * 1000,
