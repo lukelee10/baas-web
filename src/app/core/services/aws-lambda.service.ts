@@ -55,15 +55,7 @@ export class AwsLambdaService {
   }
 
   confirmPassword(newCredential: any) {
-    this.http.post(`${this.apiBase}/forgotpassword`, newCredential)
-      .subscribe(
-        data => {
-          console.log("POST Request is successful ", data);
-        },
-        error => {
-          console.log("Error", error);
-        }
-      )
+    return this.http.post(`${this.apiBase}/forgotpassword`, newCredential);
   }
 
   private handleError(error: any) {
