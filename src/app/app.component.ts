@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
       this.idleState = 'Timed out!';
       this.timedOut = true;
       this.notificationService.debugLogging(this.idleState);
-      this.notificationService.warning('BaaS Alert', 'Your session has timed out.');
+      this.notificationService.warning('Your session has timed out.', 'BaaS Alert');
       this.authenticationService.Logout();
       this.router.navigate(['/login']);
     });

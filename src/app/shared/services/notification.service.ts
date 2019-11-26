@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 import { environment } from './../../../environments/environment';
 
@@ -21,6 +21,7 @@ import { MessageDialogComponent } from '../../shared/components/message-dialog/m
 })
 
 export class NotificationService implements OnDestroy {
+  private popUpTitle: string;
   private logLevel: boolean;
   private durationInSeconds = 5;
 
@@ -32,6 +33,10 @@ export class NotificationService implements OnDestroy {
     private matSnackBar: MatSnackBar
   ) {
     this.logLevel = environment.production;
+  }
+
+  setPopUpTitle(popUpTitle: string) {
+    this.popUpTitle = popUpTitle;
   }
 
 /**
@@ -46,30 +51,30 @@ export class NotificationService implements OnDestroy {
     }
   }
 
-  successful(title?: any, message?: any): void {
+  successful(message: string, popUpTitle?: string): void {
     this.dialog.open(MessageDialogComponent, {
       data: {
-        title,
+        title: popUpTitle === null ? this.popUpTitle : popUpTitle,
         message,
         success: true
       }
     });
   }
 
-  warning(title?: any, message?: any): void {
+  warning(message: string, popUpTitle?: string): void {
     this.dialog.open(MessageDialogComponent, {
       data: {
-        title,
+        title: popUpTitle === null ? this.popUpTitle : popUpTitle,
         message,
         warn: true
       }
     });
-   }
+  }
 
-  error(title?: any, message?: any): void {
+  error(message: string, popUpTitle?: string): void {
     this.dialog.open(MessageDialogComponent, {
       data: {
-        title,
+        title: popUpTitle === null ? this.popUpTitle : popUpTitle,
         message,
         error: true
       }
