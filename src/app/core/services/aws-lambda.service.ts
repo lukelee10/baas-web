@@ -37,8 +37,8 @@ export class AwsLambdaService {
       .pipe(map((res: any) => res), catchError(this.handleError));
   }
 
-  resetPassword(userid: string): void {
-    this.http.post(`${this.apiBase}/forgotpassword`, { userid })
+  resetPassword(userid: string) {
+    return this.http.post(`${this.apiBase}/forgotpassword`, { userid });
   }
 
   confirmPassword(newCredential: any) {

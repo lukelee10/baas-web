@@ -22,7 +22,11 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   submit() {
-    this.awsLambdaService.resetPassword(this.email.value);
+    this.awsLambdaService.resetPassword(this.email.value)
+      .subscribe( data => {
+        console.log('POST Request is successful', data);
+      }, error => {
+        console.error('Error', error);
+      });
   }
-
 }
