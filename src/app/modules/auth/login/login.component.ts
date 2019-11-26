@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
       // error
       // As per the wireframe, we display all the time 'Unknown User and Password Combination',
       // which is not a good way implementation, but sometimes ...
-      this.errorMessage = 'Unknown User and Password Combination';
+      this.errorMessage = 'Invalid username or password';
     } else { // success
       this.setAuthenticationVals(result);
       const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'.toString()];

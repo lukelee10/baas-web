@@ -3,6 +3,7 @@
  * `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
  * The list of file replacements can be found in `angular.json`.
  */
+import { awsConfig } from './awsConfig';
 
 export const environment = {
   production: false,
@@ -15,11 +16,7 @@ export const environment = {
  *
  * For Cognito
  */
-  cognito: {
-    userPoolId: 'us-east-1_KuiYhfEeY',
-    appClientId: 'f77re4a6h6is6o145rtumb2d6',
-    awsRegion: 'us-east-1'
-  },
+  cognito: awsConfig.cognito,
 
   /**
    * BaasDevVer1UserPool Configurations
@@ -29,22 +26,8 @@ export const environment = {
    *
    * For API Gateway
    */
-  apiGateway: {
-    url: 'https://flqp44o8z7.execute-api.us-east-1.amazonaws.com/Luke',
-    awsRegion: 'us-east-1'
-  },
-
-  /**
-   * EBS API Gateway
-   */
-  ebsApiGateway: {
-    url: 'https://ssl.biou.spartansdo.com/ebsMockWeb/tide/_search',
-    awsRegion: 'us-east-1'
-  }
+  apiGateway: awsConfig.apiGateway
 };
-
-
-
 
 /*
  * For easier debugging in development mode, you can import the following file

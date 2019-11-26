@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AdminComponent } from './admin.component';
+import { CreateUserComponent } from './create-user/create-user.component';
 
 const routes: Routes = [
+  {
+    path: 'newUser',
+    component: CreateUserComponent,
+  },
   {
     path: '',
     component: AdminComponent,

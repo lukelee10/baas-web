@@ -7,7 +7,8 @@ import { MaterialModule } from '../shared/material.module';
 
 import { throwIfAlreadyLoaded } from './guards/module-import.guard';
 
-import { HttpTokenInterceptor } from './interceptors/http.token.interceptor';
+import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { HttpTokenInterceptor } from './interceptors/http-token.interceptor';
 
 import { FooterComponent } from './footer/footer.component';
 import { SideNavigationComponent } from './sidenavigation/sidenavigation.component';
@@ -30,7 +31,8 @@ import { TopPageNavigationComponent } from './toppagenavigation/toppagenavigatio
     FooterComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
   ]
 })
 

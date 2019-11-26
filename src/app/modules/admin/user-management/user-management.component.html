@@ -12,11 +12,12 @@
       <mat-icon>clear</mat-icon>
       Clear Filter
     </button>
-    <button color="primary" mat-button matTooltip="Create User" aria-hidden="false" aria-label="Create User">
+    <button color="primary" mat-button matTooltip="Create User"  routerLink="newUser" aria-hidden="false" aria-label="Create User">
       <mat-icon>person_add</mat-icon>
       Create User
     </button>
-    <button color="warn" mat-button matTooltip="Disable selected users" aria-hidden="false" aria-label="Disable selected users">
+    <button color="warn" mat-button matTooltip="Disable selected users" aria-hidden="false"
+      aria-label="Disable selected users">
       <mat-icon>delete_sweep</mat-icon>
       Disable User(s)
     </button>
@@ -42,11 +43,11 @@
         </mat-checkbox>
       </mat-cell>
     </ng-container>
-      
+
     <!-- User ID Column -->
     <ng-container matColumnDef="UserId">
       <mat-header-cell *matHeaderCellDef mat-sort-header>User ID</mat-header-cell>
-      <mat-cell *matCellDef="let row" matTooltip="{{row.UserId}}"> {{row.UserId}} </mat-cell> 
+      <mat-cell *matCellDef="let row" matTooltip="{{row.UserId}}"> {{row.UserId}} </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
@@ -54,7 +55,7 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let row" matTooltip="{{row.Firstname}}"> {{row.Fullname}} </mat-cell>
     </ng-container>
-      
+
     <!-- Org/Group Column -->
     <ng-container matColumnDef="Group">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Org/Group</mat-header-cell>
@@ -66,7 +67,7 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.Role}} </mat-cell>
     </ng-container>
-  
+
     <!-- Status Column -->
     <ng-container matColumnDef="Disabled">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Disabled</mat-header-cell>

@@ -4,7 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { environment } from './../../../environments/environment';
-import { NotificationService } from './../../shared/services/notification.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,6 @@ export class AwsLambdaService {
 
   constructor(
     private http: HttpClient,
-    private notificationService: NotificationService
   ) {
     this.apiBase = environment.apiGateway.url;
   }
@@ -29,10 +28,6 @@ export class AwsLambdaService {
     .subscribe(
       response => {
         const result = JSON.stringify(response);
-      },
-      error => {
-        const message = JSON.stringify(error);
-        this.notificationService.show('Audit ' +  action  + ' Failed');
       }
     );
   }
@@ -44,14 +39,6 @@ export class AwsLambdaService {
 
   resetPassword(userid: string): void {
     this.http.post(`${this.apiBase}/forgotpassword`, { userid })
-      .subscribe(
-        data => {
-          console.log("POST Request is successful ", data);
-        },
-        error => {
-          console.log("Error", error);
-        }
-      )
   }
 
   confirmPassword(newCredential: any) {

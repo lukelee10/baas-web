@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import {first} from 'rxjs/operators';
-
+import { first } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +7,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { LoaderService } from './../../../shared/services/loader.service';
+import { NotificationService } from './../../../shared/services/notification.service';
 
 import { BaaSUser } from './../../../shared/models/user';
 
@@ -33,7 +33,8 @@ export class UserManagementComponent implements OnInit {
 
   constructor(
     private awsLambdaService: AwsLambdaService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -42,6 +43,7 @@ export class UserManagementComponent implements OnInit {
 
   getUsers(): void {
     this.loaderService.Show('Loading Users...');
+    this.notificationService.setPopUpTitle('BaaS - Get Users');
     this.awsLambdaService.getUsers()
     .pipe(first())
     .subscribe(
@@ -53,8 +55,9 @@ export class UserManagementComponent implements OnInit {
         this.sort.start = 'asc';
         this.dataSource.sort = this.sort;
         this.loaderService.Hide();
+        this.notificationService.notify('Successful !!!');
       },
-      (err) => {
+      error => {
         this.loaderService.Hide();
       }
     );
