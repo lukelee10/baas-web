@@ -26,7 +26,7 @@ export class ForgotPasswordComponent implements OnInit {
       .subscribe( data => {
         console.log('POST Request is successful', data);
       }, error => {
-        this.errorMessage = 'Having trouble making the reset password request, please try later.'
+        this.errorMessage = 'Having trouble making the reset password request, please try later.';
         console.error('Error', error);
       });
   }
