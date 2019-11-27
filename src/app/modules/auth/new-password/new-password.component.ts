@@ -33,6 +33,7 @@ export class NewPasswordComponent implements OnInit {
   password2: FormControl;
   output = {};
   errMessage: string;
+  hide = true; // #password
   compare = (c: FormControl) => {
     return c.value === this.password.value ? null : { compare: true };
   }
