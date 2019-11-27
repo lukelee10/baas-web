@@ -1,7 +1,6 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { environment } from './../../../environments/environment';
 
@@ -33,8 +32,7 @@ export class AwsLambdaService {
   }
 
   getUsers(): Observable<any> {
-    return this.http.get(`${this.apiBase}/users`)
-      .pipe(map((res: any) => res), catchError(this.handleError));
+    return this.http.get<any>(`${this.apiBase}/users`);
   }
 
   resetPassword(userid: string) {
@@ -43,23 +41,5 @@ export class AwsLambdaService {
 
   confirmPassword(newCredential: any) {
     return this.http.post(`${this.apiBase}/forgotpassword`, newCredential);
-  }
-
-  private handleError(error: any) {
-    if (error instanceof HttpErrorResponse) {
-      let errorMessage = '';
-      try {
-        errorMessage = error.message;
-      } catch (err) {
-        errorMessage = error.statusText;
-      }
-      return throwError(errorMessage);
-    } else {
-      if (error.status) {
-        return throwError(error.status);
-      }
-    }
-
-    return of(error || 'Epic Fail');
   }
 }
