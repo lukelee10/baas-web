@@ -2,9 +2,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
-import { environment } from './../../../environments/environment';
-
 import { MessageDialogComponent } from '../../shared/components/message-dialog/message-dialog.component';
+import { environment } from './../../../environments/environment';
 
 /**
  * Provides an abstract wrapper around showing a MatSnackbar
@@ -45,9 +44,9 @@ export class NotificationService implements OnDestroy {
  * @param message This is the message parameter to be logged to console
  * @returns returns void
  */
-  debugLogging(message?: any): void {
+  debugLogging(message?: any, ...optionalParams: any[]): void {
     if (!this.logLevel) {
-      console.log(message);
+      console.log(message, ...optionalParams);
     }
   }
 

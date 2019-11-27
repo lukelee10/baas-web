@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppGlobalConstants } from 'src/app/core/app-global-constants';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
+
+import { NotificationService } from './../../../shared/services/notification.service';
 
 // At least 3 special characters: `~!@#$%^&*()_+-={}|[]\:";'<>?,./
 const validateSpecialChar = (c: FormControl) => {
@@ -43,15 +46,16 @@ export class NewPasswordComponent implements OnInit {
   constructor(
     private awsLambdaService: AwsLambdaService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     // should be expecting token from path.
     this.password2 = new FormControl('', [Validators.required, this.compare]);
     this.route.queryParams.subscribe(params => {
-        console.log(params); // {order: "popular"}
-        this.output = params;
-      });
+      this.notificationService.debugLogging(params); // {order: "popular"}
+      this.output = params;
+    });
   }
 
   submit() {
@@ -61,17 +65,17 @@ export class NewPasswordComponent implements OnInit {
     this.awsLambdaService.confirmPassword(newCredential)
       .subscribe(
         data => {
-          console.log('POST Request is successful ', data);
+          this.notificationService.debugLogging('POST Request is successful ', data);
           this.router.navigate(['/login']);
         },
         error => {
-          if (error.error.statusCode === 422) {
+          if (error.error.statusCode === AppGlobalConstants.ApplicationError ) {
             this.errMessage =
             'password does not meet criteria, <br>user doe not exist, ' +
             '<br>link is invalid, <br>link is expired, does not exist, ' +
             '<br>user account disabled.';
           }
-          console.log('Error', error);
+          this.notificationService.debugLogging('Error', error);
         }
       );
   }

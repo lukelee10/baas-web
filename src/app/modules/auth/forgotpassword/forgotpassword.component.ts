@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 
+import { NotificationService } from './../../../shared/services/notification.service';
+
 @Component({
   selector: 'app-forgotpassword',
   templateUrl: './forgotpassword.component.html',
@@ -12,6 +14,7 @@ export class ForgotPasswordComponent implements OnInit {
   errorMessage: string;
   constructor(
     private awsLambdaService: AwsLambdaService,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit() {
@@ -24,10 +27,10 @@ export class ForgotPasswordComponent implements OnInit {
   submit() {
     this.awsLambdaService.resetPassword(this.email.value)
       .subscribe( data => {
-        console.log('POST Request is successful', data);
+        this.notificationService.debugLogging('POST Request is successful', data);
       }, error => {
         this.errorMessage = 'Having trouble making the reset password request, please try later.';
-        console.error('Error', error);
+        this.notificationService.debugLogging('Error', error);
       });
   }
 }
