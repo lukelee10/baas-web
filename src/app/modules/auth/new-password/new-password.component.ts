@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 
 //At least 3 special characters: `~!@#$%^&*()_+-={}|[]\:";'<>?,./
@@ -37,7 +37,10 @@ export class NewPasswordComponent implements OnInit {
     return c.value === this.password.value ? null : { compare: true };
   }
 
-  constructor(private awsLambdaService: AwsLambdaService, private route: ActivatedRoute) { }
+  constructor(
+    private awsLambdaService: AwsLambdaService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     //should be expecting token from path.
@@ -48,11 +51,6 @@ export class NewPasswordComponent implements OnInit {
       });
   }
 
-  getErrorMessage() {
-    return this.password.hasError('pattern') ? 'Not a valid password' :
-      this.password.hasError('validateSpecialChar') ? 'special char failed' : '';
-  }
-
   submit() {
     this.errMessage = null;
     const newCredential = { ...this.output, password: '' };
@@ -61,6 +59,7 @@ export class NewPasswordComponent implements OnInit {
       .subscribe(
         data => {
           console.log("POST Request is successful ", data);
+          this.router.navigate(['/login']);
         },
         error => {
           if (error.error.statusCode === 422) this.errMessage =
