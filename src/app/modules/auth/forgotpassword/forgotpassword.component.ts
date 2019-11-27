@@ -9,7 +9,7 @@ import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 })
 export class ForgotPasswordComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
-
+  errorMessage: string;
   constructor(
     private awsLambdaService: AwsLambdaService,
   ) { }
@@ -26,6 +26,7 @@ export class ForgotPasswordComponent implements OnInit {
       .subscribe( data => {
         console.log('POST Request is successful', data);
       }, error => {
+        this.errorMessage = 'Having trouble making the reset password request, please try later.'
         console.error('Error', error);
       });
   }
