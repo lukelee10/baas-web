@@ -46,12 +46,12 @@ pipeline {
                 junit 'coverage/test-report.xml'
 		        cobertura autoUpdateHealth: false, autoUpdateStability: false, 
                     coberturaReportFile: '**/cobertura-coverage.xml', 
-                    conditionalCoverageTargets: '80, 0, 80', 
+                    conditionalCoverageTargets: '3, 0, 3', 
                     failUnhealthy: false, 
-                    fileCoverageTargets: '90, 0, 90', 
-                    lineCoverageTargets: '90, 0, 90', 
+                    fileCoverageTargets: '50, 0, 50', 
+                    lineCoverageTargets: '21, 0, 21', 
                     maxNumberOfBuilds: 0, 
-                    methodCoverageTargets: '90, 0, 90', 
+                    methodCoverageTargets: '11, 0, 11', 
                     onlyStable: false
               }
             }
