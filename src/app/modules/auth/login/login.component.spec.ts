@@ -1,17 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material';
-import { ReactiveFormsModule } from '@angular/forms';
+import { async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { CoreModule } from './../../../core/core.module';
 import { LoginComponent } from './login.component';
+import { SharedModule } from './../../../shared/shared.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -23,22 +18,16 @@ describe('LoginComponent', () => {
       imports: [
         HttpClientTestingModule,
         RouterTestingModule,
-        BrowserAnimationsModule,
-        MatChipsModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
+        SharedModule,
+        FormsModule,
         ReactiveFormsModule,
         CoreModule,
       ]
     }).compileComponents();
-  }));
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
