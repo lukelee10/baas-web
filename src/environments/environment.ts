@@ -8,14 +8,14 @@ import { awsConfig } from './awsConfig';
 export const environment = {
   production: false,
 
-/**
- * BaasDevVer1UserPool Configurations
- * This is for Developers
- * These are the default settings point to BaasDevVer1UserPool stack,
- * and these values can be changed if a developer wants to use their own stack
- *
- * For Cognito
- */
+  /**
+   * BaasDevVer1UserPool Configurations
+   * This is for Developers
+   * These are the default settings point to BaasDevVer1UserPool stack,
+   * and these values can be changed if a developer wants to use their own stack
+   *
+   * For Cognito
+   */
   cognito: awsConfig.cognito,
 
   /**
