@@ -3,10 +3,11 @@ import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 
-//At least 3 special characters: `~!@#$%^&*()_+-={}|[]\:";'<>?,./
+// At least 3 special characters: `~!@#$%^&*()_+-={}|[]\:";'<>?,./
 const validateSpecialChar = (c: FormControl) => {
   const ascii = c.value.split('').map(ch => ch.charCodeAt());
-  const specialRange = [33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 58, 59, 60, 61, 62, 63, 64, 91, 92, 93, 94, 95, 96, 123, 124, 125, 126]
+  const specialRange = [33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
+     47, 58, 59, 60, 61, 62, 63, 64, 91, 92, 93, 94, 95, 96, 123, 124, 125, 126];
   const bag = ascii.filter(ch => specialRange.includes(ch));
   return bag.length >= 3 ? null : { validateSpecialChar: true };
 };
@@ -15,7 +16,8 @@ const validateAlphaNumeric = (c: FormControl) => {
   const digitBag = ascii.filter(ch => (ch >= 48 && ch <= 57));
   const lowerCaseBag = ascii.filter(ch => (ch >= 97 && ch <= 122));
   const upperCaseBag = ascii.filter(ch => (ch >= 65 && ch <= 90));
-  return digitBag.length >= 3 && lowerCaseBag.length >= 3 && upperCaseBag.length >= 3 ? null : { validateAlphaNumeric: true }
+  return digitBag.length >= 3 && lowerCaseBag.length >= 3
+    && upperCaseBag.length >= 3 ? null : { validateAlphaNumeric: true };
 };
 
 @Component({
@@ -44,7 +46,7 @@ export class NewPasswordComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-    //should be expecting token from path.
+    // should be expecting token from path.
     this.password2 = new FormControl('', [Validators.required, this.compare]);
     this.route.queryParams.subscribe(params => {
         console.log(params); // {order: "popular"}
@@ -59,17 +61,19 @@ export class NewPasswordComponent implements OnInit {
     this.awsLambdaService.confirmPassword(newCredential)
       .subscribe(
         data => {
-          console.log("POST Request is successful ", data);
+          console.log('POST Request is successful ', data);
           this.router.navigate(['/login']);
         },
         error => {
-          if (error.error.statusCode === 422) this.errMessage =
-            "password does not meet criteria, <br>user doe not exist, " +
-            "<br>link is invalid, <br>link is expired, does not exist, " +
-            "<br>user account disabled.";
-          console.log("Error", error);
+          if (error.error.statusCode === 422) {
+            this.errMessage =
+            'password does not meet criteria, <br>user doe not exist, ' +
+            '<br>link is invalid, <br>link is expired, does not exist, ' +
+            '<br>user account disabled.';
+          }
+          console.log('Error', error);
         }
-      )
+      );
   }
 
 }
