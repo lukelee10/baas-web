@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppGlobalConstants } from 'src/app/core/app-global-constants';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 
+import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
 
 // At least 3 special characters: `~!@#$%^&*()_+-={}|[]\:";'<>?,./
@@ -47,7 +48,8 @@ export class NewPasswordComponent implements OnInit {
     private awsLambdaService: AwsLambdaService,
     private router: Router,
     private route: ActivatedRoute,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService,
+    private loaderService: LoaderService) { }
 
   ngOnInit() {
     // should be expecting token from path.
@@ -59,16 +61,22 @@ export class NewPasswordComponent implements OnInit {
   }
 
   submit() {
+    this.loaderService.Show('Sending Reset password request...');
+    this.notificationService.setPopUpTitle('BaaS - Setting New Password');
+
     this.errMessage = null;
     const newCredential = { ...this.output, password: '' };
     newCredential.password = this.password.value;
     this.awsLambdaService.confirmPassword(newCredential)
       .subscribe(
         data => {
+          this.loaderService.Hide();
+          this.notificationService.notify('Password setting successful !!!');
           this.notificationService.debugLogging('POST Request is successful ', data);
           this.router.navigate(['/login']);
         },
         error => {
+          this.loaderService.Hide();
           if (error.error.statusCode === AppGlobalConstants.ApplicationError ) {
             this.errMessage =
             'password does not meet criteria, <br>user doe not exist, ' +
@@ -79,5 +87,4 @@ export class NewPasswordComponent implements OnInit {
         }
       );
   }
-
 }

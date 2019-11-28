@@ -53,7 +53,7 @@ export class NotificationService implements OnDestroy {
   successful(message: string, popUpTitle?: string): void {
     this.dialog.open(MessageDialogComponent, {
       data: {
-        title: popUpTitle === null ? this.popUpTitle : popUpTitle,
+        title: !popUpTitle ? this.popUpTitle : popUpTitle,
         message,
         success: true
       }
@@ -63,7 +63,7 @@ export class NotificationService implements OnDestroy {
   warning(message: string, popUpTitle?: string): void {
     this.dialog.open(MessageDialogComponent, {
       data: {
-        title: popUpTitle === null ? this.popUpTitle : popUpTitle,
+        title: !popUpTitle ? this.popUpTitle : popUpTitle,
         message,
         warn: true
       }
@@ -73,7 +73,7 @@ export class NotificationService implements OnDestroy {
   error(message: string, popUpTitle?: string): void {
     this.dialog.open(MessageDialogComponent, {
       data: {
-        title: popUpTitle === null ? this.popUpTitle : popUpTitle,
+        title: !popUpTitle ? this.popUpTitle : popUpTitle,
         message,
         error: true
       }

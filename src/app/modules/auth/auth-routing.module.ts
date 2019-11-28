@@ -31,7 +31,7 @@ const authRoutes: Routes = [
         component: ForgotPasswordComponent
       },
       {
-        path: 'new-password',
+        path: 'newpassword',
         component: NewPasswordComponent
       },
       {

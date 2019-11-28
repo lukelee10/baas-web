@@ -40,7 +40,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               this.authenticationService.Logout();
               this.router.navigate(['/login']);
             } else {
-              errorMessage = `Error Code: ${error.status}  Message: ${error.message}`;
+              errorMessage = !error.error.errorDetail ? error.message : error.error.errorDetail;
+              errorMessage = `Error: ${errorMessage}`;
               this.notificationService.warning(errorMessage);
             }
           }
