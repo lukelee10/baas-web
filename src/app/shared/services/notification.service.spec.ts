@@ -6,19 +6,17 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NotificationService } from './notification.service';
 
 describe('NotificationService', () => {
-  let notificationService: NotificationService;
-
-  beforeEach(() => {
+  beforeEach(() =>  {
     TestBed.configureTestingModule({
       imports: [
         MatDialogModule,
         MatSnackBarModule
       ]
     });
+  });
 
-    it('NotificationService should be created', () => {
-      notificationService = TestBed.get(NotificationService);
-      expect(notificationService).toBeTruthy();
-    });
+  it('should be created', () => {
+    const service: NotificationService = TestBed.get(NotificationService);
+    expect(service).toBeTruthy();
   });
 });

@@ -40,19 +40,16 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('LoginComponent should create', () => {
-    console.log('LoginComponent Creation:');
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('LoginComponent - Email Validation - Checking Correct Email Validation', () => {
-    console.log('LoginComponent Email:');
     component.email.setValue('joe@gmail.com');
     expect(component.email.valid).toBeTruthy();
   });
 
   it('LoginComponent - Email Validation - Checking Incorrect Email Validation', () => {
-    console.log('LoginComponent Email:');
     component.email.setValue('joegmail');
     expect(component.email.valid).toBeFalsy();
   });

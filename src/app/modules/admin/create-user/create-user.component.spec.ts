@@ -30,7 +30,7 @@ describe('CreateUserComponent', () => {
     fixture.detectChanges();
   });
 
-  it('CreateUserComponent should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
