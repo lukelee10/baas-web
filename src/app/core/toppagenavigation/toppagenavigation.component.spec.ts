@@ -1,4 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { TopPageNavigationComponent } from './toppagenavigation.component';
 
 describe('ToppagenavigationComponent', () => {
@@ -7,7 +15,17 @@ describe('ToppagenavigationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TopPageNavigationComponent ]
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        MatIconModule,
+        MatMenuModule,
+        MatToolbarModule,
+        MatTooltipModule
+      ],
+      declarations: [
+        TopPageNavigationComponent
+      ]
     })
     .compileComponents();
   }));

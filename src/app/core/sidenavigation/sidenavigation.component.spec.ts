@@ -1,4 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { SideNavigationComponent } from './sidenavigation.component';
 
 describe('SidenavigationComponent', () => {
@@ -7,7 +14,16 @@ describe('SidenavigationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SideNavigationComponent ]
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        MatIconModule,
+        MatListModule,
+        MatTooltipModule
+      ],
+      declarations: [
+        SideNavigationComponent
+      ]
     })
     .compileComponents();
   }));
