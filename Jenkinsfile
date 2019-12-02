@@ -1,7 +1,7 @@
 pipeline {
     // CHANGE the label for your team!
-    //agent { node { label 'BAASU' } }
-    agent { node { label 'DATAU' } }
+    agent { node { label 'BAASU' } }
+    //agent { node { label 'DATAU' } }
 
     environment {
         PATH = "$WORKSPACE/.npm-packages:$WORKSPACE/node-v10.16.3-linux-x64/bin:$WORKSPACE/node_modules/@angular/cli/bin:$PATH"
