@@ -1,51 +1,66 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import 'hammerjs'
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { RouterTestingModule } from '@angular/router/testing'
 
-import { MatChipsModule } from '@angular/material/chips';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-
-import { NewPasswordComponent } from './new-password.component';
-import { FooterComponent } from './../../../core/footer/footer.component';
+import { CoreModule } from './../../../core/core.module'
+import { SharedModule } from './../../../shared/shared.module'
+import { NewPasswordComponent } from './new-password.component'
 
 describe('NewPasswordComponent', () => {
-  let component: NewPasswordComponent;
-  let fixture: ComponentFixture<NewPasswordComponent>;
+  let component: NewPasswordComponent
+  let fixture: ComponentFixture<NewPasswordComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      declarations: [NewPasswordComponent],
       imports: [
-        BrowserAnimationsModule,
-        HttpClientTestingModule,
-        RouterTestingModule,
+        SharedModule,
+        FormsModule,
         ReactiveFormsModule,
-        MatChipsModule,
-        MatDialogModule,
-        MatIconModule,
-        MatInputModule,
-        MatSnackBarModule
+        CoreModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        RouterTestingModule.withRoutes([]),
       ],
-      declarations: [
-        NewPasswordComponent,
-        FooterComponent
-      ]
-    })
-    .compileComponents();
-  }));
+    }).compileComponents()
+  }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewPasswordComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(NewPasswordComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+    console.log('------------------------------')
+  })
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  it('NewPasswordComponent - Password#1 Validation Positive Test ', () => {
+    console.log('NewPasswordComponent-- Password Validation Positive Test :')
+    component.password.setValue('L@kkw0rd893!')
+    expect(component.password.valid).toBeTruthy()
+  })
+
+  it('NewPasswordComponent - Password#1 Validation Negative Test ', () => {
+    console.log('NewPasswordComponent-- Password Validation Negative Test :')
+    component.password.setValue('BAD_PASSWORD')
+    expect(component.password.valid).toBeFalsy()
+  })
+
+  it('NewPasswordComponent - Password#2 Validation Positive Test', () => {
+    console.log('NewPasswordComponent-- Password#2 Validation Positive Test :')
+    // Postive Test: password2 should be same as password
+    component.password.setValue('BAD_PASSWORD')
+    component.password2.setValue('BAD_PASSWORD')
+    expect(component.password2.valid).toBeTruthy()
+  })
+
+  it('NewPasswordComponent - Password#2 Validation  Nagative Test', () => {
+    console.log('NewPasswordComponent-- Password#2 Validation Nagative Test :')
+    // Negative Test: password2 should be different from password
+    component.password.setValue('ONE_PASSWORD')
+    component.password2.setValue('DIFF_PASSWORD')
+    expect(component.password2.valid).toBeFalsy()
+  })
+})
