@@ -13,6 +13,7 @@ import { NotificationService } from './../../../shared/services/notification.ser
 
 export class ForgotPasswordComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
+  message: string;
   errorMessage: string;
   constructor(
     private awsLambdaService: AwsLambdaService,
