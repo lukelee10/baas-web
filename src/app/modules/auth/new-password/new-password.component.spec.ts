@@ -6,8 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterTestingModule } from '@angular/router/testing'
 
-import { CoreModule } from './../../../core/core.module'
-import { SharedModule } from './../../../shared/shared.module'
+import { CoreModule } from '../../../core/core.module'
+import { SharedModule } from '../../../shared/shared.module'
 import { NewPasswordComponent } from './new-password.component'
 
 describe('NewPasswordComponent', () => {
