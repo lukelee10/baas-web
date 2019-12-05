@@ -123,10 +123,7 @@ export class NewPasswordComponent implements OnInit {
       error => {
         this.loaderService.Hide()
         if (error.error.statusCode === AppGlobalConstants.ApplicationError) {
-          this.errMessage =
-            'password does not meet criteria, <br>user doe not exist, ' +
-            '<br>link is invalid, <br>link is expired, does not exist, ' +
-            '<br>user account disabled.'
+          this.errMessage = 'New password is not accepted'
         }
         this.notificationService.debugLogging('Error', error)
       }
