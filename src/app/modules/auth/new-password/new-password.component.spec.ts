@@ -79,14 +79,14 @@ describe('NewPasswordComponent', () => {
 
   it('NewPasswordComponent - Password#2 Validation Positive Test', () => {
     console.log('NewPasswordComponent-- Password#2 Validation Positive Test :')
-    // Postive Test: password2 should be same as password
+    // Positive Test: password2 should be same as password
     component.password.setValue('BAD_PASSWORD')
     component.password2.setValue('BAD_PASSWORD')
     expect(component.password2.valid).toBeTruthy()
   })
 
-  it('NewPasswordComponent - Password#2 Validation  Nagative Test', () => {
-    console.log('NewPasswordComponent-- Password#2 Validation Nagative Test :')
+  it('NewPasswordComponent - Password#2 Validation  Negative Test', () => {
+    console.log('NewPasswordComponent-- Password#2 Validation Negative Test :')
     // Negative Test: password2 should be different from password
     component.password.setValue('ONE_PASSWORD')
     component.password2.setValue('DIFF_PASSWORD')
