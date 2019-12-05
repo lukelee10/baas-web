@@ -18,10 +18,6 @@ getTestBed().initTestEnvironment(
 
 // current only login.component.spec.ts is spec complete
 // const context = require.context('./', true, /login\.component\.spec\.ts$/);
-const context = require.context(
-  './',
-  true,
-  /login\.component\.spec\.ts$|new-password\.component\.spec\.ts$/
-)
+const context = require.context('./', true, /\.component\.spec\.ts$/)
 // And load the modules.
 context.keys().map(context)
