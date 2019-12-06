@@ -15,9 +15,6 @@ getTestBed().initTestEnvironment(
   platformBrowserDynamicTesting()
 )
 // Then we find all the tests.
-
-// current only login.component.spec.ts is spec complete
-// const context = require.context('./', true, /login\.component\.spec\.ts$/);
-const context = require.context('./', true, /\.component\.spec\.ts$/)
+const context = require.context('./', true, /\.spec\.ts$/)
 // And load the modules.
 context.keys().map(context)
