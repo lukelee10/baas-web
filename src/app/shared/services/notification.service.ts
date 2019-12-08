@@ -1,9 +1,8 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Injectable } from '@angular/core'
+import { MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material'
 
-import { MessageDialogComponent } from '../../shared/components/message-dialog/message-dialog.component';
-import { environment } from './../../../environments/environment';
+import { MessageDialogComponent } from '../../shared/components/message-dialog/message-dialog.component'
+import { environment } from './../../../environments/environment'
 
 /**
  * Provides an abstract wrapper around showing a MatSnackbar
@@ -16,37 +15,30 @@ import { environment } from './../../../environments/environment';
  * set the _params to undefined and unsubscribe.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
+export class NotificationService {
+  private popUpTitle: string
+  private logLevel: boolean
+  private durationInSeconds = 5
 
-export class NotificationService implements OnDestroy {
-  private popUpTitle: string;
-  private logLevel: boolean;
-  private durationInSeconds = 5;
-
-  // Configuration api subscription
-  private configState: Subscription;
-
-  constructor(
-    private dialog: MatDialog,
-    private matSnackBar: MatSnackBar
-  ) {
-    this.logLevel = environment.production;
+  constructor(private dialog: MatDialog, private matSnackBar: MatSnackBar) {
+    this.logLevel = environment.production
   }
 
   setPopUpTitle(popUpTitle: string) {
-    this.popUpTitle = popUpTitle;
+    this.popUpTitle = popUpTitle
   }
 
-/**
- * This is the debugLogging method.
- * Use this method when the console logging should only happen in non-production environment.
- * @param message This is the message parameter to be logged to console
- * @returns returns void
- */
+  /**
+   * This is the debugLogging method.
+   * Use this method when the console logging should only happen in non-production environment.
+   * @param message This is the message parameter to be logged to console
+   * @returns returns void
+   */
   debugLogging(message?: any, ...optionalParams: any[]): void {
     if (!this.logLevel) {
-      console.log(message, ...optionalParams);
+      console.log(message, ...optionalParams)
     }
   }
 
@@ -55,9 +47,9 @@ export class NotificationService implements OnDestroy {
       data: {
         title: !popUpTitle ? this.popUpTitle : popUpTitle,
         message,
-        success: true
-      }
-    });
+        success: true,
+      },
+    })
   }
 
   warning(message: string, popUpTitle?: string): void {
@@ -65,9 +57,9 @@ export class NotificationService implements OnDestroy {
       data: {
         title: !popUpTitle ? this.popUpTitle : popUpTitle,
         message,
-        warn: true
-      }
-    });
+        warn: true,
+      },
+    })
   }
 
   error(message: string, popUpTitle?: string): void {
@@ -75,32 +67,22 @@ export class NotificationService implements OnDestroy {
       data: {
         title: !popUpTitle ? this.popUpTitle : popUpTitle,
         message,
-        error: true
-      }
-    });
+        error: true,
+      },
+    })
   }
 
- /**
-  * Display a MatSnackbar notification and return the reference.
-  * Will set the duration to the global configuration if present.
-  */
+  /**
+   * Display a MatSnackbar notification and return the reference.
+   * Will set the duration to the global configuration if present.
+   */
   notify(message: string, buttonLabel: string = 'OK'): MatSnackBarRef<any> {
     if (this.durationInSeconds > 0) {
       return this.matSnackBar.open(message, buttonLabel, {
         duration: this.durationInSeconds * 1000,
-      });
+      })
     } else {
-      return this.matSnackBar.open(message, buttonLabel, {
-      });
+      return this.matSnackBar.open(message, buttonLabel, {})
     }
-  }
-
-  /**
-   * Unsubscribe from the config state
-   * when the component is destroyed, and remove
-   * the in-memory parameters.
-   */
-  ngOnDestroy() {
-    this.configState.unsubscribe();
   }
 }
