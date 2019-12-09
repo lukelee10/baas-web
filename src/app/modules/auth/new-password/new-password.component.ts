@@ -76,10 +76,11 @@ export class NewPasswordComponent implements OnInit {
     validateSpecialChar,
     validateNo3Duplicate,
     validateHas2Case,
+    this.validateNoUserID,
   ])
 
   password2: FormControl
-  output = {}
+  output: any = {}
   errMessage: string
   hide = true // #password
   compare = (c: FormControl) => {
@@ -101,6 +102,12 @@ export class NewPasswordComponent implements OnInit {
       this.notificationService.debugLogging(params) // {order: "popular"}
       this.output = params
     })
+  }
+
+  validateNoUserID(c: FormControl): ValidatorFn {
+    return c.value.includes(this.output ? this.output.userid : '')
+      ? { validateNoUserID: true }
+      : null
   }
 
   submit() {
