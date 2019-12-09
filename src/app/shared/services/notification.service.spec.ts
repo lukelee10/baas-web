@@ -81,18 +81,6 @@ describe('NotificationService', () => {
     expect(matDialog.open).toHaveBeenCalled()
   })
 
-  it('MatDialog should be called with popup title', () => {
-    spyOn(matDialog, 'open').and.callThrough()
-    notificationService.error('Created User Failed', 'BaaS')
-    expect(matDialog.open).toHaveBeenCalled()
-  })
-
-  it('MatDialog 2222 should be called with popup title', () => {
-    spyOn(matDialog, 'open').and.callThrough()
-    notificationService.error('Created User Failed', 'BaaS')
-    expect(matDialog.open).toHaveBeenCalled()
-  })
-
   it('calling notify to have the code covrage', () => {
     spyOn(matSnackBar, 'open').and.callThrough()
     notificationService.notify('Created User')
