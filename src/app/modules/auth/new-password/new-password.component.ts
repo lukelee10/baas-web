@@ -104,7 +104,7 @@ export class NewPasswordComponent implements OnInit {
     })
   }
 
-  validateNoUserID(c: FormControl): ValidatorFn {
+  validateNoUserID(c: FormControl): any {
     return c.value.includes(this.output ? this.output.userid : '')
       ? { validateNoUserID: true }
       : null
