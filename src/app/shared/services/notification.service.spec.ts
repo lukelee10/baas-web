@@ -1,14 +1,14 @@
-import { TestBed } from '@angular/core/testing';
 import 'hammerjs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
+import { TestBed } from '@angular/core/testing';
 import {
+  MatDialog,
   MatDialogModule,
-  MatDialogRef,
-  MatDialog
+  MatDialogRef
 } from '@angular/material/dialog';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MessageDialogComponent } from '../../shared/components/message-dialog/message-dialog.component';
 import { NotificationService } from './notification.service';
@@ -81,7 +81,7 @@ describe('NotificationService', () => {
     expect(matDialog.open).toHaveBeenCalled();
   });
 
-  it('calling notify to have the code covrage', () => {
+  it('calling notify to have the code coverage', () => {
     spyOn(matSnackBar, 'open').and.callThrough();
     notificationService.notify('Created User');
     expect(matSnackBar.open).toHaveBeenCalled();
