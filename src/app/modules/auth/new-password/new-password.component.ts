@@ -69,23 +69,23 @@ const validateHas2Case: ValidatorFn = (c: FormControl) => {
   styleUrls: ['./new-password.component.scss']
 })
 export class NewPasswordComponent implements OnInit {
-  password = new FormControl('', [
-    Validators.required,
-    Validators.minLength(12),
-    validateAlphaNumeric,
-    validateSpecialChar,
-    validateNo3Duplicate,
-    validateHas2Case,
-    this.validateNoUserID
-  ]);
-
+  password: FormControl;
   password2: FormControl;
-  output: any = {};
+  output: any = { userid: '' };
   errMessage: string;
   hide = true; // #password
   compare = (c: FormControl) => {
-    return c.value === this.password.value ? null : { compare: true };
+    return c.value === (this.password ? this.password.value : '')
+      ? null
+      : { compare: true };
   };
+
+  validateNoUserID = (c: FormControl) =>
+    c.value
+      .toLowerCase()
+      .includes(this.output ? this.output.userid.toLowerCase() : '')
+      ? { validateNoUserID: true }
+      : null;
 
   constructor(
     private awsLambdaService: AwsLambdaService,
@@ -97,20 +97,20 @@ export class NewPasswordComponent implements OnInit {
 
   ngOnInit() {
     // should be expecting token from path.
+    this.password = new FormControl('', [
+      Validators.required,
+      Validators.minLength(12),
+      validateAlphaNumeric,
+      validateSpecialChar,
+      validateNo3Duplicate,
+      validateHas2Case,
+      this.validateNoUserID
+    ]);
     this.password2 = new FormControl('', [Validators.required, this.compare]);
     this.route.queryParams.subscribe(params => {
       this.notificationService.debugLogging(params); // {order: "popular"}
       this.output = params;
     });
-  }
-
-  validateNoUserID(c: FormControl): any {
-    if (!this) {
-      return null;
-    }
-    return c.value.includes(this.output ? this.output.userid : '')
-      ? { validateNoUserID: true }
-      : null;
   }
 
   submit() {
