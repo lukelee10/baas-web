@@ -18,7 +18,7 @@ import { NewPasswordComponent } from './new-password/new-password.component';
     ForgotPasswordComponent,
     LogOutComponent,
     EditProfileComponent,
-    NewPasswordComponent,
+    NewPasswordComponent
   ],
   imports: [
     CoreModule,
@@ -29,4 +29,4 @@ import { NewPasswordComponent } from './new-password/new-password.component';
     ReactiveFormsModule
   ]
 })
-export class AuthModule { }
+export class AuthModule {}

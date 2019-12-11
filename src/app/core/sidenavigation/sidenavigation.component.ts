@@ -20,33 +20,64 @@ export class SideNavigationComponent implements OnInit {
     private router: Router,
     private awsLambdaService: AwsLambdaService,
     private authenticationService: AuthenticationService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.populateSideNavItems();
   }
 
   private populateSideNavItems() {
-    this.sideNavItems.push({ link: '/announcements', title: 'Home', icon: 'home'});
-    this.sideNavItems.push({ link: '/requests', title: 'Submit Images', icon: 'create'});
-    this.sideNavItems.push({ link: '/responses', title: 'View Responses', icon: 'receipt'});
-    this.sideNavItems.push({ link: '/resources', title: 'Resources', icon: 'pages'});
+    this.sideNavItems.push({
+      link: '/announcements',
+      title: 'Home',
+      icon: 'home'
+    });
+    this.sideNavItems.push({
+      link: '/requests',
+      title: 'Submit Images',
+      icon: 'create'
+    });
+    this.sideNavItems.push({
+      link: '/responses',
+      title: 'View Responses',
+      icon: 'receipt'
+    });
+    this.sideNavItems.push({
+      link: '/resources',
+      title: 'Resources',
+      icon: 'pages'
+    });
 
     if (this.authenticationService.isAdmin) {
-      this.sideNavItems.push({ link: '/admin', title: 'Admin', icon: 'supervisor_account'});
+      this.sideNavItems.push({
+        link: '/admin',
+        title: 'Admin',
+        icon: 'supervisor_account'
+      });
     }
 
-    this.sideNavItems.push({ link: '/editprofile', title: 'Edit Profile', icon: 'edit'});
-    this.sideNavItems.push({ link: '/logout', title: 'Log Out', icon: 'exit_to_app'});
+    this.sideNavItems.push({
+      link: '/editprofile',
+      title: 'Edit Profile',
+      icon: 'edit'
+    });
+    this.sideNavItems.push({
+      link: '/logout',
+      title: 'Log Out',
+      icon: 'exit_to_app'
+    });
   }
 
   public onSidenavClose = (elementTitle: any) => {
     this.sidenavClose.emit();
 
     if (elementTitle === 'Log Out') {
-      this.awsLambdaService.auditLog(this.authenticationService.LoggedUser, 'LogOut');
+      this.awsLambdaService.auditLog(
+        this.authenticationService.LoggedUser,
+        'LogOut'
+      );
       this.authenticationService.Logout();
       this.router.navigate(['/logout']);
     }
-  }
+  };
 }

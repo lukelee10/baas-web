@@ -14,19 +14,18 @@ export interface ConfirmationDialogOptions {
   templateUrl: './confirmation-dialog.component.html',
   styleUrls: ['./confirmation-dialog.component.scss']
 })
-
 export class ConfirmationDialogComponent implements OnInit {
   options: ConfirmationDialogOptions;
 
   constructor(
     private dialogRef: MatDialogRef<ConfirmationDialogOptions>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmationDialogOptions,
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmationDialogOptions
   ) {
     dialogRef.disableClose = true;
   }
 
   ngOnInit() {
-    this.options = {...this.data};
+    this.options = { ...this.data };
   }
 
   /**

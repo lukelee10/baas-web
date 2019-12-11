@@ -1,21 +1,21 @@
-import { ChangeDetectorRef, Component, OnInit, Inject } from '@angular/core'
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
+import { ChangeDetectorRef, Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 /**
  * Interface to define the options for the Message dialog
  */
 export interface MessageDialogOptions {
-  title?: string
-  message?: string
+  title?: string;
+  message?: string;
 
   /** Set to true for styling the dialog with a 'success' theme */
-  success?: boolean
+  success?: boolean;
 
   /** Set to true for styling the dialog with a 'warn' theme */
-  warn?: boolean
+  warn?: boolean;
 
   /** Set to true for styling the dialog with a 'error' theme */
-  error?: boolean
+  error?: boolean;
 }
 
 /**
@@ -25,30 +25,30 @@ export interface MessageDialogOptions {
 @Component({
   selector: 'app-message-dialog',
   templateUrl: './message-dialog.component.html',
-  styleUrls: ['./message-dialog.component.scss'],
+  styleUrls: ['./message-dialog.component.scss']
 })
 export class MessageDialogComponent implements OnInit {
-  options: MessageDialogOptions
+  options: MessageDialogOptions;
 
   constructor(
     private cdRef: ChangeDetectorRef,
     private dialogRef: MatDialogRef<MessageDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MessageDialogOptions
   ) {
-    dialogRef.disableClose = true
+    dialogRef.disableClose = true;
   }
 
   ngOnInit() {
-    this.options = { ...this.data }
+    this.options = { ...this.data };
 
     if (this.options.success && !this.options.title) {
-      this.options.title = 'SUCCESS'
+      this.options.title = 'SUCCESS';
     } else if (this.options.warn && !this.options.title) {
-      this.options.title = 'WARNING'
+      this.options.title = 'WARNING';
     } else if (this.options.error && !this.options.title) {
-      this.options.title = 'ERROR'
+      this.options.title = 'ERROR';
     } else {
-      this.options.title = 'SUCCESS'
+      this.options.title = 'SUCCESS';
     }
   }
 
@@ -56,7 +56,7 @@ export class MessageDialogComponent implements OnInit {
    * Dialog close event handler
    */
   onClose() {
-    this.cdRef.detectChanges()
-    this.dialogRef.close()
+    this.cdRef.detectChanges();
+    this.dialogRef.close();
   }
 }

@@ -5,14 +5,8 @@ import { ResponsesRoutingModule } from './responses-routing.module';
 
 import { ResponsesComponent } from './responses.component';
 
-
 @NgModule({
-  declarations: [
-    ResponsesComponent
-  ],
-  imports: [
-    CommonModule,
-    ResponsesRoutingModule
-  ]
+  declarations: [ResponsesComponent],
+  imports: [CommonModule, ResponsesRoutingModule]
 })
-export class ResponsesModule { }
+export class ResponsesModule {}

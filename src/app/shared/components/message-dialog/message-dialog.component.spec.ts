@@ -1,19 +1,19 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing'
-import 'hammerjs'
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import 'hammerjs';
 import {
   MatDialogModule,
   MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material'
-import { MessageDialogComponent } from './message-dialog.component'
+  MAT_DIALOG_DATA
+} from '@angular/material';
+import { MessageDialogComponent } from './message-dialog.component';
 
 describe('MessageDialogComponent', () => {
-  let component: MessageDialogComponent
-  let fixture: ComponentFixture<MessageDialogComponent>
+  let component: MessageDialogComponent;
+  let fixture: ComponentFixture<MessageDialogComponent>;
 
   const mockDialogRef = {
-    close: jasmine.createSpy('close'),
-  }
+    close: jasmine.createSpy('close')
+  };
 
   describe('Success Message Dialog box without any options data', () => {
     beforeEach(async(() => {
@@ -22,26 +22,26 @@ describe('MessageDialogComponent', () => {
         declarations: [MessageDialogComponent],
         providers: [
           { provide: MatDialogRef, useValue: mockDialogRef },
-          { provide: MAT_DIALOG_DATA, useValue: {} },
-        ],
-      }).compileComponents()
-    }))
+          { provide: MAT_DIALOG_DATA, useValue: {} }
+        ]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(MessageDialogComponent)
-      component = fixture.componentInstance
-      fixture.detectChanges()
-    })
+      fixture = TestBed.createComponent(MessageDialogComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
 
     it('should create', () => {
-      expect(component).toBeTruthy()
-    })
+      expect(component).toBeTruthy();
+    });
 
     it('onClose should close the dialog', () => {
-      component.onClose()
-      expect(mockDialogRef.close).toHaveBeenCalled()
-    })
-  })
+      component.onClose();
+      expect(mockDialogRef.close).toHaveBeenCalled();
+    });
+  });
 
   describe('Success Message Dialog box', () => {
     beforeEach(async(() => {
@@ -53,28 +53,28 @@ describe('MessageDialogComponent', () => {
           {
             provide: MAT_DIALOG_DATA,
             useValue: {
-              success: true,
-            },
-          },
-        ],
-      }).compileComponents()
-    }))
+              success: true
+            }
+          }
+        ]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(MessageDialogComponent)
-      component = fixture.componentInstance
-      fixture.detectChanges()
-    })
+      fixture = TestBed.createComponent(MessageDialogComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
 
     it('should create', () => {
-      expect(component).toBeTruthy()
-    })
+      expect(component).toBeTruthy();
+    });
 
     it('onClose should close the dialog', () => {
-      component.onClose()
-      expect(mockDialogRef.close).toHaveBeenCalled()
-    })
-  })
+      component.onClose();
+      expect(mockDialogRef.close).toHaveBeenCalled();
+    });
+  });
 
   describe('Warning Message Dialog box', () => {
     beforeEach(async(() => {
@@ -86,28 +86,28 @@ describe('MessageDialogComponent', () => {
           {
             provide: MAT_DIALOG_DATA,
             useValue: {
-              warn: true,
-            },
-          },
-        ],
-      }).compileComponents()
-    }))
+              warn: true
+            }
+          }
+        ]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(MessageDialogComponent)
-      component = fixture.componentInstance
-      fixture.detectChanges()
-    })
+      fixture = TestBed.createComponent(MessageDialogComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
 
     it('should create', () => {
-      expect(component).toBeTruthy()
-    })
+      expect(component).toBeTruthy();
+    });
 
     it('onClose should close the dialog', () => {
-      component.onClose()
-      expect(mockDialogRef.close).toHaveBeenCalled()
-    })
-  })
+      component.onClose();
+      expect(mockDialogRef.close).toHaveBeenCalled();
+    });
+  });
 
   describe('Error Message Dialog box', () => {
     beforeEach(async(() => {
@@ -119,26 +119,26 @@ describe('MessageDialogComponent', () => {
           {
             provide: MAT_DIALOG_DATA,
             useValue: {
-              error: true,
-            },
-          },
-        ],
-      }).compileComponents()
-    }))
+              error: true
+            }
+          }
+        ]
+      }).compileComponents();
+    }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(MessageDialogComponent)
-      component = fixture.componentInstance
-      fixture.detectChanges()
-    })
+      fixture = TestBed.createComponent(MessageDialogComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
 
     it('should create', () => {
-      expect(component).toBeTruthy()
-    })
+      expect(component).toBeTruthy();
+    });
 
     it('onClose should close the dialog', () => {
-      component.onClose()
-      expect(mockDialogRef.close).toHaveBeenCalled()
-    })
-  })
-})
+      component.onClose();
+      expect(mockDialogRef.close).toHaveBeenCalled();
+    });
+  });
+});

@@ -23,32 +23,49 @@ const routes: Routes = [
     children: [
       {
         path: 'auth',
-        loadChildren: () => import('./modules/auth/auth.module').then(m => m.AuthModule)
+        loadChildren: () =>
+          import('./modules/auth/auth.module').then(m => m.AuthModule)
       },
       {
         path: 'announcements',
-        loadChildren: () => import('./modules/announcements/announcements.module').then(m => m.AnnouncementsModule)
+        loadChildren: () =>
+          import('./modules/announcements/announcements.module').then(
+            m => m.AnnouncementsModule
+          )
       },
       {
         path: 'agreements',
-        loadChildren: () => import('./modules/agreements/agreements.module').then(m => m.AgreementsModule)
+        loadChildren: () =>
+          import('./modules/agreements/agreements.module').then(
+            m => m.AgreementsModule
+          )
       },
       {
         path: 'admin',
-        loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)
+        loadChildren: () =>
+          import('./modules/admin/admin.module').then(m => m.AdminModule)
       },
       {
         path: 'requests',
-        loadChildren: () => import('./modules/requests/requests.module').then(m => m.RequestsModule)
+        loadChildren: () =>
+          import('./modules/requests/requests.module').then(
+            m => m.RequestsModule
+          )
       },
       {
         path: 'resources',
-        loadChildren: () => import('./modules/resources/resources.module').then(m => m.ResourcesModule)
+        loadChildren: () =>
+          import('./modules/resources/resources.module').then(
+            m => m.ResourcesModule
+          )
       },
       {
         path: 'responses',
-        loadChildren: () => import('./modules/responses/responses.module').then(m => m.ResponsesModule)
-      },
+        loadChildren: () =>
+          import('./modules/responses/responses.module').then(
+            m => m.ResponsesModule
+          )
+      }
     ]
   },
   // Unauthorized: Access to a resource is denied
@@ -60,11 +77,11 @@ const routes: Routes = [
   {
     path: '**',
     component: NotFoundComponent
-  },
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

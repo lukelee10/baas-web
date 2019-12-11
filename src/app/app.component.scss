@@ -1,4 +1,6 @@
-mat-sidenav-container, mat-sidenav-content, mat-sidenav {
+mat-sidenav-container,
+mat-sidenav-content,
+mat-sidenav {
   height: 100%;
 }
 
@@ -10,9 +12,7 @@ main {
   padding: 10px;
 }
 
-
 .content {
   position: fixed;
   width: 100%;
-
 }

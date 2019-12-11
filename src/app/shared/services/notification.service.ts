@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core'
-import { MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material'
+import { Injectable } from '@angular/core';
+import { MatDialog, MatSnackBar, MatSnackBarRef } from '@angular/material';
 
-import { MessageDialogComponent } from '../../shared/components/message-dialog/message-dialog.component'
-import { environment } from './../../../environments/environment'
+import { MessageDialogComponent } from '../../shared/components/message-dialog/message-dialog.component';
+import { environment } from './../../../environments/environment';
 
 /**
  * Provides an abstract wrapper around showing a MatSnackbar
@@ -15,19 +15,19 @@ import { environment } from './../../../environments/environment'
  * set the _params to undefined and unsubscribe.
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class NotificationService {
-  private popUpTitle: string
-  private logLevel: boolean
-  private durationInSeconds = 5
+  private popUpTitle: string;
+  private logLevel: boolean;
+  private durationInSeconds = 5;
 
   constructor(private dialog: MatDialog, private matSnackBar: MatSnackBar) {
-    this.logLevel = environment.production
+    this.logLevel = environment.production;
   }
 
   setPopUpTitle(popUpTitle: string) {
-    this.popUpTitle = popUpTitle
+    this.popUpTitle = popUpTitle;
   }
 
   /**
@@ -38,7 +38,7 @@ export class NotificationService {
    */
   debugLogging(message?: any, ...optionalParams: any[]): void {
     if (!this.logLevel) {
-      console.log(message, ...optionalParams)
+      console.log(message, ...optionalParams);
     }
   }
 
@@ -47,9 +47,9 @@ export class NotificationService {
       data: {
         title: !popUpTitle ? this.popUpTitle : popUpTitle,
         message,
-        success: true,
-      },
-    })
+        success: true
+      }
+    });
   }
 
   warning(message: string, popUpTitle?: string): void {
@@ -57,9 +57,9 @@ export class NotificationService {
       data: {
         title: !popUpTitle ? this.popUpTitle : popUpTitle,
         message,
-        warn: true,
-      },
-    })
+        warn: true
+      }
+    });
   }
 
   error(message: string, popUpTitle?: string): void {
@@ -67,9 +67,9 @@ export class NotificationService {
       data: {
         title: !popUpTitle ? this.popUpTitle : popUpTitle,
         message,
-        error: true,
-      },
-    })
+        error: true
+      }
+    });
   }
 
   /**
@@ -79,10 +79,10 @@ export class NotificationService {
   notify(message: string, buttonLabel: string = 'OK'): MatSnackBarRef<any> {
     if (this.durationInSeconds > 0) {
       return this.matSnackBar.open(message, buttonLabel, {
-        duration: this.durationInSeconds * 1000,
-      })
+        duration: this.durationInSeconds * 1000
+      });
     } else {
-      return this.matSnackBar.open(message, buttonLabel, {})
+      return this.matSnackBar.open(message, buttonLabel, {});
     }
   }
 }

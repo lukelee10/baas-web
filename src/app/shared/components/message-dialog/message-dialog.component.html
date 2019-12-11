@@ -1,15 +1,20 @@
 <div class="container">
-  <h3 mat-dialog-title
+  <h3
+    mat-dialog-title
     [ngClass]="{
-      'success': options.success,
-      'warn': options.warn,
-      'error': options.error}">
-    {{options.title}}
+      success: options.success,
+      warn: options.warn,
+      error: options.error
+    }"
+  >
+    {{ options.title }}
   </h3>
 
-  <div mat-dialog-conent>{{options.message}}</div>
+  <div mat-dialog-conent>{{ options.message }}</div>
 
   <div mat-dialog-actions align="end">
-    <button mat-raised-button class="mat-primary" (click)="onClose()">OK</button>
+    <button mat-raised-button class="mat-primary" (click)="onClose()">
+      OK
+    </button>
   </div>
 </div>

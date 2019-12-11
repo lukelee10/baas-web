@@ -21,11 +21,8 @@ describe('SidenavigationComponent', () => {
         MatListModule,
         MatTooltipModule
       ],
-      declarations: [
-        SideNavigationComponent
-      ]
-    })
-    .compileComponents();
+      declarations: [SideNavigationComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

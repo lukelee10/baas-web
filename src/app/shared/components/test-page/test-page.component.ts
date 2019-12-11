@@ -10,23 +10,28 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class TestPageComponent implements OnInit {
   profileForm: FormGroup = new FormGroup({
-    email: new FormControl('', [ Validators.email ]),
-    phone: new FormControl('', [ Validators.min(10) ]),
-    fname: new FormControl('', [ Validators.min(2) ]),
-    lname: new FormControl('', [ Validators.min(2) ])
+    email: new FormControl('', [Validators.email]),
+    phone: new FormControl('', [Validators.min(10)]),
+    fname: new FormControl('', [Validators.min(2)]),
+    lname: new FormControl('', [Validators.min(2)])
   });
 
-  get emailInput() { return this.profileForm.get('email'); }
-  get fnameInput() { return this.profileForm.get('fname'); }
-  get lnameInput() { return this.profileForm.get('lname'); }
-  get phoneInput() { return this.profileForm.get('phone'); }
-
-  constructor(
-    private notificationSvc: NotificationService
-  ) { }
-
-  ngOnInit() {
+  get emailInput() {
+    return this.profileForm.get('email');
   }
+  get fnameInput() {
+    return this.profileForm.get('fname');
+  }
+  get lnameInput() {
+    return this.profileForm.get('lname');
+  }
+  get phoneInput() {
+    return this.profileForm.get('phone');
+  }
+
+  constructor(private notificationSvc: NotificationService) {}
+
+  ngOnInit() {}
 
   getEmailInputError() {
     if (this.emailInput.hasError('email')) {

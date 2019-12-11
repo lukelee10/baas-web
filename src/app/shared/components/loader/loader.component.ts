@@ -10,12 +10,14 @@ export class LoaderComponent implements OnInit {
   isLoading: boolean;
   loadingMessage: string;
 
-  constructor(
-    private loaderService: LoaderService
-  ) { }
+  constructor(private loaderService: LoaderService) {}
 
   ngOnInit() {
-    this.loaderService.isLoading$.subscribe((loading) => this.isLoading = loading);
-    this.loaderService.message$.subscribe((message) => this.loadingMessage = message);
+    this.loaderService.isLoading$.subscribe(
+      loading => (this.isLoading = loading)
+    );
+    this.loaderService.message$.subscribe(
+      message => (this.loadingMessage = message)
+    );
   }
 }

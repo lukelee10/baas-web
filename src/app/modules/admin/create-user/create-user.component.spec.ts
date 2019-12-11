@@ -12,16 +12,9 @@ describe('CreateUserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        MatFormFieldModule,
-        MatInputModule
-      ],
-      declarations: [
-        CreateUserComponent
-      ],
-    })
-    .compileComponents();
+      imports: [BrowserAnimationsModule, MatFormFieldModule, MatInputModule],
+      declarations: [CreateUserComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

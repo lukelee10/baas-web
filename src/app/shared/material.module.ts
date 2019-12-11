@@ -80,5 +80,4 @@ const MaterialComponents = [
   imports: [MaterialComponents],
   exports: [MaterialComponents]
 })
-
-export class MaterialModule { }
+export class MaterialModule {}

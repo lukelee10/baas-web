@@ -10,9 +10,7 @@ import { environment } from './../../../environments/environment';
 export class AwsLambdaService {
   private apiBase: string;
 
-  constructor(
-    private http: HttpClient,
-  ) {
+  constructor(private http: HttpClient) {
     this.apiBase = environment.apiGateway.url;
   }
 
@@ -22,12 +20,9 @@ export class AwsLambdaService {
       action
     };
 
-    this.http.post(this.apiBase + '/audit', body)
-    .subscribe(
-      response => {
-        const result = JSON.stringify(response);
-      }
-    );
+    this.http.post(this.apiBase + '/audit', body).subscribe(response => {
+      const result = JSON.stringify(response);
+    });
   }
 
   getUsers(): Observable<any> {

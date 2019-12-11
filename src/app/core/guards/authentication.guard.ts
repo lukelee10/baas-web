@@ -5,7 +5,7 @@ import {
   CanActivateChild,
   Router,
   RouterStateSnapshot,
-  UrlTree,
+  UrlTree
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
@@ -62,15 +62,15 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild {
       !this.authenticationService.IsAuthenticated &&
       !this.authenticationService.IsAgreementAccepted
     ) {
-        // User neither Authenticated nor accepted the agreement -- redirect user to login page
-        stateURL = '/agreements';
-        this.router.navigate(['/login'], {
-          queryParams: {
-            returnUrl: stateURL
-          }
-        });
-        return of(false);
-      }
+      // User neither Authenticated nor accepted the agreement -- redirect user to login page
+      stateURL = '/agreements';
+      this.router.navigate(['/login'], {
+        queryParams: {
+          returnUrl: stateURL
+        }
+      });
+      return of(false);
+    }
   }
 
   canActivateChild(

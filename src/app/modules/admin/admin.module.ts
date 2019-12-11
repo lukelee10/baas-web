@@ -16,10 +16,6 @@ import { CreateUserComponent } from './create-user/create-user.component';
     GroupManagementComponent,
     CreateUserComponent
   ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    SharedModule
-  ]
+  imports: [CommonModule, AdminRoutingModule, SharedModule]
 })
-export class AdminModule { }
+export class AdminModule {}

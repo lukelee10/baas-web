@@ -16,17 +16,24 @@ import { BaaSUser } from './../../../shared/models/user';
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss']
 })
-
 export class UserManagementComponent implements OnInit {
   pageTitle = 'List Users';
   dataSource: MatTableDataSource<BaaSUser>;
   selection = new SelectionModel<BaaSUser>(true, []);
 
-  displayedColumns: string[] = ['select', 'UserId', 'Fullname', 'Group', 'Role', 'Disabled', 'actions'];
+  displayedColumns: string[] = [
+    'select',
+    'UserId',
+    'Fullname',
+    'Group',
+    'Role',
+    'Disabled',
+    'actions'
+  ];
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-  @ViewChild('filter', {static: true}) filter: ElementRef;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('filter', { static: true }) filter: ElementRef;
 
   baasUsers: any;
   usersViewModel: BaaSUser[] = [];
@@ -35,7 +42,7 @@ export class UserManagementComponent implements OnInit {
     private awsLambdaService: AwsLambdaService,
     private loaderService: LoaderService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getUsers();
@@ -44,37 +51,38 @@ export class UserManagementComponent implements OnInit {
   getUsers(): void {
     this.loaderService.Show('Loading Users...');
     this.notificationService.setPopUpTitle('BaaS - Get Users');
-    this.awsLambdaService.getUsers()
-    .pipe(first())
-    .subscribe(
-      users => {
-        this.baasUsers = users;
-        this.getViewModelUsers(users);
-        this.dataSource = new MatTableDataSource<BaaSUser>(this.usersViewModel);
-        this.dataSource.paginator = this.paginator;
-        this.sort.start = 'asc';
-        this.dataSource.sort = this.sort;
-        this.loaderService.Hide();
-        this.notificationService.notify('Successful !!!');
-      },
-      error => {
-        this.loaderService.Hide();
-      }
-    );
+    this.awsLambdaService
+      .getUsers()
+      .pipe(first())
+      .subscribe(
+        users => {
+          this.baasUsers = users;
+          this.getViewModelUsers(users);
+          this.dataSource = new MatTableDataSource<BaaSUser>(
+            this.usersViewModel
+          );
+          this.dataSource.paginator = this.paginator;
+          this.sort.start = 'asc';
+          this.dataSource.sort = this.sort;
+          this.loaderService.Hide();
+          this.notificationService.notify('Successful !!!');
+        },
+        error => {
+          this.loaderService.Hide();
+        }
+      );
   }
 
   private getViewModelUsers(users: any): void {
     for (const item of users.Items) {
-      this.usersViewModel.push(
-        {
-          UserId: item.UserId,
-          Fullname: this.getName(item.Firstname, item.Lastname),
-          Group: item.Group,
-          IsAdmin: item.IsAdmin,
-          Role: item.Role,
-          Disabled: item.Disabled
-        }
-      );
+      this.usersViewModel.push({
+        UserId: item.UserId,
+        Fullname: this.getName(item.Firstname, item.Lastname),
+        Group: item.Group,
+        IsAdmin: item.IsAdmin,
+        Role: item.Role,
+        Disabled: item.Disabled
+      });
     }
   }
 
@@ -91,7 +99,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
-   isAllSelected() {
+  isAllSelected() {
     const numSelected = this.selection.selected.length;
     let numRows = 0;
     if (this.dataSource) {
@@ -102,9 +110,9 @@ export class UserManagementComponent implements OnInit {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+    this.isAllSelected()
+      ? this.selection.clear()
+      : this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   /** The label for the checkbox on the passed row */
@@ -112,7 +120,9 @@ export class UserManagementComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.UserId + 1}`;
+    return `${
+      this.selection.isSelected(row) ? 'deselect' : 'select'
+    } row ${row.UserId + 1}`;
   }
 
   ClearFilter() {

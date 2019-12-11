@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import {
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserPool
+} from 'amazon-cognito-identity-js';
 import { Observable, Subject } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
@@ -53,7 +57,7 @@ export class AuthenticationService {
     sessionStorage.setItem('jwtToken', value);
   }
   get IsAgreementAccepted(): boolean {
-    return   (/true/i).test(sessionStorage.getItem('agreementAccepted'));
+    return /true/i.test(sessionStorage.getItem('agreementAccepted'));
   }
 
   set IsAgreementAccepted(value: boolean) {
