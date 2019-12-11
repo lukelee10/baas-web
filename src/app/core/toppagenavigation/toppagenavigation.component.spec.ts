@@ -23,11 +23,8 @@ describe('ToppagenavigationComponent', () => {
         MatToolbarModule,
         MatTooltipModule
       ],
-      declarations: [
-        TopPageNavigationComponent
-      ]
-    })
-    .compileComponents();
+      declarations: [TopPageNavigationComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

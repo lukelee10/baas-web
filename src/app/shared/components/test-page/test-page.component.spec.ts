@@ -23,11 +23,8 @@ describe('TestPageComponent', () => {
         MatSnackBarModule,
         ReactiveFormsModule
       ],
-      declarations: [
-        TestPageComponent
-       ]
-    })
-    .compileComponents();
+      declarations: [TestPageComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

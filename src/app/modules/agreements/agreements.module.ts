@@ -7,10 +7,6 @@ import { UserAgreementComponent } from './user-agreement.component';
 
 @NgModule({
   declarations: [UserAgreementComponent],
-  imports: [
-    SharedModule,
-    CommonModule,
-    AgreementsRoutingModule
-  ]
+  imports: [SharedModule, CommonModule, AgreementsRoutingModule]
 })
 export class AgreementsModule {}

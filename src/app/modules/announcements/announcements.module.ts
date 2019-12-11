@@ -5,14 +5,8 @@ import { AnnouncementsRoutingModule } from './announcements-routing.module';
 
 import { AnnouncementsComponent } from './announcements.component';
 
-
 @NgModule({
-  declarations: [
-    AnnouncementsComponent
-  ],
-  imports: [
-    CommonModule,
-    AnnouncementsRoutingModule
-  ]
+  declarations: [AnnouncementsComponent],
+  imports: [CommonModule, AnnouncementsRoutingModule]
 })
-export class AnnouncementsModule { }
+export class AnnouncementsModule {}

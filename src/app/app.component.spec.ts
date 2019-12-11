@@ -1,6 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule} from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Idle } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { AppComponent } from './app.component';
@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -51,10 +51,10 @@ describe('AppComponent', () => {
         TopPageNavigationComponent
       ],
       providers: [
-        { provide: NotificationService, useValue: notificationServiceStub},
-        { provide: AuthenticationService, useValue: authenticationServiceStub},
+        { provide: NotificationService, useValue: notificationServiceStub },
+        { provide: AuthenticationService, useValue: authenticationServiceStub },
         { provide: Idle, useValue: idleStub },
-        { provide: Keepalive, useValue: keepaliveStub },
+        { provide: Keepalive, useValue: keepaliveStub }
       ]
     }).compileComponents();
   }));

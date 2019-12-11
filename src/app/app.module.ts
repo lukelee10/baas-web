@@ -10,7 +10,6 @@ import { CoreModule } from './core/core.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { SharedModule } from './shared/shared.module';
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [

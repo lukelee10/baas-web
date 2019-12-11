@@ -20,11 +20,7 @@ import { TopPageNavigationComponent } from './toppagenavigation/toppagenavigatio
     TopPageNavigationComponent,
     FooterComponent
   ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    RouterModule
-  ],
+  imports: [CommonModule, MaterialModule, RouterModule],
   exports: [
     SideNavigationComponent,
     TopPageNavigationComponent,
@@ -32,7 +28,7 @@ import { TopPageNavigationComponent } from './toppagenavigation/toppagenavigatio
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true }
   ]
 })
 

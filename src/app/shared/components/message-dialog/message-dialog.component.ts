@@ -36,10 +36,10 @@ export class MessageDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: MessageDialogOptions
   ) {
     dialogRef.disableClose = true;
-   }
+  }
 
   ngOnInit() {
-    this.options = {...this.data};
+    this.options = { ...this.data };
 
     if (this.options.success && !this.options.title) {
       this.options.title = 'SUCCESS';
@@ -47,6 +47,8 @@ export class MessageDialogComponent implements OnInit {
       this.options.title = 'WARNING';
     } else if (this.options.error && !this.options.title) {
       this.options.title = 'ERROR';
+    } else {
+      this.options.title = 'SUCCESS';
     }
   }
 
@@ -54,7 +56,7 @@ export class MessageDialogComponent implements OnInit {
    * Dialog close event handler
    */
   onClose() {
-    this.dialogRef.close();
     this.cdRef.detectChanges();
+    this.dialogRef.close();
   }
 }

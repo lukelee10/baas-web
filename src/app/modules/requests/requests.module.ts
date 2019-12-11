@@ -5,14 +5,8 @@ import { RequestsRoutingModule } from './requests-routing.module';
 
 import { RequestsComponent } from './requests.component';
 
-
 @NgModule({
-  declarations: [
-    RequestsComponent
-  ],
-  imports: [
-    CommonModule,
-    RequestsRoutingModule
-  ]
+  declarations: [RequestsComponent],
+  imports: [CommonModule, RequestsRoutingModule]
 })
-export class RequestsModule { }
+export class RequestsModule {}

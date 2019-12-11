@@ -7,11 +7,11 @@ import { CreateUserComponent } from './create-user/create-user.component';
 const routes: Routes = [
   {
     path: 'newUser',
-    component: CreateUserComponent,
+    component: CreateUserComponent
   },
   {
     path: '',
-    component: AdminComponent,
+    component: AdminComponent
   }
 ];
 
@@ -19,4 +19,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

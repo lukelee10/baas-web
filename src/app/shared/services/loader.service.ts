@@ -12,7 +12,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-
 export class LoaderService {
   private isLoadinngSubject = new BehaviorSubject<boolean>(false);
   private messageSubject = new BehaviorSubject<string>(null);
@@ -20,7 +19,7 @@ export class LoaderService {
   isLoading$: Observable<boolean> = this.isLoadinngSubject.asObservable();
   message$: Observable<string> = this.messageSubject.asObservable();
 
-  constructor() { }
+  constructor() {}
 
   Show(message?: string) {
     this.isLoadinngSubject.next(true);

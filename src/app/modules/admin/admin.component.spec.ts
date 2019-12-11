@@ -19,7 +19,6 @@ import { AdminComponent } from './admin.component';
 import { GroupManagementComponent } from './group-management/group-management.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 
-
 describe('AdminComponent', () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
@@ -46,8 +45,7 @@ describe('AdminComponent', () => {
         GroupManagementComponent,
         UserManagementComponent
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

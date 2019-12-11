@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
@@ -7,7 +7,6 @@ import { AuthenticationService } from './core/services/authentication.service';
 import { NotificationService } from './shared/services/notification.service';
 
 import { AppGlobalConstants } from './core/app-global-constants';
-
 
 @Component({
   selector: 'app-root',
@@ -26,8 +25,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private notificationService: NotificationService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     // Set idle timeout from AppGlobalConstants.MaxAllowedIdleTimeInSeconds
@@ -44,7 +42,10 @@ export class AppComponent implements OnInit {
       this.idleState = 'Timed out!';
       this.timedOut = true;
       this.notificationService.debugLogging(this.idleState);
-      this.notificationService.warning('Your session has timed out.', 'BaaS Alert');
+      this.notificationService.warning(
+        'Your session has timed out.',
+        'BaaS Alert'
+      );
       this.authenticationService.Logout();
       this.router.navigate(['/login']);
     });

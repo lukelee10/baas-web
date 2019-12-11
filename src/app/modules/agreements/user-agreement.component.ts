@@ -15,9 +15,7 @@ export class UserAgreementComponent implements OnInit {
     public authenticationService: AuthenticationService
   ) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   clickAccept() {
     this.authenticationService.IsAgreementAccepted = true;
@@ -31,6 +29,6 @@ export class UserAgreementComponent implements OnInit {
     this.router.navigate(['/logout']);
   }
   changeCheck(event) {
-     this.disabledAgreement = !event.checked;
+    this.disabledAgreement = !event.checked;
   }
 }
