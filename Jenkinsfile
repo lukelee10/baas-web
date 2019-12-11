@@ -45,12 +45,12 @@ pipeline {
                     cobertura autoUpdateHealth: false,
                     autoUpdateStability: false,
                     coberturaReportFile: '**/cobertura-coverage.xml',
-                    conditionalCoverageTargets: '14, 0, 14',
+                    conditionalCoverageTargets: '36, 0, 36',
                     failUnhealthy: false,
                     fileCoverageTargets: '90, 0, 90',
-                    lineCoverageTargets: '48, 0, 48',
+                    lineCoverageTargets: '54, 0, 54',
                     maxNumberOfBuilds: 0,
-                    methodCoverageTargets: '48, 0, 48',
+                    methodCoverageTargets: '60, 0, 60',
                     onlyStable: false
               }
             }
