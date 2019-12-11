@@ -24,17 +24,13 @@ describe('NewPasswordComponent', () => {
 
   const AwsLambdaServiceMock: any = {
     confirmPassword(value: any): Observable<any> {
-      return value.includes(kaput)
+      return value.password.includes(kaput)
         ? throwError({ status: 404 })
         : of({ data: true });
     }
   };
-
-  class MockRouter {
-    navigate = jasmine.createSpy('navigate');
-  }
-  const mockRouter = new MockRouter();
-
+  const navigate = jasmine.createSpy('navigate');
+  const mockRouter = { navigate };
   const fakeActivatedRoute = { queryParams: of({ tt: '123' }) };
 
   beforeEach(async(() => {
@@ -51,7 +47,7 @@ describe('NewPasswordComponent', () => {
       ],
       providers: [
         { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
-        { provide: Router, userValue: mockRouter },
+        { provide: Router, useValue: mockRouter },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         NotificationService,
         LoaderService
@@ -93,16 +89,17 @@ describe('NewPasswordComponent', () => {
     expect(component.password2.valid).toBeFalsy();
   });
 
-  /*it('Pressing Submit with good password', async(() => {
-    component.password.setValue('!1Qq@2Ww#3Ee')
-    component.password2.setValue('!1Qq@2Ww#3Ee')
-    fixture.detectChanges()
-    const button = fixture.debugElement.nativeElement.querySelector('button')
-    expect(button.disabled).toBeFalsy()
-    debugger
-    button.click()
+  it('Pressing Submit with good password', async(() => {
+    component.password.setValue('!1Qq@2Ww#3Ee');
+    component.password2.setValue('!1Qq@2Ww#3Ee');
+    fixture.detectChanges();
+    const button = fixture.debugElement.nativeElement.querySelectorAll(
+      'button'
+    )[1];
+    expect(button.disabled).toBeFalsy();
+    button.click();
     fixture.whenStable().then(() => {
-      expect(mockRouter.navigate).toHaveBeenCalled()
-    })
-  }))*/
+      expect(mockRouter.navigate).toHaveBeenCalled();
+    });
+  }));
 });
