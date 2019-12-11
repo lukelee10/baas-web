@@ -1,14 +1,12 @@
 pipeline {
-    // CHANGE the label for your team!
     agent { node { label 'BAASU' } }
-    //agent { node { label 'DATAU' } }
 
     environment {
         PATH = "$WORKSPACE/.npm-packages:$WORKSPACE/node-v10.16.3-linux-x64/bin:$WORKSPACE/node_modules/@angular/cli/bin:$PATH"
         NPM_CONFIG_USERCONFIG = "$WORKSPACE/.npmrc"
         NG_CLI_ANALYTICS = "ci"
     }
-    
+
     stages {
 
         stage('Initialize') {
@@ -44,20 +42,18 @@ pipeline {
             post {
               always {
                 junit 'coverage/test-report.xml'
-		        cobertura autoUpdateHealth: false, autoUpdateStability: false, 
-                    coberturaReportFile: '**/cobertura-coverage.xml', 
-                    conditionalCoverageTargets: '14, 0, 14', 
-                    failUnhealthy: false, 
-                    fileCoverageTargets: '90, 0, 90', 
-                    lineCoverageTargets: '48, 0, 48', 
-                    maxNumberOfBuilds: 0, 
-                    methodCoverageTargets: '48, 0, 48', 
+                    cobertura autoUpdateHealth: false,
+                    autoUpdateStability: false,
+                    coberturaReportFile: '**/cobertura-coverage.xml',
+                    conditionalCoverageTargets: '14, 0, 14',
+                    failUnhealthy: false,
+                    fileCoverageTargets: '90, 0, 90',
+                    lineCoverageTargets: '48, 0, 48',
+                    maxNumberOfBuilds: 0,
+                    methodCoverageTargets: '48, 0, 48',
                     onlyStable: false
               }
             }
         }
-        
     }
-
 }
-
