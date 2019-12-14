@@ -34,9 +34,6 @@ export class AwsLambdaService {
   }
 
   confirmPassword(newCredential: any) {
-    return this.http.post(
-      `${this.apiBase}/forgotpassword`,
-      newCredential.password
-    );
+    return this.http.post(`${this.apiBase}/forgotpassword`, newCredential);
   }
 }
