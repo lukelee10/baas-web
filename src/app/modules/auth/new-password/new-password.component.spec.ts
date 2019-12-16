@@ -31,7 +31,7 @@ describe('NewPasswordComponent', () => {
   };
   const navigate = jasmine.createSpy('navigate');
   const mockRouter = { navigate };
-  const fakeActivatedRoute = { queryParams: of({ tt: '123' }) };
+  const fakeActivatedRoute = { queryParams: of({ userid: '123' }) };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
