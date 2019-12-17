@@ -87,6 +87,11 @@ describe('NewPasswordComponent', () => {
     component.password.setValue('ONE_PASSWORD');
     component.password2.setValue('DIFF_PASSWORD');
     expect(component.password2.valid).toBeFalsy();
+    fixture.detectChanges();
+    const button = fixture.debugElement.nativeElement.querySelectorAll(
+      'button'
+    )[1];
+    expect(button.disabled).toBeTruthy();
   });
 
   it('Pressing Submit with good password', async(() => {
