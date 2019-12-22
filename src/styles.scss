@@ -1,0 +1,54 @@
+/* You can add global styles to this file, and also import other style files */
+/* for sidenav to take a whole page */
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1% 15%;
+}
+
+.active-link {
+  color: white !important;
+  background-color: navy;
+}
+
+/* work around for mat-error */
+mat-form-field {
+  &.ng-valid {
+    .mat-form-field-wrapper {
+      padding-bottom: 1.25em;
+    }
+  }
+
+  &.ng-invalid,
+  &.mat-form-field-invalid {
+    .mat-form-field-wrapper {
+      padding-bottom: 7px;
+    }
+  }
+
+  &.ng-untouched {
+    .mat-form-field-wrapper {
+      padding-bottom: 1.25em;
+    }
+  }
+
+  .mat-form-field {
+    &-underline {
+      position: static;
+    }
+
+    &-subscript-wrapper {
+      position: static;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+.container {
+  max-width: 500px;
+}
+
+.mat-dialog-conent {
+  padding: 2em;
+}
+
+.mat-dialog-title {
+  color: whitesmoke;
+  background-color: royalblue;
+  padding: 0.5em;
+  border-radius: 5px;
+}
+
+.success {
+  background-color: green !important;
+}
+
+.warn {
+  background-color: darkorange !important;
+}
+
+.error {
+  background-color: red !important;
+}

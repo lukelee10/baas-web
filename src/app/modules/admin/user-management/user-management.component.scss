@@ -1,0 +1,42 @@
+/* Structure */
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Toolbar */
+.spacer {
+  flex: 1 1 auto;
+}
+
+.mat-form-field {
+  font-size: 12px;
+  width: 100%;
+}
+
+.mat-row:nth-child(even) {
+  background-color: white;
+}
+
+.mat-row:nth-child(odd) {
+  background-color: rgb(247, 247, 247);
+}
+
+.mat-header-cell,
+.mat-sort-header {
+  // background-color: navy;
+  color: navy;
+  font-weight: bold;
+}
+
+.mat-column-select {
+  flex: 0 0 30px;
+}
+
+.mat-column-UserId {
+  flex: 0 0 250px;
+}
+
+.mat-column-Fullname {
+  flex: 0 0 250px;
+}

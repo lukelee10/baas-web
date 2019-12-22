@@ -1,0 +1,16 @@
+<!--app-loader is used with loader service, for indicating 
+the user that some process is running-->
+<app-loader></app-loader>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav role="navigation">
+    <!--this is a place for us to add side-nav code-->
+    <app-sidenavigation (sidenavClose)="sidenav.close()"></app-sidenavigation>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <!--in here all the content must reside. We will add a navigation header as well-->
+    <app-toppagenavigation
+      (sidenavToggle)="sidenav.toggle()"
+    ></app-toppagenavigation>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

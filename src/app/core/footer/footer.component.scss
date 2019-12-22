@@ -1,0 +1,17 @@
+.footer {
+  position: absolute;
+  top: 800px;
+  width: 100%;
+  background-color: #ebe9e7;
+}
+
+.footer-content {
+  height: 100pt;
+  color: grey;
+  padding-left: 20pt;
+  font-size: smaller;
+}
+
+.spacer {
+  flex-grow: 1;
+}

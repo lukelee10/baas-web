@@ -1,0 +1,139 @@
+<div
+  fxLayout="column"
+  fxLayoutAlign="start start"
+  fxLayoutGap="10px"
+  role="banner"
+  class="flex-container"
+>
+  <img
+    src="./../assets/images/baas-logo-small.png"
+    fxFlex="1 1 auto"
+    alt="BaaS Logo"
+  />
+  <h2>User Agreement</h2>
+  <div class="ua-div scroll" fxFlex="1 1 auto" role="contentinfo">
+    <h3>
+      UNCLASSIFIED/FOR OFFICIAL USE ONLY Biometrics as a Service (BaaS) User
+      Acknowledgment
+    </h3>
+    <h4>(U) Privacy</h4>
+    (U//FOUO) Users of this system should have no reasonable expectation of
+    privacy. All data and searches thereof may be monitored and reviewed by
+    authorized personnel for audit purposes. Use of this system constitutes
+    express consent to monitoring. If you do not consent, do not acknowledge
+    this agreement.
+    <h4>(U) Records Protection</h4>
+    (U//FOUO) Authorized users are permitted access to the BaaS service on an
+    official business/need-to-know basis. Unauthorized use such as submitting
+    photos of persons with whom you have personal interaction, for personal
+    interest, or for any purpose other than as required in your official duties,
+    is strictly prohibited.
+    <h4>(U) USPER Data</h4>
+    (U//FOUO) BaaS is not currently accredited to protect US Person (USPER)
+    data; submission of USPER data is strictly prohibited. Only NON-USPER and
+    presumed NON-USPER data may be submitted through the service. Each search
+    submission will require acknowledgement of the subject or subjects'
+    NON-USPER status by clicking the NON-USPER data box.
+    <h4>(U//FOUO) Biometric Matching</h4>
+    (U//FOUO) Biometric match results are provided by the respective agencies
+    searched and results are dependent upon each biometric systems matching
+    capabilities; BaaS is not responsible for determining biometric matches.
+    BaaS leverages partnerships, tools, techniques, and expertise to provide a
+    federated biometric search against biometric holdings shared through formal
+    agreements to deliver comprehensive match results to aid in Identity
+    Discovery and Identity Resolution. No unilateral action should be taken
+    against any subject based solely on these biometric match results.
+    <h4>(U) Public Release of Information</h4>
+    (U//FOUO) The Unclassified nature of the returned searches does not
+    authorize public release without prior approval from the originating agency.
+    <h4>(U) General Use of BaaS Information</h4>
+    (U//FOUO) Use of or reference to any data in any analytic, targeting, or
+    other product by organizations not included as addressees on the original
+    intelligence report must be coordinated with the originating agency
+    (Originator). (U//FOUO) Information retrieved via the BaaS service may not
+    be used in any foreign or domestic, judicial, quasi-judicial, or
+    administrative proceeding or process, including presentation to grand or
+    petit juries, submission as part of an application for subpoenas, orders for
+    electronic surveillance, search or arrest warrants, presentation as
+    evidence, or any use that could result in public disclosure without
+    appropriate approval.
+    <h4>(U) Recap:</h4>
+    By accepting the terms of BaaS User Agreement, users agree to the following:
+    <ul>
+      <li>
+        Consent to being monitored for audit and quality control purposes.
+      </li>
+      <li>
+        Agree to use the BaaS service in accordance with official duties and
+        acknowledge unauthorized usage is strictly forbidden;
+      </li>
+
+      <li>
+        Acknowledge that only NON-USPER and presumed NON-USPER data may be
+        submitted through the service;
+      </li>
+      <li>
+        Acknowledge that BaaS provides a federated search service and is not
+        responsible for the quality of matches provided by each agency's
+        biometric matching service;
+      </li>
+
+      <li>
+        Acknowledge that search results are not authorized for public release
+        without prior approval from the originating agency;
+      </li>
+
+      <li>
+        Agree to receive authorization from the original data owner prior using
+        or referencing BaaS results in any product, and;
+      </li>
+
+      <li>
+        Acknowledge that information retrieved through the BaaS service may not
+        be used in any foreign or domestic, judicial, quasi-judicial, or
+        administrative proceeding or processes without prior approval from the
+        originating agency.
+      </li>
+    </ul>
+  </div>
+  <div
+    class="ua-div"
+    role="navigation"
+    fxFlex="1 1 auto"
+    fxLayout="row wrap"
+    fxLayoutAlign="start start"
+  >
+    <div fxFlexAlign="start" fxFlex="0 0 90px" role="navigation">
+      <button
+        mat-raised-button
+        color="warn"
+        matTooltip="Decline"
+        (click)="clickDecline()"
+      >
+        Decline
+      </button>
+    </div>
+    <div
+      fxFlex="1 1 auto"
+      fxLayout="row wrap"
+      fxLayoutAlign="end start"
+      role="navigation"
+    >
+      <mat-checkbox fxFlex="0 0 auto" (change)="changeCheck($event)">
+        By clicking this you agree to terms of Service
+      </mat-checkbox>
+      &nbsp;
+      <button
+        fxFlex="0 0 auto"
+        mat-raised-button
+        color="primary"
+        [disabled]="disabledAgreement"
+        type="submit"
+        matTooltip="Accept"
+        (click)="clickAccept()"
+      >
+        Accept
+      </button>
+    </div>
+  </div>
+</div>

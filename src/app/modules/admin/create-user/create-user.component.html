@@ -1,0 +1,47 @@
+<div class="flex-container form>">
+  <h2>Create User</h2>
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Email"
+      type="email"
+      autocomplete="email"
+      required
+    />
+  </mat-form-field>
+
+  <div fxLayout>
+    <mat-form-field fxFlex="40%">
+      <input matInput placeholder="First Name" required class="form-control" />
+    </mat-form-field>
+    <span fxFlex>&nbsp;</span>
+
+    <mat-form-field fxFlex="40%">
+      <input matInput placeholder="Last Name" required />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field>
+    <input matInput placeholder="Group" required />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Role" required />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Status" required />
+  </mat-form-field>
+
+  <div fxLayout>
+    <button
+      fxFlex="200px"
+      mat-raised-button
+      color="primary"
+      type="submit"
+      matTooltip="Create User"
+    >
+      Submit
+    </button>
+  </div>
+</div>
