@@ -75,7 +75,12 @@ export class NewPasswordComponent implements OnInit {
   errMessage: string;
   hide = true; // #password
   compare = (c: FormControl) => {
-    return c.value === (this.password ? this.password.value : '')
+    const notMyPwd =
+      this.password && [this.password, this.password2].find(cc => c !== cc);
+    if (c && (!c.value || !notMyPwd.value)) {
+      return null;
+    }
+    return c.value === (notMyPwd ? notMyPwd.value : '')
       ? null
       : { compare: true };
   };
@@ -104,7 +109,8 @@ export class NewPasswordComponent implements OnInit {
       validateSpecialChar,
       validateNo3Duplicate,
       validateHas2Case,
-      this.validateNoUserID
+      this.validateNoUserID,
+      this.compare
     ]);
     this.password2 = new FormControl('', [Validators.required, this.compare]);
     this.route.queryParams.subscribe(params => {
