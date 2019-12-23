@@ -76,6 +76,10 @@ To use:
    });
    ```
 
+## Multi File Upload Component
+
+A Shared multi File Upload Component with Image Classification and Modality etc
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
