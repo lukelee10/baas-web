@@ -1,14 +1,23 @@
 <div class="flex-container">
-  <h2>Create New Request</h2>
-  <div>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie
-    turpis eu elit mattis aliquam. Cras sit amet porttitor magna, vel iaculis
-    elit. Sed augue quam, cursus eu sem eu, dapibus malesuada orci. Ut bibendum
-    quam id molestie lobortis. Curabitur ullamcorper ipsum id cursus tristique.
-    Suspendisse quam lacus, efficitur vitae molestie eu, feugiat nec massa.
-    Etiam non tellus tortor. Duis sit amet condimentum arcu, blandit pulvinar
-    ipsum. In aliquam vulputate vestibulum. Nulla ac odio hendrerit velit
-    tincidunt pretium. Nunc sed auctor sem. Aenean in nisl non mi viverra
-    mattis. Nullam molestie venenatis magna quis sagittis.
+  <div [fileUploadInputFor]="fileUploadQueue" class="upload-drop-zone">
+    Just drag and drop files here OR
+    <span
+      ><input id="singleFile" type="file" [fileUploadInputFor]="fileUploadQueue"
+    /></span>
   </div>
+
+  <mat-file-upload-queue
+    #fileUploadQueue
+    [fileAlias]="'file'"
+    [httpUrl]="'http://localhost:8180/jax-rs-jersey-application-sample'"
+    [httpRequestHeaders]="httpRequestHeaders"
+    [httpRequestParams]="httpRequestParams"
+    multiple
+  >
+    <mat-file-upload
+      [file]="file"
+      [id]="i"
+      *ngFor="let file of fileUploadQueue.files; let i = index"
+    ></mat-file-upload>
+  </mat-file-upload-queue>
 </div>
