@@ -1,4 +1,4 @@
-<mat-card-title> Files </mat-card-title>
+<!-- <mat-card-title> Files </mat-card-title>
 <mat-card>
   <label class="file-info">{{ file.name }}({{ file.size | bytes }})</label>
   <section class="example-section">
@@ -14,4 +14,32 @@
   <label class="file-info">{{ progressPercentage }}%</label>
   <label> {{ loaded | bytes }} of {{ total | bytes }}</label
   >>
-</mat-card>
+</mat-card> -->
+<div fxLayout="row" [style.margin-top]="'12px'" style="padding: 1% 16%;">
+  <mat-card fxFlex="0 1 calc(20% - 20px)" style="text-align: center;">
+    <img src="./../assets/images/download.png" /> <br />
+    <!-- <input type='file' (change)="onSelectFile($event)"> -->
+  </mat-card>
+  <mat-card fxFlex="0 1 calc(20% - 20px)" style="text-align: center;">
+    {{ file.name }}
+  </mat-card>
+  <mat-card fxFlex="0 1 calc(20% - 20px)" style="text-align: center;">
+    {{ file.size }}
+  </mat-card>
+  <mat-card fxFlex="0 1 calc(20% - 20px)" style="text-align: center;">
+    <mat-card-title>Please choose a modality</mat-card-title>
+    <mat-form-field>
+      <mat-select required>
+        <mat-option
+          *ngFor="let modality of modalities"
+          [value]="modality.value"
+        >
+          {{ modality.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card>
+  <mat-card fxFlex="0 1 calc(20% - 30px)" style="text-align: center;">
+    <mat-checkbox>NO USPER</mat-checkbox>
+  </mat-card>
+</div>

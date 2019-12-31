@@ -46,6 +46,12 @@ export class MatFileUpload implements OnDestroy {
 
   public isUploading: boolean = false;
 
+  modalities: modality[] = [
+    { value: 'Face-0', viewValue: 'Face' },
+    { value: 'Iris-1', viewValue: 'Iris' },
+    { value: 'Fingerprint-2', viewValue: 'Fingerprint' }
+  ];
+
   /* Http request input bindings */
   @Input()
   httpUrl: string = 'http://localhost:8080';
@@ -136,5 +142,27 @@ export class MatFileUpload implements OnDestroy {
 
   ngOnDestroy() {
     console.log('file ' + this._file.name + ' destroyed...');
+  }
+}
+
+interface modality {
+  value: string;
+  viewValue: string;
+}
+
+export class AppComponent {
+  name = 'Angular 4';
+  url = '';
+  onSelectFile(event) {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+      reader.onload = event => {
+        // called once readAsDataURL is completed
+        // this.url = event.target.result;
+      };
+    }
   }
 }

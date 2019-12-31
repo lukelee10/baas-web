@@ -9,6 +9,12 @@ import { Component, Input, OnInit } from '@angular/core';
 export class RequestsComponent implements OnInit {
   constructor() {}
 
+  classifications: classification[] = [
+    { value: 'U-0', viewValue: 'U' },
+    { value: 'U//FOUO-1', viewValue: 'U//FOUO' },
+    { value: 'U//LES-2', viewValue: 'Fingerprint' }
+  ];
+
   @Input() httpRequestHeaders:
     | HttpHeaders
     | {
@@ -31,4 +37,9 @@ export class RequestsComponent implements OnInit {
   public uploadEvent($event: any) {
     console.log('from client' + JSON.stringify($event));
   }
+}
+
+interface classification {
+  value: string;
+  viewValue: string;
 }
