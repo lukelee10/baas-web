@@ -1,24 +1,6 @@
-<!-- <mat-card-title> Files </mat-card-title>
-<mat-card fxFlex="0 1 calc(40% - 5px)">
-  <label class="file-info">{{ file.name }}({{ file.size | bytes }})</label>
-  <section class="example-section">
-    <mat-progress-bar
-      class="example-margin"
-      [value]="progressPercentage"
-    ></mat-progress-bar>
-    <a [ngClass]="{ disabled: isUploading }"
-      ><mat-icon class="action" (click)="upload()">file_upload</mat-icon></a
-    >
-    <mat-icon class="action" (click)="remove()">cancel</mat-icon>
-  </section>
-  <label class="file-info">{{ progressPercentage }}%</label>
-  <label> {{ loaded | bytes }} of {{ total | bytes }}</label
-  >>
-</mat-card> -->
 <div fxLayout="row" [style.margin-top]="'12px'" style="padding: 1% 16%;">
   <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
-    <img src="./../assets/images/download.png" width="60" height="60" /> <br />
-    <!-- <input type='file' (change)="onSelectFile($event)"> -->
+    <mat-icon>collections</mat-icon>
   </mat-card>
   <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
     {{ file.name }}
