@@ -93,6 +93,13 @@ export class MatFileUploadQueue implements OnDestroy {
     this.files.splice(0, this.files.length);
   }
 
+  //This method needs to be updated so that it can be updated to S3
+  public submitRequests() {
+    this.fileUploads.forEach(fileUpload => {
+      fileUpload.upload();
+    });
+  }
+
   ngOnDestroy() {
     if (this.files) {
       this.removeAll();
