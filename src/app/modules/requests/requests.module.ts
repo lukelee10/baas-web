@@ -4,8 +4,9 @@ import { CoreModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 
-import { FspRequestsComponent } from './fsp-requests.component';
-import { NonFspRequestsComponent } from './non-fsp-requests.component';
+import { FspRequestsComponent } from './fsp/fsp-requests.component';
+import { NonFspRequestsComponent } from './non-fsp/non-fsp-requests.component';
+import { ProviderCheckboxesComponent } from './provider-checkboxes/provider-checkboxes.component';
 import { RequestsRoutingModule } from './requests-routing.module';
 import { RequestsComponent } from './requests.component';
 
@@ -13,7 +14,8 @@ import { RequestsComponent } from './requests.component';
   declarations: [
     RequestsComponent,
     NonFspRequestsComponent,
-    FspRequestsComponent
+    FspRequestsComponent,
+    ProviderCheckboxesComponent
   ],
   imports: [
     CommonModule,

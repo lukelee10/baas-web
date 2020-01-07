@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { requireCheckboxesToBeCheckedValidator } from '../../shared/require-checkboxes-to-be-checked.validator';
+import { requireCheckboxesToBeCheckedValidator } from '../../../shared/require-checkboxes-to-be-checked.validator';
 
 @Component({
-  selector: 'app-fsp-requests',
-  templateUrl: './fsp-requests.component.html',
+  selector: 'app-non-fsp-requests',
+  templateUrl: './non-fsp-requests.component.html',
   styleUrls: ['./non-fsp-requests.component.scss']
 })
-export class FspRequestsComponent implements OnInit {
+export class NonFspRequestsComponent implements OnInit {
   form = new FormGroup({
     packageTitle: new FormControl('', Validators.required),
     selectClassification: new FormControl('', Validators.required),
@@ -26,7 +26,7 @@ export class FspRequestsComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.form.get('packageTitle').setValue('');
-    console.log('packageTitle: ' + this.form.get('packageTitle').value);
+    // this.form.get('packageTitle').setValue('');
+    //  console.log('packageTitle: ' + this.form.get('packageTitle').value);
   }
 }

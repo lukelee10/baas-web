@@ -14,9 +14,9 @@ import { UserRoles } from 'src/app/core/app-global-constants';
 import { UserService } from 'src/app/core/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 
-import { FspRequestsComponent } from './fsp-requests.component';
+import { FspRequestsComponent } from '../fsp/fsp-requests.component';
+import { RequestsComponent } from '../requests.component';
 import { NonFspRequestsComponent } from './non-fsp-requests.component';
-import { RequestsComponent } from './requests.component';
 
 // Mock the SortService class, its method and return it with mock data
 class MockUserService extends UserService {

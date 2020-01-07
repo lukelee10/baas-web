@@ -29,6 +29,9 @@ export class AwsLambdaService {
   getUsers(): Observable<any> {
     return this.http.get<any>(`${this.apiBase}/users`);
   }
+  getProviders(): Observable<any> {
+    return this.http.get<any>(`${this.apiBase}/providers`);
+  }
 
   getUserByEmailID(email: string): Observable<BaaSUser> {
     const url = encodeURI(`${this.apiBase}/users/${email}`);
