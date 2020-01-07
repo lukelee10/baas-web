@@ -1,0 +1,43 @@
+<form
+  fxLayout="column"
+  [formGroup]="form"
+  class="flex-container"
+  fxLayoutGap="20px"
+>
+  <h2 class="fspClass">Submit Images</h2>
+  <div
+    class="input-row"
+    fxLayout="row"
+    fxLayout.lt-md="column"
+    fxLayoutGap="20px"
+    fxLayoutGap.lt-md="0px"
+    role="form"
+  >
+    <mat-form-field appearance="outline" fxFlex>
+      <mat-label>Package Title</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Package Title"
+        formControlName="packageTitle"
+        maxlength="64"
+        aria-label="Package Title"
+      />
+      <mat-icon matSuffix>library_books</mat-icon>
+      <mat-error *ngIf="!form.hasError('packageTitle')">Required</mat-error>
+      <mat-hint>64 Character Limit </mat-hint>
+    </mat-form-field>
+  </div>
+
+  <mat-card
+    fxLayout="column"
+    fxLayoutGap="20px"
+    style="background-color: rgba(0, 0, 0, 0.04)"
+  >
+    <mat-label>Images</mat-label>
+  </mat-card>
+
+  <button mat-raised-button color="primary" style="width: 250px;">
+    Submit Request
+  </button>
+</form>

@@ -1,0 +1,104 @@
+<form
+  fxLayout="column"
+  [formGroup]="form"
+  class="flex-container"
+  fxLayoutGap="20px"
+>
+  <h2 class="nonFSPClass">Submit Images</h2>
+  <div
+    class="input-row"
+    fxLayout="row"
+    fxLayout.lt-md="column"
+    fxLayoutGap="20px"
+    fxLayoutGap.lt-md="0px"
+    role="form"
+  >
+    <mat-form-field appearance="outline" fxFlex>
+      <mat-label>Package Title</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Package Title"
+        formControlName="packageTitle"
+        maxlength="64"
+        aria-label="Package Title"
+      />
+      <mat-icon matSuffix>library_books</mat-icon>
+      <mat-error *ngIf="!form.hasError('packageTitle')">Required</mat-error>
+      <mat-hint>64 Character Limit </mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex>
+      <mat-label>Classification</mat-label>
+      <mat-select
+        placeholder="Select Classification"
+        formControlName="selectClassification"
+      >
+        <mat-option value="U">Unclassified</mat-option>
+        <mat-option value="U-FOUO"
+          >Unclassified - For Official Use Only</mat-option
+        >
+        <mat-option value="U-LES"
+          >Unclassified - Law Enforcement Sensitive</mat-option
+        >
+      </mat-select>
+      <mat-icon matSuffix>assistant_photo</mat-icon>
+      <mat-error *ngIf="!form.hasError('selectClassification')"
+        >Required</mat-error
+      >
+    </mat-form-field>
+  </div>
+  <mat-card
+    formGroupName="vettingCheckBoxGroup"
+    fxLayout="column"
+    fxLayoutGap="20px"
+  >
+    <mat-label>Vetting System</mat-label>
+    <mat-card-content fxLayout="column" fxLayoutGap="20px">
+      <div fxLayout="row" fxLayoutGap="20px" role="form">
+        <mat-checkbox color="primary" formControlName="vettingLowBall" fxFlex
+          >LOWBALL</mat-checkbox
+        >
+        <mat-checkbox color="primary" formControlName="vetting3LA" fxFlex
+          >3LA</mat-checkbox
+        >
+      </div>
+      <div fxLayout="row" fxLayoutGap="20px" role="form">
+        <mat-checkbox color="primary" formControlName="vettingABIS" fxFlex
+          >ABIS</mat-checkbox
+        >
+        <mat-checkbox color="primary" formControlName="vettingHIGHTOP" fxFlex
+          >HIGHTOP</mat-checkbox
+        >
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <div role="note" class="footer-note">
+        <span
+          *ngIf="
+            form.controls['vettingCheckBoxGroup'].errors &&
+            form.controls['vettingCheckBoxGroup'].errors
+              .requireOneCheckboxToBeChecked
+          "
+        >
+          At least one Vetting System needs to be selected
+        </span>
+        &nbsp;
+      </div>
+    </mat-card-footer>
+  </mat-card>
+  <mat-card
+    fxLayout="column"
+    fxLayoutGap="20px"
+    style="background-color: rgba(0, 0, 0, 0.04)"
+  >
+    <mat-label>Images</mat-label>
+  </mat-card>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!form.valid"
+    style="width: 250px;"
+  >
+    Submit Request
+  </button>
+</form>

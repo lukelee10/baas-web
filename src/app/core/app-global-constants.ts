@@ -8,3 +8,10 @@ export const AppGlobalConstants = {
   MaxAllowedIdleTimeInSeconds: 1200,
   TimeOutInSeconds: 600
 };
+
+export const enum UserRoles {
+  FSPUser = 'FSP-User',
+  Lead = 'Lead',
+  Admin = 'Admin',
+  NonFSPUser = 'Non-FSP-User'
+}

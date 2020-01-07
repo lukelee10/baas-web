@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
+import { UserService } from './../../../core/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authenticationSVC: AuthenticationService,
-    private awsLambdaService: AwsLambdaService
+    private awsLambdaService: AwsLambdaService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {}
@@ -41,7 +43,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  cognitoCallback(message: string, result: any) {
+  async cognitoCallback(message: string, result: any) {
     if (message != null) {
       // error
       // As per the wireframe, we display all the time 'Unknown User and Password Combination',
@@ -50,6 +52,7 @@ export class LoginComponent implements OnInit {
     } else {
       // success
       this.setAuthenticationVals(result);
+      this.userService.InitializeUserSession(this.email.value);
       const returnUrl = this.activatedRoute.snapshot.queryParams[
         'returnUrl'.toString()
       ];

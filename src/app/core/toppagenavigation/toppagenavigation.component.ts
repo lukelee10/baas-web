@@ -1,9 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AwsLambdaService } from '../services/aws-lambda.service';
 import { AuthenticationService } from '../services/authentication.service';
-
+import { AwsLambdaService } from '../services/aws-lambda.service';
 import { NavItem } from './../../shared/models/nav-item';
 
 @Component({
@@ -30,7 +29,7 @@ export class TopPageNavigationComponent implements OnInit {
     this.navItems.push({
       link: '/requests',
       title: 'Submit Images',
-      icon: 'create'
+      icon: 'photo_library'
     });
     this.navItems.push({
       link: '/responses',

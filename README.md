@@ -76,6 +76,16 @@ To use:
    });
    ```
 
+## Submit Requests Component
+
+### Non-FSP Version of Component
+
+Non-FSP User can submit requests in the form of packages with one or more images to multiple vetting systems of their choice.
+
+### FSP Version of Component
+
+FSP User can submit requests in the form of packages with one or more images.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
