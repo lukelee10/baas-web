@@ -4,6 +4,7 @@ import { CoreModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 
+import { MatFileUploadModule } from '../../shared/components/multi-file-upload/matFileUpload.module';
 import { FspRequestsComponent } from './fsp-requests.component';
 import { NonFspRequestsComponent } from './non-fsp-requests.component';
 import { RequestsRoutingModule } from './requests-routing.module';
@@ -21,6 +22,7 @@ import { RequestsComponent } from './requests.component';
     CoreModule,
     SharedModule,
     FormsModule,
+    MatFileUploadModule,
     ReactiveFormsModule
   ]
 })

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { requireCheckboxesToBeCheckedValidator } from '../../shared/require-checkboxes-to-be-checked.validator';
@@ -29,4 +30,42 @@ export class FspRequestsComponent implements OnInit {
     this.form.get('packageTitle').setValue('');
     console.log('packageTitle: ' + this.form.get('packageTitle').value);
   }
+}
+
+export class RequestsComponent implements OnInit {
+  constructor() {}
+
+  classifications: classification[] = [
+    { value: 'U-0', viewValue: 'U' },
+    { value: 'U//FOUO-1', viewValue: 'U//FOUO' },
+    { value: 'U//LES-2', viewValue: 'Fingerprint' }
+  ];
+
+  @Input() httpRequestHeaders:
+    | HttpHeaders
+    | {
+        [header: string]: string | string[];
+      } = new HttpHeaders()
+    .set('sampleHeader', 'headerValue')
+    .set('sampleHeader1', 'headerValue1');
+
+  @Input()
+  httpRequestParams:
+    | HttpParams
+    | {
+        [param: string]: string | string[];
+      } = new HttpParams()
+    .set('sampleRequestParam', 'requestValue')
+    .set('sampleRequestParam1', 'requestValue1');
+
+  ngOnInit() {}
+
+  public uploadEvent($event: any) {
+    console.log('from client' + JSON.stringify($event));
+  }
+}
+
+interface classification {
+  value: string;
+  viewValue: string;
 }
