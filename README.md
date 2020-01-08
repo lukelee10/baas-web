@@ -76,15 +76,9 @@ To use:
    });
    ```
 
-## Submit Requests Component
+## Multi File Upload Component
 
-### Non-FSP Version of Component
-
-Non-FSP User can submit requests in the form of packages with one or more images to multiple vetting systems of their choice.
-
-### FSP Version of Component
-
-FSP User can submit requests in the form of packages with one or more images.
+A Shared multi File Upload Component with Image Classification and Modality etc
 
 ## Development server
 

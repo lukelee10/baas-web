@@ -4,6 +4,7 @@ import { CoreModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 
+import { MatFileUploadModule } from '../../shared/components/multi-file-upload/matFileUpload.module';
 import { FspRequestsComponent } from './fsp/fsp-requests.component';
 import { NonFspRequestsComponent } from './non-fsp/non-fsp-requests.component';
 import { ProviderCheckboxesComponent } from './provider-checkboxes/provider-checkboxes.component';
@@ -23,6 +24,7 @@ import { RequestsComponent } from './requests.component';
     CoreModule,
     SharedModule,
     FormsModule,
+    MatFileUploadModule,
     ReactiveFormsModule
   ]
 })

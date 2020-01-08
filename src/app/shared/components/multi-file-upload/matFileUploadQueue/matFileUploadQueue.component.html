@@ -1,0 +1,47 @@
+<div fxLayout="row" [style.margin-top]="'12px'" style="padding: 1% 16%;">
+  <mat-card fxFlex="0 1 calc(20% - 20px)" style="text-align: center;">
+  </mat-card>
+  <mat-card fxFlex="0 1 calc(20% - 20px)" style="text-align: center;">
+    Filename
+  </mat-card>
+  <mat-card fxFlex="0 1 calc(20% - 20px)" style="text-align: center;">
+    File Size
+  </mat-card>
+  <mat-card fxFlex="0 1 calc(20% - 30px)" style="text-align: center;">
+    File Type
+  </mat-card>
+  <mat-card fxFlex="0 1 calc(20% - 20px)" style="text-align: center;">
+    Modality
+  </mat-card>
+  <mat-card fxFlex="0 1 calc(20% - 30px)" style="text-align: center;">
+    USPER
+  </mat-card>
+</div>
+<ng-content></ng-content>
+<br />
+<div fxLayout="row" [style.margin-top]="'12px'" style="padding: 1% 16%;">
+  <button
+    mat-raised-button
+    color="primary"
+    *ngIf="files.length > 0"
+    (click)="uploadAll()"
+  >
+    Upload All
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    *ngIf="files.length > 0"
+    (click)="removeAll()"
+  >
+    Remove All
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    *ngIf="files.length > 0"
+    (click)="submitRequests()"
+  >
+    SUBMIT REQUESTS
+  </button>
+</div>
