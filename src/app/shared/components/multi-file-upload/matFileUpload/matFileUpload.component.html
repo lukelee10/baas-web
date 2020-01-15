@@ -1,33 +1,53 @@
-<div fxLayout="row" [style.margin-top]="'12px'" style="padding: 1% 16%;">
-  <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
-    <mat-icon>collections</mat-icon>
-  </mat-card>
-  <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
-    {{ file.name }}
-  </mat-card>
-  <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
-    {{ file.size / 1000 }} K
-  </mat-card>
-  <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
-    {{ file.type }}
-  </mat-card>
-  <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
-    <mat-hint>Please choose a modality</mat-hint>
-    <mat-form-field>
-      <mat-select required>
-        <mat-option
-          *ngFor="let modality of modalities"
-          [value]="modality.value"
+<form [formGroup]="fileUploadFormGroup">
+  <div fxLayout="row" [style.margin-top]="'12px'" style="padding: 1% 16%;">
+    <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+      <img
+        src="{{ file.preview }}"
+        width="100px"
+        height="100px"
+        alt="{{ file.name }}"
+      />
+    </mat-card>
+    <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+      {{ file.name }}
+    </mat-card>
+    <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+      {{ file.size / 1000 }} K
+      <mat-error *ngIf="!IsFileValidSize()">{{ invalidFileSizeMsg }}</mat-error>
+    </mat-card>
+    <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+      {{ file.type }}
+      <mat-error *ngIf="!IsFileValidType()">{{ invalidFileTypeMsg }}</mat-error>
+    </mat-card>
+    <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+      <mat-hint>Please choose a modality</mat-hint>
+      <mat-form-field>
+        <mat-select formControlName="modalityControl">
+          <mat-option
+            *ngFor="let modality of lookupStaticDataService.modalityTypesData"
+            [value]="modality.value"
+          >
+            {{ modality.label }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            fileUploadFormGroup.controls.modalityControl.hasError('required')
+          "
         >
-          {{ modality.viewValue }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </mat-card>
-  <mat-card fxFlex="0 1 calc(16% - 26px)" style="text-align: center;">
-    <mat-checkbox>NO USPER</mat-checkbox>
-  </mat-card>
-  <mat-card style="text-align: center;">
-    <mat-icon class="action" (click)="remove()">delete</mat-icon>
-  </mat-card>
-</div>
+          Required
+        </mat-error>
+      </mat-form-field>
+    </mat-card>
+    <mat-card
+      *ngIf="!userService.IsFSPUser"
+      fxFlex="0 1 calc(16% - 26px)"
+      style="text-align: center;"
+    >
+      <mat-checkbox formControlName="isNotUSPerson">NO USPER</mat-checkbox>
+    </mat-card>
+    <mat-card style="text-align: center;">
+      <mat-icon class="action" (click)="remove()">delete</mat-icon>
+    </mat-card>
+  </div>
+</form>

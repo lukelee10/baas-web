@@ -36,7 +36,12 @@ export class FileUploadInputFor {
     let files = this.element.nativeElement.files;
     this.onFileSelected.emit(files);
 
+    if (!files) {
+      return;
+    }
+
     for (var i = 0; i < files.length; i++) {
+      this.preview(files[i]);
       this._queue.add(files[i]);
     }
     this.element.nativeElement.value = '';
@@ -47,12 +52,27 @@ export class FileUploadInputFor {
     let files = event.dataTransfer.files;
     this.onFileSelected.emit(files);
 
+    if (!files) {
+      return;
+    }
+
     for (var i = 0; i < files.length; i++) {
+      this.preview(files[i]);
       this._queue.add(files[i]);
     }
     event.preventDefault();
     event.stopPropagation();
     this.element.nativeElement.value = '';
+  }
+
+  preview(file) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = event => {
+      Object.assign(file, {
+        preview: reader.result
+      });
+    };
   }
 
   @HostListener('dragover', ['$event'])

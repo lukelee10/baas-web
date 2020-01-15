@@ -1,2 +1,2 @@
-<app-non-fsp-requests *ngIf="showNonFSPVersion"></app-non-fsp-requests>
-<app-fsp-requests *ngIf="showFSPVersion"></app-fsp-requests>
+<app-non-fsp-requests *ngIf="!userService.IsFSPUser"></app-non-fsp-requests>
+<app-fsp-requests *ngIf="userService.IsFSPUser"></app-fsp-requests>

@@ -33,13 +33,14 @@
         placeholder="Select Classification"
         formControlName="selectClassification"
       >
-        <mat-option value="U">Unclassified</mat-option>
-        <mat-option value="U-FOUO"
-          >Unclassified - For Official Use Only</mat-option
+        <mat-option
+          *ngFor="
+            let classification of lookupStaticDataService.classificationTypesData
+          "
+          [value]="classification.value"
         >
-        <mat-option value="U-LES"
-          >Unclassified - Law Enforcement Sensitive</mat-option
-        >
+          {{ classification.label }}
+        </mat-option>
       </mat-select>
       <mat-icon matSuffix>assistant_photo</mat-icon>
       <mat-error *ngIf="!form.hasError('selectClassification')"
@@ -77,27 +78,48 @@
         <mat-card fxFlex="1 1 calc(10% - 10px)">
           <mat-card-title>Please choose a classification</mat-card-title>
           <mat-form-field>
-            <mat-select required>
+            <mat-select formControlName="filesClassification">
               <mat-option
-                *ngFor="let classification of classifications"
+                *ngFor="
+                  let classification of lookupStaticDataService.classificationTypesData
+                "
                 [value]="classification.value"
               >
-                {{ classification.viewValue }}
+                {{ classification.label }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="!form.hasError('selectClassification')">
+              Required
+            </mat-error>
           </mat-form-field>
         </mat-card>
       </div>
+    </div>
+    <mat-error style="font-size: 12px;" *ngIf="filesValidationError">
+      {{ filesValidationMessage }}
+    </mat-error>
+    <mat-hint style="font-size: 12px;" *ngIf="!filesValidationError">
+      {{ filesValidationMessage }}
+    </mat-hint>
+    <div>
+      <mat-hint style="font-size: 12px;">
+        Allowed file types are image/jpeg, image/png, image/jp2, image/bmp
+      </mat-hint>
+    </div>
+    <div>
+      <mat-hint style="font-size: 12px;">
+        {{ allowwedFileSize }}
+      </mat-hint>
     </div>
   </fieldset>
 
   <mat-file-upload-queue
     #fileUploadQueue
     [fileAlias]="'file'"
-    [httpUrl]="'http://localhost:8180/jax-rs-jersey-application-sample'"
     [httpRequestHeaders]="httpRequestHeaders"
     [httpRequestParams]="httpRequestParams"
     multiple
+    (eventOnUploadFilesListChanged)="UploadFilesListChanged($event)"
   >
     <mat-file-upload
       [file]="file"
@@ -109,7 +131,7 @@
   <button
     mat-raised-button
     color="primary"
-    [disabled]="!form.valid"
+    [disabled]="!form.valid || !IsFileUploadFormValid()"
     style="width: 250px;"
   >
     Submit Request

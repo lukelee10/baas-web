@@ -7,9 +7,15 @@ import { BytesPipe } from './bytes.pipe';
 import { FileUploadInputFor } from './fileUploadInputFor.directive';
 import { MatFileUpload } from './matFileUpload/matFileUpload.component';
 import { MatFileUploadQueue } from './matFileUploadQueue/matFileUploadQueue.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [MaterialModule, HttpClientModule, CommonModule],
+  imports: [
+    MaterialModule,
+    HttpClientModule,
+    CommonModule,
+    ReactiveFormsModule
+  ],
   declarations: [
     MatFileUpload,
     MatFileUploadQueue,

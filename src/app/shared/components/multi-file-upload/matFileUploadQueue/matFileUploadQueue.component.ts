@@ -1,12 +1,15 @@
-import { HttpHeaders, HttpParams } from '@angular/common/http';
 import {
+  AfterViewInit,
   Component,
   ContentChildren,
+  EventEmitter,
   forwardRef,
   Input,
+  Output,
   OnDestroy,
   QueryList
 } from '@angular/core';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { merge, Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
@@ -20,10 +23,9 @@ import { MatFileUpload } from './../matFileUpload/matFileUpload.component';
   templateUrl: `matFileUploadQueue.component.html`,
   exportAs: 'matFileUploadQueue'
 })
-export class MatFileUploadQueue implements OnDestroy {
-  @ContentChildren(forwardRef(() => MatFileUpload)) fileUploads: QueryList<
-    MatFileUpload
-  >;
+export class MatFileUploadQueue implements AfterViewInit, OnDestroy {
+  @ContentChildren(forwardRef(() => MatFileUpload))
+  fileUploads: QueryList<MatFileUpload>;
 
   /** Subscription to remove changes in files. */
   private _fileRemoveSubscription: Subscription | null;
@@ -35,6 +37,8 @@ export class MatFileUploadQueue implements OnDestroy {
   get fileUploadRemoveEvents(): Observable<MatFileUpload> {
     return merge(...this.fileUploads.map(fileUpload => fileUpload.removeEvent));
   }
+
+  @Output() eventOnUploadFilesListChanged = new EventEmitter();
 
   public files: Array<any> = [];
 
@@ -67,6 +71,7 @@ export class MatFileUploadQueue implements OnDestroy {
         if (this._fileRemoveSubscription) {
           this._fileRemoveSubscription.unsubscribe();
         }
+        this.eventOnUploadFilesListChanged.emit(this.fileUploads);
         this._listenTofileRemoved();
       });
   }
@@ -93,11 +98,8 @@ export class MatFileUploadQueue implements OnDestroy {
     this.files.splice(0, this.files.length);
   }
 
-  //This method needs to be updated so that it can be updated to S3
-  public submitRequests() {
-    this.fileUploads.forEach(fileUpload => {
-      fileUpload.upload();
-    });
+  getQueueData(): QueryList<MatFileUpload> {
+    return this.fileUploads;
   }
 
   ngOnDestroy() {

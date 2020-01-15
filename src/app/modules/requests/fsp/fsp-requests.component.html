@@ -54,15 +54,31 @@
         </span>
       </div>
     </div>
+    <mat-error style="font-size: 12px;" *ngIf="filesValidationError">
+      {{ filesValidationMessage }}
+    </mat-error>
+    <mat-hint style="font-size: 12px;" *ngIf="!filesValidationError">
+      {{ filesValidationMessage }}
+    </mat-hint>
+    <div>
+      <mat-hint style="font-size: 12px;">
+        Allowed file types are image/jpeg, image/png, image/jp2, image/bmp
+      </mat-hint>
+    </div>
+    <div>
+      <mat-hint style="font-size: 12px;">
+        {{ allowwedFileSize }}
+      </mat-hint>
+    </div>
   </fieldset>
 
   <mat-file-upload-queue
     #fileUploadQueue
     [fileAlias]="'file'"
-    [httpUrl]="'http://localhost:8180/jax-rs-jersey-application-sample'"
     [httpRequestHeaders]="httpRequestHeaders"
     [httpRequestParams]="httpRequestParams"
     multiple
+    (eventOnUploadFilesListChanged)="UploadFilesListChanged($event)"
   >
     <mat-file-upload
       [file]="file"
@@ -71,7 +87,12 @@
     ></mat-file-upload>
   </mat-file-upload-queue>
 
-  <button mat-raised-button color="primary" style="width: 250px;">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!form.valid || !IsFileUploadFormValid()"
+    style="width: 250px;"
+  >
     Submit Request
   </button>
 </form>
