@@ -1,19 +1,22 @@
-import { Injectable } from '@angular/core';
 import {
+  HttpErrorResponse,
   HttpEvent,
-  HttpInterceptor,
   HttpHandler,
-  HttpRequest,
-  HttpErrorResponse
+  HttpInterceptor,
+  HttpRequest
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
 
-import { AuthenticationService } from './../services/authentication.service';
 import { NotificationService } from './../../shared/services/notification.service';
-
 import { AppGlobalConstants } from './../app-global-constants';
+import {
+  AppMessage,
+  AppMessagesService
+} from './../services/app-messages.services';
+import { AuthenticationService } from './../services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +25,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private appMessagesService: AppMessagesService
   ) {}
 
   intercept(
@@ -40,9 +44,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           // server-side error
           if (error.status === AppGlobalConstants.TimeOutErrorCode) {
             this.notificationService.warning(
-              'You need to login back to continue your session',
-              'Session Timeout'
+              this.appMessagesService.getMessage(AppMessage.SessionTimeOut),
+              this.appMessagesService.getTitle(AppMessage.SessionTimeOut)
             );
+
             this.authenticationService.Logout();
             this.router.navigate(['/login']);
           } else {

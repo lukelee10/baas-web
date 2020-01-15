@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 /**
  * Interface to define the options for the Message dialog
@@ -39,6 +39,7 @@ export class MessageDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    // TODO  This logic doesn't look right, needs to be revisited.
     this.options = { ...this.data };
 
     if (this.options.success && !this.options.title) {
@@ -48,7 +49,7 @@ export class MessageDialogComponent implements OnInit {
     } else if (this.options.error && !this.options.title) {
       this.options.title = 'ERROR';
     } else {
-      this.options.title = 'SUCCESS';
+      this.options.title = 'BaaS Notification';
     }
   }
 

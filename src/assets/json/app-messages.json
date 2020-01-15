@@ -1,0 +1,12 @@
+[
+  {
+    "index": 1,
+    "title": "Session Timeout",
+    "message": "Your session has expired. Please log back in to continue your session."
+  },
+  {
+    "index": 2,
+    "title": "Sample Second Title ",
+    "message": "Sample Second Message"
+  }
+]
