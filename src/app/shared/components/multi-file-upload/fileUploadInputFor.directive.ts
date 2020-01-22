@@ -11,55 +11,62 @@ import {
  * A material design file upload queue component.
  */
 @Directive({
+  // the linting assumed all agnular directives are on custom component.
+  // This directive, however, is a add onto the native <input> and <div>
+  // tags in HTML The selector should be prefixed by "app"
+  // (https://angular.io/guide/styleguide#style-02-08) (directive-selector)
+  // tslint:disable-next-line: directive-selector
   selector: 'input[fileUploadInputFor], div[fileUploadInputFor]'
 })
-export class FileUploadInputFor {
-  private _queue: any = null;
-  private _element: HTMLElement;
-  @Output() public onFileSelected: EventEmitter<File[]> = new EventEmitter<
+export class FileUploadInputForDirective {
+  private queue: any = null;
+  private htmlElement: HTMLElement;
+  @Output() public FileSelected: EventEmitter<File[]> = new EventEmitter<
     File[]
   >();
 
   constructor(private element: ElementRef) {
-    this._element = this.element.nativeElement;
+    this.htmlElement = this.element.nativeElement;
   }
 
   @Input('fileUploadInputFor')
   set fileUploadQueue(value: any) {
     if (value) {
-      this._queue = value;
+      this.queue = value;
     }
   }
 
   @HostListener('change')
   public onChange(): any {
-    let files = this.element.nativeElement.files;
-    this.onFileSelected.emit(files);
+    const files = this.element.nativeElement.files;
+    this.FileSelected.emit(files);
 
     if (!files) {
       return;
     }
 
-    for (var i = 0; i < files.length; i++) {
-      this.preview(files[i]);
-      this._queue.add(files[i]);
+    for (const file of files) {
+      this.preview(file);
+      this.queue.add(file);
     }
+
     this.element.nativeElement.value = '';
   }
 
   @HostListener('drop', ['$event'])
   public onDrop(event: any): any {
-    let files = event.dataTransfer.files;
-    this.onFileSelected.emit(files);
+    const files = event.dataTransfer.files;
+    this.FileSelected.emit(files);
 
     if (!files) {
       return;
     }
 
-    for (var i = 0; i < files.length; i++) {
-      this.preview(files[i]);
-      this._queue.add(files[i]);
+    for (const file of files) {
+      this.preview(file);
+      this.queue.add(file);
     }
+
     event.preventDefault();
     event.stopPropagation();
     this.element.nativeElement.value = '';

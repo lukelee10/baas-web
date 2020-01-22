@@ -1,49 +1,42 @@
 import {
-  Component,
-  EventEmitter,
-  forwardRef,
-  Inject,
-  Input,
-  OnDestroy,
-  Output,
-  OnInit
-} from '@angular/core';
-import {
   HttpClient,
   HttpEventType,
   HttpHeaders,
   HttpParams
 } from '@angular/common/http';
 import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
+import {
+  FormBuilder,
   FormControl,
-  Validators,
   FormGroup,
-  FormBuilder
+  Validators
 } from '@angular/forms';
 
-import { MatFileUploadQueue } from '../matFileUploadQueue/matFileUploadQueue.component';
 import { environment } from './../../../../../environments/environment';
-
-import { LookupStaticDataService } from './../../../services/lookup-static-data.service';
 import { UserService } from './../../../../core/services/user.service';
+import { LookupStaticDataService } from './../../../services/lookup-static-data.service';
+import { MatFileUploadQueueComponent } from './../matFileUploadQueue/matFileUploadQueue.component';
 
-/**
- * A material design file upload component.
- */
 @Component({
-  selector: 'mat-file-upload',
+  selector: 'app-mat-file-upload',
   templateUrl: `./matFileUpload.component.html`,
-  exportAs: 'matFileUpload',
-  host: {
-    class: 'mat-file-upload'
-  },
+  exportAs: 'MatFileUploadComponent',
   styleUrls: ['./../matFileUploadQueue.scss']
 })
-export class MatFileUpload implements OnDestroy, OnInit {
+export class MatFileUploadComponent implements OnDestroy, OnInit {
   fileUploadFormGroup: FormGroup;
 
   // TODO -- we can clean the following
-  public isUploading: boolean = false;
+  public isUploading = false;
 
   /* Http request input bindings */
   @Input()
@@ -61,37 +54,37 @@ export class MatFileUpload implements OnDestroy, OnInit {
       } = new HttpParams();
 
   @Input()
-  fileAlias: string = 'file';
+  fileAlias = 'file';
 
   /** Output  */
-  @Output() removeEvent = new EventEmitter<MatFileUpload>();
-  @Output() onUpload = new EventEmitter();
+  @Output() removeEvent = new EventEmitter<MatFileUploadComponent>();
+  @Output() handleUpload = new EventEmitter();
 
-  public progressPercentage: number = 0;
-  public loaded: number = 0;
-  public total: number = 0;
-  private _file: any;
-  private _id: number;
+  public progressPercentage = 0;
+  public loaded = 0;
+  public total = 0;
+  private file: any;
+  private id: number;
   private fileUploadSubscription: any;
   private fileUploadUrl: any;
   invalidFileSizeMsg: string;
   invalidFileTypeMsg: string;
 
   @Input()
-  get file(): any {
-    return this._file;
+  get File(): any {
+    return this.file;
   }
-  set file(file: any) {
-    this._file = file;
-    this.total = this._file.size;
+  set File(file: any) {
+    this.file = file;
+    this.total = this.file.size;
   }
 
   @Input()
-  set id(id: number) {
-    this._id = id;
+  set Id(id: number) {
+    this.id = id;
   }
-  get id(): number {
-    return this._id;
+  get Id(): number {
+    return this.id;
   }
 
   get FileUploadUrl(): any {
@@ -102,9 +95,9 @@ export class MatFileUpload implements OnDestroy, OnInit {
   }
 
   constructor(
-    private HttpClient: HttpClient,
-    @Inject(forwardRef(() => MatFileUploadQueue))
-    public matFileUploadQueue: MatFileUploadQueue,
+    private httpClient: HttpClient,
+    @Inject(forwardRef(() => MatFileUploadQueueComponent))
+    public matFileUploadQueue: MatFileUploadQueueComponent,
     private formBuilder: FormBuilder,
     public userService: UserService,
     public lookupStaticDataService: LookupStaticDataService
@@ -128,37 +121,35 @@ export class MatFileUpload implements OnDestroy, OnInit {
   public upload(): void {
     this.isUploading = true;
     // How to set the alias?
-    let formData = new FormData();
-    formData.set(this.fileAlias, this._file, this._file.name);
-    this.fileUploadSubscription = this.HttpClient.post(
-      this.fileUploadUrl,
-      formData,
-      {
+    const formData = new FormData();
+    formData.set(this.fileAlias, this.file, this.file.name);
+    this.fileUploadSubscription = this.httpClient
+      .post(this.fileUploadUrl, formData, {
         headers: this.httpRequestHeaders,
         observe: 'events',
         params: this.httpRequestParams,
         reportProgress: true,
         responseType: 'json'
-      }
-    ).subscribe(
-      (event: any) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progressPercentage = Math.floor(
-            (event.loaded * 100) / event.total
-          );
-          this.loaded = event.loaded;
-          this.total = event.total;
+      })
+      .subscribe(
+        (event: any) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progressPercentage = Math.floor(
+              (event.loaded * 100) / event.total
+            );
+            this.loaded = event.loaded;
+            this.total = event.total;
+          }
+          this.handleUpload.emit({ file: this.file, event });
+        },
+        (error: any) => {
+          if (this.fileUploadSubscription) {
+            this.fileUploadSubscription.unsubscribe();
+          }
+          this.isUploading = false;
+          this.handleUpload.emit({ file: this.file, event });
         }
-        this.onUpload.emit({ file: this._file, event: event });
-      },
-      (error: any) => {
-        if (this.fileUploadSubscription) {
-          this.fileUploadSubscription.unsubscribe();
-        }
-        this.isUploading = false;
-        this.onUpload.emit({ file: this._file, event: event });
-      }
-    );
+      );
   }
 
   IsFileValidSize(): boolean {
@@ -201,6 +192,6 @@ export class MatFileUpload implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    console.log('file ' + this._file.name + ' destroyed...');
+    console.log('file ' + this.file.name + ' destroyed...');
   }
 }

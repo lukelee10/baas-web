@@ -4,7 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from './../../../../environments/environment';
 
-import { MatFileUploadQueue } from './../../../shared/components/multi-file-upload/matFileUploadQueue/matFileUploadQueue.component';
+// tslint:disable-next-line: max-line-length
+import { MatFileUploadQueueComponent } from './../../../shared/components/multi-file-upload/matFileUploadQueue/matFileUploadQueue.component';
 
 import { LookupStaticDataService } from './../../../shared/services/lookup-static-data.service';
 
@@ -16,8 +17,8 @@ import { requireCheckboxesToBeCheckedValidator } from '../../../shared/require-c
   styleUrls: ['./non-fsp-requests.component.scss']
 })
 export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
-  @ViewChild(MatFileUploadQueue, { static: false })
-  private matFileUploadQueueComponent: MatFileUploadQueue;
+  @ViewChild(MatFileUploadQueueComponent, { static: false })
+  private matFileUploadQueueComponent: MatFileUploadQueueComponent;
   filesValidationError: boolean;
   allowwedFileSize = `File cannot be more than ${environment.MaxFileSizeForPackage} MB size`;
 

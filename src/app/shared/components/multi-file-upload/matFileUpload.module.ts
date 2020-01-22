@@ -4,9 +4,9 @@ import { NgModule } from '@angular/core';
 
 import { MaterialModule } from '../../material.module';
 import { BytesPipe } from './bytes.pipe';
-import { FileUploadInputFor } from './fileUploadInputFor.directive';
-import { MatFileUpload } from './matFileUpload/matFileUpload.component';
-import { MatFileUploadQueue } from './matFileUploadQueue/matFileUploadQueue.component';
+import { FileUploadInputForDirective } from './fileUploadInputFor.directive';
+import { MatFileUploadComponent } from './matFileUpload/matFileUpload.component';
+import { MatFileUploadQueueComponent } from './matFileUploadQueue/matFileUploadQueue.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -17,11 +17,16 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ],
   declarations: [
-    MatFileUpload,
-    MatFileUploadQueue,
-    FileUploadInputFor,
+    MatFileUploadComponent,
+    MatFileUploadQueueComponent,
+    FileUploadInputForDirective,
     BytesPipe
   ],
-  exports: [MatFileUpload, MatFileUploadQueue, FileUploadInputFor, BytesPipe]
+  exports: [
+    MatFileUploadComponent,
+    MatFileUploadQueueComponent,
+    FileUploadInputForDirective,
+    BytesPipe
+  ]
 })
 export class MatFileUploadModule {}

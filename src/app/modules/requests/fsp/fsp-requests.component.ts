@@ -3,7 +3,8 @@ import { ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 
-import { MatFileUploadQueue } from './../../../shared/components/multi-file-upload/matFileUploadQueue/matFileUploadQueue.component';
+// tslint:disable-next-line: max-line-length
+import { MatFileUploadQueueComponent } from './../../../shared/components/multi-file-upload/matFileUploadQueue/matFileUploadQueue.component';
 import { environment } from './../../../../environments/environment';
 
 @Component({
@@ -11,8 +12,8 @@ import { environment } from './../../../../environments/environment';
   templateUrl: './fsp-requests.component.html'
 })
 export class FspRequestsComponent implements OnInit, AfterContentChecked {
-  @ViewChild(MatFileUploadQueue, { static: false })
-  private matFileUploadQueueComponent: MatFileUploadQueue;
+  @ViewChild(MatFileUploadQueueComponent, { static: false })
+  private matFileUploadQueueComponent: MatFileUploadQueueComponent;
   filesValidationError: boolean;
   allowwedFileSize = `File cannot be more than ${environment.MaxFileSizeForPackage} MB size`;
   filesValidationMessage: string;

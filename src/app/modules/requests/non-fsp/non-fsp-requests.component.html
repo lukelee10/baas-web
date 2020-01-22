@@ -113,7 +113,7 @@
     </div>
   </fieldset>
 
-  <mat-file-upload-queue
+  <app-mat-file-upload-queue
     #fileUploadQueue
     [fileAlias]="'file'"
     [httpRequestHeaders]="httpRequestHeaders"
@@ -121,12 +121,12 @@
     multiple
     (eventOnUploadFilesListChanged)="UploadFilesListChanged($event)"
   >
-    <mat-file-upload
-      [file]="file"
-      [id]="i"
+    <app-mat-file-upload
+      [File]="file"
+      [Id]="i"
       *ngFor="let file of fileUploadQueue.files; let i = index"
-    ></mat-file-upload>
-  </mat-file-upload-queue>
+    ></app-mat-file-upload>
+  </app-mat-file-upload-queue>
 
   <button
     mat-raised-button
