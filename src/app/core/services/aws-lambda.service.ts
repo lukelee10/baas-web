@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from './../../../environments/environment';
 import { BaaSUser } from './../../shared/models/user';
+import { RequestModel } from './../../modules/models/request-model';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,15 @@ export class AwsLambdaService {
 
   confirmPassword(newCredential: any) {
     return this.http.post(`${this.apiBase}/forgotpassword`, newCredential);
+  }
+
+  createRequestPackage(requestModel: RequestModel) {
+    return this.http.post(this.apiBase + '/requests', {
+      package: requestModel
+    });
+  }
+
+  deleteRequestPackage(requestId: string) {
+    return this.http.delete(this.apiBase + `/requests?requestId=${requestId}`);
   }
 }

@@ -92,6 +92,7 @@
     color="primary"
     [disabled]="!form.valid || !IsFileUploadFormValid()"
     style="width: 250px;"
+    (click)="onSubmitRequest()"
   >
     Submit Request
   </button>

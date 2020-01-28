@@ -10,7 +10,6 @@ import {
   forwardRef,
   Inject,
   Input,
-  OnDestroy,
   OnInit,
   Output
 } from '@angular/core';
@@ -26,13 +25,15 @@ import { UserService } from './../../../../core/services/user.service';
 import { LookupStaticDataService } from './../../../services/lookup-static-data.service';
 import { MatFileUploadQueueComponent } from './../matFileUploadQueue/matFileUploadQueue.component';
 
+import { PackageFileModel } from './../../../../modules/models/package-file-model';
+
 @Component({
   selector: 'app-mat-file-upload',
   templateUrl: `./matFileUpload.component.html`,
   exportAs: 'MatFileUploadComponent',
   styleUrls: ['./../matFileUploadQueue.scss']
 })
-export class MatFileUploadComponent implements OnDestroy, OnInit {
+export class MatFileUploadComponent implements OnInit {
   fileUploadFormGroup: FormGroup;
 
   // TODO -- we can clean the following
@@ -184,14 +185,23 @@ export class MatFileUploadComponent implements OnDestroy, OnInit {
     );
   }
 
+  public GetPackageFileModel(): PackageFileModel {
+    const packageFileModel: PackageFileModel = {
+      ID: this.id,
+      FileName: this.file.name,
+      FileType: this.file.type,
+      FileSize: this.file.size,
+      IsNotUSPerson: this.fileUploadFormGroup.value.isNotUSPerson,
+      Modality: this.fileUploadFormGroup.value.modalityControl
+    };
+
+    return packageFileModel;
+  }
+
   public remove(): void {
     if (this.fileUploadSubscription) {
       this.fileUploadSubscription.unsubscribe();
     }
     this.removeEvent.emit(this);
-  }
-
-  ngOnDestroy() {
-    console.log('file ' + this.file.name + ' destroyed...');
   }
 }
