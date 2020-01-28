@@ -48,7 +48,9 @@
       >
     </mat-form-field>
   </div>
-  <app-provider-checkboxes></app-provider-checkboxes>
+  <app-provider-checkboxes
+    (eventOnProvidersSelection)="ProvidersSelectionChanged($event)"
+  ></app-provider-checkboxes>
 
   <div fxLayout="row" style="padding: 1% 15%;"></div>
   <fieldset style="margin-left: 15%; margin-right: 35%;">

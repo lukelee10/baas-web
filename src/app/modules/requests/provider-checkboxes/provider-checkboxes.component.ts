@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
@@ -12,6 +12,8 @@ import { Provider } from '../../../shared/models/provider';
 })
 export class ProviderCheckboxesComponent implements OnInit {
   public providersViewModel: Provider[] = [];
+  public selectedProviders: Provider[] = [];
+  @Output() eventOnProvidersSelection = new EventEmitter();
   formProviders: FormGroup;
   minRequired = 1;
   showFooter = true;
@@ -40,13 +42,18 @@ export class ProviderCheckboxesComponent implements OnInit {
     );
   }
 
-  private isValidForm(formArray: FormArray) {
+  isValidForm(): boolean {
+    const formArray = this.formProviders.get('providerControls') as FormArray;
     let checked = 0;
+    let index = 0;
+    this.selectedProviders = [];
     Object.keys(formArray.controls).forEach(key => {
       const control = formArray.controls[key];
       if (control.value === true) {
         checked++;
+        this.selectedProviders.push(this.providersViewModel[index]);
       }
+      index++;
     });
     if (checked >= this.minRequired) {
       return true;
@@ -54,19 +61,12 @@ export class ProviderCheckboxesComponent implements OnInit {
     return false;
   }
 
-  private subscribeStatusChanges() {
-    this.formProviders.controls.providerControls.statusChanges.subscribe(
-      s => {
-        const fArr = this.formProviders.get('providerControls') as FormArray;
-        this.showFooter = this.isValidForm(fArr) ? false : true;
-      },
-      e => {
-        this.notificationService.debugLogging(e);
-      },
-      () => {
-        this.notificationService.debugLogging('complete');
-      }
-    );
+  toggleAllSelection() {
+    const formArray = this.formProviders.get('providerControls') as FormArray;
+    Object.keys(formArray.controls).forEach(key => {
+      const control = formArray.controls[key];
+      control.value = control.value ? false : true;
+    });
   }
 
   private getViewModelProviders(providers: any): void {
@@ -79,10 +79,28 @@ export class ProviderCheckboxesComponent implements OnInit {
     }
   }
 
-  createProviderCheckBoxes() {
+  private createProviderCheckBoxes() {
     const arr = this.providersViewModel.map(provider => {
-      return new FormControl(false);
+      const fc = new FormControl(false);
+
+      return fc;
     });
     return new FormArray(arr);
+  }
+
+  private subscribeStatusChanges() {
+    this.formProviders.controls.providerControls.statusChanges.subscribe(
+      s => {
+        const fArr = this.formProviders.get('providerControls') as FormArray;
+        this.showFooter = this.isValidForm() ? false : true;
+        this.eventOnProvidersSelection.emit(this.selectedProviders);
+      },
+      e => {
+        this.notificationService.debugLogging(e);
+      },
+      () => {
+        this.notificationService.debugLogging('complete');
+      }
+    );
   }
 }

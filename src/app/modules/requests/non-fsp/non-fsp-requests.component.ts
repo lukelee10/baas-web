@@ -1,15 +1,18 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ChangeDetectorRef, AfterContentChecked } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { environment } from './../../../../environments/environment';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { environment } from './../../../../environments/environment';
 // tslint:disable-next-line: max-line-length
 import { MatFileUploadQueueComponent } from './../../../shared/components/multi-file-upload/matFileUploadQueue/matFileUploadQueue.component';
-
 import { LookupStaticDataService } from './../../../shared/services/lookup-static-data.service';
-
-import { requireCheckboxesToBeCheckedValidator } from '../../../shared/require-checkboxes-to-be-checked.validator';
 
 @Component({
   selector: 'app-non-fsp-requests',
@@ -42,16 +45,7 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
   form = new FormGroup({
     packageTitle: new FormControl('', Validators.required),
     selectClassification: new FormControl('', Validators.required),
-    filesClassification: new FormControl('', Validators.required),
-    vettingCheckBoxGroup: new FormGroup(
-      {
-        vettingLowBall: new FormControl(false),
-        vetting3LA: new FormControl(false),
-        vettingABIS: new FormControl(false),
-        vettingHIGHTOP: new FormControl(false)
-      },
-      requireCheckboxesToBeCheckedValidator()
-    )
+    filesClassification: new FormControl('', Validators.required)
   });
 
   filesValidationMessage: string;
@@ -82,7 +76,7 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
 
     if (numberOfFiles > environment.MaxFileCountForPackage) {
       this.filesValidationError = true;
-      this.filesValidationMessage = `Selected ${numberOfFiles} files, 
+      this.filesValidationMessage = `Selected ${numberOfFiles} files,
         Not more than ${environment.MaxFileCountForPackage} files to create a Package`;
     } else if (
       numberOfFiles &&
@@ -91,6 +85,14 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
       this.filesValidationError = false;
       this.filesValidationMessage = `Number of Files in Package: ${numberOfFiles}`;
     }
+  }
+
+  ProvidersSelectionChanged(providers: any) {
+    console.log('========VETTING SELECTION START >> ==');
+    providers.forEach(provider => {
+      console.log('Selected Provider:' + provider.ProviderId);
+    });
+    console.log('========VETTING SELECTION END << ==');
   }
 
   IsFileUploadFormValid(): boolean {
