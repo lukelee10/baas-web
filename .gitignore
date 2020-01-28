@@ -48,3 +48,21 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# executable and cert files
+*.exe
+*.jar
+*.iso
+*.zip
+*.tar
+*.so
+*.ko
+*.dll
+*.pyc
+*.msi
+*.war
+*.jsk
+*.pem
+*.p12
+*.pfx
+*.class
