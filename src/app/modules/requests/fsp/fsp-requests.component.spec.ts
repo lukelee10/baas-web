@@ -30,7 +30,13 @@ import { FspRequestsComponent } from './fsp-requests.component';
 // Mocking FSP User
 class MockUserService extends UserService {
   get Role(): string {
-    return UserRoles.FSPUser;
+    return UserRoles.NonFSPUser;
+  }
+  get UserId(): string {
+    return 'admin@baas.devver1';
+  }
+  get Group(): string {
+    return 'DEFAULT';
   }
 }
 
@@ -134,7 +140,8 @@ describe('##RequestsComponent::(*FSP Version):', () => {
     expect(fspComponentInstance.form.valid).toBeFalsy();
   });
 
-  it('Verify when one valid file is added, form must be vlaid', () => {
+  it('Verify the form is invalid, when none of the required fields were set', () => {
+    // the component has just been initilized, none of the required fields were set --> form is empty --> form is Invalid
     matFileUploadQueueComponentInstance.add(testImage);
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
@@ -142,35 +149,25 @@ describe('##RequestsComponent::(*FSP Version):', () => {
     expect(fspComponentInstance.IsFileUploadFormValid()).toBeTruthy();
   });
 
-  it('Verify when no file is added, form must be invlaid', () => {
+  it('Verify when no file is added, IsFileUploadFormValid must be false', () => {
+    // No files are added
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
     );
     expect(fspComponentInstance.IsFileUploadFormValid()).toBeFalsy();
   });
 
-  it('Verify when the number of files attached exceed max allowed, form must be invalid ', () => {
-    for (let i = 0; i < environment.MaxFileCountForPackage + 2; i++) {
-      matFileUploadQueueComponentInstance.add(testImage);
-    }
+  it('Verify when one file is added, IsFileUploadFormValid must be true', () => {
+    // One file is added
+    matFileUploadQueueComponentInstance.add(testImage);
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
     );
-    expect(fspComponentInstance.IsFileUploadFormValid()).toBeFalsy();
-  });
-
-  it('Verify when the number of files attached exceed max allowed, form must be invalid ', () => {
-    for (let i = 0; i < environment.MaxFileCountForPackage + 2; i++) {
-      matFileUploadQueueComponentInstance.add(testImage);
-    }
-    fspComponentInstance.UploadFilesListChanged(
-      matFileUploadQueueComponentInstance.getQueueData()
-    );
-    fspFixture.detectChanges();
-    expect(fspComponentInstance.IsFileUploadFormValid()).toBeFalsy();
+    expect(fspComponentInstance.IsFileUploadFormValid()).toBeTruthy();
   });
 
   it('Test UploadFilesListChanged when an invalid image is uploaded ', () => {
+    // One file is added
     matFileUploadQueueComponentInstance.add(testImage);
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
@@ -178,5 +175,57 @@ describe('##RequestsComponent::(*FSP Version):', () => {
     fspFixture.detectChanges();
     // testImage is not valid image
     expect(fspComponentInstance.IsFileUploadFormValid()).toBeFalsy();
+  });
+
+  it('Verify when the number of files attached exceed max allowed,  IsFileUploadFormValid must be false ', () => {
+    // add MaxFileCountForPackage + 2 files
+    for (let i = 0; i < environment.MaxFileCountForPackage + 2; i++) {
+      matFileUploadQueueComponentInstance.add(testImage);
+    }
+    fspComponentInstance.UploadFilesListChanged(
+      matFileUploadQueueComponentInstance.getQueueData()
+    );
+    fspFixture.detectChanges();
+    expect(fspComponentInstance.IsFileUploadFormValid()).toBeFalsy();
+  });
+
+  it('Verify on submit prepareThePackage method is called', () => {
+    // One file is added
+    matFileUploadQueueComponentInstance.add(testImage);
+    fspComponentInstance.UploadFilesListChanged(
+      matFileUploadQueueComponentInstance.getQueueData()
+    );
+    const prepareThePackageSpy = spyOn(
+      fspComponentInstance,
+      'prepareThePackage'
+    );
+    fspComponentInstance.onSubmitRequest();
+    expect(prepareThePackageSpy).toHaveBeenCalled();
+  });
+
+  it('Verify on submit submitThePackage method is called when one file added', () => {
+    // One file is added
+    matFileUploadQueueComponentInstance.add(testImage);
+    fspComponentInstance.UploadFilesListChanged(
+      matFileUploadQueueComponentInstance.getQueueData()
+    );
+    fspFixture.detectChanges();
+    const submitThePackageSpy = spyOn(fspComponentInstance, 'submitThePackage');
+    fspComponentInstance.onSubmitRequest();
+    expect(submitThePackageSpy).toHaveBeenCalled();
+  });
+
+  it('Verify on submit submitThePackage method is called when multiple files added', () => {
+    // two files are added
+    matFileUploadQueueComponentInstance.add(testImage);
+    matFileUploadQueueComponentInstance.add(testImage);
+
+    fspComponentInstance.UploadFilesListChanged(
+      matFileUploadQueueComponentInstance.getQueueData()
+    );
+    fspFixture.detectChanges();
+    const submitThePackageSpy = spyOn(fspComponentInstance, 'submitThePackage');
+    fspComponentInstance.onSubmitRequest();
+    expect(submitThePackageSpy).toHaveBeenCalled();
   });
 });

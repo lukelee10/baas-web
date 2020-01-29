@@ -102,17 +102,16 @@ describe('##Vetting Systems (Provider) Checkboxes Control:', () => {
     providerComponentFixture = TestBed.createComponent(
       ProviderCheckboxesComponent
     );
-
     providerComponentInstance = providerComponentFixture.componentInstance;
     providerComponentFixture.whenStable().then(() => {
-      providerComponentInstance.ngOnInit();
+      providerComponentFixture.detectChanges(); // will trigger ngOnInit
     });
   });
 
   it('Test Providers Lambdacall on ngOnInit', async(() => {
     providerComponentFixture.detectChanges();
     providerComponentFixture.whenStable().then(() => {
-      expect(providerComponentInstance.providersViewModel.length).toEqual(8);
+      expect(providerComponentInstance.providersViewModel.length).toEqual(4);
     });
   }));
 
@@ -127,21 +126,18 @@ describe('##Vetting Systems (Provider) Checkboxes Control:', () => {
     providerComponentFixture.whenStable().then(() => {
       providerComponentInstance.toggleAllSelection();
       const isFormValid = providerComponentInstance.isValidForm();
-      // providerComponentFixture.detectChanges();
       expect(isFormValid).toBeTruthy();
     });
   }));
 
-  it('Test subscribeStatusChanges', async(() => {
+  it('Verify the form is valid, when all the vetting systems selected', async(() => {
     providerComponentFixture.whenStable().then(() => {
-      const privateSpy = spyOn<any>(
-        providerComponentInstance,
-        'subscribeStatusChanges'
-      );
-      providerComponentFixture.detectChanges();
+      const privateSpy = spyOn<any>(providerComponentInstance, 'isValidForm');
+      // toggleAllSelection(): Will select all the vetting systems
+      // If one or more vetting system is selected then the form is valid.
       providerComponentInstance.toggleAllSelection();
       providerComponentFixture.detectChanges();
-      expect(privateSpy).toHaveBeenCalled();
+      expect(providerComponentInstance.isValidForm).toHaveBeenCalled();
     });
   }));
 });

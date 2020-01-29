@@ -64,8 +64,12 @@ export class ProviderCheckboxesComponent implements OnInit {
   toggleAllSelection() {
     const formArray = this.formProviders.get('providerControls') as FormArray;
     Object.keys(formArray.controls).forEach(key => {
-      const control = formArray.controls[key];
-      control.value = control.value ? false : true;
+      const control = formArray.controls[key] as FormControl;
+      if (control.value === true) {
+        control.setValue(false);
+      } else {
+        control.setValue(true);
+      }
     });
   }
 

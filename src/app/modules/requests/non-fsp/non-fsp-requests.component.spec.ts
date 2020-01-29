@@ -32,6 +32,12 @@ class MockUserService extends UserService {
   get Role(): string {
     return UserRoles.NonFSPUser;
   }
+  get UserId(): string {
+    return 'admin@baas.devver1';
+  }
+  get Group(): string {
+    return 'DEFAULT';
+  }
 }
 
 // Test Suite: describe blocks define a test suite
@@ -141,27 +147,41 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
     expect(fspElement).toBeFalsy();
   });
 
-  it('Verify when form is invalid is it is empty', () => {
+  it('Verify the form is invalid, when none of the required fields were set', () => {
+    // the component has just been initilized, none of the required fields were set --> form is empty --> form is Invalid
     expect(nonFSPComponentInstance.form.valid).toBeFalsy();
   });
 
-  it('Verify when one valid file is added, form must be vlaid', () => {
-    matFileUploadQueueComponentInstance.add(testImage);
-    nonFSPComponentInstance.UploadFilesListChanged(
-      matFileUploadQueueComponentInstance.getQueueData()
-    );
-
-    expect(nonFSPComponentInstance.IsFileUploadFormValid()).toBeTruthy();
-  });
-
-  it('Verify when no file is added, form must be invlaid', () => {
+  it('Verify when no file is added, IsFileUploadFormValid must be false', () => {
+    // No files are added
     nonFSPComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
     );
     expect(nonFSPComponentInstance.IsFileUploadFormValid()).toBeFalsy();
   });
 
-  it('Verify when the number of files attached exceed max allowed, form must be invalid ', () => {
+  it('Verify when one file is added, IsFileUploadFormValid must be true', () => {
+    // One file is added
+    matFileUploadQueueComponentInstance.add(testImage);
+    nonFSPComponentInstance.UploadFilesListChanged(
+      matFileUploadQueueComponentInstance.getQueueData()
+    );
+    expect(nonFSPComponentInstance.IsFileUploadFormValid()).toBeTruthy();
+  });
+
+  it('Test UploadFilesListChanged when an invalid image is uploaded ', () => {
+    // One file is added
+    matFileUploadQueueComponentInstance.add(testImage);
+    nonFSPComponentInstance.UploadFilesListChanged(
+      matFileUploadQueueComponentInstance.getQueueData()
+    );
+    nonFSPFixture.detectChanges();
+    // testImage is not valid image
+    expect(nonFSPComponentInstance.IsFileUploadFormValid()).toBeFalsy();
+  });
+
+  it('Verify when the number of files attached exceed max allowed,  IsFileUploadFormValid must be false ', () => {
+    // add MaxFileCountForPackage + 2 files
     for (let i = 0; i < environment.MaxFileCountForPackage + 2; i++) {
       matFileUploadQueueComponentInstance.add(testImage);
     }
@@ -172,24 +192,61 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
     expect(nonFSPComponentInstance.IsFileUploadFormValid()).toBeFalsy();
   });
 
-  it('Test UploadFilesListChanged when an invalid image is uploaded ', () => {
-    matFileUploadQueueComponentInstance.add(testImage);
-    nonFSPComponentInstance.UploadFilesListChanged(
-      matFileUploadQueueComponentInstance.getQueueData()
-    );
-    nonFSPFixture.detectChanges();
-    // testImage is not valid image
-    expect(nonFSPComponentInstance.IsFileUploadFormValid()).toBeFalsy();
-  });
-
-  it('Test ProvidersSelectionChanged Event When One Provider Selected ', () => {
+  it('Test ProvidersSelectionChanged Event Triggered When One Provider Selected ', () => {
+    // mock one vetting system is selected
     mockSelectedProviders.push({
       ProviderId: 'ABIS',
       AdapterId: 'ABIS',
       Description: 'ABIS Biometrics Provider'
     });
-    spyOn(console, 'log').and.callThrough();
     nonFSPComponentInstance.ProvidersSelectionChanged(mockSelectedProviders);
-    expect(console.log).toHaveBeenCalled();
+    // When rovidersSelectionChanged Event Triggered nonFSPComponentInstance.vettingSystems.length must be greater than 0
+    expect(nonFSPComponentInstance.vettingSystems.length > 0).toBeTruthy();
+  });
+
+  it('Verify on submit prepareThePackage method is called', () => {
+    // One file is added
+    matFileUploadQueueComponentInstance.add(testImage);
+    nonFSPComponentInstance.UploadFilesListChanged(
+      matFileUploadQueueComponentInstance.getQueueData()
+    );
+    const prepareThePackageSpy = spyOn(
+      nonFSPComponentInstance,
+      'prepareThePackage'
+    );
+    nonFSPComponentInstance.onSubmitRequest();
+    expect(prepareThePackageSpy).toHaveBeenCalled();
+  });
+
+  it('Verify on submit submitThePackage method is called when one file added', () => {
+    // One file is added
+    matFileUploadQueueComponentInstance.add(testImage);
+    nonFSPComponentInstance.UploadFilesListChanged(
+      matFileUploadQueueComponentInstance.getQueueData()
+    );
+    nonFSPFixture.detectChanges();
+    const submitThePackageSpy = spyOn(
+      nonFSPComponentInstance,
+      'submitThePackage'
+    );
+    nonFSPComponentInstance.onSubmitRequest();
+    expect(submitThePackageSpy).toHaveBeenCalled();
+  });
+
+  it('Verify on submit submitThePackage method is called when multiple files added', () => {
+    // two files are added
+    matFileUploadQueueComponentInstance.add(testImage);
+    matFileUploadQueueComponentInstance.add(testImage);
+
+    nonFSPComponentInstance.UploadFilesListChanged(
+      matFileUploadQueueComponentInstance.getQueueData()
+    );
+    nonFSPFixture.detectChanges();
+    const submitThePackageSpy = spyOn(
+      nonFSPComponentInstance,
+      'submitThePackage'
+    );
+    nonFSPComponentInstance.onSubmitRequest();
+    expect(submitThePackageSpy).toHaveBeenCalled();
   });
 });
