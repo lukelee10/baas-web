@@ -88,12 +88,6 @@ export class MatFileUploadQueueComponent implements OnDestroy, AfterViewInit {
     this.files.push(file);
   }
 
-  public uploadAll() {
-    this.fileUploads.forEach(fileUpload => {
-      fileUpload.upload();
-    });
-  }
-
   public removeAll() {
     this.files.splice(0, this.files.length);
   }

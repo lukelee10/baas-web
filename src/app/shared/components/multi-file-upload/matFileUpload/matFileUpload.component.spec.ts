@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController
@@ -25,13 +24,13 @@ class MockUserService extends UserService {
     return UserRoles.NonFSPUser;
   }
 }
+// MockMatFileUploadQueueComponent
+class MockMatFileUploadQueueComponent {}
 
 describe('MatFileUploadComponent', () => {
   let fixtureMUC: ComponentFixture<MatFileUploadComponent>;
   let fixtureComponentMUC: MatFileUploadComponent;
-
-  let fixtureMFU: ComponentFixture<MatFileUploadQueueComponent>;
-  let fixtureComponentMFU: MatFileUploadQueueComponent;
+  let httpClient: HttpTestingController;
 
   beforeEach(async(() => {
     // TestBed is the main utility available for Angular-specific testing.
@@ -47,15 +46,13 @@ describe('MatFileUploadComponent', () => {
         MatCardModule,
         HttpClientTestingModule
       ],
-      declarations: [
-        MatFileUploadComponent,
-        MatFileUploadQueueComponent,
-        BytesPipe
-      ],
+      declarations: [MatFileUploadComponent, BytesPipe],
       providers: [
-        { provide: HttpClient, useValue: HttpTestingController },
         { provide: UserService, useClass: MockUserService },
-        MatFileUploadQueueComponent
+        {
+          provide: MatFileUploadQueueComponent,
+          useClass: MockMatFileUploadQueueComponent
+        }
       ]
     }).compileComponents();
   }));
@@ -63,12 +60,16 @@ describe('MatFileUploadComponent', () => {
   beforeEach(() => {
     fixtureMUC = TestBed.createComponent(MatFileUploadComponent);
     fixtureComponentMUC = fixtureMUC.componentInstance;
-    fixtureComponentMUC.File =
-      '../../../../../assets/images/baas-logo-small.png';
+    // Assign a Image
+    fixtureComponentMUC.File = new File(['Foo34'], 'IMG-353.jpeg', {
+      type: 'image/jpeg'
+    });
+
+    fixtureComponentMUC.FileUploadUrl = '/abc';
+
     fixtureMUC.detectChanges();
-    fixtureMFU = TestBed.createComponent(MatFileUploadQueueComponent);
-    fixtureComponentMFU = fixtureMFU.componentInstance;
-    fixtureMFU.detectChanges();
+
+    httpClient = TestBed.get(HttpTestingController);
   });
 
   it('MatFileUploadComponent Instance needs to be created', () => {
@@ -76,5 +77,86 @@ describe('MatFileUploadComponent', () => {
       true,
       'should create MatFileUploadComponent'
     );
+  });
+
+  it('Testing the file size', () => {
+    expect(fixtureComponentMUC.IsFileValidSize()).toBe(
+      true,
+      'File size must be valid'
+    );
+  });
+
+  it('Testing the big file size', () => {
+    fixtureComponentMUC.File = new File(
+      [new Array(10 * 1024 * 1050).join('x')],
+      'IMG-3573.jpeg',
+      {
+        type: 'text/plain'
+      }
+    );
+    expect(fixtureComponentMUC.IsFileValidSize()).toBe(
+      false,
+      'Big file size must be invalid'
+    );
+  });
+
+  it('Remove method is called', async(() => {
+    fixtureComponentMUC.upload();
+    const mockReq = httpClient.expectOne('/abc');
+    mockReq.flush({ data: 'hello' });
+    expect(mockReq.cancelled).toBeTruthy();
+    httpClient.verify();
+    fixtureComponentMUC.remove();
+  }));
+
+  it('Remove method is called', async(() => {
+    fixtureComponentMUC.upload();
+    const mockReq = httpClient.expectOne('/abc');
+    mockReq.error(new ErrorEvent('ERROR'));
+    expect(mockReq.cancelled).toBeTruthy();
+    httpClient.verify();
+    fixtureComponentMUC.remove();
+  }));
+
+  it('Verify the form valid with right file attached', () => {
+    fixtureComponentMUC.fileUploadFormGroup
+      .get('modalityControl')
+      .setErrors(null);
+    expect(fixtureComponentMUC.IsFormValid()).toBe(
+      true,
+      'Form must be valid with right image file and modality'
+    );
+  });
+
+  it('Verify the form invalid with incorrect image file', () => {
+    fixtureComponentMUC.File = new File(['Foo35'], 'hello-world.docx', {
+      type: 'text/plain'
+    });
+    fixtureMUC.detectChanges();
+    expect(fixtureComponentMUC.IsFormValid()).toBe(
+      false,
+      'Form must be valid with right image file and modality'
+    );
+  });
+
+  it('Verify function GetPackageFileModel, File Name must not be empty after image is set', () => {
+    const pm = fixtureComponentMUC.GetPackageFileModel();
+    expect(pm.FileName.length > 0).toBe(
+      true,
+      'File Name must not be empty after image is set'
+    );
+  });
+
+  it('Verify the proper read FileUploadUrl property', () => {
+    const url = String(fixtureComponentMUC.FileUploadUrl);
+    expect(url.length > 0).toBe(
+      true,
+      'A valid FileUploadUrl String must be returned'
+    );
+  });
+
+  it('Verify the proper read Id property', () => {
+    const id = String(fixtureComponentMUC.Id);
+    expect(id.length > 0).toBe(true, 'A valid Id String must be returned');
   });
 });
