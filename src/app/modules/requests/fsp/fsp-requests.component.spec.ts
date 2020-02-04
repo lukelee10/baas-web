@@ -25,6 +25,9 @@ import { NonFspRequestsComponent } from '../non-fsp/non-fsp-requests.component';
 import { ProviderCheckboxesComponent } from '../provider-checkboxes/provider-checkboxes.component';
 import { RequestsComponent } from '../requests.component';
 import { FspRequestsComponent } from './fsp-requests.component';
+import { Observable, of, throwError } from 'rxjs';
+import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
+import { RequestModel } from './../../models/request-model';
 
 // Mock the SortService class, its method and return it with mock data
 // Mocking FSP User
@@ -46,6 +49,22 @@ describe('##RequestsComponent::(*FSP Version):', () => {
   let requestFixture: ComponentFixture<RequestsComponent>;
   let requestComponentInstance: RequestsComponent;
 
+  const AwsLambdaServiceMock: any = {
+    createRequestPackage(value: RequestModel): Observable<any> {
+      return value.name === 'InvalidPackage'
+        ? throwError({ status: 404 })
+        : of({ data: true });
+    },
+
+    deleteRequestPackage(value: string): Observable<any> {
+      return of({ data: true });
+    },
+
+    getProviders(): Observable<any> {
+      return of();
+    }
+  };
+
   let fspFixture: ComponentFixture<FspRequestsComponent>;
   let fspComponentInstance: FspRequestsComponent;
   let matFileUploadQueueComponentInstance: MatFileUploadQueueComponent;
@@ -63,6 +82,24 @@ describe('##RequestsComponent::(*FSP Version):', () => {
     const blob = new Blob([data]);
     const file = new File([blob], 'sample.png', {
       type: 'image/png',
+      lastModified: Date.now()
+    });
+    return file;
+  };
+
+  const invalidFile = (): File => {
+    // prettier-ignore
+    const data = new Uint8Array([
+        137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 8, 0,
+        0, 0, 8, 8, 2, 0, 0, 0, 75, 109, 41, 220,  0,  0,  0,  34,  73,  68,  65,  84,
+        8,  215,  99,  120,  173,  168,  135,  21,  49,  0,  241,  255,  15,  90,  104,
+        8,  33,  129,  83,  7,  97,  163,  136,  214,  129,  93,  2,  43,  2,  0,  181,
+        31,  90,  179,  225,  252,  176,  37,  0,  0,  0,  0,  73,  69,  78,  68,  174,
+        66,  96,  130
+    ]);
+    const blob = new Blob([data]);
+    const file = new File([blob], 'NotValideFile.txt', {
+      type: 'text/plain',
       lastModified: Date.now()
     });
     return file;
@@ -97,6 +134,7 @@ describe('##RequestsComponent::(*FSP Version):', () => {
         FileUploadInputForDirective
       ],
       providers: [
+        { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
         { provide: UserService, useClass: MockUserService },
         LookupStaticDataService
       ]
@@ -140,9 +178,24 @@ describe('##RequestsComponent::(*FSP Version):', () => {
     expect(fspComponentInstance.form.valid).toBeFalsy();
   });
 
+  it('Verify the form is invalid when there is no package title', () => {
+    fspComponentInstance.form.setValue({ packageTitle: '' });
+    fspFixture.detectChanges();
+
+    expect(fspComponentInstance.form.valid).toBeFalsy();
+  });
+
+  it('Verify the form is valid when there is package title', () => {
+    const packageTitle = 'Testing 0129 1215';
+    fspComponentInstance.form.setValue({ packageTitle });
+    fspFixture.detectChanges();
+
+    expect(fspComponentInstance.form.valid).toBeTruthy();
+  });
+
   it('Verify the form is invalid, when none of the required fields were set', () => {
     // the component has just been initilized, none of the required fields were set --> form is empty --> form is Invalid
-    matFileUploadQueueComponentInstance.add(testImage);
+    matFileUploadQueueComponentInstance.add(testImage());
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
     );
@@ -159,7 +212,7 @@ describe('##RequestsComponent::(*FSP Version):', () => {
 
   it('Verify when one file is added, IsFileUploadFormValid must be true', () => {
     // One file is added
-    matFileUploadQueueComponentInstance.add(testImage);
+    matFileUploadQueueComponentInstance.add(testImage());
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
     );
@@ -168,7 +221,7 @@ describe('##RequestsComponent::(*FSP Version):', () => {
 
   it('Test UploadFilesListChanged when an invalid image is uploaded ', () => {
     // One file is added
-    matFileUploadQueueComponentInstance.add(testImage);
+    matFileUploadQueueComponentInstance.add(testImage());
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
     );
@@ -180,7 +233,7 @@ describe('##RequestsComponent::(*FSP Version):', () => {
   it('Verify when the number of files attached exceed max allowed,  IsFileUploadFormValid must be false ', () => {
     // add MaxFileCountForPackage + 2 files
     for (let i = 0; i < environment.MaxFileCountForPackage + 2; i++) {
-      matFileUploadQueueComponentInstance.add(testImage);
+      matFileUploadQueueComponentInstance.add(testImage());
     }
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
@@ -191,7 +244,7 @@ describe('##RequestsComponent::(*FSP Version):', () => {
 
   it('Verify on submit prepareThePackage method is called', () => {
     // One file is added
-    matFileUploadQueueComponentInstance.add(testImage);
+    matFileUploadQueueComponentInstance.add(testImage());
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
     );
@@ -205,7 +258,7 @@ describe('##RequestsComponent::(*FSP Version):', () => {
 
   it('Verify on submit submitThePackage method is called when one file added', () => {
     // One file is added
-    matFileUploadQueueComponentInstance.add(testImage);
+    matFileUploadQueueComponentInstance.add(testImage());
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
     );
@@ -217,8 +270,8 @@ describe('##RequestsComponent::(*FSP Version):', () => {
 
   it('Verify on submit submitThePackage method is called when multiple files added', () => {
     // two files are added
-    matFileUploadQueueComponentInstance.add(testImage);
-    matFileUploadQueueComponentInstance.add(testImage);
+    matFileUploadQueueComponentInstance.add(testImage());
+    matFileUploadQueueComponentInstance.add(testImage());
 
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
@@ -228,4 +281,83 @@ describe('##RequestsComponent::(*FSP Version):', () => {
     fspComponentInstance.onSubmitRequest();
     expect(submitThePackageSpy).toHaveBeenCalled();
   });
+
+  it('Submit button not active when there is no file modality type', async(() => {
+    fspComponentInstance.form.setValue({ packageTitle: 'Testing 0203 1024' });
+    matFileUploadQueueComponentInstance.add(testImage());
+    fspFixture.detectChanges();
+    const button = fspFixture.debugElement.nativeElement.querySelectorAll(
+      'button'
+    )[0];
+    expect(button.disabled).toBeTruthy();
+  }));
+
+  it('Submit button not active when there is invalid file', async(() => {
+    fspComponentInstance.form.setValue({ packageTitle: 'Testing 0203 1024' });
+    matFileUploadQueueComponentInstance.add(invalidFile());
+    fspFixture.detectChanges();
+    const button = fspFixture.debugElement.nativeElement.querySelectorAll(
+      'button'
+    )[0];
+    expect(button.disabled).toBeTruthy();
+  }));
+
+  it('Submit button active when all valid data on the page', async(() => {
+    fspComponentInstance.form.setValue({ packageTitle: 'Testing 0203 1024' });
+    matFileUploadQueueComponentInstance.add(testImage());
+    fspFixture.detectChanges();
+
+    matFileUploadQueueComponentInstance.fileUploads.first.fileUploadFormGroup.setValue(
+      {
+        modalityControl: 'Face',
+        isNotUSPerson: true
+      }
+    );
+    fspFixture.detectChanges();
+
+    const button = fspFixture.debugElement.nativeElement.querySelectorAll(
+      'button'
+    )[0];
+    expect(button.disabled).toBeFalsy();
+  }));
+
+  it('Pressing Submit with valid data make sure call the mock service', async(() => {
+    fspComponentInstance.form.setValue({ packageTitle: 'Testing 0203 1024' });
+    matFileUploadQueueComponentInstance.add(testImage());
+    fspFixture.detectChanges();
+
+    matFileUploadQueueComponentInstance.fileUploads.first.fileUploadFormGroup.setValue(
+      {
+        modalityControl: 'Face',
+        isNotUSPerson: true
+      }
+    );
+    fspFixture.detectChanges();
+
+    const button = fspFixture.debugElement.nativeElement.querySelectorAll(
+      'button'
+    )[0];
+    expect(button.disabled).toBeFalsy();
+    button.click();
+  }));
+
+  it('Pressing Submit with valid data make sure call the mock service to throw error', async(() => {
+    fspComponentInstance.form.setValue({ packageTitle: 'InvalidPackage' });
+    matFileUploadQueueComponentInstance.add(testImage());
+    fspFixture.detectChanges();
+
+    matFileUploadQueueComponentInstance.fileUploads.first.fileUploadFormGroup.setValue(
+      {
+        modalityControl: 'Face',
+        isNotUSPerson: true
+      }
+    );
+    fspFixture.detectChanges();
+
+    const button = fspFixture.debugElement.nativeElement.querySelectorAll(
+      'button'
+    )[0];
+    expect(button.disabled).toBeFalsy();
+    button.click();
+  }));
 });

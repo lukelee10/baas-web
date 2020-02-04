@@ -198,16 +198,26 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
       'Package submission failed, rolling back the changes...'
     );
 
-    this.savedRequestIds.forEach(requestId => {
-      this.awsLambdaService.deleteRequestPackage(requestId).subscribe(
-        result => {
+    // ConcatMap
+    // One of the strategies to handle until the first completes before subscribing to the next one.
+    // For more info on RxJS, please browse https://www.learnrxjs.io/learn-rxjs/operators/transformation/concatmap
+    // and https://rxjs-dev.firebaseapp.com/api/operators/concatMap
+    from(this.savedRequestIds)
+      .pipe(
+        concatMap(requestId =>
+          this.awsLambdaService.deleteRequestPackage(requestId)
+        ),
+
+        finalize(() => {
           this.loaderService.Hide();
-        },
+        })
+      )
+      .subscribe(
+        result => {},
         error => {
-          this.loaderService.Hide();
+          this.notificationService.error('Failed while rolling back changes.');
         }
       );
-    });
   }
 
   private resetTheForm() {
