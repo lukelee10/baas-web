@@ -9,6 +9,7 @@ import {
   AppMessagesService
 } from './core/services/app-messages.services';
 import { AuthenticationService } from './core/services/authentication.service';
+import { UserService } from './core/services/user.service';
 import { NotificationService } from './shared/services/notification.service';
 
 @Component({
@@ -28,7 +29,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private notificationService: NotificationService,
-    private appMessagesService: AppMessagesService
+    private appMessagesService: AppMessagesService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -83,6 +85,8 @@ export class AppComponent implements OnInit {
         this.idle.stop();
       }
     });
+
+    this.userService.GetLatest();
   }
 
   private reset() {

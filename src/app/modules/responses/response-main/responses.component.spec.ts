@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+/*import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ResponsesComponent } from './responses.component';
 
@@ -22,3 +22,4 @@ describe('ResponsesComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+*/

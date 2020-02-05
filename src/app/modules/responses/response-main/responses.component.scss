@@ -1,0 +1,30 @@
+.response-head {
+  background-color: #3f51b5;
+  color: white !important;
+  font-weight: 500;
+  padding: 7px;
+  text-align: center;
+  border: 1px solid gray;
+  cursor: pointer;
+}
+.rotated {
+  writing-mode: tb-rl;
+  transform: rotate(-180deg);
+  font-weight: bold;
+  text-align: center;
+  padding: 12px;
+}
+.viewPackagesDiv {
+  background-color: #eaf2f8;
+  height: 795px;
+  overflow: hidden;
+}
+.viewImagesDiv {
+  background-color: #eaf2f8;
+  height: 800px;
+  overflow: hidden;
+  padding: 10px;
+}
+.searchContentsDiv {
+  background-color: #f4f6f6;
+}

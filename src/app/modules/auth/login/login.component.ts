@@ -14,6 +14,7 @@ import { UserService } from './../../../core/services/user.service';
 export class LoginComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
   passWord = new FormControl('', [Validators.required]);
+
   hide = true; // #password
   errorMessage: string;
 

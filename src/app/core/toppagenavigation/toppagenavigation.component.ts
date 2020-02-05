@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../services/authentication.service';
 import { AwsLambdaService } from '../services/aws-lambda.service';
+import { UserService } from '../services/user.service';
 import { NavItem } from './../../shared/models/nav-item';
 
 @Component({
@@ -18,7 +19,8 @@ export class TopPageNavigationComponent implements OnInit {
   constructor(
     private router: Router,
     private awsLambdaService: AwsLambdaService,
-    public authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -26,29 +28,34 @@ export class TopPageNavigationComponent implements OnInit {
   }
 
   private populateNavItems() {
-    this.navItems.push({
-      link: '/requests',
-      title: 'Submit Images',
-      icon: 'photo_library'
+    this.userService.SubscribeLatest.subscribe(onLatest => {
+      if (onLatest) {
+        this.navItems.push({
+          link: '/requests',
+          title: 'Submit Images',
+          icon: 'photo_library'
+        });
+        if (!this.userService.IsFSPUser) {
+          this.navItems.push({
+            link: '/responses',
+            title: 'View Responses',
+            icon: 'receipt'
+          });
+        }
+        this.navItems.push({
+          link: '/resources',
+          title: 'Resources',
+          icon: 'pages'
+        });
+        if (this.userService.IsAdmin && !this.userService.IsFSPUser) {
+          this.navItems.push({
+            link: '/admin',
+            title: 'Admin',
+            icon: 'supervisor_account'
+          });
+        }
+      }
     });
-    this.navItems.push({
-      link: '/responses',
-      title: 'View Responses',
-      icon: 'receipt'
-    });
-    this.navItems.push({
-      link: '/resources',
-      title: 'Resources',
-      icon: 'pages'
-    });
-
-    if (this.authenticationService.isAdmin) {
-      this.navItems.push({
-        link: '/admin',
-        title: 'Admin',
-        icon: 'supervisor_account'
-      });
-    }
   }
 
   public onToggleSidenav = () => {

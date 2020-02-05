@@ -1,0 +1,25 @@
+<div fxLayout="column" *ngFor="let package of packages">
+  <mat-card
+    fxFlex="100"
+    fxFlexOffset="1"
+    class="matdiv"
+    fxLayout="column"
+    style="height: 170px; "
+  >
+    <mat-card-header>
+      <mat-card-title>{{ package.title }} </mat-card-title>
+      <mat-card-subtitle
+        [ngStyle]="{
+          color:
+            package.classification === 'Unclassified'
+              ? 'green'
+              : package.classification === 'Unclassified For Official Use Only'
+              ? 'red'
+              : 'orange'
+        }"
+      >
+        {{ package.classification }}</mat-card-subtitle
+      >
+    </mat-card-header>
+  </mat-card>
+</div>

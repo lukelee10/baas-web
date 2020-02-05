@@ -1,0 +1,141 @@
+<div class="flex-container" role="application">
+  <h2>Responses</h2>
+  <mat-drawer-container autosize>
+    <mat-drawer
+      mode="side"
+      [ngStyle]="{
+        'width.em': sidenavWidth,
+        'background-color': sidenavBgColor
+      }"
+      opened="true"
+    >
+      <div fxLayout="column" style="  overflow-x: hidden">
+        <mat-card
+          fxLayout="row"
+          class="response-head primary"
+          fxFlex="100"
+          (click)="toggleSearch()"
+        >
+          <div fxFlex="{{ titleFlex }}" title="{{ sideNavToolTip }}">
+            {{ sideNavTitle }}
+          </div>
+          <div fxFlex="{{ iconFlex }}" title="{{ sideNavToolTip }}">
+            <i
+              style="vertical-align:middle; text-align: left"
+              class="material-icons"
+              >{{ sideNavIcon }}
+            </i>
+          </div>
+        </mat-card>
+      </div>
+      <div style="height: 795px; overflow-x: hidden;   ">
+        <mat-card
+          class="searchContentsDiv primary"
+          *ngIf="sideNavContentsShow"
+          fxFlex="100"
+        >
+          Search Contents Here
+        </mat-card>
+        <div
+          class="rotated"
+          *ngIf="!sideNavContentsShow"
+          [ngStyle]="{
+            cursor: sideNavCursor
+          }"
+          (click)="toggleSearch()"
+        >
+          SEARCH
+        </div>
+      </div>
+    </mat-drawer>
+    <mat-drawer-content>
+      <mat-drawer-container autosize>
+        <mat-drawer
+          fxLayout="column"
+          mode="side"
+          [ngStyle]="{
+            'width.em': middleNavWidth,
+            'background-color': middleNavBgColor
+          }"
+          opened="true"
+        >
+          <div fxLayout="column" style="  overflow-x: hidden">
+            <mat-card
+              fxLayout="row"
+              class="response-head primary"
+              fxFlex="100"
+              (click)="togglePackages()"
+            >
+              <div
+                fxFlex="{{ titleMiddleFlex }}"
+                title="{{ middleNavToolTip }}"
+              >
+                {{ middleNavTitle }}
+              </div>
+              <div fxFlex="{{ iconMiddleFlex }}" title="{{ middleNavToolTip }}">
+                <i
+                  style="vertical-align:middle; text-align: left"
+                  class="material-icons"
+                  >{{ middleNavIcon }}
+                </i>
+              </div>
+            </mat-card>
+          </div>
+          <div style="height: 780px; overflow: hidden;">
+            <div
+              class="viewPackagesDiv"
+              id="divPackageList"
+              *ngIf="middleNavContentsShow"
+              fxFlex="100"
+            >
+              <app-package-list></app-package-list>
+            </div>
+            <div
+              class="rotated"
+              *ngIf="!middleNavContentsShow"
+              [ngStyle]="{
+                cursor: middleNavCursor
+              }"
+              (click)="togglePackages()"
+            >
+              PACKAGES
+            </div>
+          </div>
+          <div
+            *ngIf="middleNavContentsShow"
+            style="background-color:#EAF2F8; cursor:pointer;height:25px"
+          >
+            <button
+              fxFlex="50"
+              style="text-align: center"
+              onclick="document.getElementById('divPackageList').scrollTop = (document.getElementById('divPackageList').scrollTop) + 700;"
+            >
+              <i class="material-icons">keyboard_arrow_down</i>
+            </button>
+            <button
+              fxFlex="50"
+              style="text-align: center"
+              onclick="document.getElementById('divPackageList').scrollTop = (document.getElementById('divPackageList').scrollTop) - 700;"
+            >
+              <i class="material-icons">keyboard_arrow_up</i>
+            </button>
+          </div>
+        </mat-drawer>
+        <mat-drawer-content>
+          <div fxLayout="column">
+            <mat-card
+              class="response-head primary"
+              fxFlex="100"
+              style="padding: 9px"
+            >
+              Images
+            </mat-card>
+            <div class="viewImagesDiv" fxFlexOffset=".3">
+              Image Contents Here
+            </div>
+          </div>
+        </mat-drawer-content>
+      </mat-drawer-container>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
