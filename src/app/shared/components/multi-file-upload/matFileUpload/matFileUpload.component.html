@@ -1,7 +1,13 @@
 <form [formGroup]="fileUploadFormGroup">
   <div fxLayout="row" [style.margin-top]="'12px'" style="padding: 1% 16%;">
     <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+      <div *ngIf="!IsFileValidSize() || !IsFileValidType()">
+        <span style="background-color: lightblue; padding:10px"
+          ><b>ERROR</b></span
+        >
+      </div>
       <img
+        *ngIf="IsFileValidSize() && IsFileValidType()"
         src="{{ file.preview }}"
         width="100px"
         height="100px"
