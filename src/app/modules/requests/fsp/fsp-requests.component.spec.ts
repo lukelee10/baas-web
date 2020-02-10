@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Observable, of, throwError } from 'rxjs';
 import { UserRoles } from 'src/app/core/app-global-constants';
 import { UserService } from 'src/app/core/services/user.service';
 import {
@@ -24,10 +25,9 @@ import { LookupStaticDataService } from '../../../shared/services/lookup-static-
 import { NonFspRequestsComponent } from '../non-fsp/non-fsp-requests.component';
 import { ProviderCheckboxesComponent } from '../provider-checkboxes/provider-checkboxes.component';
 import { RequestsComponent } from '../requests.component';
-import { FspRequestsComponent } from './fsp-requests.component';
-import { Observable, of, throwError } from 'rxjs';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { RequestModel } from './../../models/request-model';
+import { FspRequestsComponent } from './fsp-requests.component';
 
 // Mock the SortService class, its method and return it with mock data
 // Mocking FSP User
@@ -98,7 +98,7 @@ describe('##RequestsComponent::(*FSP Version):', () => {
         66,  96,  130
     ]);
     const blob = new Blob([data]);
-    const file = new File([blob], 'NotValideFile.txt', {
+    const file = new File([blob], 'NotValidFile.txt', {
       type: 'text/plain',
       lastModified: Date.now()
     });
@@ -163,13 +163,13 @@ describe('##RequestsComponent::(*FSP Version):', () => {
   });
 
   // TEST valid version of component is rendered for the given role
-  it('Currrent Role is FSP User, Verify FSP Version Component is Created.', () => {
+  it('Current Role is FSP User, Verify FSP Version Component is Created.', () => {
     const nonFSPElement = fspFixture.debugElement.query(By.css('.fspClass'));
     expect(nonFSPElement).toBeTruthy();
   });
 
   // TEST invalid version of component is NOT rendered for the given role
-  it('Currrent Role is FSP User, Verify Non-FSP Version Component is Not Created.', () => {
+  it('Current Role is FSP User, Verify Non-FSP Version Component is Not Created.', () => {
     const fspElement = fspFixture.debugElement.query(By.css('.nonFSPClass'));
     expect(fspElement).toBeFalsy();
   });
@@ -194,7 +194,7 @@ describe('##RequestsComponent::(*FSP Version):', () => {
   });
 
   it('Verify the form is invalid, when none of the required fields were set', () => {
-    // the component has just been initilized, none of the required fields were set --> form is empty --> form is Invalid
+    // the component has just been initialized, none of the required fields were set --> form is empty --> form is Invalid
     matFileUploadQueueComponentInstance.add(testImage());
     fspComponentInstance.UploadFilesListChanged(
       matFileUploadQueueComponentInstance.getQueueData()
@@ -341,7 +341,7 @@ describe('##RequestsComponent::(*FSP Version):', () => {
     button.click();
   }));
 
-  it('Pressing Submit with valid data calles the uploadFilesToS3', async(() => {
+  it('Pressing Submit with valid data calls the uploadFilesToS3', async(() => {
     fspComponentInstance.form.setValue({ packageTitle: 'Testing 0203 1024' });
     matFileUploadQueueComponentInstance.add(testImage());
     fspFixture.detectChanges();

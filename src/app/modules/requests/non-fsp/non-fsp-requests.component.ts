@@ -6,26 +6,21 @@ import {
   ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { concatMap, finalize } from 'rxjs/operators';
-import { from } from 'rxjs';
-
 import { Guid } from 'guid-typescript';
 import * as moment_ from 'moment';
-const moment = moment_;
-
+import { from } from 'rxjs';
+import { concatMap, finalize } from 'rxjs/operators';
 import { environment } from './../../../../environments/environment';
+import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
+import { UserService } from './../../../core/services/user.service';
 // tslint:disable-next-line: max-line-length
 import { MatFileUploadQueueComponent } from './../../../shared/components/multi-file-upload/matFileUploadQueue/matFileUploadQueue.component';
-import { LookupStaticDataService } from './../../../shared/services/lookup-static-data.service';
-
-import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { LoaderService } from './../../../shared/services/loader.service';
+import { LookupStaticDataService } from './../../../shared/services/lookup-static-data.service';
 import { NotificationService } from './../../../shared/services/notification.service';
-import { UserService } from './../../../core/services/user.service';
-
 import { RequestModel } from './../../models/request-model';
-import { SavedRequestModel } from './../../models/request-model';
+
+const moment = moment_;
 
 @Component({
   selector: 'app-non-fsp-requests',
@@ -36,7 +31,7 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatFileUploadQueueComponent, { static: false })
   private matFileUploadQueueComponent: MatFileUploadQueueComponent;
   filesValidationError: boolean;
-  allowwedFileSize = `File cannot be more than ${environment.MaxFileSizeForPackage} MB size`;
+  allowedFileSize = `File cannot be more than ${environment.MaxFileSizeForPackage} MB size`;
   vettingSystems: string[] = [];
   requests: Array<RequestModel> = [];
   savedRequestIds: string[] = [];

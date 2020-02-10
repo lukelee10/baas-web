@@ -32,6 +32,7 @@
           <mat-option
             *ngFor="let modality of lookupStaticDataService.modalityTypesData"
             [value]="modality.value"
+            [matTooltip]="modality.tooltip"
           >
             {{ modality.label }}
           </mat-option>

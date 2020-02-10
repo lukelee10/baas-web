@@ -39,19 +39,19 @@
       <div
         [fileUploadInputFor]="fileUploadQueue"
         class="upload-drop-zone"
-        style="margin-bottom: 5px;"
+        style="width:100%"
       >
-        Drag and drop files here
-      </div>
-      <div style="padding-left: 3em; padding-top: 5em;">
-        <span>
-          <input
-            id="singleFile"
-            type="file"
-            multiple="multiple"
-            [fileUploadInputFor]="fileUploadQueue"
-          />
-        </span>
+        Drag and drop files here or
+        <input
+          id="singleFile"
+          type="file"
+          multiple="multiple"
+          style="display:none"
+          [fileUploadInputFor]="fileUploadQueue"
+        />
+        <label for="singleFile" class="mat-raised-button mat-primary"
+          >BROWSE...</label
+        >
       </div>
     </div>
     <mat-error style="font-size: 12px;" *ngIf="filesValidationError">
@@ -67,7 +67,7 @@
     </div>
     <div>
       <mat-hint style="font-size: 12px;">
-        {{ allowwedFileSize }}
+        {{ allowedFileSize }}
       </mat-hint>
     </div>
   </fieldset>

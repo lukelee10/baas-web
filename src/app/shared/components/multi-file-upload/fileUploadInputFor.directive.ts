@@ -11,7 +11,7 @@ import {
  * A material design file upload queue component.
  */
 @Directive({
-  // the linting assumed all agnular directives are on custom component.
+  // the linting assumed all angular directives are on custom component.
   // This directive, however, is a add onto the native <input> and <div>
   // tags in HTML The selector should be prefixed by "app"
   // (https://angular.io/guide/styleguide#style-02-08) (directive-selector)

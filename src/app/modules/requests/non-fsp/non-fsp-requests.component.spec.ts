@@ -9,10 +9,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
-import { of, Observable, throwError } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Observable, of, throwError } from 'rxjs';
 import { UserRoles } from 'src/app/core/app-global-constants';
-import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
 import {
   FileUploadInputForDirective,
@@ -26,9 +25,10 @@ import { Provider } from '../../../shared/models/provider';
 import { FspRequestsComponent } from '../fsp/fsp-requests.component';
 import { ProviderCheckboxesComponent } from '../provider-checkboxes/provider-checkboxes.component';
 import { RequestsComponent } from '../requests.component';
+import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { LookupStaticDataService } from './../../../shared/services/lookup-static-data.service';
-import { NonFspRequestsComponent } from './non-fsp-requests.component';
 import { RequestModel } from './../../models/request-model';
+import { NonFspRequestsComponent } from './non-fsp-requests.component';
 
 // Mock the SortService class, its method and return it with mock data
 class MockUserService extends UserService {
@@ -102,7 +102,7 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
         66,  96,  130
     ]);
     const blob = new Blob([data]);
-    const file = new File([blob], 'NotValideFile.txt', {
+    const file = new File([blob], 'NotValidFile.txt', {
       type: 'text/plain',
       lastModified: Date.now()
     });
@@ -172,7 +172,7 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
   });
 
   // TEST valid version of component is rendered for the given role
-  it('Currrent Role is Non-FSP User, Verify Non-FSP Version Component is Created', () => {
+  it('Current Role is Non-FSP User, Verify Non-FSP Version Component is Created', () => {
     const nonFSPElement = nonFSPFixture.debugElement.query(
       By.css('.nonFSPClass')
     );
@@ -180,13 +180,13 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
   });
 
   // TEST invalid version of component is NOT rendered for the given role
-  it('Currrent Role is Non-FSP User, Verify FSP Version Component is Not Created', () => {
+  it('Current Role is Non-FSP User, Verify FSP Version Component is Not Created', () => {
     const fspElement = nonFSPFixture.debugElement.query(By.css('.fspClass'));
     expect(fspElement).toBeFalsy();
   });
 
   it('Verify the form is invalid, when none of the required fields were set', () => {
-    // the component has just been initilized, none of the required fields were set --> form is empty --> form is Invalid
+    // the component has just been initialized, none of the required fields were set --> form is empty --> form is Invalid
     expect(nonFSPComponentInstance.form.valid).toBeFalsy();
   });
 
@@ -238,7 +238,7 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
       Description: 'ABIS Biometrics Provider'
     });
     nonFSPComponentInstance.ProvidersSelectionChanged(mockSelectedProviders);
-    // When rovidersSelectionChanged Event Triggered nonFSPComponentInstance.vettingSystems.length must be greater than 0
+    // When ProvidersSelectionChanged Event Triggered nonFSPComponentInstance.vettingSystems.length must be greater than 0
     expect(nonFSPComponentInstance.vettingSystems.length > 0).toBeTruthy();
   });
 
@@ -288,7 +288,7 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
     expect(submitThePackageSpy).toHaveBeenCalled();
   });
 
-  it('Submit button not active wher there is no data on Non FSP page', async(() => {
+  it('Submit button not active when there is no data on Non FSP page', async(() => {
     nonFSPFixture.detectChanges();
     const button = nonFSPFixture.debugElement.nativeElement.querySelectorAll(
       'button'
@@ -412,7 +412,7 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
     button.click();
   }));
 
-  it('Pressing Submit with valid data calles the uploadFilesToS3', async(() => {
+  it('Pressing Submit with valid data calls the uploadFilesToS3', async(() => {
     nonFSPComponentInstance.form.setValue({
       packageTitle: 'Testing 0206 0150',
       selectClassification: 'U',

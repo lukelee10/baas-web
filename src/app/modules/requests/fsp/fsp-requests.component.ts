@@ -1,24 +1,25 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChangeDetectorRef, AfterContentChecked } from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { concatMap, finalize } from 'rxjs/operators';
-import { from } from 'rxjs';
-
 import { Guid } from 'guid-typescript';
 import * as moment_ from 'moment';
-const moment = moment_;
-
+import { from } from 'rxjs';
+import { concatMap, finalize } from 'rxjs/operators';
+import { environment } from './../../../../environments/environment';
+import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
+import { UserService } from './../../../core/services/user.service';
 // tslint:disable-next-line: max-line-length
 import { MatFileUploadQueueComponent } from './../../../shared/components/multi-file-upload/matFileUploadQueue/matFileUploadQueue.component';
-import { environment } from './../../../../environments/environment';
-
-import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
-import { UserService } from './../../../core/services/user.service';
-
 import { RequestModel } from './../../models/request-model';
+
+const moment = moment_;
 
 @Component({
   selector: 'app-fsp-requests',
@@ -28,7 +29,7 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatFileUploadQueueComponent, { static: false })
   private matFileUploadQueueComponent: MatFileUploadQueueComponent;
   filesValidationError: boolean;
-  allowwedFileSize = `File cannot be more than ${environment.MaxFileSizeForPackage} MB size`;
+  allowedFileSize = `File cannot be more than ${environment.MaxFileSizeForPackage} MB size`;
   filesValidationMessage: string;
   requests: Array<RequestModel> = [];
   savedRequestIds: string[] = [];
@@ -62,7 +63,7 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
 
     if (numberOfFiles > environment.MaxFileCountForPackage) {
       this.filesValidationError = true;
-      this.filesValidationMessage = `Selected ${numberOfFiles} files, 
+      this.filesValidationMessage = `Selected ${numberOfFiles} files,
         Not more than ${environment.MaxFileCountForPackage} files to create a Package`;
     } else if (
       numberOfFiles &&
