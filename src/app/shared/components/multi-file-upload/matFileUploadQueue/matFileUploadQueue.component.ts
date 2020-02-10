@@ -1,12 +1,9 @@
-import { HttpHeaders, HttpParams } from '@angular/common/http';
 import {
   AfterViewInit,
   Component,
   ContentChildren,
   EventEmitter,
   forwardRef,
-  Input,
-  OnDestroy,
   Output,
   QueryList
 } from '@angular/core';
@@ -23,7 +20,7 @@ import { MatFileUploadComponent } from './../matFileUpload/matFileUpload.compone
   templateUrl: `matFileUploadQueue.component.html`,
   exportAs: 'matFileUploadQueue'
 })
-export class MatFileUploadQueueComponent implements OnDestroy, AfterViewInit {
+export class MatFileUploadQueueComponent implements AfterViewInit {
   @ContentChildren(forwardRef(() => MatFileUploadComponent))
   fileUploads: QueryList<MatFileUploadComponent>;
 
@@ -41,27 +38,6 @@ export class MatFileUploadQueueComponent implements OnDestroy, AfterViewInit {
   @Output() eventOnUploadFilesListChanged = new EventEmitter();
 
   public files: Array<any> = [];
-
-  /* Http request input bindings */
-  @Input()
-  httpUrl: string;
-
-  @Input()
-  httpRequestHeaders:
-    | HttpHeaders
-    | {
-        [header: string]: string | string[];
-      } = new HttpHeaders();
-
-  @Input()
-  httpRequestParams:
-    | HttpParams
-    | {
-        [param: string]: string | string[];
-      } = new HttpParams();
-
-  @Input()
-  fileAlias = 'file';
 
   public ngAfterViewInit() {
     // When the list changes, re-subscribe
@@ -94,11 +70,5 @@ export class MatFileUploadQueueComponent implements OnDestroy, AfterViewInit {
 
   getQueueData(): QueryList<MatFileUploadComponent> {
     return this.fileUploads;
-  }
-
-  ngOnDestroy() {
-    if (this.files) {
-      this.removeAll();
-    }
   }
 }

@@ -64,11 +64,6 @@ describe('MatFileUploadQueueComponent', () => {
     expect(component.files.length <= 0).toBeTruthy();
   });
 
-  it('Test ngOnDestroy ', () => {
-    component.ngOnDestroy();
-    expect(component.files.length <= 0).toBeTruthy();
-  });
-
   it('Test getQueueData ', () => {
     expect(component.getQueueData().toArray().length <= 0).toBeTruthy();
   });

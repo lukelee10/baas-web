@@ -117,9 +117,6 @@
 
   <app-mat-file-upload-queue
     #fileUploadQueue
-    [fileAlias]="'file'"
-    [httpRequestHeaders]="httpRequestHeaders"
-    [httpRequestParams]="httpRequestParams"
     multiple
     (eventOnUploadFilesListChanged)="UploadFilesListChanged($event)"
   >

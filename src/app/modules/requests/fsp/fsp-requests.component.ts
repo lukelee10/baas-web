@@ -1,7 +1,6 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { concatMap, finalize } from 'rxjs/operators';
 import { from } from 'rxjs';
@@ -37,23 +36,6 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
   form = new FormGroup({
     packageTitle: new FormControl('', Validators.required)
   });
-
-  @Input() httpRequestHeaders:
-    | HttpHeaders
-    | {
-        [header: string]: string | string[];
-      } = new HttpHeaders()
-    .set('sampleHeader', 'headerValue')
-    .set('sampleHeader1', 'headerValue1');
-
-  @Input()
-  httpRequestParams:
-    | HttpParams
-    | {
-        [param: string]: string | string[];
-      } = new HttpParams()
-    .set('sampleRequestParam', 'requestValue')
-    .set('sampleRequestParam1', 'requestValue1');
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -153,13 +135,12 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
   }
 
   submitThePackage() {
+    let submitThePackageFailed = false;
+
     this.loaderService.Show('Submitting package...');
     this.savedRequestIds.splice(0, this.savedRequestIds.length);
 
-    let showNotification: boolean;
-    showNotification = false;
-
-    // Details on 'concatMap' RxJS operator
+    // ConcatMap
     // One of the strategies to handle until the first completes before subscribing to the next one.
     // For more info on RxJS, please browse https://www.learnrxjs.io/learn-rxjs/operators/transformation/concatmap
     // and https://rxjs-dev.firebaseapp.com/api/operators/concatMap
@@ -168,7 +149,60 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
         concatMap(param => this.awsLambdaService.createRequestPackage(param)),
 
         finalize(() => {
+          if (!submitThePackageFailed) {
+            this.uploadFilesToS3();
+          } else {
+            this.loaderService.Hide();
+          }
+        })
+      )
+      .subscribe(
+        data => {
+          const copyResponse = JSON.parse(JSON.stringify(data));
+          const uploadUrl = copyResponse.uploadUrl;
+          const savedRequest = this.requests.shift();
+          this.savedRequestIds.push(savedRequest.id);
+
+          // Find the corresponding File Upload component
+          const queueData = this.matFileUploadQueueComponent
+            .getQueueData()
+            .toArray();
+          const fileUploadComponent = queueData.find(
+            element =>
+              element.GetPackageFileModel().FileName ===
+              savedRequest.originalFileName
+          );
+
+          if (fileUploadComponent) {
+            fileUploadComponent.FileUploadUrl = uploadUrl;
+          }
+        },
+        error => {
+          this.notificationService.error('Submitting package is failed.');
+          submitThePackageFailed = true;
+          this.handlePackageSubmissionError();
+        }
+      );
+  }
+
+  uploadFilesToS3() {
+    let showNotification = false;
+    this.loaderService.Show('Uploading files to S3...');
+    let failedUploadingFiles = 0;
+
+    const queueData = this.matFileUploadQueueComponent.getQueueData().toArray();
+
+    // ConcatMap
+    // One of the strategies to handle until the first completes before subscribing to the next one.
+    // For more info on RxJS, please browse https://www.learnrxjs.io/learn-rxjs/operators/transformation/concatmap
+    // and https://rxjs-dev.firebaseapp.com/api/operators/concatMap
+    from(queueData)
+      .pipe(
+        concatMap(param => param.upload()),
+
+        finalize(() => {
           this.loaderService.Hide();
+
           if (showNotification) {
             this.resetTheForm();
             this.notificationService.notify(
@@ -178,16 +212,14 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
         })
       )
       .subscribe(
-        data => {
-          const copyResponse = JSON.parse(JSON.stringify(data));
-          // TODO we need uploadUrl, to upload the file to S3
-          const uploadUrl = copyResponse.uploadUrl;
-          const savedRequest = this.requests.shift();
+        result => {
           showNotification = true;
-          this.savedRequestIds.push(savedRequest.id);
         },
         error => {
+          // some error happened
           showNotification = false;
+          failedUploadingFiles++;
+          this.notificationService.error('Uploading files to S3 is failed');
           this.handlePackageSubmissionError();
         }
       );

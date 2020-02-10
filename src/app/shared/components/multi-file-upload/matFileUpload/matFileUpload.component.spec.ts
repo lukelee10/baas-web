@@ -2,6 +2,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   MatButtonModule,
@@ -31,6 +32,9 @@ describe('MatFileUploadComponent', () => {
   let fixtureMUC: ComponentFixture<MatFileUploadComponent>;
   let fixtureComponentMUC: MatFileUploadComponent;
   let httpClient: HttpTestingController;
+  const fileUploadUrl = 'http://.../mock/upload';
+  const fileName = 'IMG-353.jpeg';
+  const fileType = 'image/jpeg';
 
   beforeEach(async(() => {
     // TestBed is the main utility available for Angular-specific testing.
@@ -61,14 +65,12 @@ describe('MatFileUploadComponent', () => {
     fixtureMUC = TestBed.createComponent(MatFileUploadComponent);
     fixtureComponentMUC = fixtureMUC.componentInstance;
     // Assign a Image
-    fixtureComponentMUC.File = new File(['Foo34'], 'IMG-353.jpeg', {
-      type: 'image/jpeg'
+    fixtureComponentMUC.File = new File(['Foo34'], fileName, {
+      type: fileType
     });
 
-    fixtureComponentMUC.FileUploadUrl = '/abc';
-
+    fixtureComponentMUC.FileUploadUrl = fileUploadUrl;
     fixtureMUC.detectChanges();
-
     httpClient = TestBed.get(HttpTestingController);
   });
 
@@ -100,20 +102,14 @@ describe('MatFileUploadComponent', () => {
     );
   });
 
-  it('Remove method is called', async(() => {
-    fixtureComponentMUC.upload();
-    const mockReq = httpClient.expectOne('/abc');
-    mockReq.flush({ data: 'hello' });
-    expect(mockReq.cancelled).toBeTruthy();
-    httpClient.verify();
-    fixtureComponentMUC.remove();
-  }));
+  it('Verify Upload method calls HTTP put method', async(() => {
+    fixtureComponentMUC.upload().subscribe(data => {});
 
-  it('Remove method is called', async(() => {
-    fixtureComponentMUC.upload();
-    const mockReq = httpClient.expectOne('/abc');
-    mockReq.error(new ErrorEvent('ERROR'));
-    expect(mockReq.cancelled).toBeTruthy();
+    const mockReq = httpClient.expectOne(fileUploadUrl);
+    expect(mockReq.request.method).toEqual('PUT');
+    expect(mockReq.request.body.name).toContain(fileName);
+    expect(mockReq.request.body.type).toContain(fileType);
+    expect(mockReq.cancelled).toBeFalsy();
     httpClient.verify();
     fixtureComponentMUC.remove();
   }));

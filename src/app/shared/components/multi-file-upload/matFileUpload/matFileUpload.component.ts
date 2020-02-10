@@ -1,9 +1,4 @@
-import {
-  HttpClient,
-  HttpEventType,
-  HttpHeaders,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   Component,
   EventEmitter,
@@ -19,6 +14,8 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+
+import { Observable } from 'rxjs';
 
 import { environment } from './../../../../../environments/environment';
 import { UserService } from './../../../../core/services/user.service';
@@ -36,37 +33,12 @@ import { PackageFileModel } from './../../../../modules/models/package-file-mode
 export class MatFileUploadComponent implements OnInit {
   fileUploadFormGroup: FormGroup;
 
-  // TODO -- we can clean the following
-  public isUploading = false;
-
-  /* Http request input bindings */
-  @Input()
-  httpRequestHeaders:
-    | HttpHeaders
-    | {
-        [header: string]: string | string[];
-      } = new HttpHeaders();
-
-  @Input()
-  httpRequestParams:
-    | HttpParams
-    | {
-        [param: string]: string | string[];
-      } = new HttpParams();
-
-  @Input()
-  fileAlias = 'file';
-
   /** Output  */
   @Output() removeEvent = new EventEmitter<MatFileUploadComponent>();
   @Output() handleUpload = new EventEmitter();
 
-  public progressPercentage = 0;
-  public loaded = 0;
-  public total = 0;
   private file: any;
   private id: number;
-  private fileUploadSubscription: any;
   private fileUploadUrl: any;
   invalidFileSizeMsg: string;
   invalidFileTypeMsg: string;
@@ -77,7 +49,6 @@ export class MatFileUploadComponent implements OnInit {
   }
   set File(file: any) {
     this.file = file;
-    this.total = this.file.size;
   }
 
   @Input()
@@ -88,9 +59,6 @@ export class MatFileUploadComponent implements OnInit {
     return this.id;
   }
 
-  get FileUploadUrl(): any {
-    return this.fileUploadUrl;
-  }
   set FileUploadUrl(fileUploadUrl: any) {
     this.fileUploadUrl = fileUploadUrl;
   }
@@ -102,15 +70,7 @@ export class MatFileUploadComponent implements OnInit {
     private formBuilder: FormBuilder,
     public userService: UserService,
     public lookupStaticDataService: LookupStaticDataService
-  ) {
-    if (matFileUploadQueue) {
-      this.httpRequestHeaders =
-        matFileUploadQueue.httpRequestHeaders || this.httpRequestHeaders;
-      this.httpRequestParams =
-        matFileUploadQueue.httpRequestParams || this.httpRequestParams;
-      this.fileAlias = matFileUploadQueue.fileAlias || this.fileAlias;
-    }
-  }
+  ) {}
 
   ngOnInit() {
     this.fileUploadFormGroup = this.formBuilder.group({
@@ -119,38 +79,17 @@ export class MatFileUploadComponent implements OnInit {
     });
   }
 
-  public upload(): void {
-    this.isUploading = true;
-    // How to set the alias?
-    const formData = new FormData();
-    formData.set(this.fileAlias, this.file, this.file.name);
-    this.fileUploadSubscription = this.httpClient
-      .post(this.fileUploadUrl, formData, {
-        headers: this.httpRequestHeaders,
-        observe: 'events',
-        params: this.httpRequestParams,
-        reportProgress: true,
-        responseType: 'json'
-      })
-      .subscribe(
-        (event: any) => {
-          if (event.type === HttpEventType.UploadProgress) {
-            this.progressPercentage = Math.floor(
-              (event.loaded * 100) / event.total
-            );
-            this.loaded = event.loaded;
-            this.total = event.total;
-          }
-          this.handleUpload.emit({ file: this.file, event });
-        },
-        (error: any) => {
-          if (this.fileUploadSubscription) {
-            this.fileUploadSubscription.unsubscribe();
-          }
-          this.isUploading = false;
-          this.handleUpload.emit({ file: this.file, event });
-        }
-      );
+  public upload(): Observable<any> {
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', this.file.type);
+    headers.set('X-XSS-Protection', '1; mode=block');
+
+    const options = {
+      headers,
+      reportProgress: true
+    };
+
+    return this.httpClient.put(this.fileUploadUrl, this.file, options);
   }
 
   IsFileValidSize(): boolean {
@@ -199,9 +138,6 @@ export class MatFileUploadComponent implements OnInit {
   }
 
   public remove(): void {
-    if (this.fileUploadSubscription) {
-      this.fileUploadSubscription.unsubscribe();
-    }
     this.removeEvent.emit(this);
   }
 }

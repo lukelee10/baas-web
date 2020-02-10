@@ -341,6 +341,30 @@ describe('##RequestsComponent::(*FSP Version):', () => {
     button.click();
   }));
 
+  it('Pressing Submit with valid data calles the uploadFilesToS3', async(() => {
+    fspComponentInstance.form.setValue({ packageTitle: 'Testing 0203 1024' });
+    matFileUploadQueueComponentInstance.add(testImage());
+    fspFixture.detectChanges();
+
+    matFileUploadQueueComponentInstance.fileUploads.first.fileUploadFormGroup.setValue(
+      {
+        modalityControl: 'Face',
+        isNotUSPerson: true
+      }
+    );
+    fspFixture.detectChanges();
+
+    const uploadFilesToS3Spy = spyOn(fspComponentInstance, 'uploadFilesToS3');
+
+    const button = fspFixture.debugElement.nativeElement.querySelectorAll(
+      'button'
+    )[0];
+    expect(button.disabled).toBeFalsy();
+    button.click();
+
+    expect(uploadFilesToS3Spy).toHaveBeenCalled();
+  }));
+
   it('Pressing Submit with valid data make sure call the mock service to throw error', async(() => {
     fspComponentInstance.form.setValue({ packageTitle: 'InvalidPackage' });
     matFileUploadQueueComponentInstance.add(testImage());
