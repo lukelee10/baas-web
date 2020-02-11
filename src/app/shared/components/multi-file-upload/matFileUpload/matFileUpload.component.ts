@@ -26,7 +26,7 @@ import { PackageFileModel } from './../../../../modules/models/package-file-mode
 
 @Component({
   selector: 'app-mat-file-upload',
-  templateUrl: `./matFileUpload.component.html`,
+  templateUrl: './matFileUpload.component.html',
   exportAs: 'MatFileUploadComponent',
   styleUrls: ['./../matFileUploadQueue.scss']
 })

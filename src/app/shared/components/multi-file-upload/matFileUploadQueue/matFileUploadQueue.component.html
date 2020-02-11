@@ -14,7 +14,11 @@
   <mat-card fxFlex="0 1 calc(20% - 20px)" style="text-align: center;">
     Modality
   </mat-card>
-  <mat-card fxFlex="0 1 calc(20% - 30px)" style="text-align: center;">
+  <mat-card
+    *ngIf="!userService.IsFSPUser"
+    fxFlex="0 1 calc(20% - 30px)"
+    style="text-align: center;"
+  >
     USPER
   </mat-card>
 </div>

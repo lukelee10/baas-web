@@ -8,8 +8,15 @@ import {
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from 'src/app/shared/shared.module';
-
+import { UserService } from 'src/app/core/services/user.service';
+import { UserRoles } from 'src/app/core/app-global-constants';
 import { MatFileUploadQueueComponent } from './matFileUploadQueue.component';
+
+class MockUserService extends UserService {
+  get Role(): string {
+    return UserRoles.NonFSPUser;
+  }
+}
 
 describe('MatFileUploadQueueComponent', () => {
   let component: MatFileUploadQueueComponent;
@@ -44,7 +51,8 @@ describe('MatFileUploadQueueComponent', () => {
         MatCardModule,
         HttpClientTestingModule
       ],
-      declarations: [MatFileUploadQueueComponent]
+      declarations: [MatFileUploadQueueComponent],
+      providers: [{ provide: UserService, useClass: MockUserService }]
     }).compileComponents();
   }));
 

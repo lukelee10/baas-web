@@ -11,13 +11,14 @@ import { merge, Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { MatFileUploadComponent } from './../matFileUpload/matFileUpload.component';
+import { UserService } from './../../../../core/services/user.service';
 
 /**
  * A material design file upload queue component.
  */
 @Component({
   selector: 'app-mat-file-upload-queue',
-  templateUrl: `matFileUploadQueue.component.html`,
+  templateUrl: 'matFileUploadQueue.component.html',
   exportAs: 'matFileUploadQueue'
 })
 export class MatFileUploadQueueComponent implements AfterViewInit {
@@ -36,6 +37,8 @@ export class MatFileUploadQueueComponent implements AfterViewInit {
   }
 
   @Output() eventOnUploadFilesListChanged = new EventEmitter();
+
+  constructor(public userService: UserService) {}
 
   public files: Array<any> = [];
 
