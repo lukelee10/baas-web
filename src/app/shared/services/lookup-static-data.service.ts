@@ -14,7 +14,7 @@ export class LookupStaticDataService {
   // this lambda don't exist yet but their creation and use is debt
   // and addressed eventually
   classificationTypesData: SelectItem[] = [
-    { value: 'U', label: 'U', tooltip: 'UNCLASSIFIED' },
+    { value: 'U', label: 'UNCLASSIFIED', tooltip: 'UNCLASSIFIED' },
     {
       value: 'U//FOUO',
       label: 'U//FOUO',
