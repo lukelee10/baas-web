@@ -8,10 +8,8 @@ pipeline {
     }
 
     stages {
-
         stage('Initialize') {
             steps {
-                //deleteDir()
                 echo 'Initialize..'
                 sh '''
                     wget -q https://nodejs.org/dist/v10.16.3/node-v10.16.3-linux-x64.tar.gz
@@ -43,15 +41,17 @@ pipeline {
               always {
                 junit 'coverage/test-report.xml'
                     cobertura autoUpdateHealth: false,
-                    autoUpdateStability: false,
-                    coberturaReportFile: '**/cobertura-coverage.xml',
-                    conditionalCoverageTargets: '36, 0, 36',
                     failUnhealthy: false,
-                    fileCoverageTargets: '90, 0, 90',
-                    lineCoverageTargets: '54, 0, 54',
+                    autoUpdateStability: false,
+                    onlyStable: false,
+                    coberturaReportFile: '**/cobertura-coverage.xml',
                     maxNumberOfBuilds: 0,
-                    methodCoverageTargets: '60, 0, 60',
-                    onlyStable: false
+                    packageCoverageTargets: '90, 0, 90',
+                    fileCoverageTargets: '90, 0, 90',
+                    classCoverageTargets: '90, 0, 90',
+                    methodCoverageTargets: '65, 0, 65',
+                    lineCoverageTargets: '68, 0, 68',
+                    conditionalCoverageTargets: '54, 0, 54'
               }
             }
         }
