@@ -1,5 +1,5 @@
 .response-head {
-  background-color: #3f51b5;
+  background-color: rgba(#3f51b5, 0.85);
   color: white !important;
   font-weight: 500;
   padding: 7px;
@@ -7,24 +7,69 @@
   border: 1px solid gray;
   cursor: pointer;
 }
-.rotated {
+.searchContents {
+  height: 720px;
+  overflow-x: hidden;
+}
+.collapsedSearch {
   writing-mode: tb-rl;
   transform: rotate(-180deg);
   font-weight: bold;
   text-align: center;
   padding: 12px;
+  cursor: pointer;
+  background-color: #ebedef;
+  opacity: 0.8;
 }
-.viewPackagesDiv {
-  background-color: #eaf2f8;
-  height: 795px;
+.collapsedPackages {
+  writing-mode: tb-rl;
+  transform: rotate(-180deg);
+  font-weight: bold;
+  text-align: center;
+  padding: 12px;
+  cursor: pointer;
+  background-color: #aeb6bf;
+  opacity: 0.8;
+}
+
+.viewPackagesContainer {
   overflow: hidden;
+  background-color: rgba(#eaf2f8, 0.5);
+}
+.viewPackagesList {
+  background-color: rgba(#eaf2f8, 0.5);
+  height: 700px;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #90a4ae #cfd8dc;
+  &::-webkit-scrollbar {
+    width: 0.8em;
+    height: 0.5em;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(gray, 0.1);
+    border-radius: 3px;
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
 }
 .viewImagesDiv {
-  background-color: #eaf2f8;
-  height: 800px;
+  background-color: rgba(#eaf2f8, 0.55);
+  height: 700px;
   overflow: hidden;
   padding: 10px;
 }
 .searchContentsDiv {
   background-color: #f4f6f6;
+}
+
+.sortIconDiv {
+  width: 50px;
+  border: 2px solid #3f51b5;
+  border-radius: 3pt;
+  background-color: rgba(#3f51b5, 0.35);
+}
+.sortIconDiv:hover {
+  background-color: rgba(#3f51b5, 1);
 }

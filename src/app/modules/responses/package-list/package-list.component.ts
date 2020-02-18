@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { UserPackageService } from 'src/app/core/services/user-package.service';
+import { UserPackage } from 'src/app/shared/models/user-package';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+
+import {
+  AppMessage,
+  AppMessagesService
+} from '../../../core/services/app-messages.services';
 
 interface Package {
   id: number;
@@ -12,67 +20,70 @@ interface Package {
   styleUrls: ['./package-list.component.scss']
 })
 export class PackageListComponent implements OnInit {
-  defaultElevation = 2;
-  raisedElevation = 8;
+  userPackages = new Array<UserPackage>();
+  showSpinner = true;
+  currentLastItem = '';
+  @Input()
+  sortOrder = 'desc';
+  @Output() eventOnPackageClick = new EventEmitter();
 
-  packages: Package[] = [
-    {
-      id: 11,
-      title: 'First Package  Jan 2020',
-      classification: 'Unclassified'
-    },
-    {
-      id: 12,
-      title: 'BaaSU Package  Jan 2020 ',
-      classification: 'Unclassified'
-    },
-    { id: 13, title: 'NEBS Package  Jan 2020', classification: 'Unclassified' },
-    {
-      id: 14,
-      title: 'ABIS Package  Jan 2020',
-      classification: 'Unclassified Law Enforcement Sensitive'
-    },
-    {
-      id: 15,
-      title: 'High-Tide Package  Jan 2020',
-      classification: 'Unclassified For Official Use Only'
-    },
-    {
-      id: 16,
-      title: 'Low-Ball Package  Feb 2020',
-      classification: 'Unclassified'
-    },
-    { id: 17, title: 'DOD Package  Feb 2020', classification: 'Unclassified' },
-    { id: 18, title: 'DHS Package  Feb 2020', classification: 'Unclassified' },
-    {
-      id: 19,
-      title: 'Urgent Package  Feb 2020',
-      classification: 'Unclassified For Official Use Only'
-    },
-    {
-      id: 20,
-      title: 'Quick Package  Feb 2020',
-      classification: 'Unclassified'
-    },
-    {
-      id: 21,
-      title: 'DNI Package  Feb 2020',
-      classification: 'Unclassified For Official Use Only'
-    },
-    { id: 22, title: 'TSA Package  Feb 2020', classification: 'Unclassified' },
-    {
-      id: 23,
-      title: 'FAA Package  Feb 2020',
-      classification: 'Unclassified For Official Use Only'
-    },
-    {
-      id: 24,
-      title: 'Last Package  Feb 2020',
-      classification: 'Unclassified Law Enforcement Sensitive'
+  constructor(
+    private userPackageService: UserPackageService,
+    private notificationService: NotificationService,
+    private appMessagesService: AppMessagesService
+  ) {}
+
+  // tslint:disable-next-line: use-lifecycle-interface
+  ngOnChanges(changes: any) {
+    const sortOldVal = changes.sortOrder.previousValue;
+    const sortNewVal = changes.sortOrder.currentValue;
+
+    if (sortOldVal !== sortNewVal && sortOldVal !== undefined) {
+      this.userPackages = [];
+      this.invokePackageService();
     }
-  ];
+  }
+  ngOnInit() {
+    this.invokePackageService();
+  }
 
-  constructor() {}
+  packageClick(packageId) {
+    this.eventOnPackageClick.emit(packageId);
+  }
 
-  ngOnInit() {}
+  private invokePackageService() {
+    this.showSpinner = true;
+    this.userPackageService.sortOrder = this.sortOrder;
+    this.userPackageService.startingItem = this.currentLastItem;
+    this.userPackageService.pageSize = 50;
+    // this.userPackageService.isMock  = true ;
+    this.notificationService.debugLogging(
+      this.userPackageService.getEndPointURL()
+    );
+    this.userPackageService.getPackages().subscribe(
+      userPackageResponse => {
+        this.userPackages = userPackageResponse.packages;
+        this.currentLastItem = userPackageResponse.lastItem;
+        this.notificationService.debugLogging(userPackageResponse);
+        this.notificationService.debugLogging(
+          'User Package Respose Last Item: ' + userPackageResponse.lastItem
+        );
+        this.notificationService.debugLogging(
+          'User Package Response Total Package Count:' +
+            userPackageResponse.count.toString()
+        );
+      },
+      error => {
+        this.notificationService.error(
+          this.appMessagesService.getMessage(AppMessage.ViewResponseAPIError),
+          this.appMessagesService.getTitle(AppMessage.ViewResponseAPIError)
+        );
+        this.showSpinner = false;
+        this.notificationService.debugLogging(error);
+      },
+      () => {
+        this.showSpinner = false;
+      }
+    );
+  }
 }

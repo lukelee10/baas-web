@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
 export enum AppMessage {
-  SessionTimeOut = 1
+  SessionTimeOut = 1,
+  ViewResponseAPIError = 2
 }
 
 @Injectable({

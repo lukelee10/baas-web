@@ -1,4 +1,21 @@
+.matdiv {
+  background-color: rgba(#fcd6bf, 0.47);
+}
+
 .matdiv:hover {
   background-color: #eaf2f8;
   border: 1ps solid #eaf2f8;
+  color: rgba(orangered, 0.75);
+}
+.numberedCircle {
+  padding: 1px 3px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  margin-right: 2%;
+  display: inline;
+  font-size: 9px;
+  text-align: center;
+  background-color: rgba(gray, 0.47);
+  color: white;
 }

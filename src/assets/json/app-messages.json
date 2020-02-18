@@ -6,7 +6,7 @@
   },
   {
     "index": 2,
-    "title": "Sample Second Title ",
-    "message": "Sample Second Message"
+    "title": "API Error",
+    "message": "An Error occurred while retrieving the packages, please try again."
   }
 ]

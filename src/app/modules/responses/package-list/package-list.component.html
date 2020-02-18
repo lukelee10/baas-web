@@ -1,25 +1,44 @@
-<div fxLayout="column" *ngFor="let package of packages">
+<div
+  fxLayout="column"
+  *ngFor="let package of userPackages; let iCounter = index"
+>
   <mat-card
     fxFlex="100"
     fxFlexOffset="1"
+    (click)="packageClick(package.PackageId)"
     class="matdiv"
     fxLayout="column"
     style="height: 170px; "
   >
     <mat-card-header>
-      <mat-card-title>{{ package.title }} </mat-card-title>
-      <mat-card-subtitle
-        [ngStyle]="{
-          color:
-            package.classification === 'Unclassified'
-              ? 'green'
-              : package.classification === 'Unclassified For Official Use Only'
-              ? 'red'
-              : 'orange'
-        }"
-      >
-        {{ package.classification }}</mat-card-subtitle
-      >
+      <mat-card-title>
+        {{ package.Name }}
+        {{
+          package.RequestCount != undefined
+            ? '(' + package.RequestCount + ')'
+            : ''
+        }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ package.Created | date: 'medium' }}
+      </mat-card-subtitle>
     </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="row">
+        <div fxFlex="95">
+          &nbsp;
+        </div>
+        <div>
+          <span class="numberedCircle">{{ iCounter + 1 }}</span>
+        </div>
+      </div>
+    </mat-card-content>
   </mat-card>
+</div>
+<div fxLayout="column" *ngIf="showSpinner" fxLayoutAlign="center center">
+  <mat-spinner
+    matTooltip="Loading data"
+    style="text-align: center"
+    diameter="40"
+  ></mat-spinner>
 </div>

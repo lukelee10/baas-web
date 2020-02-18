@@ -15,51 +15,32 @@ export class ResponsesComponent implements OnInit {
   sideNavTitle = 'View Control';
   sideNavIcon = 'keyboard_arrow_left';
   sideNavToolTip = 'Click to Collapse';
-  sidenavBgColor = 'white';
-  sideNavCursor = 'default';
+
   sideNavContentsShow = true;
-  titleFlex = 80;
-  iconFlex = 20;
+  titleFlex = 85;
+  iconFlex = 15;
 
   readonly collapsedMiddleNavWidth = 3;
   readonly expandedMiddleNavWidth = 25;
 
   middleNavWidth = this.expandedMiddleNavWidth;
-  middleNavTitle = 'View Control';
+  middleNavTitle = 'Packages';
   middleNavIcon = 'keyboard_arrow_left';
   middleNavToolTip = 'Click to Collapse';
-  middleNavBgColor = 'white';
+  currentSortIcon = 'arrow_downward';
+  packageSortOrder = 'desc';
+  sortDirection = 'Sort Order: Package Creation Date Descending';
+  middleNavBgColor = '#eaf2f8';
+  pacakageIDToLoadRequests = '';
+
   middleNavContentsShow = true;
-  middleNavCursor = 'default';
-  titleMiddleFlex = 80;
-  iconMiddleFlex = 20;
+
+  titleMiddleFlex = 90;
+  iconMiddleFlex = 10;
 
   constructor() {}
 
   ngOnInit() {}
-
-  private expandSidenav() {
-    this.sidenavWidth = this.expandedWidth;
-    this.sideNavTitle = 'View Control';
-    this.sideNavIcon = 'keyboard_arrow_left';
-    this.sideNavContentsShow = true;
-    this.sideNavToolTip = 'Click to Collapse';
-    this.titleFlex = 80;
-    this.iconFlex = 20;
-    this.sidenavBgColor = 'white';
-    this.sideNavCursor = 'default';
-  }
-  private collapseSideNav() {
-    this.sidenavWidth = this.collapsedWidth;
-    this.sideNavTitle = '-';
-    this.sideNavIcon = 'keyboard_arrow_right';
-    this.sideNavContentsShow = false;
-    this.sideNavToolTip = 'Click to Expand';
-    this.titleFlex = 40;
-    this.iconFlex = 60;
-    this.sidenavBgColor = '#D3D3D3';
-    this.sideNavCursor = 'pointer';
-  }
 
   toggleSearch() {
     if (this.sidenavWidth === this.collapsedWidth) {
@@ -69,27 +50,23 @@ export class ResponsesComponent implements OnInit {
     }
   }
 
-  private expandmiddleNav() {
-    this.middleNavWidth = this.expandedMiddleNavWidth;
-    this.middleNavTitle = 'View Packages';
-    this.middleNavIcon = 'keyboard_arrow_left';
-    this.middleNavContentsShow = true;
-    this.middleNavToolTip = 'Click to Collapse';
-    this.titleMiddleFlex = 80;
-    this.iconMiddleFlex = 20;
-    this.middleNavBgColor = 'white';
-    this.middleNavCursor = 'default';
+  private expandSidenav() {
+    this.sidenavWidth = this.expandedWidth;
+    this.sideNavTitle = 'View Control';
+    this.sideNavIcon = 'keyboard_arrow_left';
+    this.sideNavContentsShow = true;
+    this.sideNavToolTip = 'Click to Collapse';
+    this.titleFlex = 85;
+    this.iconFlex = 15;
   }
-  private collapsemiddleNav() {
-    this.middleNavWidth = this.collapsedMiddleNavWidth;
-    this.middleNavTitle = '-';
-    this.middleNavIcon = 'keyboard_arrow_right';
-    this.middleNavContentsShow = false;
-    this.middleNavToolTip = 'Click to Expand';
-    this.titleMiddleFlex = 40;
-    this.iconMiddleFlex = 60;
-    this.middleNavBgColor = '#B0C4DE';
-    this.middleNavCursor = 'pointer';
+  private collapseSideNav() {
+    this.sidenavWidth = this.collapsedWidth;
+    this.sideNavTitle = '';
+    this.sideNavIcon = 'menu';
+    this.sideNavContentsShow = false;
+    this.sideNavToolTip = 'Click to Expand';
+    this.titleFlex = 5;
+    this.iconFlex = 95;
   }
 
   togglePackages() {
@@ -98,5 +75,44 @@ export class ResponsesComponent implements OnInit {
     } else {
       this.collapsemiddleNav();
     }
+  }
+
+  private expandmiddleNav() {
+    this.middleNavWidth = this.expandedMiddleNavWidth;
+    this.middleNavTitle = 'Packages';
+    this.middleNavIcon = 'keyboard_arrow_left';
+    this.middleNavContentsShow = true;
+    this.middleNavToolTip = 'Click to Collapse';
+    this.titleMiddleFlex = 90;
+    this.iconMiddleFlex = 10;
+  }
+  private collapsemiddleNav() {
+    this.middleNavWidth = this.collapsedMiddleNavWidth;
+    this.middleNavTitle = '';
+    this.middleNavIcon = 'menu';
+    this.middleNavContentsShow = false;
+    this.middleNavToolTip = 'Click to Expand';
+    this.titleMiddleFlex = 5;
+    this.iconMiddleFlex = 95;
+  }
+
+  toggleSort() {
+    // currentSortIcon = 'arrow_downward';
+    if (this.currentSortIcon === 'arrow_downward') {
+      // it was on Package Creation Date DESC order, now implement ASC --> Oldest  Package on Top
+      this.currentSortIcon = 'arrow_upward';
+      this.packageSortOrder = 'asc';
+      this.sortDirection = 'Sort Order: Package Creation Date Ascending';
+    } else {
+      // it was on Package Creation Date  ASC order, now implement DESC --> Latest Package on Top
+      this.currentSortIcon = 'arrow_downward';
+      this.packageSortOrder = 'desc';
+      this.sortDirection = 'Sort Order: Package Creation Date Descending';
+    }
+  }
+
+  packageClick(packageID) {
+    console.log('==========' + packageID);
+    this.pacakageIDToLoadRequests = packageID;
   }
 }
