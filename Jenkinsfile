@@ -33,6 +33,23 @@ pipeline {
             }
         }
 
+        stage('Linting') {
+            steps {
+                echo 'Linting..'
+                sh label: '', script: '''
+                    mkdir -p ./coverage
+                    npm run lint-jenkins
+                '''
+            }
+            post {
+                always{
+                    recordIssues failedTotalAll: 25, failedTotalHigh: 3, failedTotalLow: 20, failedTotalNormal: 10,
+                        unstableTotalAll: 10, unstableTotalHigh: 1, unstableTotalLow: 10, unstableTotalNormal: 5,
+                        tools: [checkStyle(pattern: '**/coverage/checkstyle.xml', reportEncoding: 'UTF-8')]
+                }
+            }
+        }
+
         stage('Unit Testing') {
             steps {
                 sh 'npm run test-headless'

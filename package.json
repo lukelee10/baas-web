@@ -8,6 +8,7 @@
     "test": "ng test --code-coverage",
     "test-headless": "ng test --watch=false --code-coverage --browsers=ChromeHeadless",
     "lint": "ng lint",
+    "lint-jenkins": "ng lint --exclude .gitignore --format checkstyle >./coverage/checkstyle.xml",
     "e2e": "ng e2e",
     "check": "pretty-quick --staged && ng lint && ng test --watch=false"
   },
