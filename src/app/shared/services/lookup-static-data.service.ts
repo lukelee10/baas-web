@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 export interface SelectItem {
-  value: string;
+  value: any;
   label: string;
   tooltip: string;
 }
@@ -32,6 +32,18 @@ export class LookupStaticDataService {
   // and addressed eventually
   modalityTypesData: SelectItem[] = [
     { value: 'Face', label: 'Face', tooltip: 'Face' }
+  ];
+
+  userRoleData: SelectItem[] = [
+    { value: 'Non-FSP-User', label: 'Non-FSP', tooltip: 'Non-FSP' },
+    { value: 'FSP-User', label: 'FSP', tooltip: 'FSP' },
+    { value: 'Admin', label: 'Admin', tooltip: 'Admin' },
+    { value: 'Lead', label: 'Lead', tooltip: 'Lead' }
+  ];
+
+  userStatusData: SelectItem[] = [
+    { value: false, label: 'Enabled', tooltip: 'Enabled' },
+    { value: true, label: 'Disabled', tooltip: 'Disabled' }
   ];
 
   allowedFileTypes = ['image/jpeg', 'image/png', 'image/jp2', 'image/bmp'];

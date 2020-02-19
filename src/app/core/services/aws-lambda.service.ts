@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from './../../../environments/environment';
-import { BaaSUser } from './../../shared/models/user';
 import { RequestModel } from './../../modules/models/request-model';
+import { BaaSUser } from './../../shared/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +38,10 @@ export class AwsLambdaService {
     const url = encodeURI(`${this.apiBase}/users/${email}`);
 
     return this.http.get<BaaSUser>(url);
+  }
+
+  createUser(newUser: any) {
+    return this.http.post(`${this.apiBase}/users`, newUser);
   }
 
   resetPassword(userid: string) {

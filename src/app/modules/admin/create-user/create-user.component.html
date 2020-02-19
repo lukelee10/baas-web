@@ -7,30 +7,68 @@
       type="email"
       autocomplete="email"
       required
+      [formControl]="email"
+    />
+  </mat-form-field>
+
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Password"
+      required
+      type="password"
+      required
+      class="form-control"
+      [formControl]="password"
     />
   </mat-form-field>
 
   <div fxLayout>
     <mat-form-field fxFlex="40%">
-      <input matInput placeholder="First Name" required class="form-control" />
+      <input
+        matInput
+        placeholder="First Name"
+        required
+        class="form-control"
+        [formControl]="firstname"
+      />
     </mat-form-field>
     <span fxFlex>&nbsp;</span>
 
     <mat-form-field fxFlex="40%">
-      <input matInput placeholder="Last Name" required />
+      <input
+        matInput
+        placeholder="Last Name"
+        required
+        [formControl]="lastname"
+      />
     </mat-form-field>
   </div>
 
   <mat-form-field>
-    <input matInput placeholder="Group" required />
+    <input matInput placeholder="Group" required [formControl]="group" />
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Role" required />
+    <mat-select placeholder="Role" required [formControl]="role">
+      <mat-option
+        *ngFor="let role of lookupStaticDataService.userRoleData"
+        [value]="role.value"
+      >
+        {{ role.label }}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput placeholder="Status" required />
+    <mat-select placeholder="Status" required [formControl]="disabled">
+      <mat-option
+        *ngFor="let disabled of lookupStaticDataService.userStatusData"
+        [value]="disabled.value"
+      >
+        {{ disabled.label }}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
 
   <div fxLayout>
@@ -39,6 +77,7 @@
       mat-raised-button
       color="primary"
       type="submit"
+      (click)="submit()"
       matTooltip="Create User"
     >
       Submit
