@@ -309,8 +309,9 @@ describe('##RequestsComponent::(*FSP Version):', () => {
 
     matFileUploadQueueComponentInstance.fileUploads.first.fileUploadFormGroup.setValue(
       {
-        modalityControl: 'Face',
-        isNotUSPerson: true
+        modality: 'Face',
+        isNotUSPerson: true,
+        imageClassification: 'U'
       }
     );
     fspFixture.detectChanges();
@@ -328,8 +329,9 @@ describe('##RequestsComponent::(*FSP Version):', () => {
 
     matFileUploadQueueComponentInstance.fileUploads.first.fileUploadFormGroup.setValue(
       {
-        modalityControl: 'Face',
-        isNotUSPerson: true
+        modality: 'Face',
+        isNotUSPerson: true,
+        imageClassification: 'U'
       }
     );
     fspFixture.detectChanges();
@@ -348,8 +350,9 @@ describe('##RequestsComponent::(*FSP Version):', () => {
 
     matFileUploadQueueComponentInstance.fileUploads.first.fileUploadFormGroup.setValue(
       {
-        modalityControl: 'Face',
-        isNotUSPerson: true
+        modality: 'Face',
+        isNotUSPerson: true,
+        imageClassification: 'U'
       }
     );
     fspFixture.detectChanges();
@@ -372,8 +375,9 @@ describe('##RequestsComponent::(*FSP Version):', () => {
 
     matFileUploadQueueComponentInstance.fileUploads.first.fileUploadFormGroup.setValue(
       {
-        modalityControl: 'Face',
-        isNotUSPerson: true
+        modality: 'Face',
+        isNotUSPerson: true,
+        imageClassification: 'U'
       }
     );
     fspFixture.detectChanges();

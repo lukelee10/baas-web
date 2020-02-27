@@ -5,4 +5,5 @@ export interface PackageFileModel {
   FileSize: number;
   IsNotUSPerson: boolean;
   Modality: string;
+  ImageClassification: string;
 }

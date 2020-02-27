@@ -115,9 +115,7 @@ describe('MatFileUploadComponent', () => {
   }));
 
   it('Verify the form valid with right file attached', () => {
-    fixtureComponentMUC.fileUploadFormGroup
-      .get('modalityControl')
-      .setErrors(null);
+    fixtureComponentMUC.fileUploadFormGroup.get('modality').setErrors(null);
     expect(fixtureComponentMUC.IsFormValid()).toBe(
       true,
       'Form must be valid with right image file and modality'

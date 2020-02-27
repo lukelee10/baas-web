@@ -75,7 +75,8 @@ export class MatFileUploadComponent implements OnInit {
   ngOnInit() {
     this.fileUploadFormGroup = this.formBuilder.group({
       isNotUSPerson: new FormControl(false),
-      modalityControl: new FormControl('', [Validators.required])
+      modality: new FormControl('', [Validators.required]),
+      imageClassification: new FormControl('U')
     });
   }
 
@@ -120,7 +121,7 @@ export class MatFileUploadComponent implements OnInit {
     return (
       this.IsFileValidSize() &&
       this.IsFileValidType() &&
-      this.fileUploadFormGroup.controls.modalityControl.valid
+      this.fileUploadFormGroup.controls.modality.valid
     );
   }
 
@@ -131,7 +132,8 @@ export class MatFileUploadComponent implements OnInit {
       FileType: this.file.type,
       FileSize: this.file.size,
       IsNotUSPerson: this.fileUploadFormGroup.value.isNotUSPerson,
-      Modality: this.fileUploadFormGroup.value.modalityControl
+      Modality: this.fileUploadFormGroup.value.modality,
+      ImageClassification: this.fileUploadFormGroup.value.imageClassification
     };
 
     return packageFileModel;

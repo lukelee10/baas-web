@@ -38,8 +38,7 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
 
   form = new FormGroup({
     packageTitle: new FormControl('', Validators.required),
-    selectClassification: new FormControl('', Validators.required),
-    filesClassification: new FormControl('', Validators.required)
+    packageClassification: new FormControl('', Validators.required)
   });
 
   filesValidationMessage: string;
@@ -125,8 +124,7 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
 
     const packageId = Guid.create().toString();
     const packageName = this.form.value.packageTitle;
-    const titleClassification = this.form.value.selectClassification;
-    const packageClassification = this.form.value.filesClassification;
+    const packageClassification = this.form.value.packageClassification;
     const username = this.userService.UserId;
     const group = this.userService.Group;
 
@@ -140,12 +138,12 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
         name: hasMultipleFiles
           ? `${packageName} : ${itemData.FileName}`
           : packageName,
-        titleClassification,
+        packageClassification,
         systems: this.vettingSystems,
         username,
         group,
         packageId,
-        packageClassification,
+        imageClassification: itemData.ImageClassification,
         mimeType: itemData.FileType,
         fileSize: itemData.FileSize,
         originalFileName: itemData.FileName,

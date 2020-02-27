@@ -21,6 +21,13 @@
   >
     USPER
   </mat-card>
+  <mat-card
+    *ngIf="!userService.IsFSPUser"
+    fxFlex="0 1 calc(20% - 30px)"
+    style="text-align: center;"
+  >
+    Classification
+  </mat-card>
 </div>
 <ng-content></ng-content>
 <br />

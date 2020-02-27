@@ -7,8 +7,8 @@ export interface RequestModel {
   mimeType: any;
   fileSize: any;
   originalFileName: any;
-  titleClassification?: any;
   packageClassification?: any;
+  imageClassification?: any;
   modality: any;
   systems?: any[];
   created: string;

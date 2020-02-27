@@ -28,10 +28,10 @@
       <mat-hint>64 Character Limit </mat-hint>
     </mat-form-field>
     <mat-form-field appearance="outline" fxFlex>
-      <mat-label>Classify Title</mat-label>
+      <mat-label>Classify Package</mat-label>
       <mat-select
         placeholder="Select Classification"
-        formControlName="selectClassification"
+        formControlName="packageClassification"
       >
         <mat-option
           *ngFor="
@@ -44,7 +44,7 @@
         </mat-option>
       </mat-select>
       <mat-icon matSuffix>assistant_photo</mat-icon>
-      <mat-error *ngIf="!form.hasError('selectClassification')"
+      <mat-error *ngIf="!form.hasError('packageClassification')"
         >Required</mat-error
       >
     </mat-form-field>
@@ -76,29 +76,6 @@
         <label for="singleFile" class="mat-raised-button mat-primary"
           >BROWSE...</label
         >
-      </div>
-      <div>
-        <mat-form-field appearance="outline" fxFlex>
-          <mat-label>Classify Package</mat-label>
-          <mat-select
-            placeholder="Select Classification"
-            formControlName="filesClassification"
-          >
-            <mat-option
-              *ngFor="
-                let classification of lookupStaticDataService.classificationTypesData
-              "
-              [value]="classification.value"
-              [matTooltip]="classification.tooltip"
-            >
-              {{ classification.label }}
-            </mat-option>
-          </mat-select>
-          <mat-icon matSuffix>assistant_photo</mat-icon>
-          <mat-error *ngIf="!form.hasError('filesClassification')"
-            >Required</mat-error
-          >
-        </mat-form-field>
       </div>
     </div>
     <mat-error style="font-size: 12px;" *ngIf="filesValidationError">
