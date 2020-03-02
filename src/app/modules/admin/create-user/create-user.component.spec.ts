@@ -19,7 +19,7 @@ let adminStatus;
 const AwsLambdaServiceMock: any = {
   createUser(value: any): Observable<any> {
     adminStatus = value.user.admin;
-    if (value.user.email === 'shouldCause422.gov') {
+    if (value.user.email === 'shouldCause422@gov') {
       return throwError({ status: 422 });
     } else if (value.user.email === 'shouldCauseNon422.gov') {
       return throwError({ status: 430 });
@@ -77,36 +77,44 @@ describe('CreateUserComponent', () => {
   });
 
   it('Form should be valid', () => {
-    component.email.setValue('test@abc.gov');
+    component.form.get('email').setValue('test@abc.gov');
     expect(NEW_USER.email).toEqual('test@abc.gov');
   });
 
   it('Admin boolean should be true when role is set to admin', async(() => {
-    component.role.setValue('Admin');
+    component.form.get('email').setValue('user123@leidos.com');
+    component.form.get('password').setValue('P@ssw0rd123!');
+    component.form.get('firstname').setValue('user');
+    component.form.get('lastname').setValue('test');
+    component.form.get('group').setValue('BaaS');
+    component.form.get('role').setValue('Admin');
+    component.form.get('disabled').setValue('true');
+    fixture.detectChanges();
     const button = fixture.debugElement.nativeElement.querySelectorAll(
       'button'
     )[0];
     button.click();
-    expect(adminStatus).toBeTruthy();
+    fixture.whenStable().then(() => {
+      expect(adminStatus).toBeTruthy();
+    });
   }));
 
   it('Error when creating new user', () => {
-    component.email.setValue('shouldCause422.gov');
-    const button = fixture.debugElement.nativeElement.querySelectorAll(
-      'button'
-    )[0];
-    button.click();
+    const awsLambdaService = fixture.debugElement.injector.get(
+      AwsLambdaService
+    );
+    const mockCall = spyOn(awsLambdaService, 'createUser').and.returnValue(
+      throwError({ status: 404 })
+    );
     fixture.detectChanges();
-    expect(component.errMessage).toEqual('Cannot create new user');
-  });
-
-  it('Expect the console to print error message', () => {
-    component.email.setValue('shouldCauseNon422.gov');
-    const button = fixture.debugElement.nativeElement.querySelectorAll(
-      'button'
-    )[0];
-    button.click();
+    const mockNotificationService = fixture.debugElement.injector.get(
+      NotificationService
+    );
+    const spymockNotificationService = spyOn(mockNotificationService, 'error');
+    component.submit();
     fixture.detectChanges();
     expect(component.errMessage).toBeTruthy();
+    expect(component.errMessage).toEqual('Cannot create new user');
+    expect(spymockNotificationService.calls.any()).toBeTruthy();
   });
 });

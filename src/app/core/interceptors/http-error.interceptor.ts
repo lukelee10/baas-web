@@ -55,7 +55,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               ? error.message
               : error.error.errorDetail;
             errorMessage = `Error: ${errorMessage}`;
-            this.notificationService.warning(errorMessage);
           }
         }
         return throwError(errorMessage);
