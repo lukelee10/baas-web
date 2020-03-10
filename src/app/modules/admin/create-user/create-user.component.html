@@ -21,6 +21,35 @@
         class="form-control"
         formControlName="password"
       />
+      <mat-error *ngIf="password.errors?.required"
+        >You must enter a password</mat-error
+      >
+      <mat-error *ngIf="password.errors?.minlength"
+        >Password does not have minimal length</mat-error
+      >
+      <mat-error
+        *ngIf="
+          password.errors?.validateSpecialChar ||
+          password.errors?.validateHas2Case ||
+          password.errors?.validateAlphaNumeric
+        "
+      >
+        <p>
+          Password must contain chars from at least 3 of the following 4
+          character classes:
+        </p>
+        [upper-case, lower-case, digit, special char]
+      </mat-error>
+      <mat-error *ngIf="form.controls.password.errors?.validateNo3Duplicate">
+        Password cannot contain more than 3 consecutive letters from the same
+        character class.
+      </mat-error>
+      <mat-error *ngIf="form.controls.password.errors?.validateNoUserID">
+        Password cannot contain user ID
+      </mat-error>
+      <mat-error *ngIf="form.controls.password.errors?.compare"
+        >Mismatched password</mat-error
+      >
     </mat-form-field>
 
     <div fxLayout>

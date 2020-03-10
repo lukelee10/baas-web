@@ -1,6 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 import { Router } from '@angular/router';
+import {
+  validateAlphaNumeric,
+  validateHas2Case,
+  validateNo3Duplicate,
+  validateSpecialChar
+} from 'src/app/core/app-global-constants';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
@@ -13,20 +24,43 @@ import { LookupStaticDataService } from '../../../shared/services/lookup-static-
 })
 export class CreateUserComponent implements OnInit {
   form: FormGroup;
+  get email() {
+    return this.form.get('email');
+  }
+  get password() {
+    return this.form.get('password');
+  }
 
   errMessage = 'Cannot create new user';
 
+  validateNoUserID = (c: FormControl) => {
+    return !this.form
+      ? null
+      : c.value.toLowerCase().includes(this.form.value.email.toLowerCase())
+      ? { validateNoUserID: true }
+      : null;
+  };
+
   constructor(
     private awsLambdaService: AwsLambdaService,
+    private formBuilder: FormBuilder,
     private router: Router,
     public lookupStaticDataService: LookupStaticDataService,
     private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
-    this.form = new FormGroup({
+    this.form = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(12),
+        validateAlphaNumeric,
+        validateSpecialChar,
+        validateNo3Duplicate,
+        validateHas2Case,
+        this.validateNoUserID
+      ]),
       firstname: new FormControl('', [Validators.required]),
       lastname: new FormControl('', [Validators.required]),
       group: new FormControl('', [Validators.required]),
