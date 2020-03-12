@@ -29,21 +29,9 @@ class MockAwsLambdaService extends AwsLambdaService {
     const arr = {
       Items: [
         {
-          ProviderId: 'ABIS',
-          AdapterId: 'ABIS',
-          Description: 'ABIS Biometrics Provider'
-        },
-        {
-          ProviderId: 'TIDE',
-          AdapterId: 'HIGH',
-          Description: 'TIDE Biometrics Provider',
-          IdInAdapter: '1'
-        },
-        {
           ProviderId: 'HIGHTOP',
-          AdapterId: 'HIGH',
-          Description: 'HIGHTOP Biometrics Provider',
-          IdInAdapter: '2'
+          AdapterId: 'HIGHTOP',
+          Description: 'HIGHTOP Biometrics Provider'
         },
         {
           ProviderId: 'LOWBALL',
@@ -51,7 +39,7 @@ class MockAwsLambdaService extends AwsLambdaService {
           Description: 'LOWBALL Biometrics Provider'
         }
       ],
-      Count: 4
+      Count: 2
     };
 
     return of(arr);
@@ -60,7 +48,7 @@ class MockAwsLambdaService extends AwsLambdaService {
 
 // Test Suite: describe blocks define a test suite
 // Each 'it' block within a test suite carries an individual test.
-describe('##Vetting Systems (Provider) Checkboxes Control:', () => {
+describe('Vetting Systems (Provider) Checkboxes Control:', () => {
   let providerComponentFixture: ComponentFixture<ProviderCheckboxesComponent>;
   let providerComponentInstance: ProviderCheckboxesComponent;
 
@@ -108,10 +96,10 @@ describe('##Vetting Systems (Provider) Checkboxes Control:', () => {
     });
   });
 
-  it('Test Providers Lambdacall on ngOnInit', async(() => {
+  it('Test Providers Lambda call on ngOnInit', async(() => {
     providerComponentFixture.detectChanges();
     providerComponentFixture.whenStable().then(() => {
-      expect(providerComponentInstance.providersViewModel.length).toEqual(4);
+      expect(providerComponentInstance.providersViewModel.length).toEqual(2);
     });
   }));
 

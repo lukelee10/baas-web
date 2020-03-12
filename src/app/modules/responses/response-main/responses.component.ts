@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { UserPackage } from 'src/app/shared/models/user-package';
 
 @Component({
   selector: 'app-responses',
@@ -6,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./responses.component.scss']
 })
 export class ResponsesComponent implements OnInit {
-  isOpen = true;
+  updateStream = new Subject();
 
   readonly collapsedWidth = 3;
   readonly expandedWidth = 15;
@@ -31,7 +33,8 @@ export class ResponsesComponent implements OnInit {
   packageSortOrder = 'desc';
   sortDirection = 'Sort Order: Package Creation Date Descending';
   middleNavBgColor = '#eaf2f8';
-  pacakageIDToLoadRequests = '';
+  selectedPackageObj: UserPackage;
+  subscription: any;
 
   middleNavContentsShow = true;
 
@@ -40,7 +43,12 @@ export class ResponsesComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.updateStream.subscribe(p => {
+      console.log(p);
+      this.packageClick(p as UserPackage);
+    });
+  }
 
   toggleSearch() {
     if (this.sidenavWidth === this.collapsedWidth) {
@@ -111,8 +119,7 @@ export class ResponsesComponent implements OnInit {
     }
   }
 
-  packageClick(packageID) {
-    console.log('==========' + packageID);
-    this.pacakageIDToLoadRequests = packageID;
+  packageClick(packageObj: UserPackage) {
+    this.selectedPackageObj = packageObj;
   }
 }

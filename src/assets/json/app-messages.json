@@ -8,5 +8,10 @@
     "index": 2,
     "title": "API Error",
     "message": "An Error occurred while retrieving the packages, please try again."
+  },
+  {
+    "index": 3,
+    "title": "API Error",
+    "message": "An Error occurred while retrieving the requests, please try again."
   }
 ]

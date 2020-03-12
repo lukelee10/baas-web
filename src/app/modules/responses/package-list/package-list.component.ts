@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output
+} from '@angular/core';
 import { UserPackageService } from 'src/app/core/services/user-package.service';
 import { UserPackage } from 'src/app/shared/models/user-package';
 import { NotificationService } from 'src/app/shared/services/notification.service';
@@ -8,24 +15,20 @@ import {
   AppMessagesService
 } from '../../../core/services/app-messages.services';
 
-interface Package {
-  id: number;
-  title: string;
-  classification: string;
-}
-
 @Component({
   selector: 'app-package-list',
   templateUrl: './package-list.component.html',
   styleUrls: ['./package-list.component.scss']
 })
-export class PackageListComponent implements OnInit {
+export class PackageListComponent implements OnInit, OnChanges {
   userPackages = new Array<UserPackage>();
   showSpinner = true;
   currentLastItem = '';
+  initLoad = false;
   @Input()
   sortOrder = 'desc';
   @Output() eventOnPackageClick = new EventEmitter();
+  @Output() eventFirstPackage: EventEmitter<UserPackage> = new EventEmitter();
 
   constructor(
     private userPackageService: UserPackageService,
@@ -33,7 +36,6 @@ export class PackageListComponent implements OnInit {
     private appMessagesService: AppMessagesService
   ) {}
 
-  // tslint:disable-next-line: use-lifecycle-interface
   ngOnChanges(changes: any) {
     const sortOldVal = changes.sortOrder.previousValue;
     const sortNewVal = changes.sortOrder.currentValue;
@@ -44,11 +46,14 @@ export class PackageListComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.invokePackageService();
+    if (!this.initLoad) {
+      this.invokePackageService();
+      this.initLoad = true;
+    }
   }
 
-  packageClick(packageId) {
-    this.eventOnPackageClick.emit(packageId);
+  packageClick(pacakageObj: UserPackage) {
+    this.eventOnPackageClick.emit(pacakageObj);
   }
 
   private invokePackageService() {
@@ -83,6 +88,10 @@ export class PackageListComponent implements OnInit {
       },
       () => {
         this.showSpinner = false;
+        if (this.userPackages.length > 0) {
+          const firstPackage: UserPackage = this.userPackages[0];
+          this.eventFirstPackage.emit(firstPackage);
+        }
       }
     );
   }

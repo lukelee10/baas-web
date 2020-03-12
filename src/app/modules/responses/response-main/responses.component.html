@@ -89,17 +89,13 @@
             </mat-card>
           </div>
           <div class="viewPackagesContainer">
-            <div
-              class="viewPackagesList"
-              id="divPackageList"
-              #divPackageList
-              *ngIf="middleNavContentsShow"
-              fxFlex="100"
-            >
+            <div class="viewPackagesList" fxFlex="100">
               <app-package-list
                 (eventOnPackageClick)="packageClick($event)"
+                (eventFirstPackage)="updateStream.next($event)"
                 [sortOrder]="packageSortOrder"
-              ></app-package-list>
+              >
+              </app-package-list>
             </div>
             <div
               fxFlex="100"
@@ -114,23 +110,9 @@
           </div>
         </mat-drawer>
         <mat-drawer-content>
-          <div fxLayout="column">
-            <mat-card
-              class="response-head primary"
-              fxFlex="100"
-              style="padding: 9px;"
-            >
-              Images
-            </mat-card>
-            <div class="viewImagesDiv" fxFlexOffset=".3">
-              Load Requests
-              {{
-                pacakageIDToLoadRequests.length > 0
-                  ? 'For PackageId: ' + pacakageIDToLoadRequests + '...TODO...'
-                  : '...'
-              }}
-            </div>
-          </div>
+          <app-request-list
+            [packageObj]="selectedPackageObj"
+          ></app-request-list>
         </mat-drawer-content>
       </mat-drawer-container>
     </mat-drawer-content>

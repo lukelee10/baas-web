@@ -18,6 +18,14 @@ export const enum UserRoles {
   NonFSPUser = 'Non-FSP-User'
 }
 
+export const enum RequestStatusFlags {
+  Pending = 'PND',
+  InvestigativeLead = 'INV',
+  Error = 'ERR',
+  NoLead = 'NL',
+  EmptyString = 'NA'
+}
+
 // At least 1 special characters: `~!@#$%^&*()_+-={}|[]\:";'<>?,./
 export const validateSpecialChar: ValidatorFn = (c: FormControl) => {
   const ascii = c.value.split('').map(ch => ch.charCodeAt());

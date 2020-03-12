@@ -5,7 +5,7 @@
   <mat-card
     fxFlex="100"
     fxFlexOffset="1"
-    (click)="packageClick(package.PackageId)"
+    (click)="packageClick(package)"
     class="matdiv"
     fxLayout="column"
     style="height: 170px; "
@@ -13,11 +13,6 @@
     <mat-card-header>
       <mat-card-title>
         {{ package.Name }}
-        {{
-          package.RequestCount != undefined
-            ? '(' + package.RequestCount + ')'
-            : ''
-        }}
       </mat-card-title>
       <mat-card-subtitle>
         {{ package.Created | date: 'medium' }}
@@ -26,7 +21,9 @@
     <mat-card-content>
       <div fxLayout="row">
         <div fxFlex="95">
-          &nbsp;
+          <span class="packageCount" title="Package Request Count">{{
+            package.RequestCount
+          }}</span>
         </div>
         <div>
           <span class="numberedCircle">{{ iCounter + 1 }}</span>

@@ -1,16 +1,13 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { MaterialModule } from '../shared/material.module';
-
+import { FooterComponent } from './footer/footer.component';
 import { throwIfAlreadyLoaded } from './guards/module-import.guard';
-
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { HttpTokenInterceptor } from './interceptors/http-token.interceptor';
-
-import { FooterComponent } from './footer/footer.component';
 import { SideNavigationComponent } from './sidenavigation/sidenavigation.component';
 import { TopPageNavigationComponent } from './toppagenavigation/toppagenavigation.component';
 

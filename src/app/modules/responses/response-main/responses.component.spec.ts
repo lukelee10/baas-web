@@ -3,12 +3,18 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  VettingStatusPipe,
+  VettingStatusShortenPipe
+} from 'src/app/core/pipes/vetting-status-shorten.pipe';
+import { UserPackage } from 'src/app/shared/models/user-package';
 
 import { PackageListComponent } from '../package-list/package-list.component';
+import { RequestListComponent } from '../request-list/request-list.component';
 import { SharedModule } from './../../../shared/shared.module';
 import { ResponsesComponent } from './responses.component';
 
-describe('###ResponsesComponent', () => {
+describe('ResponsesComponent', () => {
   let component: ResponsesComponent;
   let fixture: ComponentFixture<ResponsesComponent>;
 
@@ -21,7 +27,13 @@ describe('###ResponsesComponent', () => {
         BrowserAnimationsModule,
         FlexLayoutModule
       ],
-      declarations: [ResponsesComponent, PackageListComponent]
+      declarations: [
+        ResponsesComponent,
+        PackageListComponent,
+        RequestListComponent,
+        VettingStatusShortenPipe,
+        VettingStatusPipe
+      ]
     }).compileComponents();
   }));
 
@@ -76,7 +88,13 @@ describe('###ResponsesComponent', () => {
   });
 
   it('Verify the  proper packageClick propagation', () => {
-    component.packageClick('1234ABCD');
-    expect(component.pacakageIDToLoadRequests === '1234ABCD').toBeTruthy();
+    const userPackage: UserPackage = {
+      PackageId: '1234ABCD',
+      Created: undefined,
+      Name: undefined,
+      RequestCount: undefined
+    };
+    component.packageClick(userPackage);
+    expect(component.selectedPackageObj.PackageId === '1234ABCD').toBeTruthy();
   });
 });

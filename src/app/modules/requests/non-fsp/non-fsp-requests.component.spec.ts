@@ -45,7 +45,7 @@ class MockUserService extends UserService {
 
 // Test Suite: describe blocks define a test suite
 // Each "it" block within a test suite carries an individual test.
-describe('##RequestsComponent::(*NON-FSP Version)', () => {
+describe('RequestsComponent::(*NON-FSP Version)', () => {
   let requestFixture: ComponentFixture<RequestsComponent>;
   let requestComponentInstance: RequestsComponent;
 
@@ -233,9 +233,9 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
   it('Test ProvidersSelectionChanged Event Triggered When One Provider Selected ', () => {
     // mock one vetting system is selected
     mockSelectedProviders.push({
-      ProviderId: 'ABIS',
-      AdapterId: 'ABIS',
-      Description: 'ABIS Biometrics Provider'
+      ProviderId: 'HIGHTOP',
+      AdapterId: 'HIGHTOP',
+      Description: 'HIGHTOP Biometrics Provider'
     });
     nonFSPComponentInstance.ProvidersSelectionChanged(mockSelectedProviders);
     // When ProvidersSelectionChanged Event Triggered nonFSPComponentInstance.vettingSystems.length must be greater than 0
@@ -365,7 +365,7 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
       packageTitle: 'Testing 0203 0120',
       packageClassification: 'U'
     });
-    nonFSPComponentInstance.vettingSystems.push('ABIS');
+    nonFSPComponentInstance.vettingSystems.push('LOWBALL');
     matFileUploadQueueComponentInstance.add(testImage());
     nonFSPFixture.detectChanges();
 
@@ -389,7 +389,7 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
       packageTitle: 'Testing 0203 0120',
       packageClassification: 'U'
     });
-    nonFSPComponentInstance.vettingSystems.push('ABIS');
+    nonFSPComponentInstance.vettingSystems.push('LOWBALL');
     matFileUploadQueueComponentInstance.add(testImage());
     nonFSPFixture.detectChanges();
 
@@ -414,7 +414,7 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
       packageTitle: 'Testing 0206 0150',
       packageClassification: 'U'
     });
-    nonFSPComponentInstance.vettingSystems.push('ABIS');
+    nonFSPComponentInstance.vettingSystems.push('LOWBALL');
     matFileUploadQueueComponentInstance.add(testImage());
     nonFSPFixture.detectChanges();
 
@@ -446,7 +446,7 @@ describe('##RequestsComponent::(*NON-FSP Version)', () => {
       packageTitle: 'InvalidPackage',
       packageClassification: 'U'
     });
-    nonFSPComponentInstance.vettingSystems.push('ABIS');
+    nonFSPComponentInstance.vettingSystems.push('LOWBALL');
     matFileUploadQueueComponentInstance.add(testImage());
     nonFSPFixture.detectChanges();
 

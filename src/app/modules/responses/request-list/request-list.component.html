@@ -1,0 +1,116 @@
+<div fxLayout="column">
+  <mat-card class="response-head primary" style="padding: 9px;">
+    Images:
+    {{ packageObj.Name.charAt(0).toUpperCase() + packageObj.Name.slice(1) }}
+  </mat-card>
+  <div fxLayout="row" class="infoBar">
+    <span fxFlex="80"> ID# {{ packageObj.PackageId.toUpperCase() }} </span>
+    <span fxFlex="20"> User</span>
+  </div>
+  <div class="viewImagesDiv" fxFlexOffset=".3">
+    <div fxLayout="column" *ngIf="showSpinner" fxLayoutAlign="center center">
+      <mat-spinner
+        matTooltip="Loading data"
+        style="text-align: center"
+        diameter="40"
+      ></mat-spinner>
+    </div>
+    <div
+      fxLayout="row wrap"
+      *ngIf="!showSpinner"
+      fxLayoutAlign="space-around left"
+      fxLayout.xs="column"
+      class="requestContainer"
+    >
+      <mat-card *ngFor="let request of packageRequests" class="pic-card">
+        <mat-card-content>
+          <div fxLayout="row">
+            <div fxLayout="column">
+              <div class="pic-frame">
+                <img class="resize-keep-aspect" src="{{ request.ImageUrl }}" />
+              </div>
+              <div
+                class="status-flag  status-{{
+                  request.Status | vettingStatusShorten
+                }}"
+              >
+                {{ request.Status | vettingStatusPipe }}
+              </div>
+            </div>
+            <div fxLayout="column" style="text-align: right;  width: 110px">
+              <div fxLayout="row">
+                <div fxFlex="50">&nbsp;</div>
+                <div fxFlex="50" class="modality-flag">
+                  {{ request.Modality }}
+                </div>
+              </div>
+              <div fxLayout="column" fxFlexOffset="2">
+                <div>
+                  &nbsp;
+                </div>
+                <div
+                  fxLayout="row"
+                  class="status-grid-left"
+                  *ngIf="vettingSystemShow(request.Results.ABIS)"
+                >
+                  <div style="padding:2px; width: 70px;">
+                    ABIS
+                  </div>
+                  <div
+                    class="status-{{
+                      request.Results.ABIS | vettingStatusShorten
+                    }}"
+                  >
+                    {{ request.Results.ABIS | vettingStatusShorten }}
+                  </div>
+                </div>
+                <div
+                  fxLayout="row"
+                  class="status-grid-left"
+                  *ngIf="vettingSystemShow(request.Results.HIGHTOP)"
+                >
+                  <div style="padding:2px; width: 70px;">HIGHTOP</div>
+                  <div
+                    class="status-{{
+                      request.Results.HIGHTOP | vettingStatusShorten
+                    }}"
+                  >
+                    {{ request.Results.HIGHTOP | vettingStatusShorten }}
+                  </div>
+                </div>
+                <div
+                  fxLayout="row"
+                  class="status-grid-left"
+                  *ngIf="vettingSystemShow(request.Results.LOWBALL)"
+                >
+                  <div style="padding:2px; width: 70px;">LOWBALL</div>
+                  <div
+                    class="status-{{
+                      request.Results.LOWBALL | vettingStatusShorten
+                    }}"
+                  >
+                    {{ request.Results.LOWBALL | vettingStatusShorten }}
+                  </div>
+                </div>
+                <div
+                  fxLayout="row"
+                  class="status-grid-left"
+                  *ngIf="vettingSystemShow(request.Results.TIDE)"
+                >
+                  <div style="padding:2px; width: 70px;">TIDE</div>
+                  <div
+                    class="status-{{
+                      request.Results.TIDE | vettingStatusShorten
+                    }}"
+                  >
+                    {{ request.Results.TIDE | vettingStatusShorten }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -6,7 +6,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of, throwError } from 'rxjs';
 import { AppMessagesService } from 'src/app/core/services/app-messages.services';
 import { UserPackageService } from 'src/app/core/services/user-package.service';
-import { UserPackageResponse } from 'src/app/shared/models/user-package';
+import {
+  UserPackage,
+  UserPackageResponse
+} from 'src/app/shared/models/user-package';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
 import { SharedModule } from './../../../shared/shared.module';
@@ -25,13 +28,13 @@ class MockUserPackageService extends UserPackageService {
         {
           PackageId: '4b492006-9102-4aed-8f67-00f3a9f8f7c4',
           Created: '2020-02-07T13:13:13',
-          Name: 'ABIS Package Submission',
+          Name: 'Lowball Package Submission',
           RequestCount: 2
         },
         {
           PackageId: '4b492006-9102-4aed-8f67-00f3a9f8f7c3',
           Created: '2020-02-07T13:13:13',
-          Name: 'High Tide Pacakage ',
+          Name: 'Hightop Package',
           RequestCount: 5
         }
       ]
@@ -41,7 +44,7 @@ class MockUserPackageService extends UserPackageService {
   }
 }
 
-describe('###PackageListComponent', () => {
+describe('PackageListComponent', () => {
   let component: PackageListComponent;
   let fixture: ComponentFixture<PackageListComponent>;
 
@@ -96,10 +99,17 @@ describe('###PackageListComponent', () => {
   it('Verify Proper Trigger  of Package Click Event', () => {
     fixture.detectChanges();
     spyOn(component.eventOnPackageClick, 'emit');
-    component.packageClick('4b492006-9102-4aed-8f67-00f3a9f8f7c4');
+    const userPackage: UserPackage = {
+      PackageId: '4b492006-9102-4aed-8f67-00f3a9f8f7c4',
+      Created: undefined,
+      Name: undefined,
+      RequestCount: undefined
+    };
+
+    component.packageClick(userPackage);
     expect(component.eventOnPackageClick.emit).toHaveBeenCalled();
     expect(component.eventOnPackageClick.emit).toHaveBeenCalledWith(
-      '4b492006-9102-4aed-8f67-00f3a9f8f7c4'
+      userPackage
     );
   });
 

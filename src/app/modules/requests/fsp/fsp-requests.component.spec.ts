@@ -45,7 +45,7 @@ class MockUserService extends UserService {
 
 // Test Suite: describe blocks define a test suite
 // Each "it" block within a test suite carries an individual test.
-describe('##RequestsComponent::(*FSP Version):', () => {
+describe('RequestsComponent::(*FSP Version):', () => {
   let requestFixture: ComponentFixture<RequestsComponent>;
   let requestComponentInstance: RequestsComponent;
 
