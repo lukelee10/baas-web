@@ -8,6 +8,7 @@ import {
 import { SharedModule } from 'src/app/shared/shared.module';
 
 import { PackageListComponent } from './package-list/package-list.component';
+import { RequestDetailsComponent } from './request-details/request-details.component';
 import { RequestListComponent } from './request-list/request-list.component';
 import { ResponsesComponent } from './response-main/responses.component';
 import { ResponsesRoutingModule } from './responses-routing.module';
@@ -18,13 +19,15 @@ import { ResponsesRoutingModule } from './responses-routing.module';
     PackageListComponent,
     RequestListComponent,
     VettingStatusShortenPipe,
-    VettingStatusPipe
+    VettingStatusPipe,
+    RequestDetailsComponent
   ],
   imports: [
     CommonModule,
     ResponsesRoutingModule,
     FlexLayoutModule,
     SharedModule
-  ]
+  ],
+  entryComponents: [RequestDetailsComponent]
 })
 export class ResponsesModule {}

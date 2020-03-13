@@ -2,18 +2,24 @@ import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SimpleChange } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of, throwError } from 'rxjs';
+import { RequestStatusFlags } from 'src/app/core/app-global-constants';
 import {
   VettingStatusPipe,
   VettingStatusShortenPipe
 } from 'src/app/core/pipes/vetting-status-shorten.pipe';
 import { AppMessagesService } from 'src/app/core/services/app-messages.services';
 import { PackageRequestService } from 'src/app/core/services/package-request.service';
-import { PackageRequestResponse } from 'src/app/shared/models/package-requests';
+import {
+  PackageRequestResponse,
+  Request
+} from 'src/app/shared/models/package-requests';
 import { UserPackage } from 'src/app/shared/models/user-package';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
+import { RequestDetailsComponent } from '../request-details/request-details.component';
 import { SharedModule } from './../../../shared/shared.module';
 import { RequestListComponent } from './request-list.component';
 
@@ -83,7 +89,8 @@ class MockPackageRequestService extends PackageRequestService {
           FileName: 'Mickey-mouse.jpg',
           Created: '2019-11-26T12:38:36',
           Results: {
-            LOWBALL: 'GREEN',
+            LOWBALL: 'INVALID_STATUS',
+
             HIGHTOP: 'PENDING'
           },
           StatusTimestamp: '2019-11-26T17:38:38.13006365180940433857Z',
@@ -153,7 +160,8 @@ describe('RequestListComponent', () => {
       declarations: [
         RequestListComponent,
         VettingStatusShortenPipe,
-        VettingStatusPipe
+        VettingStatusPipe,
+        RequestDetailsComponent
       ],
       imports: [
         CommonModule,
@@ -165,7 +173,13 @@ describe('RequestListComponent', () => {
         { provide: PackageRequestService, useClass: MockPackageRequestService },
         NotificationService
       ]
-    }).compileComponents();
+    })
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [RequestDetailsComponent]
+        }
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -224,5 +238,51 @@ describe('RequestListComponent', () => {
     component.getRequests('32323223232');
     // AppMessagesService.getMessage must be invoked to display friendly error to user
     expect(spymockAppMessagesService.calls.any()).toBeTruthy();
+  });
+
+  it('Verify RequestListComponent openDialog', () => {
+    fixture.detectChanges();
+    const testRequest: Request = {
+      Modality: 'FACE',
+      Comments: '',
+      PackageId: 'fcb5f8ff-618b-4848-9dbb-7d8265f815e7',
+      GlobalAccess: 1,
+      Systems: ['HIGHTOP', 'LOWBALL'],
+      Status: 'PENDING',
+      MimeType: 'image/jpeg',
+      Classification: 'U',
+      Group: 'US/Virginia',
+      FileName: 'Mickey-mouse.jpg',
+      Created: undefined,
+      Results: {
+        LOWBALL: 'INVESTIGATIVE LEAD',
+        HIGHTOP: 'PENDING'
+      },
+      StatusTimestamp: undefined,
+      FileSize: 23073,
+      User: 'nkgroup@test.com',
+      Id: 'f9a01b07-5b5e-403d-b10f-2f5d96c7a8c3',
+      Name: 'AutoTest Single by GroupLead',
+      ImageUrl: '../../../assets/mock-pics/Christian_Bale.jpg'
+    };
+    component.openDialog(testRequest);
+    expect(
+      component.deatilsPopup.id.toString().indexOf('mat-dialog') >= 0
+    ).toBeTruthy();
+
+    expect(component).toBeTruthy();
+  });
+
+  it('Verify RequestListComponent vettingSystemShow', () => {
+    fixture.detectChanges();
+    // RequestStatusFlags.EmptyString vettingSystemShow should return false
+    expect(
+      component.vettingSystemShow(RequestStatusFlags.EmptyString)
+    ).toBeFalsy();
+    // RequestStatusFlags.InvestigativeLead vettingSystemShow should return true
+    expect(
+      component.vettingSystemShow(RequestStatusFlags.InvestigativeLead)
+    ).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 });

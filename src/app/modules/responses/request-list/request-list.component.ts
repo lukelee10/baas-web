@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RequestStatusFlags } from 'src/app/core/app-global-constants';
 import { VettingStatusShortenPipe } from 'src/app/core/pipes/vetting-status-shorten.pipe';
 import {
@@ -10,6 +11,8 @@ import { Request } from 'src/app/shared/models/package-requests';
 import { UserPackage } from 'src/app/shared/models/user-package';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
+import { RequestDetailsComponent } from '../request-details/request-details.component';
+
 @Component({
   selector: 'app-request-list',
   templateUrl: './request-list.component.html',
@@ -17,6 +20,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 })
 export class RequestListComponent implements OnInit, OnChanges {
   showSpinner = true;
+  deatilsPopup: MatDialogRef<RequestDetailsComponent, any>;
 
   packageRequests = new Array<Request>();
   packageRequestRaw = new Array<Request>();
@@ -27,7 +31,8 @@ export class RequestListComponent implements OnInit, OnChanges {
   constructor(
     private packageRequestService: PackageRequestService,
     private notificationService: NotificationService,
-    private appMessagesService: AppMessagesService
+    private appMessagesService: AppMessagesService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -114,6 +119,14 @@ export class RequestListComponent implements OnInit, OnChanges {
     });
 
     return pkgRequestsSorted;
+  }
+
+  openDialog(request: Request): void {
+    this.deatilsPopup = this.dialog.open(RequestDetailsComponent, {
+      width: '800px',
+      height: '700px',
+      data: request
+    });
   }
 
   // TODO   This needs to be refactored to avoid hard-coding the vetting systems at the HTML template

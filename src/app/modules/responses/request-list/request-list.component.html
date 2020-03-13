@@ -44,7 +44,7 @@
                   {{ request.Modality }}
                 </div>
               </div>
-              <div fxLayout="column" fxFlexOffset="2">
+              <div fxLayout="column" fxFlexOffset="2" style="height: 145px;">
                 <div>
                   &nbsp;
                 </div>
@@ -106,6 +106,18 @@
                     {{ request.Results.TIDE | vettingStatusShorten }}
                   </div>
                 </div>
+              </div>
+              <div fxLayout="row" fxFlexAlign="center center ">
+                <span>&nbsp;</span>
+                <button
+                  mat-stroked-button
+                  color="primary"
+                  (click)="openDialog(request)"
+                  style="font-size: x-small;width:110px; "
+                >
+                  <mat-icon>history</mat-icon>
+                  Responses
+                </button>
               </div>
             </div>
           </div>

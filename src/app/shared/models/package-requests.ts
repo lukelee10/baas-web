@@ -6,7 +6,7 @@ export interface PackageRequestResponse {
 
 export interface Request {
   Modality: string;
-  Comments: string;
+  Comments?: string;
   PackageId: string;
   GlobalAccess: number;
   Systems: string[];
@@ -32,5 +32,5 @@ export interface Results {
   LOWBALL?: string;
   ABIS?: string;
   HIGHTOP?: string;
-  StatusPriority: number;
+  StatusPriority?: number;
 }
