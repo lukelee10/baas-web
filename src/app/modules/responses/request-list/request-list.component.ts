@@ -21,6 +21,7 @@ import { RequestDetailsComponent } from '../request-details/request-details.comp
 export class RequestListComponent implements OnInit, OnChanges {
   showSpinner = true;
   deatilsPopup: MatDialogRef<RequestDetailsComponent, any>;
+  Object = Object;
 
   packageRequests = new Array<Request>();
   packageRequestRaw = new Array<Request>();
@@ -127,13 +128,5 @@ export class RequestListComponent implements OnInit, OnChanges {
       height: '700px',
       data: request
     });
-  }
-
-  // TODO   This needs to be refactored to avoid hard-coding the vetting systems at the HTML template
-  vettingSystemShow(status: string): boolean {
-    return !(
-      RequestStatusFlags.EmptyString ===
-      new VettingStatusShortenPipe().transform(status)
-    );
   }
 }

@@ -1,0 +1,84 @@
+{
+  "RequestId": "REQUEST_ID",
+  "VettingSystems": [
+    {
+      "SystemName": "HIGHTOP ",
+      "POC": [
+        {
+          "Label": "Phone Number",
+          "Value": "555-555-5555",
+          "Remarks": "Call me!"
+        },
+        {
+          "Label": "Email",
+          "Value": "k@abis.gov",
+          "Remarks": "Contact on JWICS"
+        }
+      ],
+      "IdFieldName": "TCN",
+      "Ids": ["0123445678", "82892810191"],
+      "Status": "RED",
+      "SubmissionDate": "",
+      "ResponseDate": "",
+      "Alerts": [
+        {
+          "Level": "Warning",
+          "Message": "ARMED, EXTREMELY DANGEROUS"
+        }
+      ],
+      "Errors": [
+        {
+          "Code": "42",
+          "Message": "Some summary of the error as returned by Vetting System"
+        }
+      ]
+    },
+    {
+      "SystemName": "LOWBALL",
+      "POC": [
+        {
+          "Label": "Phone Number",
+          "Value": "777-777-7777",
+          "Remarks": "Call me!"
+        },
+        {
+          "Label": "Email",
+          "Value": "k@tide.gov",
+          "Remarks": "Contact on JWICS"
+        }
+      ],
+      "IdFieldName": "TPN",
+      "Ids": ["23203230223", "43403434343"],
+      "Status": "RED",
+      "SubmissionDate": "",
+      "ResponseDate": "",
+      "Alerts": [
+        {
+          "Level": "Warning",
+          "Message": "He's super bad."
+        }
+      ],
+      "Errors": [
+        {
+          "Code": "42",
+          "Message": "Some summary of the error as returned by Vetting System"
+        }
+      ]
+    }
+  ],
+  "Alert": {
+    "Level": "Warning",
+    "Message": "ARMED, EXTREMELY DANGEROUS"
+  },
+  "ImageClassification": "Request ID Classification Level (U//FOUO)",
+  "Modality": "FACE",
+  "Filename": "vetting-person1.jpg",
+  "Status": "RED",
+  "RequestLogs": [
+    {
+      "Timestamp": "20200220T232304Z",
+      "Message": "Request logs sample"
+    }
+  ],
+  "ImageUrl": "https://s3.amazonaws.com/..."
+}

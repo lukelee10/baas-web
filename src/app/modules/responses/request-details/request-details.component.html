@@ -10,9 +10,13 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-
-  <div fxLayout="row" fxFlex="100" style="border: 1px solid gray">
-    <div fxLayout="column" fxFlex="50">
+  <div
+    fxFlex="100"
+    fxFlexOffset=".3"
+    *ngIf="!showSpinner"
+    style="border: 1px solid gray;  border-radius: 5px;"
+  >
+    <div fxLayout="column" fxFlex="25">
       <div class="pic-frame pic-frame--quick-zoom">
         <img class="resize-keep-aspect" src="{{ request.ImageUrl }}" />
       </div>
@@ -22,10 +26,117 @@
         {{ request.Status | vettingStatusPipe }}
       </div>
     </div>
-    <div>
-      <div class="modality-flag">
-        {{ request.Modality }}
+    <div fxLayout="column" fxFlex="75">
+      <div fxLayout="row">
+        <div
+          fxFlex="80"
+          class="head-alert head-alert--{{
+            requestDetails?.Alert.Level.toLowerCase()
+          }}"
+        >
+          <i
+            style="display: none; font-size: small !important"
+            class="material-icons head-alert--{{
+              requestDetails?.Alert.Level.toLowerCase()
+            }}"
+            >warning</i
+          >
+          {{ requestDetails?.Alert.Message }}
+        </div>
+        <div fxFlex="10"></div>
+        <div fxFlex="10" class="modality-flag">{{ request.Modality }}</div>
+      </div>
+      <div fxLayout="row" fxFlexOffset="2">
+        <div fxFlex="15" class="request-detail-label">Request:</div>
+        <div fxFlex="65" class="digit-bar">
+          {{ request.Id }}
+        </div>
+
+        <div fxFlex="20">
+          <i
+            class="material-icons"
+            style="color:#616A6B; cursor: pointer;  "
+            title="Copy to Clip-board"
+            >content_copy</i
+          >&nbsp;
+        </div>
+      </div>
+      <div fxLayout="row" fxFlexOffset="1">
+        <div fxFlex="15" class="request-detail-label">File:</div>
+        <div fxFlex="85" class="request-detail-text">
+          {{ requestDetails?.Filename }}
+        </div>
+      </div>
+      <div fxLayout="row" fxFlexOffset="1">
+        <div fxFlex="15" class="request-detail-label">Submitted:</div>
+        <div fxFlex="85" class="request-detail-text">
+          {{ request.StatusTimestamp | date: 'medium' }}
+        </div>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="!showSpinner" fxLayout="row" fxFlex="100" fxFlexOffset="1">
+    <div fxFlex="50" class="details-H2">
+      VETTING SYSTEM RESPONSES
+    </div>
+    <div fxFlex="50" fxFlexOffset="0.5" class="details-H2">
+      RESPONSE LOG
+    </div>
+  </div>
+  <div *ngIf="!showSpinner" fxLayout="row" fxFlex="100">
+    <div fxFlex="50" class="response-details-log">
+      <div style="min-height: 400px;">
+        <div
+          fxLayout="column"
+          *ngFor="let vettingSystem of requestDetails?.VettingSystems"
+        >
+          <div fxLayout="column" style="padding: 10px; ">
+            <div fxLayout="row" class="response-card-head">
+              <div fxFlex="50">
+                <span title="collapse" class="toggle-icon">-</span>
+                {{ vettingSystem.SystemName }}
+              </div>
+              <div
+                fxFlex="50"
+                class=" status-flag status-{{
+                  vettingSystem.Status | vettingStatusShorten
+                }}"
+              >
+                {{ vettingSystem.Status | vettingStatusPipe }}
+              </div>
+            </div>
+            <div fxLayout="column" class="response-card">
+              <div fxLayout="row" fxFlex="100">
+                <div fxFlex="20">{{ vettingSystem.IdFieldName }}</div>
+                <div fxFlex="80">
+                  <span class="digit-bar"
+                    >{{ vettingSystem.Ids.toString() }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxFlex="50" fxFlexOffset="0.5" class="response-details-log">
+      <div style="min-height: 400px;min-width: 360px;">
+        <span class="request-detail-text">Logs</span>
+      </div>
+    </div>
+  </div>
+
+  <div
+    fxLayout="column"
+    *ngIf="showSpinner"
+    fxFlexOffset="20"
+    fxLayoutAlign="center center"
+  >
+    <mat-spinner
+      matTooltip="Loading data"
+      style="text-align: center"
+      diameter="40"
+    ></mat-spinner>
   </div>
 </div>

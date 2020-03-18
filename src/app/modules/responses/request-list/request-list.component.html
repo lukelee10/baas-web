@@ -45,65 +45,25 @@
                 </div>
               </div>
               <div fxLayout="column" fxFlexOffset="2" style="height: 145px;">
-                <div>
-                  &nbsp;
-                </div>
                 <div
-                  fxLayout="row"
-                  class="status-grid-left"
-                  *ngIf="vettingSystemShow(request.Results.ABIS)"
+                  fxLayout="column"
+                  *ngFor="let item of Object.keys(request.Results) | keyvalue"
                 >
-                  <div style="padding:2px; width: 70px;">
-                    ABIS
-                  </div>
-                  <div
-                    class="status-{{
-                      request.Results.ABIS | vettingStatusShorten
-                    }}"
-                  >
-                    {{ request.Results.ABIS | vettingStatusShorten }}
-                  </div>
-                </div>
-                <div
-                  fxLayout="row"
-                  class="status-grid-left"
-                  *ngIf="vettingSystemShow(request.Results.HIGHTOP)"
-                >
-                  <div style="padding:2px; width: 70px;">HIGHTOP</div>
-                  <div
-                    class="status-{{
-                      request.Results.HIGHTOP | vettingStatusShorten
-                    }}"
-                  >
-                    {{ request.Results.HIGHTOP | vettingStatusShorten }}
-                  </div>
-                </div>
-                <div
-                  fxLayout="row"
-                  class="status-grid-left"
-                  *ngIf="vettingSystemShow(request.Results.LOWBALL)"
-                >
-                  <div style="padding:2px; width: 70px;">LOWBALL</div>
-                  <div
-                    class="status-{{
-                      request.Results.LOWBALL | vettingStatusShorten
-                    }}"
-                  >
-                    {{ request.Results.LOWBALL | vettingStatusShorten }}
-                  </div>
-                </div>
-                <div
-                  fxLayout="row"
-                  class="status-grid-left"
-                  *ngIf="vettingSystemShow(request.Results.TIDE)"
-                >
-                  <div style="padding:2px; width: 70px;">TIDE</div>
-                  <div
-                    class="status-{{
-                      request.Results.TIDE | vettingStatusShorten
-                    }}"
-                  >
-                    {{ request.Results.TIDE | vettingStatusShorten }}
+                  <div fxLayout="row">
+                    <div class="status-label" fxFlex="0">
+                      {{ item.value }}
+                    </div>
+                    <div class="status-container">
+                      <div
+                        title="{{ request.Results[item.value] }}"
+                        style="width:30px"
+                        class="status-{{
+                          request.Results[item.value] | vettingStatusShorten
+                        }}"
+                      >
+                        {{ request.Results[item.value] | vettingStatusShorten }}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

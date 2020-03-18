@@ -1,7 +1,10 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import {
+  MatTreeFlatDataSource,
+  MatTreeFlattener
+} from '@angular/material/tree';
 import { BehaviorSubject } from 'rxjs';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';

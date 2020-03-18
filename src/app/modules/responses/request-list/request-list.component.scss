@@ -72,42 +72,47 @@
   font-size: smaller;
   font-weight: bold;
 }
-
-.status-grid-left {
+.status-label {
+  padding-top: 12px;
+  padding-right: 2px;
+  width: 90px;
   font-size: small;
   font-weight: bold;
-  padding: 4px;
+  color: #5d6d7e;
+}
+.status-container {
+  padding-top: 10px;
+  font-size: small;
+  font-weight: bold;
+  color: #5d6d7e;
 }
 
 .status-PND {
-  background-color: rgba(gray, 0.6);
-  color: black;
+  background-color: #d6dbdf;
+  color: #5d6d7e;
   padding: 4px;
-  width: 30px;
 }
 .status-INV {
   background-color: rgba(red, 0.6);
   color: white;
   padding: 4px;
-  width: 30px;
 }
 .status-NA {
   background-color: rgba(lightgray, 0.6);
-  color: black;
+  color: #5d6d7e;
   padding: 4px;
-  width: 30px;
 }
 .status-ERR {
   background-color: rgba(yellow, 0.6);
-  color: black;
+  color: #5d6d7e;
   padding: 4px;
-  width: 30px;
+
   border: 1px solid yellow;
 }
 .status-NL {
   background-color: #fdfefe;
-  color: black;
+  color: #5d6d7e;
   padding: 4px;
-  width: 30px;
+
   border: 1px solid #ebedef;
 }

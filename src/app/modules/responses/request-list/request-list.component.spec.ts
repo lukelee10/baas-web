@@ -5,7 +5,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of, throwError } from 'rxjs';
-import { RequestStatusFlags } from 'src/app/core/app-global-constants';
 import {
   VettingStatusPipe,
   VettingStatusShortenPipe
@@ -254,10 +253,7 @@ describe('RequestListComponent', () => {
       Group: 'US/Virginia',
       FileName: 'Mickey-mouse.jpg',
       Created: undefined,
-      Results: {
-        LOWBALL: 'INVESTIGATIVE LEAD',
-        HIGHTOP: 'PENDING'
-      },
+      Results: [],
       StatusTimestamp: undefined,
       FileSize: 23073,
       User: 'nkgroup@test.com',
@@ -270,19 +266,6 @@ describe('RequestListComponent', () => {
       component.deatilsPopup.id.toString().indexOf('mat-dialog') >= 0
     ).toBeTruthy();
 
-    expect(component).toBeTruthy();
-  });
-
-  it('Verify RequestListComponent vettingSystemShow', () => {
-    fixture.detectChanges();
-    // RequestStatusFlags.EmptyString vettingSystemShow should return false
-    expect(
-      component.vettingSystemShow(RequestStatusFlags.EmptyString)
-    ).toBeFalsy();
-    // RequestStatusFlags.InvestigativeLead vettingSystemShow should return true
-    expect(
-      component.vettingSystemShow(RequestStatusFlags.InvestigativeLead)
-    ).toBeTruthy();
     expect(component).toBeTruthy();
   });
 });

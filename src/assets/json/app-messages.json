@@ -13,5 +13,10 @@
     "index": 3,
     "title": "API Error",
     "message": "An Error occurred while retrieving the requests, please try again."
+  },
+  {
+    "index": 4,
+    "title": "API Error",
+    "message": "An Error occurred while retrieving the request details, please try again."
   }
 ]

@@ -16,7 +16,7 @@ export interface Request {
   Group: string;
   FileName: string;
   Created: Date;
-  Results: Results;
+  Results: Results[];
   StatusTimestamp: Date;
   FileSize: number;
   User: string;
@@ -28,9 +28,5 @@ export interface Request {
 
 // TODO   This needs to be refactored to avoid hard-coding the vetting systems here
 export interface Results {
-  TIDE?: string;
-  LOWBALL?: string;
-  ABIS?: string;
-  HIGHTOP?: string;
-  StatusPriority?: number;
+  System: string;
 }

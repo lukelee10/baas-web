@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 export enum AppMessage {
   SessionTimeOut = 1,
   ViewResponseAPIError = 2,
-  ViewReponseRequestsAPIError = 3
+  ViewReponseRequestsAPIError = 3,
+  RequestDetailsError = 4
 }
 
 @Injectable({
