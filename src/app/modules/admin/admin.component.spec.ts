@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatInputModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule, MatTreeModule } from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,10 +13,25 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserRoles } from 'src/app/core/app-global-constants';
+import { UserService } from 'src/app/core/services/user.service';
 
 import { AdminComponent } from './admin.component';
 import { GroupManagementComponent } from './group-management/group-management.component';
 import { UserManagementComponent } from './user-management/user-management.component';
+
+// Mock the SortService class, its method and return it with mock data
+class MockUserService extends UserService {
+  get Role(): string {
+    return UserRoles.Admin;
+  }
+  get UserId(): string {
+    return 'admin@baas.devver1';
+  }
+  get Group(): string {
+    return 'DEFAULT';
+  }
+}
 
 describe('AdminComponent', () => {
   let component: AdminComponent;
@@ -25,6 +41,7 @@ describe('AdminComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
+        FormsModule,
         MatCheckboxModule,
         MatDialogModule,
         MatFormFieldModule,
@@ -36,13 +53,15 @@ describe('AdminComponent', () => {
         MatTabsModule,
         MatToolbarModule,
         MatTooltipModule,
+        MatTreeModule,
         HttpClientTestingModule
       ],
       declarations: [
         AdminComponent,
         GroupManagementComponent,
         UserManagementComponent
-      ]
+      ],
+      providers: [{ provide: UserService, useClass: MockUserService }]
     }).compileComponents();
   }));
 

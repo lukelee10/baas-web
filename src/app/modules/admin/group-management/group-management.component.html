@@ -1,6 +1,65 @@
 <h3>Org/Groups Management</h3>
-<p>
-  Proin faucibus neque elementum semper dictum. Cras vitae justo et nisi
-  fermentum maximus volutpat et lacus. Praesent auctor ante eget ultricies
-  volutpat.
-</p>
+<button
+  matTooltip="Add organization"
+  mat-raised-button
+  color="primary"
+  (click)="askGroupNameAndAddRoot(solicitGroupName)"
+>
+  Add New Organization
+</button>
+
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <!-- This is the tree node template for leaf nodes -->
+  <mat-tree-node
+    *matTreeNodeDef="let node"
+    matTreeNodeToggle
+    matTreeNodePadding
+  >
+    <button mat-icon-button disabled></button>
+    {{ node.item }}
+    <button
+      mat-icon-button
+      (click)="askGroupNameAndAddToNode(solicitGroupName, node)"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-tree-node>
+
+  <!-- This is the tree node template for expandable nodes -->
+  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+    <button
+      mat-icon-button
+      matTreeNodeToggle
+      [attr.aria-label]="'toggle ' + node.filename"
+    >
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+      </mat-icon>
+    </button>
+    {{ node.item }}
+    <button
+      mat-icon-button
+      (click)="askGroupNameAndAddToNode(solicitGroupName, node)"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-tree-node>
+</mat-tree>
+<!-- tempalte for soliciting group name -->
+<ng-template #solicitGroupName>
+  <h2 matDialogTitle>Please Enter group name</h2>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Name of your group</mat-label>
+      <input matInput [(ngModel)]="dialogValue" />
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [matDialogClose]>
+      Cancel
+    </button>
+    <button mat-button [matDialogClose]="dialogValue" color="primary">
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-template>

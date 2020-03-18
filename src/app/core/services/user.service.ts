@@ -46,8 +46,11 @@ export class UserService {
   }
 
   get IsAdmin(): boolean {
-    const currentUser = JSON.parse(sessionStorage.getItem('CurrentUser'));
-    return /true/i.test(currentUser.IsAdmin);
+    return this.Role === UserRoles.Admin;
+  }
+
+  get IsLead(): boolean {
+    return this.Role === UserRoles.Lead;
   }
 
   get UserId(): string {

@@ -47,7 +47,7 @@ export class TopPageNavigationComponent implements OnInit {
           title: 'Resources',
           icon: 'pages'
         });
-        if (this.userService.IsAdmin && !this.userService.IsFSPUser) {
+        if (this.userService.IsAdmin || this.userService.IsLead) {
           this.navItems.push({
             link: '/admin',
             title: 'Admin',

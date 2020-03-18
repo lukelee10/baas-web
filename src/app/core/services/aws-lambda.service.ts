@@ -30,6 +30,13 @@ export class AwsLambdaService {
   getUsers(): Observable<any> {
     return this.http.get<any>(`${this.apiBase}/users`);
   }
+
+  // get all the users who group is of groupName or its sub-groups
+  getUsersInGroup(groupName: string): Observable<any> {
+    return this.http.post(`${this.apiBase}/users/query`, {
+      org: { name: groupName }
+    });
+  }
   getProviders(): Observable<any> {
     return this.http.get<any>(`${this.apiBase}/providers`);
   }
@@ -60,5 +67,14 @@ export class AwsLambdaService {
 
   deleteRequestPackage(requestId: string) {
     return this.http.delete(this.apiBase + `/requests?requestId=${requestId}`);
+  }
+
+  // get all the orgs and their groups and sub-groups.
+  getOrgs() {
+    return this.http.get<any>(`${this.apiBase}/orgs`);
+  }
+  // save a given org into API: the param = { org: {parentName: 'mom', name: 'theOrg' }}
+  createOrg(newOrg: any) {
+    return this.http.post(`${this.apiBase}/orgs`, newOrg);
   }
 }

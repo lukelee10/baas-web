@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
+import { first } from 'rxjs/operators';
 
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
+import { UserService } from './../../../core/services/user.service';
+import { BaaSUser } from './../../../shared/models/user';
 import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
-
-import { BaaSUser } from './../../../shared/models/user';
 
 @Component({
   selector: 'app-user-management',
@@ -40,6 +40,7 @@ export class UserManagementComponent implements OnInit {
 
   constructor(
     private awsLambdaService: AwsLambdaService,
+    private userService: UserService,
     private loaderService: LoaderService,
     private notificationService: NotificationService
   ) {}
@@ -51,10 +52,17 @@ export class UserManagementComponent implements OnInit {
   getUsers(): void {
     this.loaderService.Show('Loading Users...');
     this.notificationService.setPopUpTitle('BaaS - Get Users');
-    this.awsLambdaService
-      .getUsers()
-      .pipe(first())
-      .subscribe(
+    let sub;
+    if (this.userService.IsAdmin) {
+      sub = this.awsLambdaService.getUsers();
+    } else if (this.userService.IsLead) {
+      // current requirement is Lead will see
+      sub = this.awsLambdaService.getUsersInGroup(this.userService.Group);
+    } else {
+      sub = null;
+    }
+    if (sub) {
+      sub.pipe(first()).subscribe(
         users => {
           this.baasUsers = users;
           this.getViewModelUsers(users);
@@ -71,6 +79,7 @@ export class UserManagementComponent implements OnInit {
           this.loaderService.Hide();
         }
       );
+    }
   }
 
   private getViewModelUsers(users: any): void {
