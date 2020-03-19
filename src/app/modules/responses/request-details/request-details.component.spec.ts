@@ -37,7 +37,7 @@ class MockRequestDetailService extends RequestDetailService {
             },
             {
               Label: 'Email',
-              Value: 'k@abis.gov',
+              Value: 'k@hightop.gov',
               Remarks: 'Contact on JWICS'
             },
             {
@@ -74,7 +74,7 @@ class MockRequestDetailService extends RequestDetailService {
             },
             {
               Label: 'Email',
-              Value: 'k@tide.gov',
+              Value: 'k@lowball.gov',
               Remarks: 'Contact on JWICS'
             }
           ],
