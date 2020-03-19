@@ -12,8 +12,11 @@ import { UserService } from './../../../core/services/user.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  email = new FormControl('', [Validators.required, Validators.email]);
-  passWord = new FormControl('', [Validators.required]);
+  email = new FormControl('admin@baas.devver1', [
+    Validators.required,
+    Validators.email
+  ]);
+  passWord = new FormControl('P@ssw0rd123!', [Validators.required]);
 
   hide = true; // #password
   errorMessage: string;
