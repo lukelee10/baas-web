@@ -42,8 +42,6 @@ export class RequestDetailsComponent implements OnInit {
 
   getRequestDetails(requestId: string) {
     this.showSpinner = true;
-    // TODO Remove the move after the Lambda is ready
-    this.requestDetailService.isMock = true;
     this.requestDetailService.requestId = requestId;
     this.notificationService.debugLogging(
       this.requestDetailService.getEndPointURL()
