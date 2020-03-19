@@ -47,10 +47,14 @@
 </mat-tree>
 <!-- tempalte for soliciting group name -->
 <ng-template #solicitGroupName>
-  <h2 matDialogTitle>Please Enter group name</h2>
+  <h2 matDialogTitle>
+    Please enter {{ isDialogOrg ? 'organization' : 'group' }} name
+  </h2>
   <mat-dialog-content>
     <mat-form-field>
-      <mat-label>Name of your group</mat-label>
+      <mat-label
+        >Name of your {{ isDialogOrg ? 'organization' : 'group' }}</mat-label
+      >
       <input matInput [(ngModel)]="dialogValue" />
     </mat-form-field>
   </mat-dialog-content>

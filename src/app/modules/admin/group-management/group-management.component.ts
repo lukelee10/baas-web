@@ -55,6 +55,7 @@ export class GroupManagementComponent implements OnInit {
   dataSource: MatTreeFlatDataSource<GroupNode, GroupFlatNode>;
   dialogValue = '';
   dialogRef: MatDialogRef<any, any>;
+  isDialogOrg = true;
 
   constructor(
     private awsLambdaService: AwsLambdaService,
@@ -202,6 +203,7 @@ export class GroupManagementComponent implements OnInit {
   }
 
   askGroupNameAndAddRoot(templateRef: TemplateRef<any>) {
+    this.isDialogOrg = true;
     this.dialogRef = this.dialog.open(templateRef);
     this.dialogRef.afterClosed().subscribe(newName => {
       if (newName) {
@@ -215,6 +217,7 @@ export class GroupManagementComponent implements OnInit {
     templateRef: TemplateRef<any>,
     flatNode: GroupFlatNode
   ) {
+    this.isDialogOrg = false;
     this.dialogRef = this.dialog.open(templateRef);
     this.dialogRef.afterClosed().subscribe(newName => {
       if (newName) {
