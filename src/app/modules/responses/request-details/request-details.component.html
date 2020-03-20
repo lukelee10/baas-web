@@ -87,9 +87,20 @@
       class="details-H2"
     >
       {{ pageSettings.TitleRight }}
+
       <button
+        *ngIf="pageSettings.DivExpandedRight"
         mat-icon-button
-        title="{{ pageSettings.ToolTipToggleButton }}"
+        title="{{ pageSettings.ToolTipToggleButton + ' ' + 'Logs' }}"
+        style="vertical-align: top; position: relative; top:-10px;"
+      >
+        <mat-icon>history</mat-icon>
+      </button>
+
+      <button
+        *ngIf="!pageSettings.DivExpandedRight"
+        mat-icon-button
+        title="{{ pageSettings.ToolTipToggleButton + ' ' + 'Logs' }}"
         style="vertical-align: top; position: relative; top:-10px;"
       >
         <mat-icon>{{ pageSettings.ButtonIcon }}</mat-icon>
@@ -142,11 +153,19 @@
       <div *ngIf="pageSettings.DivExpandedRight">
         <div
           *ngFor="let logItem of requestDetails?.RequestLogs"
-          style="font-family: 'Courier New', Courier, monospace; font-size:small;"
+          style="padding: 5px;"
         >
-          {{ logItem.Message }}
-          <br />
-          - {{ logItem.Timestamp | date: 'medium' }}
+          <mat-card>
+            <mat-card-content>
+              <p
+                style="font-family: 'Courier New', Courier, monospace; font-size:small;"
+              >
+                {{ logItem.Message }}
+                <br />
+                - {{ logItem.Timestamp | date: 'medium' }}
+              </p>
+            </mat-card-content>
+          </mat-card>
         </div>
       </div>
       <div
@@ -154,7 +173,12 @@
         (click)="toggleLogs(pageSettings.DivExpandedRight)"
         class="collapsed-log-div"
       >
-        LOGS
+        <button
+          mat-icon-button
+          title="{{ pageSettings.ToolTipToggleButton + ' ' + 'Logs' }}"
+        >
+          <mat-icon>history</mat-icon>
+        </button>
       </div>
     </div>
   </div>

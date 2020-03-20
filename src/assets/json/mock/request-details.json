@@ -76,6 +76,34 @@
   "Status": "RED",
   "RequestLogs": [
     {
+      "Timestamp": "20200320T232304Z",
+      "Message": "Request logs sample"
+    },
+    {
+      "Timestamp": "20200320T232304Z",
+      "Message": "Sent to HighTop"
+    },
+    {
+      "Timestamp": "20200320T232304Z",
+      "Message": "Sent to Lowball"
+    },
+    {
+      "Timestamp": "20200220T232304Z",
+      "Message": "Request logs sample"
+    },
+    {
+      "Timestamp": "20200220T232304Z",
+      "Message": "Request logs sample"
+    },
+    {
+      "Timestamp": "20200220T232304Z",
+      "Message": "Request logs sample"
+    },
+    {
+      "Timestamp": "20200220T232304Z",
+      "Message": "Request logs sample"
+    },
+    {
       "Timestamp": "20200220T232304Z",
       "Message": "Request logs sample"
     }

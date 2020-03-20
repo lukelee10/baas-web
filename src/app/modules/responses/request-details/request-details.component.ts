@@ -94,12 +94,12 @@ export class RequestDetailsComponent implements OnInit {
       } as PageSettings;
     } else {
       return {
-        FlexLeft: 90,
-        FlexRight: 10,
+        FlexLeft: 93,
+        FlexRight: 7,
         ButtonIcon: 'arrow_left',
         DivClassRight: '',
         DivExpandedRight: false,
-        TitleRight: '...',
+        TitleRight: '',
         ToolTipToggleButton: 'Click to Expand'
       } as PageSettings;
     }
