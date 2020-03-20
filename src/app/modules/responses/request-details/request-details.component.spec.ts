@@ -170,21 +170,21 @@ describe('RequestDetailsComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('The component should be created and load data from service', () => {
+  it('should open request details successfully for given test RequestId ', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     expect(component.requestDetails.RequestId === TEST_REQUEST_ID).toBeTruthy();
     expect(component.requestDetails.VettingSystems.length >= 0).toBeTruthy();
   });
 
-  it('Verify closePopup ', () => {
+  it('should close the pop-up upon closePopup event ', () => {
     fixture.detectChanges();
     const spy = spyOn(component.dialogRef, 'close').and.callThrough();
     component.closePopup();
     expect(spy).toHaveBeenCalled();
   });
 
-  it('Verify the proper handling of Service Call Failure ', () => {
+  it('should there be any issues with backend lambda call, there should be proper handling of errors ', () => {
     const requestDetailService = fixture.debugElement.injector.get(
       RequestDetailService
     );
@@ -203,8 +203,27 @@ describe('RequestDetailsComponent', () => {
       'getMessage'
     );
     fixture.detectChanges();
-
     // AppMessagesService.getMessage must be invoked to display friendly error to user
     expect(spymockAppMessagesService.calls.any()).toBeTruthy();
+  });
+
+  it('should test expand/collapse log divs, when current expanded state is false then it should expand', () => {
+    fixture.detectChanges();
+    // current state is collapsed
+    const currentStateIsExpaned = false;
+    // now toggle the state
+    component.toggleLogs(currentStateIsExpaned);
+    // after the toggle it should now expand
+    expect(component.pageSettings.DivExpandedRight === true).toBeTruthy();
+  });
+
+  it('should test expand/collapse log divs, when current expanded state is true then it should collapse', () => {
+    fixture.detectChanges();
+    // current state is expanded
+    const currentStateIsExpaned = true;
+    // now toggle the state
+    component.toggleLogs(currentStateIsExpaned);
+    // after the toggle it should now collapse
+    expect(component.pageSettings.DivExpandedRight === false).toBeTruthy();
   });
 });
