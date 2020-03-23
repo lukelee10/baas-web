@@ -9,6 +9,16 @@ import { Request } from 'src/app/shared/models/package-requests';
 import { RequestDetails } from 'src/app/shared/models/request-details';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
+interface PageSettings {
+  FlexLeft: number;
+  FlexRight: number;
+  ButtonIcon: string;
+  DivClassRight: string;
+  DivExpandedRight: boolean;
+  TitleRight: string;
+  ToolTipToggleButton: string;
+}
+
 @Component({
   selector: 'app-request-details',
   templateUrl: './request-details.component.html',
@@ -17,6 +27,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 export class RequestDetailsComponent implements OnInit {
   requestDetails: RequestDetails;
   showSpinner = true;
+  pageSettings = this.getPageSettings(false);
   constructor(
     public dialogRef: MatDialogRef<RequestDetailsComponent>,
     private requestDetailService: RequestDetailService,
@@ -58,5 +69,39 @@ export class RequestDetailsComponent implements OnInit {
 
   closePopup(): void {
     this.dialogRef.close();
+  }
+
+  toggleLogs(isExpanded: boolean) {
+    if (isExpanded) {
+      // Now Collapse
+      this.pageSettings = this.getPageSettings(false);
+    } else {
+      // Now Expand
+      this.pageSettings = this.getPageSettings(true);
+    }
+  }
+
+  private getPageSettings(isExpadedVersion: boolean): PageSettings {
+    if (isExpadedVersion) {
+      return {
+        FlexLeft: 50,
+        FlexRight: 50,
+        ButtonIcon: 'arrow_right',
+        DivClassRight: '',
+        DivExpandedRight: true,
+        TitleRight: ' RESPONSE LOG',
+        ToolTipToggleButton: 'Click to Collapse'
+      } as PageSettings;
+    } else {
+      return {
+        FlexLeft: 93,
+        FlexRight: 7,
+        ButtonIcon: 'arrow_left',
+        DivClassRight: '',
+        DivExpandedRight: false,
+        TitleRight: '',
+        ToolTipToggleButton: 'Click to Expand'
+      } as PageSettings;
+    }
   }
 }

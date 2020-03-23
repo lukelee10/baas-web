@@ -206,6 +206,7 @@
   background-color: #d6dbdf;
   color: #5d6d7e;
   font-weight: bold;
+  width: 315px;
 }
 .response-card {
   border: 1px gray solid;
@@ -213,4 +214,11 @@
   min-height: 160px;
   background-color: white;
   font-size: smaller;
+  width: 315px;
+}
+.collapsed-log-div {
+  font-weight: bold;
+  color: #5d6d7e;
+  cursor: pointer;
+  text-align: right;
 }
