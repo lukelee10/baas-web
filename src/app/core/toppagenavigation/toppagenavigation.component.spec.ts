@@ -20,7 +20,7 @@ class MockUserService extends UserService {
   get Role(): string {
     return UserRoles.NonFSPUser;
   }
-  public SubscribeLatest: BehaviorSubject<boolean> = new BehaviorSubject<
+  public ShowMenuSubject: BehaviorSubject<boolean> = new BehaviorSubject<
     boolean
   >(true);
 

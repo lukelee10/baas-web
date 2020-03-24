@@ -13,6 +13,7 @@ import { NavItem } from './../../shared/models/nav-item';
 })
 export class SideNavigationComponent implements OnInit {
   @Output() sidenavClose = new EventEmitter();
+  showMenu = false;
 
   sideNavItems: NavItem[] = [];
 
@@ -28,48 +29,56 @@ export class SideNavigationComponent implements OnInit {
   }
 
   private populateSideNavItems() {
-    this.userService.SubscribeLatest.subscribe(onLatest => {
-      if (onLatest) {
-        this.sideNavItems.push({
-          link: '/announcements',
-          title: 'Home',
-          icon: 'home'
-        });
-        this.sideNavItems.push({
-          link: '/requests',
-          title: 'Submit Images',
-          icon: 'photo_library'
-        });
-        if (!this.userService.IsFSPUser) {
+    this.userService.ShowMenuSubject.subscribe(showFlag => {
+      if (showFlag) {
+        if (
+          this.authenticationService.IsAuthenticated &&
+          this.authenticationService.IsAgreementAccepted
+        ) {
           this.sideNavItems.push({
-            link: '/responses',
-            title: 'View Responses',
-            icon: 'receipt'
+            link: '/announcements',
+            title: 'Home',
+            icon: 'home'
           });
-        }
+          this.sideNavItems.push({
+            link: '/requests',
+            title: 'Submit Images',
+            icon: 'photo_library'
+          });
+          if (!this.userService.IsFSPUser) {
+            this.sideNavItems.push({
+              link: '/responses',
+              title: 'View Responses',
+              icon: 'receipt'
+            });
+          }
 
-        this.sideNavItems.push({
-          link: '/resources',
-          title: 'Resources',
-          icon: 'pages'
-        });
-        if (this.userService.IsAdmin && !this.userService.IsFSPUser) {
           this.sideNavItems.push({
-            link: '/admin',
-            title: 'Admin',
-            icon: 'supervisor_account'
+            link: '/resources',
+            title: 'Resources',
+            icon: 'pages'
           });
+          if (this.userService.IsAdmin && !this.userService.IsFSPUser) {
+            this.sideNavItems.push({
+              link: '/admin',
+              title: 'Admin',
+              icon: 'supervisor_account'
+            });
+          }
+          this.sideNavItems.push({
+            link: '/editprofile',
+            title: 'Edit Profile',
+            icon: 'edit'
+          });
+          this.sideNavItems.push({
+            link: '/logout',
+            title: 'Log Out',
+            icon: 'exit_to_app'
+          });
+        } else {
+          this.sideNavItems = [];
+          this.showMenu = false;
         }
-        this.sideNavItems.push({
-          link: '/editprofile',
-          title: 'Edit Profile',
-          icon: 'edit'
-        });
-        this.sideNavItems.push({
-          link: '/logout',
-          title: 'Log Out',
-          icon: 'exit_to_app'
-        });
       }
     });
   }

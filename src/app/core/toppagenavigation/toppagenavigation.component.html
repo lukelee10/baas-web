@@ -1,4 +1,4 @@
-<div *ngIf="authenticationService.IsAgreementAccepted">
+<div *ngIf="showMenu">
   <mat-toolbar>
     <div fxHide.gt-xs>
       <button mat-icon-button (click)="onToggleSidenav()">
@@ -17,7 +17,14 @@
       </a>
     </div>
 
-    <div fxFlex fxLayout fxFlexOffset="1" fxHide.xs fxLayoutGap="20px">
+    <div
+      *ngIf="showMenu"
+      fxFlex
+      fxLayout
+      fxFlexOffset="1"
+      fxHide.xs
+      fxLayoutGap="20px"
+    >
       <button
         mat-button
         *ngFor="let item of navItems"

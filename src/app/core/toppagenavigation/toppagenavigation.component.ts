@@ -13,13 +13,14 @@ import { NavItem } from './../../shared/models/nav-item';
 })
 export class TopPageNavigationComponent implements OnInit {
   @Output() public sidenavToggle = new EventEmitter();
+  showMenu = false;
 
   navItems: NavItem[] = [];
 
   constructor(
     private router: Router,
     private awsLambdaService: AwsLambdaService,
-    private authenticationService: AuthenticationService,
+    public authenticationService: AuthenticationService,
     private userService: UserService
   ) {}
 
@@ -28,32 +29,41 @@ export class TopPageNavigationComponent implements OnInit {
   }
 
   private populateNavItems() {
-    this.userService.SubscribeLatest.subscribe(onLatest => {
-      if (onLatest) {
-        this.navItems.push({
-          link: '/requests',
-          title: 'Submit Images',
-          icon: 'photo_library'
-        });
-        if (!this.userService.IsFSPUser) {
+    this.userService.ShowMenuSubject.subscribe(showFlag => {
+      if (showFlag) {
+        if (
+          this.authenticationService.IsAuthenticated &&
+          this.authenticationService.IsAgreementAccepted
+        ) {
+          this.showMenu = true;
           this.navItems.push({
-            link: '/responses',
-            title: 'View Responses',
-            icon: 'receipt'
+            link: '/requests',
+            title: 'Submit Images',
+            icon: 'photo_library'
           });
-        }
-        this.navItems.push({
-          link: '/resources',
-          title: 'Resources',
-          icon: 'pages'
-        });
-        if (this.userService.IsAdmin || this.userService.IsLead) {
+          if (!this.userService.IsFSPUser) {
+            this.navItems.push({
+              link: '/responses',
+              title: 'View Responses',
+              icon: 'receipt'
+            });
+          }
           this.navItems.push({
-            link: '/admin',
-            title: 'Admin',
-            icon: 'supervisor_account'
+            link: '/resources',
+            title: 'Resources',
+            icon: 'pages'
           });
+          if (this.userService.IsAdmin || this.userService.IsLead) {
+            this.navItems.push({
+              link: '/admin',
+              title: 'Admin',
+              icon: 'supervisor_account'
+            });
+          }
         }
+      } else {
+        this.navItems = [];
+        this.showMenu = false;
       }
     });
   }
@@ -68,6 +78,7 @@ export class TopPageNavigationComponent implements OnInit {
       'LogOut'
     );
     this.authenticationService.Logout();
+    this.userService.GetLatestMenuContext(false);
     this.router.navigate(['/logout']);
   }
 }
