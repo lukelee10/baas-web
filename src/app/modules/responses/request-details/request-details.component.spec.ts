@@ -39,6 +39,11 @@ class MockRequestDetailService extends RequestDetailService {
               Label: 'Email',
               Value: 'k@abis.gov',
               Remarks: 'Contact on JWICS'
+            },
+            {
+              Label: 'fax',
+              Value: 'k@baas.gov',
+              Remarks: 'Fax us!'
             }
           ],
           IdFieldName: 'TCN',
@@ -225,5 +230,14 @@ describe('RequestDetailsComponent', () => {
     component.toggleLogs(currentStateIsExpaned);
     // after the toggle it should now collapse
     expect(component.pageSettings.DivExpandedRight === false).toBeTruthy();
+  });
+
+  it('should handle email, phone indicator in the POC label', () => {
+    const emailLabel = component.getContextIcon('Office Email');
+    expect(emailLabel).toEqual('email');
+    const phoneLaberl = component.getContextIcon('Fake phoneNumber');
+    expect(phoneLaberl).toEqual('call');
+    const unknownLaberl = component.getContextIcon('Any contacts');
+    expect(unknownLaberl).toEqual('contacts');
   });
 });
