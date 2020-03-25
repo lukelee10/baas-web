@@ -170,6 +170,19 @@
   font-weight: bold;
 }
 
+.details-H3 {
+  height: 30px;
+  color: #5d6d7e;
+  font-weight: bold;
+  font-size: small;
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+.details-text {
+  color: #5d6d7e;
+  font-size: small;
+}
+
 .digit-bar {
   font-family: 'Courier New', Courier, monospace;
   background-color: #e5e7e9;
@@ -208,17 +221,20 @@
   font-weight: bold;
   width: 315px;
 }
-.response-card {
-  border: 1px gray solid;
-  padding: 10px;
-  min-height: 160px;
-  background-color: white;
-  font-size: smaller;
-  width: 315px;
-}
 .collapsed-log-div {
   font-weight: bold;
   color: #5d6d7e;
   cursor: pointer;
   text-align: right;
+}
+.response-card-short {
+  border: 1px gray solid;
+  padding: 10px;
+  min-height: 100px;
+  background-color: white;
+  font-size: smaller;
+}
+.details-remarks {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: small;
 }

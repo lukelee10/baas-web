@@ -104,4 +104,18 @@ export class RequestDetailsComponent implements OnInit {
       } as PageSettings;
     }
   }
+
+  getContextIcon(label: string): string {
+    let contextIcon = '';
+    const labelToLower = label.toLowerCase();
+
+    if (labelToLower.indexOf('email') >= 0) {
+      contextIcon = 'email';
+    } else if (labelToLower.toLowerCase().indexOf('phone') >= 0) {
+      contextIcon = 'call';
+    } else {
+      contextIcon = 'contacts';
+    }
+    return contextIcon;
+  }
 }
