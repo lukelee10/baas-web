@@ -13,7 +13,7 @@ export class UserAgreementComponent implements OnInit {
   disabledAgreement = true;
   constructor(
     private router: Router,
-    public authenticationService: AuthenticationService,
+    private authenticationService: AuthenticationService,
     private userService: UserService
   ) {}
 

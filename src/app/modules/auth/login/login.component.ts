@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('*******login screen');
     this.authenticationSVC.Logout();
     this.userService.GetLatestMenuContext(false);
   }
