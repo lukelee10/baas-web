@@ -99,4 +99,10 @@ export class CreateUserComponent implements OnInit {
       }
     );
   }
+
+  cancel() {
+    confirm('are you sure you want to navigate away from this page?');
+    this.router.navigate(['/admin']);
+    // console.log('you have cancelled request')
+  }
 }
