@@ -26,7 +26,10 @@ export class LoginComponent implements OnInit {
     private userService: UserService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.authenticationSVC.Logout();
+    this.userService.GetLatestMenuContext(false);
+  }
 
   getErrorMessage() {
     return this.email.hasError('required')

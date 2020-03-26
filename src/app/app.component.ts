@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.userService.GetLatest();
+    this.userService.GetLatestMenuContext();
   }
 
   private reset() {

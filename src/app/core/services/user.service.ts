@@ -17,7 +17,7 @@ export class UserService {
     private notificationService: NotificationService
   ) {}
 
-  public SubscribeLatest: BehaviorSubject<boolean> = new BehaviorSubject<
+  public ShowMenuSubject: BehaviorSubject<boolean> = new BehaviorSubject<
     boolean
   >(false);
 
@@ -33,11 +33,13 @@ export class UserService {
   }
   private SetLocalSessions(baaSUser: BaaSUser) {
     sessionStorage.setItem('CurrentUser', JSON.stringify(baaSUser));
-    this.GetLatest();
+    this.GetLatestMenuContext();
   }
-  public GetLatest() {
-    if (this.authenticationService.IsAuthenticated) {
-      this.SubscribeLatest.next(true);
+  public GetLatestMenuContext(pageHasMenu: boolean = true) {
+    if (this.authenticationService.IsAuthenticated && pageHasMenu) {
+      this.ShowMenuSubject.next(true);
+    } else {
+      this.ShowMenuSubject.next(false);
     }
   }
 
