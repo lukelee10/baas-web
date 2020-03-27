@@ -101,9 +101,8 @@ export class CreateUserComponent implements OnInit {
   }
 
   cancel() {
-    if (confirm('are you sure you want to navigate away from this page?')) {
-      this.router.navigate(['/admin']);
-    }
+    this.router.navigate(['/admin']);
+    // console.log('you have cancelled request')
   }
 
   //   deactivate (component: CreateUserComponent) {
