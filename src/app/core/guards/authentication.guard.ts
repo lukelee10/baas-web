@@ -96,7 +96,7 @@ export class AuthenticationGuard
 
   canDeactivate(component: FormComponent) {
     if (component.form.dirty) {
-      return confirm('are you sure you want to navigate away from this page?');
+      return confirm('Are you sure you want to navigate away from this page?');
     } else {
       return true;
     }
