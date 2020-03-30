@@ -94,14 +94,6 @@ export class AuthenticationGuard
     }
   }
 
-  canDeactivate(component: FormComponent) {
-    if (component.form.dirty) {
-      return confirm('Are you sure you want to navigate away from this page?');
-    } else {
-      return true;
-    }
-  }
-
   canActivateChild(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
