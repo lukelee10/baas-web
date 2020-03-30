@@ -12,7 +12,7 @@
       />
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field *ngIf="!editFlag">
       <input
         matInput
         placeholder="Password"
@@ -74,10 +74,31 @@
       </mat-form-field>
     </div>
 
-    <mat-form-field>
-      <input matInput placeholder="Group" required formControlName="group" />
-    </mat-form-field>
-
+    <div fxLayout>
+      <mat-accordion fxFlex="100%">
+        <mat-expansion-panel
+          class="mat-elevation-z1"
+          style="margin-bottom: 15px;"
+        >
+          <mat-expansion-panel-header
+            [collapsedHeight]="'90px'"
+            [expandedHeight]="'90px'"
+          >
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Group"
+                required
+                formControlName="group"
+              />
+            </mat-form-field>
+          </mat-expansion-panel-header>
+          <app-group-management
+            (selectGroup)="setGroup($event)"
+          ></app-group-management>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
     <mat-form-field>
       <mat-select placeholder="Role" required formControlName="role">
         <mat-option
