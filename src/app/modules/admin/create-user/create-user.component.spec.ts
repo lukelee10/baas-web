@@ -46,6 +46,7 @@ const NEW_USER = {
 describe('CreateUserComponent', () => {
   let component: CreateUserComponent;
   let fixture: ComponentFixture<CreateUserComponent>;
+  let router: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -74,6 +75,7 @@ describe('CreateUserComponent', () => {
     fixture = TestBed.createComponent(CreateUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    router = TestBed.get(Router);
   });
 
   it('Form should be valid', () => {
@@ -116,5 +118,11 @@ describe('CreateUserComponent', () => {
     expect(component.errMessage).toBeTruthy();
     expect(component.errMessage).toEqual('Cannot create new user');
     expect(spymockNotificationService.calls.any()).toBeTruthy();
+  });
+
+  it('should navigate back to admin page', () => {
+    component.cancel();
+    fixture.detectChanges();
+    expect(router).toHaveBeenCalledWith(['/admin']);
   });
 });
