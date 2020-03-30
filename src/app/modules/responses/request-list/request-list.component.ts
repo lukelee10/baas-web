@@ -55,7 +55,6 @@ export class RequestListComponent implements OnInit, OnChanges {
 
   getRequests(packageId: string) {
     this.showSpinner = true;
-    //  this.packageRequestService.isMock = true;
     this.packageRequestService.packageId = packageId;
     this.notificationService.debugLogging(
       this.packageRequestService.getEndPointURL()

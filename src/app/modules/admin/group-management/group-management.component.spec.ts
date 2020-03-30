@@ -53,74 +53,34 @@ export class MdDialogMock {
   }
 }
 
-const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
+export const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
   getUsersInGroup(groupName: string): Observable<any> {
     return of({
       Items: [
         {
-          UserId: 'kanisha.davis@leidos.com',
+          UserId: 'test1@test.gov',
           Role: 'Admin',
           GUID: 'e95338a0-5710-11ea-9d4a-ad6835c0c88c',
           Group: 'DOS',
           IsAdmin: true,
           CreatedAt: '2020-02-24T14:21:13.387Z',
-          Firstname: 'Kanisha',
+          Firstname: 'test',
           LastActivityTime: '2020-02-28T22:43:50.382Z',
-          Lastname: 'Davis'
+          Lastname: 'last'
         },
         {
-          UserId: 'andrew.j.arshon@leidos.com',
+          UserId: 'test2@test.gov',
           Role: 'Lead',
           GUID: '8cf81e00-5363-11ea-b0e8-fbab61f36838',
           Group: 'DOS',
           IsAdmin: false,
-          Firstname: 'Drew',
+          Firstname: 'test2',
           CreatedAt: '2020-02-19T22:02:42.016Z',
-          Lastname: 'Arshon'
-        },
-        {
-          UserId: 'lukedaniel.lee@leidos.com',
-          Role: 'Admin',
-          Group: 'DOS/Europe/GB',
-          IsAdmin: false,
-          LastActivityTime: '2020-02-29T03:08:17.699Z'
-        },
-        {
-          UserId: 'kanisha.a.davis@gmail.com',
-          Role: 'Lead',
-          GUID: '14977090-57ce-11ea-aba0-cf1397215f1d',
-          Group: 'DOS',
-          IsAdmin: false,
-          CreatedAt: '2020-02-25T12:55:20.857Z',
-          Firstname: 'K',
-          LastActivityTime: '2020-02-28T22:42:19.125Z',
-          Lastname: 'Ann'
-        },
-        {
-          UserId: 'luke.lee@aa.gov',
-          Role: 'Non-FSP-User',
-          GUID: '4ba4cd50-5367-11ea-a79a-c34304dd594f',
-          Group: 'DOS',
-          IsAdmin: false,
-          CreatedAt: '2020-02-19T22:29:30.405Z',
-          Firstname: 'Luke',
-          LastActivityTime: '2020-02-19T22:30:08.118Z',
-          Lastname: 'Lee'
-        },
-        {
-          UserId: 'fspuser333@leidos.com',
-          Role: 'FSP-User',
-          GUID: '9248cc80-57d0-11ea-9b08-331ebed79c5b',
-          Group: 'DOS/Europe',
-          IsAdmin: false,
-          CreatedAt: '2020-02-25T13:13:10.728Z',
-          Firstname: 'FSP',
-          LastActivityTime: '2020-02-28T22:19:20.640Z',
-          Lastname: 'User3'
+          Lastname: 'last'
         }
       ],
-      Count: 6,
-      ScannedCount: 6
+      Count: 2,
+      ScannedCount: 2
     });
   },
   getOrgs(): Observable<any> {
@@ -155,7 +115,6 @@ const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
     });
   },
   createOrg(newOrg): Observable<any> {
-    console.log('--------------------', newOrg.org);
     return newOrg.org.name.includes('kaput')
       ? throwError({ status: 404 })
       : of({ status: 'ok' });
@@ -278,7 +237,8 @@ describe('====GroupManagementComponent', () => {
     const testNode: GroupFlatNode = {
       item: 'Test-Item',
       level: 0,
-      expandable: false
+      expandable: false,
+      fqn: 'ABC/leaf1'
     };
     groupComponent.flatNodeMap.set(testNode, testNode);
     const mockNotificationService = groupFixture.debugElement.injector.get(
@@ -310,7 +270,8 @@ describe('====GroupManagementComponent', () => {
     const testNode: GroupFlatNode = {
       item: 'Test-Item',
       level: 0,
-      expandable: false
+      expandable: false,
+      fqn: 'ABC/leaf1'
     };
     groupComponent.flatNodeMap.set(testNode, testNode);
     const mockNotificationService = groupFixture.debugElement.injector.get(
@@ -349,7 +310,8 @@ describe('====GroupManagementComponent', () => {
     const testNode: GroupFlatNode = {
       item: 'Test-Item',
       level: 0,
-      expandable: false
+      expandable: false,
+      fqn: 'ABC/leaf1'
     };
     groupComponent.flatNodeMap.set(testNode, testNode);
     const mockNotificationService = groupFixture.debugElement.injector.get(

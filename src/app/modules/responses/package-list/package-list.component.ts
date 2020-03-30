@@ -61,7 +61,6 @@ export class PackageListComponent implements OnInit, OnChanges {
     this.userPackageService.sortOrder = this.sortOrder;
     this.userPackageService.startingItem = this.currentLastItem;
     this.userPackageService.pageSize = 50;
-    // this.userPackageService.isMock  = true ;
     this.notificationService.debugLogging(
       this.userPackageService.getEndPointURL()
     );

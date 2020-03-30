@@ -1,5 +1,12 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef
+} from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import {
   MatTreeFlatDataSource,
@@ -14,6 +21,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
  */
 export class GroupNode {
   children?: GroupNode[];
+  fqn: string;
   constructor(public item: string, public parent?: string) {}
 }
 
@@ -22,13 +30,16 @@ export class GroupFlatNode {
   item: string;
   level: number;
   expandable: boolean;
+  fqn: string;
 }
 
-const digOffspring = (groupMap, parentName) => {
+const digOffspring = (groupMap, fqn) => {
+  const parentName = fqn.split('/').slice(-1)[0];
   const children = groupMap.get(parentName);
   if (children) {
     children.forEach(childNode => {
-      childNode.children = digOffspring(groupMap, childNode.item);
+      childNode.fqn = `${fqn}/${childNode.item}`;
+      childNode.children = digOffspring(groupMap, childNode.fqn);
     });
   }
   return children;
@@ -43,6 +54,8 @@ const digOffspring = (groupMap, parentName) => {
   styleUrls: ['./group-management.component.scss']
 })
 export class GroupManagementComponent implements OnInit {
+  @Input() addActionOn = false;
+  @Output() selectGroup = new EventEmitter();
   changeWatcher = new BehaviorSubject<GroupNode[]>([]);
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
@@ -115,7 +128,9 @@ export class GroupManagementComponent implements OnInit {
 
       // given the orgMap of roots, and groupMap of nodes, I would sew the children to their parents
       for (const orgName of orgMap.keys()) {
-        orgMap.get(orgName).children = digOffspring(groupMap, orgName);
+        const node = orgMap.get(orgName);
+        node.fqn = orgName;
+        node.children = digOffspring(groupMap, orgName);
       }
 
       // sort the org names map
@@ -146,6 +161,7 @@ export class GroupManagementComponent implements OnInit {
         ? existingNode
         : new GroupFlatNode();
     flatNode.item = node.item;
+    flatNode.fqn = node.fqn;
     flatNode.level = level;
     flatNode.expandable = !!node.children;
     this.flatNodeMap.set(flatNode, node);
@@ -225,5 +241,8 @@ export class GroupManagementComponent implements OnInit {
       }
       this.dialogValue = '';
     });
+  }
+  selectNode(flatNode) {
+    this.selectGroup.emit(flatNode);
   }
 }

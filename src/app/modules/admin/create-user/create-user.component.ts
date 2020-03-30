@@ -16,11 +16,11 @@ import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
 import { LookupStaticDataService } from '../../../shared/services/lookup-static-data.service';
+import { GroupFlatNode } from '../group-management/group-management.component';
 
 @Component({
   selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.scss']
+  templateUrl: './create-user.component.html'
 })
 export class CreateUserComponent implements OnInit {
   form: FormGroup;
@@ -63,7 +63,9 @@ export class CreateUserComponent implements OnInit {
       ]),
       firstname: new FormControl('', [Validators.required]),
       lastname: new FormControl('', [Validators.required]),
-      group: new FormControl('', [Validators.required]),
+      group: new FormControl({ value: '', disabled: true }, [
+        Validators.required
+      ]),
       role: new FormControl('', [Validators.required]),
       disabled: new FormControl('', [Validators.required])
     });
@@ -102,5 +104,9 @@ export class CreateUserComponent implements OnInit {
 
   cancel() {
     this.router.navigate(['/admin']);
+  }
+
+  setGroup(node: GroupFlatNode) {
+    this.form.controls.group.setValue(node.fqn);
   }
 }

@@ -1,5 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,6 +11,7 @@ import { UserService } from './../../../core/services/user.service';
 import { BaaSUser } from './../../../shared/models/user';
 import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
+import { UserDetailsComponent } from './user-details/user-details.component';
 
 @Component({
   selector: 'app-user-management',
@@ -20,6 +22,8 @@ export class UserManagementComponent implements OnInit {
   pageTitle = 'List Users';
   dataSource: MatTableDataSource<BaaSUser>;
   selection = new SelectionModel<BaaSUser>(true, []);
+
+  detailsPopup: MatDialogRef<UserDetailsComponent, any>;
 
   displayedColumns: string[] = [
     'select',
@@ -42,7 +46,8 @@ export class UserManagementComponent implements OnInit {
     private awsLambdaService: AwsLambdaService,
     private userService: UserService,
     private loaderService: LoaderService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -84,14 +89,8 @@ export class UserManagementComponent implements OnInit {
 
   private getViewModelUsers(users: any): void {
     for (const item of users.Items) {
-      this.usersViewModel.push({
-        UserId: item.UserId,
-        Fullname: this.getName(item.Firstname, item.Lastname),
-        Group: item.Group,
-        IsAdmin: item.IsAdmin,
-        Role: item.Role,
-        Disabled: item.Disabled
-      });
+      item.Fullname = this.getName(item.Firstname, item.Lastname);
+      this.usersViewModel.push(item);
     }
   }
 
@@ -150,5 +149,13 @@ export class UserManagementComponent implements OnInit {
     }
 
     return name;
+  }
+
+  openDialog(request: BaaSUser): void {
+    this.detailsPopup = this.dialog.open(UserDetailsComponent, {
+      width: '800px',
+      height: '700px',
+      data: request
+    });
   }
 }

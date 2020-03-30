@@ -7,12 +7,38 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
+import { UserRoles } from 'src/app/core/app-global-constants';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
+import { UserService } from 'src/app/core/services/user.service';
 import { LoaderService } from 'src/app/shared/services/loader.service';
 
 import { NotificationService } from '../../../shared/services/notification.service';
+import { GroupManagementComponent } from '../group-management/group-management.component';
 import { SharedModule } from './../../../shared/shared.module';
 import { CreateUserComponent } from './create-user.component';
+
+// Mock the SortService class, its method and return it with mock data
+class MockUserService extends UserService {
+  get Role(): string {
+    return UserRoles.NonFSPUser;
+  }
+  get UserId(): string {
+    return 'test@test.gov';
+  }
+  get Group(): string {
+    return 'DEFAULT';
+  }
+}
+
+class MdDialogMock {
+  // When the component calls this.dialog.open(...) we'll return an object
+  // with an afterClosed method that allows to subscribe to the dialog result observable.
+  open() {
+    return {
+      afterClosed: () => of('New Group')
+    };
+  }
+}
 
 let adminStatus;
 
@@ -26,6 +52,34 @@ const AwsLambdaServiceMock: any = {
     } else {
       return of({ data: true });
     }
+  },
+  createOrg(newOrg): Observable<any> {
+    return newOrg.org.name.includes('kaput')
+      ? throwError({ status: 404 })
+      : of({ status: 'ok' });
+  },
+  getOrgs(): Observable<any> {
+    return of({
+      Items: [
+        { OrgId: 'Europe', Parent: 'DOS' },
+        { OrgId: 'France Embassy', Parent: 'Europe' },
+        { OrgId: 'Chili Embassy', Parent: 'South America' },
+        { OrgId: 'GB', Parent: 'Europe' },
+        { OrgId: 'Brazil Embassy', Parent: 'South America' },
+        { OrgId: 'Glasgow', Parent: 'GB' },
+        { OrgId: 'Gang' },
+        { OrgId: 'London', Parent: 'GB' },
+        { OrgId: 'South America', Parent: 'DOS' },
+        { OrgId: 'NCIS' },
+        { OrgId: 'Springfield, VA', Parent: 'NCIS' },
+        { OrgId: 'Berlin office', Parent: 'German Embassy' },
+        { OrgId: 'DOS' },
+        { OrgId: 'German Embassy', Parent: 'Europe' }
+      ],
+      Count: 14,
+      ScannedCount: 14,
+      ConsumedCapacity: { TableName: 'SomeOrganization', CapacityUnits: 2 }
+    });
   }
 };
 
@@ -60,7 +114,7 @@ describe('CreateUserComponent', () => {
         SharedModule,
         MatInputModule
       ],
-      declarations: [CreateUserComponent],
+      declarations: [CreateUserComponent, GroupManagementComponent],
       providers: [
         NotificationService,
         LoaderService,
@@ -94,7 +148,7 @@ describe('CreateUserComponent', () => {
     fixture.detectChanges();
     const button = fixture.debugElement.nativeElement.querySelectorAll(
       'button'
-    )[0];
+    )[3];
     button.click();
     fixture.whenStable().then(() => {
       expect(adminStatus).toBeTruthy();

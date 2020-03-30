@@ -1,5 +1,5 @@
-<h3>Org/Groups Management</h3>
 <button
+  *ngIf="addActionOn"
   matTooltip="Add organization"
   mat-raised-button
   color="primary"
@@ -16,8 +16,9 @@
     matTreeNodePadding
   >
     <button mat-icon-button disabled></button>
-    {{ node.item }}
+    <div (click)="selectNode(node)">{{ node.item }}</div>
     <button
+      *ngIf="addActionOn"
       mat-icon-button
       (click)="askGroupNameAndAddToNode(solicitGroupName, node)"
     >
@@ -36,8 +37,9 @@
         {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
       </mat-icon>
     </button>
-    {{ node.item }}
+    <div (click)="selectNode(node)">{{ node.item }}</div>
     <button
+      *ngIf="addActionOn"
       mat-icon-button
       (click)="askGroupNameAndAddToNode(solicitGroupName, node)"
     >

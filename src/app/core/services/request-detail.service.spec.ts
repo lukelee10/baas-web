@@ -26,7 +26,7 @@ describe('RequestDetailService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should invoke the correct API-Gateway URL with correct paramters', () => {
+  it('should invoke the correct API-Gateway URL with correct parameters', () => {
     const service: RequestDetailService = TestBed.get(RequestDetailService);
     const testRequestId = '89cfb46f-ff9c-d6a1-97fa-928a8839a8c7';
     service.requestId = testRequestId;
@@ -37,16 +37,6 @@ describe('RequestDetailService', () => {
     expect(requestURL.indexOf(testRequestId) >= 0).toBeTruthy(); // requestId found in URL
     service.requestId = '';
     expect(service.getEndPointURL().indexOf(testRequestId) < 0).toBeTruthy();
-    expect(service).toBeTruthy();
-  });
-
-  it('should invoke the correct mock JSON for test data', () => {
-    const service: RequestDetailService = TestBed.get(RequestDetailService);
-    service.requestId = '89cfb46f-ff9c-d6a1-97fa-928a8839a8c7';
-    service.isMock = true;
-    service.getRequestDetails();
-    const requestURL = service.getEndPointURL();
-    expect(requestURL.indexOf('request-details.json') > 0).toBeTruthy();
     expect(service).toBeTruthy();
   });
 });

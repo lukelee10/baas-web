@@ -12,6 +12,7 @@ import {
   MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
+  MatExpansionModule,
   MatGridListModule,
   MatIconModule,
   MatInputModule,
@@ -72,7 +73,8 @@ const MaterialComponents = [
   MatToolbarModule,
   MatTooltipModule,
   MatTreeModule,
-  FlexLayoutModule
+  FlexLayoutModule,
+  MatExpansionModule
 ];
 
 @NgModule({
