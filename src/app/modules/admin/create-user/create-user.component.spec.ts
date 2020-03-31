@@ -128,7 +128,6 @@ describe('CreateUserComponent', () => {
     fixture = TestBed.createComponent(CreateUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    // router = TestBed.get(Router);
   });
 
   it('Form should be valid', () => {
