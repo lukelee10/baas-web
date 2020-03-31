@@ -44,7 +44,9 @@ export class UserDetailsComponent implements OnInit {
       email: new FormControl({ value: UserId, disabled: true }),
       firstname: new FormControl(Firstname, [Validators.required]),
       lastname: new FormControl(Lastname, [Validators.required]),
-      group: new FormControl(Group, [Validators.required]),
+      group: new FormControl({ value: '', disabled: true }, [
+        Validators.required
+      ]),
       role: new FormControl(Role, [Validators.required]),
       disabled: new FormControl(Disabled, [Validators.required])
     });
