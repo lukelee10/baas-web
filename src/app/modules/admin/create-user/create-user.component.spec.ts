@@ -183,11 +183,17 @@ describe('CreateUserComponent', () => {
   //   expect(router).toHaveBeenCalledWith(['/admin']);
   // });
 
-  // it('if form is dirty, confirm message should be called', () => {
-  //   component.form.get('firstname').setValue('user');
-  //   component.cancel();
-  //   fixture.detectChanges();
-  //   expect(window.confirm).toHaveBeenCalled();
-  //   expect(router).toHaveBeenCalledWith(['/admin']);
-  // });
+  it('if form is dirty, confirm message should be called', () => {
+    component.form.get('firstname').setValue('user');
+    const button = fixture.debugElement.nativeElement.querySelectorAll(
+      'button'
+    )[4];
+    button.click();
+    component.cancel();
+    fixture.detectChanges();
+    expect(window.confirm).toHaveBeenCalledWith(
+      'Are you sure you want to navigate away from this page?'
+    );
+    expect(router).toHaveBeenCalledWith(['/admin']);
+  });
 });
