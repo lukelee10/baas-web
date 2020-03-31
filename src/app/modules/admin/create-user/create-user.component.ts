@@ -91,6 +91,7 @@ export class CreateUserComponent implements OnInit {
     }
     this.awsLambdaService.createUser(newUser).subscribe(
       (data: any) => {
+        this.form.markAsPristine();
         this.notificationService.successful(
           'User ' + data.email + ' has been created'
         );
