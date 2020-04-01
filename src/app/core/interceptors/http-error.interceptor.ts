@@ -10,12 +10,12 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { NotificationService } from './../../shared/services/notification.service';
-import { AppGlobalConstants } from './../app-global-constants';
 import {
   AppMessage,
   AppMessagesService
-} from './../services/app-messages.services';
+} from '../services/app-messages.service';
+import { NotificationService } from './../../shared/services/notification.service';
+import { AppGlobalConstants } from './../app-global-constants';
 import { AuthenticationService } from './../services/authentication.service';
 
 @Injectable({

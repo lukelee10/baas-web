@@ -13,7 +13,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import {
   AppMessage,
   AppMessagesService
-} from '../../../core/services/app-messages.services';
+} from '../../../core/services/app-messages.service';
 
 @Component({
   selector: 'app-package-list',

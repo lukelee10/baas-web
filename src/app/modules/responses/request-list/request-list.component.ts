@@ -5,7 +5,7 @@ import { VettingStatusShortenPipe } from 'src/app/core/pipes/vetting-status-shor
 import {
   AppMessage,
   AppMessagesService
-} from 'src/app/core/services/app-messages.services';
+} from 'src/app/core/services/app-messages.service';
 import { PackageRequestService } from 'src/app/core/services/package-request.service';
 import { Request } from 'src/app/shared/models/package-requests';
 import { UserPackage } from 'src/app/shared/models/user-package';

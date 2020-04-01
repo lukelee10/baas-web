@@ -18,5 +18,11 @@
     "index": 4,
     "title": "API Error",
     "message": "An Error occurred while retrieving the request details, please try again."
+  },
+
+  {
+    "index": 1000,
+    "title": "Password Reset Submission",
+    "message": "Your password reset request has been submitted. Please check your email for a link to reset your password."
   }
 ]

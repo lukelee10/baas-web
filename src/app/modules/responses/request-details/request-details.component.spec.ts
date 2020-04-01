@@ -8,7 +8,7 @@ import {
   VettingStatusPipe,
   VettingStatusShortenPipe
 } from 'src/app/core/pipes/vetting-status-shorten.pipe';
-import { AppMessagesService } from 'src/app/core/services/app-messages.services';
+import { AppMessagesService } from 'src/app/core/services/app-messages.service';
 import { RequestDetailService } from 'src/app/core/services/request-detail.service';
 import { Request } from 'src/app/shared/models/package-requests';
 import { RequestDetails } from 'src/app/shared/models/request-details';

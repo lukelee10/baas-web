@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   AppMessage,
   AppMessagesService
-} from 'src/app/core/services/app-messages.services';
+} from 'src/app/core/services/app-messages.service';
 import { RequestDetailService } from 'src/app/core/services/request-detail.service';
 import { Request } from 'src/app/shared/models/package-requests';
 import { RequestDetails } from 'src/app/shared/models/request-details';
