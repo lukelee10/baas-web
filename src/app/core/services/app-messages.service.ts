@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 
 export enum AppMessage {
+  // *** MESSAGE CODES 1-999: Application Errors
   SessionTimeOut = 1,
   ViewResponseAPIError = 2,
   ViewReponseRequestsAPIError = 3,
-  RequestDetailsError = 4
+  RequestDetailsError = 4,
+  // *** MESSAGE CODES 1000-1999: Application INFO Messages
+  PasswordResetSubmission = 1000
+  // *** MESSAGE CODES 2000-: Any Other Messages
 }
 
 @Injectable({

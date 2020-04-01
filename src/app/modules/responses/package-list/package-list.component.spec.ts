@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of, throwError } from 'rxjs';
-import { AppMessagesService } from 'src/app/core/services/app-messages.services';
+import { AppMessagesService } from 'src/app/core/services/app-messages.service';
 import { UserPackageService } from 'src/app/core/services/user-package.service';
 import {
   UserPackage,

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import {
+  AppMessage,
+  AppMessagesService
+} from 'src/app/core/services/app-messages.service';
 
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { LoaderService } from './../../../shared/services/loader.service';
@@ -19,7 +23,8 @@ export class ForgotPasswordComponent implements OnInit {
   constructor(
     private awsLambdaService: AwsLambdaService,
     private loaderService: LoaderService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private appMessagesService: AppMessagesService
   ) {}
 
   ngOnInit() {}
@@ -43,8 +48,9 @@ export class ForgotPasswordComponent implements OnInit {
           'POST Request is successful',
           data
         );
-        this.message =
-          'Password reset request submitted.  Please look for email with link to reset your password';
+        this.message = this.appMessagesService.getMessage(
+          AppMessage.PasswordResetSubmission
+        );
       },
       error => {
         this.loaderService.Hide();

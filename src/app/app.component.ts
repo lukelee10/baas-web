@@ -7,7 +7,7 @@ import { AppGlobalConstants } from './core/app-global-constants';
 import {
   AppMessage,
   AppMessagesService
-} from './core/services/app-messages.services';
+} from './core/services/app-messages.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { UserService } from './core/services/user.service';
 import { NotificationService } from './shared/services/notification.service';
