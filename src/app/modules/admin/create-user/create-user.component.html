@@ -125,6 +125,14 @@
       <button
         fxFlex="200px"
         mat-raised-button
+        (mousedown)="cancel()"
+        matTooltip="Cancel"
+      >
+        Cancel
+      </button>
+      <button
+        fxFlex="200px"
+        mat-raised-button
         color="primary"
         type="submit"
         [disabled]="!form.valid"

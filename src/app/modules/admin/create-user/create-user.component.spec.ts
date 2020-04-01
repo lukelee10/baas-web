@@ -146,7 +146,7 @@ describe('CreateUserComponent', () => {
     fixture.detectChanges();
     const button = fixture.debugElement.nativeElement.querySelectorAll(
       'button'
-    )[3];
+    )[4];
     button.click();
     fixture.whenStable().then(() => {
       expect(adminStatus).toBeTruthy();

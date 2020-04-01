@@ -91,6 +91,7 @@ export class CreateUserComponent implements OnInit {
     }
     this.awsLambdaService.createUser(newUser).subscribe(
       (data: any) => {
+        this.form.markAsPristine();
         this.notificationService.successful(
           'User ' + data.email + ' has been created'
         );
@@ -101,6 +102,11 @@ export class CreateUserComponent implements OnInit {
       }
     );
   }
+
+  cancel() {
+    this.router.navigate(['/admin']);
+  }
+
   setGroup(node: GroupFlatNode) {
     this.form.controls.group.setValue(node.fqn);
   }
