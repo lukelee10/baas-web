@@ -109,5 +109,6 @@ export class CreateUserComponent implements OnInit {
 
   setGroup(node: GroupFlatNode) {
     this.form.controls.group.setValue(node.fqn);
+    this.form.controls.group.markAsDirty();
   }
 }
