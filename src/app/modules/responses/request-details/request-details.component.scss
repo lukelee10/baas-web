@@ -221,6 +221,27 @@
   font-weight: bold;
   width: 315px;
 }
+
+.baas-mat-expansion-panel {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.baas-mat-panel-title {
+  padding: 3px;
+  color: #5d6d7e;
+  font-weight: bold;
+}
+
+// style to get the description right justify in
+// mat-panel-description
+.mat-expansion-panel-header-description {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 0 !important;
+}
+
 .collapsed-log-div {
   font-weight: bold;
   color: #5d6d7e;

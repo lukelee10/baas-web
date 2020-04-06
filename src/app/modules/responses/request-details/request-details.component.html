@@ -87,7 +87,6 @@
       class="details-H2"
     >
       {{ pageSettings.TitleRight }}
-
       <button
         *ngIf="pageSettings.DivExpandedRight"
         mat-icon-button
@@ -107,40 +106,52 @@
       </button>
     </div>
   </div>
+
   <div *ngIf="!showSpinner" fxLayout="row" fxFlex="100">
     <div fxFlex="column" class="response-details-log">
-      <div fxLayout="row wrap">
+      <mat-accordion [togglePosition]="'before'" [multi]="false">
         <div
-          fxFlexOffset="1.5"
-          *ngFor="let vettingSystem of requestDetails?.VettingSystems"
+          *ngFor="
+            let vettingSystem of requestDetails?.VettingSystems;
+            let isFirst = first
+          "
+          class="baas-mat-expansion-panel"
         >
-          <div fxFlexOffset="1.5" style="margin-top: 10px" fxLayout="column">
-            <div fxLayout="row" class="response-card-head">
-              <div fxFlex="50">
-                <span title="collapse" class="toggle-icon">-</span>
+          <mat-expansion-panel [expanded]="isFirst">
+            <mat-expansion-panel-header class="disable_ripple">
+              <mat-panel-title class="baas-mat-panel-title">
                 {{ vettingSystem.SystemName }}
-              </div>
-              <div
-                fxFlex="50"
-                class=" status-flag status-{{
-                  vettingSystem.Status | vettingStatusShorten
-                }}"
-              >
-                {{ vettingSystem.Status | vettingStatusPipe }}
-              </div>
-            </div>
-            <div fxLayout="column" class="response-card-short">
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-chip-list>
+                  <mat-chip
+                    [disableRipple]="true"
+                    [ngStyle]="
+                      getMatChipStyle(
+                        vettingSystem.Status | vettingStatusShorten
+                      )
+                    "
+                  >
+                    {{ vettingSystem.Status | vettingStatusPipe }}
+                  </mat-chip>
+                </mat-chip-list>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxLayout="column">
               <div fxLayout="row" fxFlex="100">
-                <div fxFlex="20">{{ vettingSystem.IdFieldName }}</div>
+                <div fxFlex="20">{{ vettingSystem.IdFieldName }}:</div>
                 <div fxFlex="80">
-                  <span class="digit-bar"
+                  <span
+                    [ngClass]="{ 'digit-bar': vettingSystem.Ids.toString() }"
                     >{{ vettingSystem.Ids.toString() }}
                   </span>
                 </div>
               </div>
+
               <div fxFlex="100" class="details-H3">
                 Department Contact Information:
               </div>
+
               <div
                 fxLayout="column"
                 class="details-text"
@@ -166,9 +177,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </mat-expansion-panel>
         </div>
-      </div>
+      </mat-accordion>
     </div>
     <div
       [fxFlex]="pageSettings.FlexRight"

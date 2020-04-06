@@ -116,4 +116,73 @@ export class RequestDetailsComponent implements OnInit {
     }
     return contextIcon;
   }
+
+  getMatChipStyle(shortenStatus: any) {
+    let matChipScss: {
+      width: string;
+      color: string;
+      'background-color': string;
+      border?: string;
+    };
+
+    switch (shortenStatus) {
+      case 'PND': {
+        matChipScss = {
+          width: '170px',
+          color: 'black',
+          'background-color': 'rgba(128, 128, 128, 0.6)' // gray tint
+        };
+        break;
+      }
+
+      case 'INV': {
+        matChipScss = {
+          width: '170px',
+          color: 'white',
+          'background-color': 'rgba(255, 0, 0, 0.6)' // Red tint
+        };
+        break;
+      }
+
+      case 'NA': {
+        matChipScss = {
+          width: '170px',
+          color: 'black',
+          'background-color': 'rgba(211, 211, 211, 0.6)' // light gray
+        };
+        break;
+      }
+
+      case 'ERR': {
+        matChipScss = {
+          width: '170px',
+          color: 'black',
+          'background-color': 'rgba(255, 255, 0, 0.6)', // yellow
+          border: '1px solid yellow'
+        };
+        break;
+      }
+
+      case 'NL': {
+        matChipScss = {
+          width: '170px',
+          color: 'black',
+          'background-color': 'rgb(253, 254, 254)', // white
+          border: '1px solid #ebedef'
+        };
+        break;
+      }
+
+      default: {
+        matChipScss = {
+          width: '170px',
+          color: 'black',
+          'background-color': 'rgb(242, 242, 242)' // light gray
+        };
+        break;
+      }
+    }
+
+    return matChipScss;
+  }
 }

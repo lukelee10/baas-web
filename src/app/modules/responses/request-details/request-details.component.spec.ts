@@ -80,13 +80,87 @@ class MockRequestDetailService extends RequestDetailService {
           ],
           IdFieldName: 'TPN',
           Ids: ['23203230223', '43403434343'],
-          Status: 'RED',
+          Status: 'GREEN',
           SubmissionDate: '',
           ResponseDate: '',
           Alerts: [
             {
               Level: 'Warning',
               Message: 'ARMED'
+            }
+          ],
+          Errors: [
+            {
+              Code: '42',
+              Message: 'Some summary of the error as returned by Vetting System'
+            }
+          ]
+        },
+        {
+          SystemName: 'ABIS',
+          POC: [
+            {
+              Label: 'Phone Number',
+              Value: '555-555-5555',
+              Remarks: 'Call me!'
+            },
+            {
+              Label: 'Email',
+              Value: 'k@abis.gov',
+              Remarks: 'Contact on JWICS'
+            },
+            {
+              Label: 'fax',
+              Value: 'k@abis.gov',
+              Remarks: 'Fax us!'
+            }
+          ],
+          IdFieldName: 'TCN',
+          Ids: ['0123445678', '82892810191'],
+          Status: 'PENDING',
+          SubmissionDate: '',
+          ResponseDate: '',
+          Alerts: [
+            {
+              Level: 'Warning',
+              Message: 'ARMED, EXTREMELY DANGEROUS'
+            }
+          ],
+          Errors: [
+            {
+              Code: '42',
+              Message: 'Some summary of the error as returned by Vetting System'
+            }
+          ]
+        },
+        {
+          SystemName: 'TIDE',
+          POC: [
+            {
+              Label: 'Phone Number',
+              Value: '555-555-5555',
+              Remarks: 'Call me!'
+            },
+            {
+              Label: 'Email',
+              Value: 'k@tide.gov',
+              Remarks: 'Contact on JWICS'
+            },
+            {
+              Label: 'fax',
+              Value: 'k@tide.gov',
+              Remarks: 'Fax us!'
+            }
+          ],
+          IdFieldName: '',
+          Ids: [],
+          Status: 'ERROR',
+          SubmissionDate: '',
+          ResponseDate: '',
+          Alerts: [
+            {
+              Level: 'Warning',
+              Message: 'ARMED, EXTREMELY DANGEROUS'
             }
           ],
           Errors: [
@@ -239,5 +313,17 @@ describe('RequestDetailsComponent', () => {
     expect(phoneLaberl).toEqual('call');
     const unknownLaberl = component.getContextIcon('Any contacts');
     expect(unknownLaberl).toEqual('contacts');
+  });
+
+  it('should handle empty string chip style when shorten status is empty', () => {
+    const chipStyle = component.getMatChipStyle('NA');
+    expect(chipStyle['background-color']).toBe('rgba(211, 211, 211, 0.6)');
+    expect(chipStyle['background-color']).not.toBe('rgba(255, 0, 0, 0.6)'); // INV
+  });
+
+  it('should handle default chip style when no predefined shorten status', () => {
+    const chipStyle = component.getMatChipStyle('PDD');
+    expect(chipStyle['background-color']).toBe('rgb(242, 242, 242)');
+    expect(chipStyle['background-color']).not.toBe('rgba(255, 0, 0, 0.6)'); // INV
   });
 });
