@@ -49,20 +49,10 @@ class MockRequestDetailService extends RequestDetailService {
           IdFieldName: 'TCN',
           Ids: ['0123445678', '82892810191'],
           Status: 'RED',
-          SubmissionDate: '',
-          ResponseDate: '',
-          Alerts: [
-            {
-              Level: 'Warning',
-              Message: 'ARMED, EXTREMELY DANGEROUS'
-            }
-          ],
-          Errors: [
-            {
-              Code: '42',
-              Message: 'Some summary of the error as returned by Vetting System'
-            }
-          ]
+          SubmissionDate: '2020-03-25T17:22:03.437Z',
+          ResponseDate: '2020-03-25T21:51:36.805Z',
+          Alerts: [],
+          Errors: []
         },
         {
           SystemName: 'LOWBALL',
@@ -81,23 +71,13 @@ class MockRequestDetailService extends RequestDetailService {
           IdFieldName: 'TPN',
           Ids: ['23203230223', '43403434343'],
           Status: 'GREEN',
-          SubmissionDate: '',
-          ResponseDate: '',
-          Alerts: [
-            {
-              Level: 'Warning',
-              Message: 'ARMED'
-            }
-          ],
-          Errors: [
-            {
-              Code: '42',
-              Message: 'Some summary of the error as returned by Vetting System'
-            }
-          ]
+          SubmissionDate: '2019-12-16T19:04:58.614Z',
+          ResponseDate: '2020-03-25T03:11:31.381Z',
+          Alerts: [],
+          Errors: []
         },
         {
-          SystemName: 'ABIS',
+          SystemName: 'VetSysPending',
           POC: [
             {
               Label: 'Phone Number',
@@ -106,35 +86,25 @@ class MockRequestDetailService extends RequestDetailService {
             },
             {
               Label: 'Email',
-              Value: 'k@abis.gov',
+              Value: 'k@vetsyspending.gov',
               Remarks: 'Contact on JWICS'
             },
             {
               Label: 'fax',
-              Value: 'k@abis.gov',
+              Value: 'k@vetsyspending.gov',
               Remarks: 'Fax us!'
             }
           ],
-          IdFieldName: 'TCN',
-          Ids: ['0123445678', '82892810191'],
+          IdFieldName: '',
+          Ids: [],
           Status: 'PENDING',
-          SubmissionDate: '',
+          SubmissionDate: '2019-11-22T17:02:24.910Z',
           ResponseDate: '',
-          Alerts: [
-            {
-              Level: 'Warning',
-              Message: 'ARMED, EXTREMELY DANGEROUS'
-            }
-          ],
-          Errors: [
-            {
-              Code: '42',
-              Message: 'Some summary of the error as returned by Vetting System'
-            }
-          ]
+          Alerts: [],
+          Errors: []
         },
         {
-          SystemName: 'TIDE',
+          SystemName: 'VetSysError',
           POC: [
             {
               Label: 'Phone Number',
@@ -143,32 +113,81 @@ class MockRequestDetailService extends RequestDetailService {
             },
             {
               Label: 'Email',
-              Value: 'k@tide.gov',
+              Value: 'k@vetsyserror.gov',
               Remarks: 'Contact on JWICS'
             },
             {
               Label: 'fax',
-              Value: 'k@tide.gov',
+              Value: 'k@vetsyserror.gov',
               Remarks: 'Fax us!'
             }
           ],
           IdFieldName: '',
           Ids: [],
           Status: 'ERROR',
-          SubmissionDate: '',
+          SubmissionDate: '2019-12-16T19:04:58.565Z',
           ResponseDate: '',
-          Alerts: [
-            {
-              Level: 'Warning',
-              Message: 'ARMED, EXTREMELY DANGEROUS'
-            }
-          ],
+          Alerts: [],
           Errors: [
             {
-              Code: '42',
-              Message: 'Some summary of the error as returned by Vetting System'
+              Code: '7737',
+              Message: 'random error'
             }
           ]
+        },
+        {
+          SystemName: 'VetStatusEmpty',
+          POC: [
+            {
+              Label: 'Phone Number',
+              Value: '555-555-5555',
+              Remarks: 'Call me!'
+            },
+            {
+              Label: 'Email',
+              Value: 'k@vetstatusempty.gov',
+              Remarks: 'Contact on JWICS'
+            },
+            {
+              Label: 'fax',
+              Value: 'k@vetstatusempty.gov',
+              Remarks: 'Fax us!'
+            }
+          ],
+          IdFieldName: '',
+          Ids: [],
+          Status: '',
+          SubmissionDate: '2019-12-16T19:04:58.565Z',
+          ResponseDate: '',
+          Alerts: [],
+          Errors: []
+        },
+        {
+          SystemName: 'VetStatusUnknown',
+          POC: [
+            {
+              Label: 'Phone Number',
+              Value: '555-555-5555',
+              Remarks: 'Call me!'
+            },
+            {
+              Label: 'Email',
+              Value: 'k@vetstatusunknown.gov',
+              Remarks: 'Contact on JWICS'
+            },
+            {
+              Label: 'fax',
+              Value: 'k@vetstatusunknown.gov',
+              Remarks: 'Fax us!'
+            }
+          ],
+          IdFieldName: '',
+          Ids: [],
+          Status: 'Unknown',
+          SubmissionDate: '2019-12-16T19:04:58.565Z',
+          ResponseDate: '',
+          Alerts: [],
+          Errors: []
         }
       ],
       Alert: {
@@ -313,17 +332,5 @@ describe('RequestDetailsComponent', () => {
     expect(phoneLaberl).toEqual('call');
     const unknownLaberl = component.getContextIcon('Any contacts');
     expect(unknownLaberl).toEqual('contacts');
-  });
-
-  it('should handle empty string chip style when shorten status is empty', () => {
-    const chipStyle = component.getMatChipStyle('NA');
-    expect(chipStyle['background-color']).toBe('rgba(211, 211, 211, 0.6)');
-    expect(chipStyle['background-color']).not.toBe('rgba(255, 0, 0, 0.6)'); // INV
-  });
-
-  it('should handle default chip style when no predefined shorten status', () => {
-    const chipStyle = component.getMatChipStyle('PDD');
-    expect(chipStyle['background-color']).toBe('rgb(242, 242, 242)');
-    expect(chipStyle['background-color']).not.toBe('rgba(255, 0, 0, 0.6)'); // INV
   });
 });
