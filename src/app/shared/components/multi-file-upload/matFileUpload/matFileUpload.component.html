@@ -1,6 +1,7 @@
 <form [formGroup]="fileUploadFormGroup">
-  <div fxLayout="row" [style.margin-top]="'12px'" style="padding: 1% 16%;">
-    <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+  <div fxLayout="row" [style.margin-top]="'12px'" [style.margin-left]="'-150px'" style="width:1165px">
+
+    <mat-card fxFlex="162px" style="text-align: center;">
       <div *ngIf="!IsFileValidSize() || !IsFileValidType()">
         <span style="background-color: lightblue; padding:10px"
           ><b>ERROR</b></span
@@ -14,18 +15,18 @@
         alt="{{ File.name }}"
       />
     </mat-card>
-    <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+    <mat-card fxFlex="117px" style="text-align: center; word-wrap: break-word;">
       {{ File.name }}
     </mat-card>
-    <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+    <mat-card fxFlex="99px" style="text-align: center;">
       {{ File.size / 1000 }}
       <mat-error *ngIf="!IsFileValidSize()">{{ invalidFileSizeMsg }}</mat-error>
     </mat-card>
-    <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+    <mat-card fxFlex="112px" style="text-align: center;">
       {{ File.type }}
       <mat-error *ngIf="!IsFileValidType()">{{ invalidFileTypeMsg }}</mat-error>
     </mat-card>
-    <mat-card fxFlex="0 1 calc(16% - 16px)" style="text-align: center;">
+    <mat-card fxFlex="244px" style="text-align: center;">
       <mat-hint>Please choose a modality</mat-hint>
       <mat-form-field>
         <mat-select formControlName="modality">
@@ -46,14 +47,14 @@
     </mat-card>
     <mat-card
       *ngIf="!userService.IsFSPUser"
-      fxFlex="0 1 calc(16% - 26px)"
+      fxFlex="131px"
       style="text-align: center;"
     >
       <mat-checkbox formControlName="isNotUSPerson">NO USPER</mat-checkbox>
     </mat-card>
     <mat-card
       *ngIf="!userService.IsFSPUser"
-      fxFlex="0 1 calc(16% - 26px)"
+      fxFlex="240px"
       style="text-align: center;"
     >
       <mat-hint>Please choose a classification</mat-hint>
