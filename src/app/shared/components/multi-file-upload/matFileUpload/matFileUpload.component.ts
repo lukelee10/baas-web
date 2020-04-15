@@ -105,10 +105,15 @@ export class MatFileUploadComponent implements OnInit {
   }
 
   IsFileValidType(): boolean {
-    const result = this.lookupStaticDataService.allowedFileTypes.filter(
+    const resultFileType = this.lookupStaticDataService.allowedFileTypes.filter(
       fileType => fileType === this.file.type
     );
-    if (result.length === 0) {
+
+    const resultBinaryFileType = this.lookupStaticDataService.allowedFileTypes.filter(
+      fileType => fileType === this.file.binaryMimetype
+    );
+
+    if (resultFileType.length === 0 && resultBinaryFileType.length === 0) {
       this.invalidFileTypeMsg = 'Invalid file type';
       return false;
     } else {
@@ -130,6 +135,7 @@ export class MatFileUploadComponent implements OnInit {
       ID: this.id,
       FileName: this.file.name,
       FileType: this.file.type,
+      BinaryMimetype: this.file.binaryMimetype,
       FileSize: this.file.size,
       IsNotUSPerson: this.fileUploadFormGroup.value.isNotUSPerson,
       Modality: this.fileUploadFormGroup.value.modality,

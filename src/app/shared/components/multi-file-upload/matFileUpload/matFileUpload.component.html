@@ -1,14 +1,23 @@
 <form [formGroup]="fileUploadFormGroup">
-  <div fxLayout="row" [style.margin-top]="'12px'" [style.margin-left]="'-150px'" style="width:1165px">
-
+  <div
+    fxLayout="row"
+    [style.margin-top]="'12px'"
+    [style.margin-left]="'-150px'"
+    style="width:1165px"
+  >
     <mat-card fxFlex="162px" style="text-align: center;">
       <div *ngIf="!IsFileValidSize() || !IsFileValidType()">
         <span style="background-color: lightblue; padding:10px"
           ><b>ERROR</b></span
         >
       </div>
+      <div
+        *ngIf="IsFileValidSize() && IsFileValidType() && File.binaryMimetype"
+      >
+        <b>Preview Unavailable</b>
+      </div>
       <img
-        *ngIf="IsFileValidSize() && IsFileValidType()"
+        *ngIf="IsFileValidSize() && IsFileValidType() && !File.binaryMimetype"
         src="{{ File.preview }}"
         width="100px"
         height="100px"
@@ -22,8 +31,20 @@
       {{ File.size / 1000 }}
       <mat-error *ngIf="!IsFileValidSize()">{{ invalidFileSizeMsg }}</mat-error>
     </mat-card>
-    <mat-card fxFlex="112px" style="text-align: center;">
+    <mat-card
+      *ngIf="File.type && !File.binaryMimetype"
+      fxFlex="112px"
+      style="text-align: center;"
+    >
       {{ File.type }}
+      <mat-error *ngIf="!IsFileValidType()">{{ invalidFileTypeMsg }}</mat-error>
+    </mat-card>
+    <mat-card
+      *ngIf="!File.type && File.binaryMimetype"
+      fxFlex="112px"
+      style="text-align: center;"
+    >
+      {{ File.binaryMimetype }}
       <mat-error *ngIf="!IsFileValidType()">{{ invalidFileTypeMsg }}</mat-error>
     </mat-card>
     <mat-card fxFlex="244px" style="text-align: center;">

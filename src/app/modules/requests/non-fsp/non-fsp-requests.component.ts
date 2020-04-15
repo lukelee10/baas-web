@@ -144,7 +144,9 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
         group,
         packageId,
         imageClassification: itemData.ImageClassification,
-        mimeType: itemData.FileType,
+        mimeType: itemData.FileType
+          ? itemData.FileType
+          : itemData.BinaryMimetype,
         fileSize: itemData.FileSize,
         originalFileName: itemData.FileName,
         modality: itemData.Modality,
