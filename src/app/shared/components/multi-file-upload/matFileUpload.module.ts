@@ -3,7 +3,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { MaterialModule } from '../../material.module';
-import { BytesPipe } from './bytes.pipe';
 import { FileUploadInputForDirective } from './fileUploadInputFor.directive';
 import { MatFileUploadComponent } from './matFileUpload/matFileUpload.component';
 import { MatFileUploadQueueComponent } from './matFileUploadQueue/matFileUploadQueue.component';
@@ -19,14 +18,12 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     MatFileUploadComponent,
     MatFileUploadQueueComponent,
-    FileUploadInputForDirective,
-    BytesPipe
+    FileUploadInputForDirective
   ],
   exports: [
     MatFileUploadComponent,
     MatFileUploadQueueComponent,
-    FileUploadInputForDirective,
-    BytesPipe
+    FileUploadInputForDirective
   ]
 })
 export class MatFileUploadModule {}

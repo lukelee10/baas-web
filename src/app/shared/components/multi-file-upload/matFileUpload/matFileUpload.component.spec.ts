@@ -15,7 +15,6 @@ import { UserRoles } from 'src/app/core/app-global-constants';
 import { UserService } from 'src/app/core/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 
-import { BytesPipe } from '../bytes.pipe';
 import { MatFileUploadQueueComponent } from '../matFileUploadQueue/matFileUploadQueue.component';
 import { MatFileUploadComponent } from './matFileUpload.component';
 
@@ -50,7 +49,7 @@ describe('MatFileUploadComponent', () => {
         MatCardModule,
         HttpClientTestingModule
       ],
-      declarations: [MatFileUploadComponent, BytesPipe],
+      declarations: [MatFileUploadComponent],
       providers: [
         { provide: UserService, useClass: MockUserService },
         {
