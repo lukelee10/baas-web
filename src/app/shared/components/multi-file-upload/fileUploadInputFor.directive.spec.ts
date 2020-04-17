@@ -15,6 +15,9 @@ class TestComponent {
 
   @HostListener('drop', ['$event'])
   onDrop(event: any): any {}
+
+  @HostListener('dragover', ['$event'])
+  onDropOver(event: any): any {}
 }
 
 describe('FileUploadInputForDirective', () => {
@@ -72,7 +75,7 @@ describe('FileUploadInputForDirective', () => {
     });
   });
 
-  xit('should call OnChange when the file is jp2 mime type', () => {
+  it('should call OnChange when the file is jp2 mime type', () => {
     const debugEl: HTMLElement = fixture.debugElement.nativeElement;
     const input: HTMLInputElement = debugEl.querySelector('input');
 
@@ -127,6 +130,19 @@ describe('FileUploadInputForDirective', () => {
     const input: HTMLElement = debugEl.querySelector('div');
 
     const fakeDropEvent = new Event('drop');
+    input.dispatchEvent(fakeDropEvent);
+
+    fixture.whenStable().then(() => {
+      //      console.log(JSON.stringify(input));
+      //      expect(input).not.toBeNull();
+    });
+  });
+
+  it('should call onDropOver when no files', () => {
+    const debugEl: HTMLElement = fixture.debugElement.nativeElement;
+    const input: HTMLElement = debugEl.querySelector('div');
+
+    const fakeDropEvent = new Event('dragover');
     input.dispatchEvent(fakeDropEvent);
 
     fixture.whenStable().then(() => {
