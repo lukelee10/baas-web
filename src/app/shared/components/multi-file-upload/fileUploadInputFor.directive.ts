@@ -38,9 +38,7 @@ export class FileUploadInputForDirective {
 
   @Input('fileUploadInputFor')
   set fileUploadQueue(value: any) {
-    if (value) {
-      this.queue = value;
-    }
+    this.queue = value;
   }
 
   @HostListener('change')
@@ -65,10 +63,6 @@ export class FileUploadInputForDirective {
   public onDrop(event: any): any {
     const files = event.dataTransfer.files;
     this.FileSelected.emit(files);
-
-    if (!files) {
-      return;
-    }
 
     for (const file of files) {
       this.discernMimeType(file);

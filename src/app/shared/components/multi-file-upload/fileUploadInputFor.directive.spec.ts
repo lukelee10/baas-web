@@ -1,35 +1,29 @@
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { FileUploadInputForDirective } from './fileUploadInputFor.directive';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-// Simple test component that will not in the actual app
+// Simple Dummy test component that will not in the actual app
+// Easy to test just the directive
 @Component({
   template:
     '<div [fileUploadInputFor]="fileUploadQueue"><input [fileUploadInputFor]="fileUploadQueue"/></div>'
 })
-class TestComponent {
+class DummyTestComponent {
   constructor() {}
-
-  @HostListener('change')
-  onChange() {}
-
-  @HostListener('drop', ['$event'])
-  onDrop(event: any): any {}
-
-  @HostListener('dragover', ['$event'])
-  onDropOver(event: any): any {}
 }
 
 describe('FileUploadInputForDirective', () => {
-  let component: TestComponent;
-  let fixture: ComponentFixture<TestComponent>;
+  let component: DummyTestComponent;
+  let fixture: ComponentFixture<DummyTestComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [DummyTestComponent, FileUploadInputForDirective]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [TestComponent, FileUploadInputForDirective]
-    });
-
-    fixture = TestBed.createComponent(TestComponent);
+    fixture = TestBed.createComponent(DummyTestComponent);
     component = fixture.componentInstance;
   });
 
@@ -37,7 +31,7 @@ describe('FileUploadInputForDirective', () => {
     expect(component).toBeDefined();
   });
 
-  it('should call OnChange when no files', () => {
+  it('should return no files', () => {
     const debugEl: HTMLElement = fixture.debugElement.nativeElement;
     const input: HTMLInputElement = debugEl.querySelector('input');
 
@@ -50,7 +44,7 @@ describe('FileUploadInputForDirective', () => {
     });
   });
 
-  it('should call OnChange when the file is png mime type', () => {
+  it('on change should return file preview when file is valid file type', () => {
     const debugEl: HTMLElement = fixture.debugElement.nativeElement;
     const input: HTMLInputElement = debugEl.querySelector('input');
 
@@ -70,18 +64,19 @@ describe('FileUploadInputForDirective', () => {
     input.dispatchEvent(fakeChangeEvent);
 
     fixture.whenStable().then(() => {
-      console.log(JSON.stringify(input.files));
-      expect(input.files).not.toBeNull();
+      const testFile = input.files[0] as any;
+      expect(testFile.preview).not.toBeNull();
+      expect(testFile.binaryMimetype).toBeUndefined();
     });
   });
 
-  it('should call OnChange when the file is jp2 mime type', () => {
+  it('should return no file preview when file is JP2 file type', () => {
     const debugEl: HTMLElement = fixture.debugElement.nativeElement;
     const input: HTMLInputElement = debugEl.querySelector('input');
 
     const dT = new ClipboardEvent('').clipboardData || new DataTransfer();
     dT.items.add(
-      new File(['foo'], 'programmatically_created.jp2', {
+      new File(['000C6A502020'], 'programmatically_created.jp2', {
         type: 'image/jp2',
         lastModified: Date.now()
       })
@@ -95,8 +90,9 @@ describe('FileUploadInputForDirective', () => {
     input.dispatchEvent(fakeChangeEvent);
 
     fixture.whenStable().then(() => {
-      console.log(JSON.stringify(input.files));
-      expect(input.files).not.toBeNull();
+      const testFile = input.files[0] as any;
+      expect(testFile.preview).toBeUndefined();
+      expect(testFile.binaryMimetype).toBeUndefined();
     });
   });
 
@@ -120,8 +116,9 @@ describe('FileUploadInputForDirective', () => {
     input.dispatchEvent(fakeChangeEvent);
 
     fixture.whenStable().then(() => {
-      console.log(JSON.stringify(input.files));
-      expect(input.files).not.toBeNull();
+      const testFile = input.files[0] as any;
+      expect(testFile.preview).toBeUndefined();
+      expect(testFile.binaryMimetype).toBeUndefined();
     });
   });
 
@@ -129,25 +126,38 @@ describe('FileUploadInputForDirective', () => {
     const debugEl: HTMLElement = fixture.debugElement.nativeElement;
     const input: HTMLElement = debugEl.querySelector('div');
 
-    const fakeDropEvent = new Event('drop');
-    input.dispatchEvent(fakeDropEvent);
+    const fileDropEvent = new DragEvent('drop', {
+      bubbles: true,
+      dataTransfer: null
+    });
+
+    input.dispatchEvent(fileDropEvent);
 
     fixture.whenStable().then(() => {
-      //      console.log(JSON.stringify(input));
-      //      expect(input).not.toBeNull();
+      expect(fileDropEvent.dataTransfer.files).toBeUndefined();
     });
   });
 
-  it('should call onDropOver when no files', () => {
+  it('on drop should return file preview when file is valid file type', () => {
     const debugEl: HTMLElement = fixture.debugElement.nativeElement;
     const input: HTMLElement = debugEl.querySelector('div');
 
-    const fakeDropEvent = new Event('dragover');
-    input.dispatchEvent(fakeDropEvent);
+    const dT = new ClipboardEvent('').clipboardData || new DataTransfer();
+    dT.items.add(
+      new File(['foo'], 'programmatically_created.png', {
+        type: 'image/png',
+        lastModified: Date.now()
+      })
+    );
+
+    const fileDropEvent = new DragEvent('drop', {
+      bubbles: true,
+      dataTransfer: dT
+    });
+    input.dispatchEvent(fileDropEvent);
 
     fixture.whenStable().then(() => {
-      //      console.log(JSON.stringify(input));
-      //      expect(input).not.toBeNull();
+      expect(fileDropEvent.dataTransfer.files).toBeDefined();
     });
   });
 });
