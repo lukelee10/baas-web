@@ -66,3 +66,9 @@ Thumbs.db
 *.p12
 *.pfx
 *.class
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+*.doc
+*.docx
