@@ -135,7 +135,7 @@
         mat-raised-button
         color="primary"
         type="submit"
-        [disabled]="!form.valid"
+        [disabled]="!form.valid || !form.controls.group.value"
         (click)="submit()"
         matTooltip="Create User"
       >

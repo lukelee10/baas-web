@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -76,5 +76,23 @@ export class AwsLambdaService {
   // save a given org into API: the param = { org: {parentName: 'mom', name: 'theOrg' }}
   createOrg(newOrg: any) {
     return this.http.post(`${this.apiBase}/orgs`, newOrg);
+  }
+
+  deleteUser(user: any) {
+    // user should have at least email as property
+    return this.http.request('delete', `${this.apiBase}/users`, {
+      body: { user }
+    });
+  }
+  updateUser(user: any) {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'text/plain; charset=utf-8'
+    );
+    return this.http.put(
+      `${this.apiBase}/users`,
+      { user },
+      { headers, responseType: 'text' as 'json' }
+    );
   }
 }

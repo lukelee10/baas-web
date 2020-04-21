@@ -1,6 +1,10 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatSlideToggleChange
+} from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -39,7 +43,6 @@ export class UserManagementComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('filter', { static: true }) filter: ElementRef;
 
-  baasUsers: any;
   usersViewModel: BaaSUser[] = [];
 
   constructor(
@@ -61,6 +64,8 @@ export class UserManagementComponent implements OnInit {
     if (this.userService.IsAdmin) {
       sub = this.awsLambdaService.getUsers();
     } else if (this.userService.IsLead) {
+      // TODO need to switch to getUsers modified lambda function once it
+      // recognized user's role
       // current requirement is Lead will see
       sub = this.awsLambdaService.getUsersInGroup(this.userService.Group);
     } else {
@@ -69,7 +74,6 @@ export class UserManagementComponent implements OnInit {
     if (sub) {
       sub.pipe(first()).subscribe(
         users => {
-          this.baasUsers = users;
           this.getViewModelUsers(users);
           this.dataSource = new MatTableDataSource<BaaSUser>(
             this.usersViewModel
@@ -90,6 +94,7 @@ export class UserManagementComponent implements OnInit {
   private getViewModelUsers(users: any): void {
     for (const item of users.Items) {
       item.Fullname = this.getName(item.Firstname, item.Lastname);
+      item.Disabled = item.Disabled ? true : false;
       this.usersViewModel.push(item);
     }
   }
@@ -149,6 +154,47 @@ export class UserManagementComponent implements OnInit {
     }
 
     return name;
+  }
+
+  toggleDisable(event: MatSlideToggleChange, user: BaaSUser): void {
+    console.log('toggleDisable ', event); // event.checked
+    // user.Disabled = !user.Disabled;
+    // need to save to save to API
+    if (event.checked) {
+      this.awsLambdaService
+        .deleteUser({ ...user, email: user.UserId })
+        .subscribe(
+          (data: BaaSUser) => {
+            this.notificationService.successful(`User ${data.UserId} disabled`);
+          },
+          error => {
+            const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
+            this.notificationService.error(
+              `Disabling user failed. ${error} ${detail}`
+            );
+          }
+        );
+    } else {
+      user.Disabled = false;
+      const userChanges = {
+        email: user.UserId,
+        disabled: false,
+        admin: null
+      };
+      this.awsLambdaService.updateUser(userChanges).subscribe(
+        (data: string) => {
+          this.notificationService.successful(
+            `User ${user.UserId} enabled ${data}`
+          );
+        },
+        error => {
+          const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
+          this.notificationService.error(
+            `Enabling user failed. ${error} ${detail}`
+          );
+        }
+      );
+    }
   }
 
   openDialog(request: BaaSUser): void {

@@ -13,6 +13,16 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 
 import { GroupFlatNode } from '../../group-management/group-management.component';
 
+interface User {
+  email: string;
+  firstname?: string;
+  lastname?: string;
+  group?: string;
+  admin: false;
+  role?: string;
+  disabled?: boolean;
+}
+
 @Component({
   selector: 'app-user-details',
   templateUrl: '../../create-user/create-user.component.html'
@@ -44,47 +54,67 @@ export class UserDetailsComponent implements OnInit {
       email: new FormControl({ value: UserId, disabled: true }),
       firstname: new FormControl(Firstname, [Validators.required]),
       lastname: new FormControl(Lastname, [Validators.required]),
-      group: new FormControl({ value: '', disabled: true }, [
-        Validators.required
-      ]),
+      group: new FormControl({ value: Group, disabled: true }),
+      // Validators.required disabled fc does not validate
       role: new FormControl(Role, [Validators.required]),
       disabled: new FormControl(Disabled, [Validators.required])
     });
+    this.form.controls.group.markAsPristine();
+    this.dialogRef.backdropClick().subscribe(_ => {
+      const cn = confirm('Changes not saved, are you sure to close?');
+      if (cn) {
+        this.dialogRef.close();
+      }
+    });
   }
 
-  // TODO next story will be implementing the submit edit changes
-  // submit() {
-  //   const ctl = this.form.controls;
-  //   const newUser = {
-  //     user: {
-  //       email: ctl.email.value,
-  //       temporaryPassword: ctl.password.value,
-  //       firstname: ctl.firstname.value,
-  //       lastname: ctl.lastname.value,
-  //       group: ctl.group.value,
-  //       role: ctl.role.value,
-  //       disabled: ctl.disabled.value,
-  //       admin: false
-  //     }
-  //   };
+  submit() {
+    const ctl = this.form.controls;
+    const userChanges: User = {
+      email: ctl.email.value,
+      admin: false
+    };
+    if (ctl.firstname.dirty || ctl.lastname.dirty) {
+      userChanges.firstname = ctl.firstname.value;
+      userChanges.lastname = ctl.lastname.value;
+    }
+    if (ctl.group.dirty) {
+      userChanges.group = ctl.group.value;
+    }
+    if (ctl.role.dirty) {
+      userChanges.role = ctl.role.value;
+    }
+    if (ctl.disabled.dirty) {
+      userChanges.disabled = ctl.disabled.value;
+    }
 
-  // the work on saving is on a different ticket
-  // if (ctl.role.value === 'Admin') {
-  //   newUser.user.admin = true;
-  // }
-  // this.awsLambdaService.createUser(newUser).subscribe(
-  //   (data: any) => {
-  //     this.notificationService.successful(
-  //       'User ' + data.email + ' has been created'
-  //     );
-  //   },
-  //   error => {
-  //     this.notificationService.error(error);
-  //   }
-  // );
-  // }
+    this.awsLambdaService.updateUser(userChanges).subscribe(
+      (data: string) => {
+        this.notificationService.successful(
+          `User ${userChanges.email} enabled ${data}`
+        );
+      },
+      error => {
+        const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
+        this.notificationService.error(
+          `Enabling user failed. ${error} ${detail}`
+        );
+      }
+    );
+  }
+
+  cancel() {
+    if (this.form.dirty) {
+      const cn = confirm('Changes not saved, are you sure to close?');
+      if (!cn) {
+        return;
+      }
+    }
+    this.dialogRef.close();
+  }
 
   setGroup(node: GroupFlatNode) {
     this.form.controls.group.setValue(node.fqn);
+    this.form.controls.group.markAsDirty();
   }
 }

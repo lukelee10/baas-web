@@ -63,9 +63,8 @@ export class CreateUserComponent implements OnInit {
       ]),
       firstname: new FormControl('', [Validators.required]),
       lastname: new FormControl('', [Validators.required]),
-      group: new FormControl({ value: '', disabled: true }, [
-        Validators.required
-      ]),
+      group: new FormControl({ value: '', disabled: true }),
+      // Validators.required disabled fc does not validate
       role: new FormControl('', [Validators.required]),
       disabled: new FormControl('', [Validators.required])
     });

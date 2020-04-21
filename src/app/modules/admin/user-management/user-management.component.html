@@ -109,12 +109,15 @@
         >Disabled</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        <mat-icon
-          *ngIf="row.Disabled"
+        <mat-slide-toggle
           aria-hidden="false"
-          aria-label="Disabled User"
-          >check</mat-icon
+          aria-label="{{ row.Disabled ? 'Disabled' : 'Enabled' }} selected user"
+          [checked]="row.Disabled"
+          (click)="$event.stopPropagation()"
+          [(ngModel)]="row.Disabled"
+          (change)="toggleDisable($event, row)"
         >
+        </mat-slide-toggle>
       </mat-cell>
     </ng-container>
 
@@ -129,13 +132,6 @@
           (click)="openDialog(row); $event.stopPropagation()"
         >
           <mat-icon matTooltip="Edit">edit</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          aria-hidden="false"
-          aria-label="Disable selected user"
-        >
-          <mat-icon color="warn" matTooltip="Disable">delete</mat-icon>
         </button>
       </mat-cell>
     </ng-container>
