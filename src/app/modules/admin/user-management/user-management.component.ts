@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { first } from 'rxjs/operators';
+import { LookupStaticDataService } from 'src/app/shared/services/lookup-static-data.service';
 
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { UserService } from './../../../core/services/user.service';
@@ -38,6 +39,8 @@ export class UserManagementComponent implements OnInit {
     'Disabled',
     'actions'
   ];
+  // role maps value to label
+  roleMap = new Map<string, string>();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -49,12 +52,16 @@ export class UserManagementComponent implements OnInit {
     private awsLambdaService: AwsLambdaService,
     private userService: UserService,
     private loaderService: LoaderService,
+    public lookupStaticDataService: LookupStaticDataService,
     private notificationService: NotificationService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit() {
     this.getUsers();
+    this.lookupStaticDataService.userRoleData.forEach(tup => {
+      this.roleMap.set(tup.value, tup.label);
+    });
   }
 
   getUsers(): void {
@@ -165,7 +172,9 @@ export class UserManagementComponent implements OnInit {
         .deleteUser({ ...user, email: user.UserId })
         .subscribe(
           (data: BaaSUser) => {
-            this.notificationService.successful(`User ${data.UserId} disabled`);
+            this.notificationService.successful(
+              `User ${data.UserId} has been disabled`
+            );
           },
           error => {
             const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
@@ -184,7 +193,7 @@ export class UserManagementComponent implements OnInit {
       this.awsLambdaService.updateUser(userChanges).subscribe(
         (data: string) => {
           this.notificationService.successful(
-            `User ${user.UserId} enabled ${data}`
+            `User ${user.UserId} has been enabled`
           );
         },
         error => {
@@ -198,10 +207,36 @@ export class UserManagementComponent implements OnInit {
   }
 
   openDialog(request: BaaSUser): void {
-    this.detailsPopup = this.dialog.open(UserDetailsComponent, {
-      width: '800px',
-      height: '700px',
-      data: request
+    const dialogRef = (this.detailsPopup = this.dialog.open(
+      UserDetailsComponent,
+      {
+        width: '900px',
+        height: '700px',
+        data: request,
+        disableClose: true
+      }
+    ));
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog result:', result);
+      if (!result) {
+        return;
+      }
+      const { disabled, group, role, firstname, lastname } = result;
+      if (disabled !== undefined) {
+        request.Disabled = disabled;
+      }
+      if (group) {
+        request.Group = group;
+      }
+      if (role) {
+        request.Role = role;
+      }
+      if (firstname) {
+        request.Firstname = firstname;
+        request.Lastname = lastname;
+        request.Fullname = this.getName(firstname, lastname);
+      }
     });
   }
 }

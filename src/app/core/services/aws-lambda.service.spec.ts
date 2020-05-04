@@ -76,7 +76,8 @@ export const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
           Group: 'DOS',
           IsAdmin: false,
           Firstname: 'Test',
-          CreatedAt: '2020-02-19T22:02:42.016Z'
+          CreatedAt: '2020-02-19T22:02:42.016Z',
+          Disabled: true
         }
       ],
       Count: 2,
@@ -124,7 +125,10 @@ export const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
     return of({ status: 'ok' });
   },
   updateUser(user: any): Observable<any> {
-    return of({ status: 'ok' });
+    return of({ status: 'ok', user });
+  },
+  updateUserName(user: any): Observable<any> {
+    return of({ status: 'ok', user });
   }
 };
 

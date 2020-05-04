@@ -1,6 +1,6 @@
 <form [formGroup]="form">
   <div class="flex-container form>">
-    <h2>Create User</h2>
+    <h2>{{ editFlag ? 'Edit' : 'Create' }} User</h2>
     <mat-form-field>
       <input
         matInput
@@ -84,7 +84,7 @@
             [collapsedHeight]="'90px'"
             [expandedHeight]="'90px'"
           >
-            <mat-form-field>
+            <mat-form-field fxFlexFill>
               <input
                 matInput
                 placeholder="Group"

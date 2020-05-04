@@ -6,6 +6,9 @@ import { environment } from './../../../environments/environment';
 import { RequestModel } from './../../modules/models/request-model';
 import { BaaSUser } from './../../shared/models/user';
 
+const putHeaders = () =>
+  new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+
 @Injectable({
   providedIn: 'root'
 })
@@ -85,14 +88,18 @@ export class AwsLambdaService {
     });
   }
   updateUser(user: any) {
-    const headers = new HttpHeaders().set(
-      'Content-Type',
-      'text/plain; charset=utf-8'
-    );
     return this.http.put(
       `${this.apiBase}/users`,
       { user },
-      { headers, responseType: 'text' as 'json' }
+      { headers: putHeaders(), responseType: 'text' as 'json' }
+    );
+  }
+  // /users/{email}
+  updateUserName(user: any) {
+    return this.http.put(
+      `${this.apiBase}/users/${user.email}`,
+      { user },
+      { headers: putHeaders(), responseType: 'text' as 'json' }
     );
   }
 }

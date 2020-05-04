@@ -100,7 +100,7 @@
     <!-- Role Column -->
     <ng-container matColumnDef="Role">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.Role }} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ roleMap.get(row.Role) }} </mat-cell>
     </ng-container>
 
     <!-- Status Column -->

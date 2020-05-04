@@ -12,6 +12,7 @@ import { LookupStaticDataService } from 'src/app/shared/services/lookup-static-d
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
 import { GroupFlatNode } from '../../group-management/group-management.component';
+import { LoaderService } from './../../../../shared/services/loader.service';
 
 interface User {
   email: string;
@@ -25,7 +26,8 @@ interface User {
 
 @Component({
   selector: 'app-user-details',
-  templateUrl: '../../create-user/create-user.component.html'
+  templateUrl: '../../create-user/create-user.component.html',
+  styleUrls: ['./user-details.component.scss']
 })
 export class UserDetailsComponent implements OnInit {
   form: FormGroup;
@@ -35,6 +37,7 @@ export class UserDetailsComponent implements OnInit {
   constructor(
     private awsLambdaService: AwsLambdaService,
     private formBuilder: FormBuilder,
+    private loaderService: LoaderService,
     public lookupStaticDataService: LookupStaticDataService,
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<UserDetailsComponent>,
@@ -61,43 +64,75 @@ export class UserDetailsComponent implements OnInit {
     });
     this.form.controls.group.markAsPristine();
     this.dialogRef.backdropClick().subscribe(_ => {
-      const cn = confirm('Changes not saved, are you sure to close?');
-      if (cn) {
+      if (this.form.dirty) {
+        const cn = confirm('Changes not saved, are you sure to close?');
+        if (cn) {
+          this.dialogRef.close();
+        }
+      } else {
         this.dialogRef.close();
       }
     });
   }
 
   submit() {
+    this.loaderService.Show('Saving User...');
     const ctl = this.form.controls;
     const userChanges: User = {
       email: ctl.email.value,
       admin: false
     };
+    const phrases = [];
     if (ctl.firstname.dirty || ctl.lastname.dirty) {
       userChanges.firstname = ctl.firstname.value;
       userChanges.lastname = ctl.lastname.value;
+      phrases.push('name');
     }
     if (ctl.group.dirty) {
       userChanges.group = ctl.group.value;
+      phrases.push('group');
     }
     if (ctl.role.dirty) {
       userChanges.role = ctl.role.value;
+      phrases.push('role');
     }
+    const pString =
+      phrases.length === 0
+        ? ' has no changes'
+        : `has changed ${phrases.join(', ')}`;
+    let dString = '';
     if (ctl.disabled.dirty) {
       userChanges.disabled = ctl.disabled.value;
+      dString = `, and ${
+        userChanges.disabled ? 'has been disabled' : 'has been enabled'
+      }`;
     }
 
-    this.awsLambdaService.updateUser(userChanges).subscribe(
-      (data: string) => {
+    const promises = [];
+    if (userChanges.firstname) {
+      promises.push(
+        this.awsLambdaService.updateUserName(userChanges).toPromise()
+      );
+    }
+    const { group, role, disabled } = userChanges;
+    if (group || role || disabled) {
+      promises.push(this.awsLambdaService.updateUser(userChanges).toPromise());
+    }
+
+    Promise.all(promises).then(
+      _ => {
+        this.loaderService.Hide();
         this.notificationService.successful(
-          `User ${userChanges.email} enabled ${data}`
+          `User ${userChanges.email} ${pString} ${dString}`
         );
+        // pass the user-changes back out.
+        this.dialogRef.close(userChanges);
       },
       error => {
+        this.loaderService.Hide();
         const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
         this.notificationService.error(
-          `Enabling user failed. ${error} ${detail}`
+          `Updating user failed. ${error} ${detail}`
         );
       }
     );
@@ -106,11 +141,12 @@ export class UserDetailsComponent implements OnInit {
   cancel() {
     if (this.form.dirty) {
       const cn = confirm('Changes not saved, are you sure to close?');
-      if (!cn) {
-        return;
+      if (cn) {
+        this.dialogRef.close();
       }
+    } else {
+      this.dialogRef.close();
     }
-    this.dialogRef.close();
   }
 
   setGroup(node: GroupFlatNode) {
