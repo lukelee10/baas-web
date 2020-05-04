@@ -177,7 +177,7 @@ export class GroupManagementComponent implements OnInit {
    */
   addNewNodeUnder(flatNode: GroupFlatNode, name: string) {
     const newOrg = {
-      org: { parentName: flatNode ? flatNode.item : null, name }
+      org: { parentName: flatNode ? flatNode.fqn : null, name }
     };
     this.awsLambdaService.createOrg(newOrg).subscribe(
       (data: any) => {
