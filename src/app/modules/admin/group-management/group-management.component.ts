@@ -186,7 +186,16 @@ export class GroupManagementComponent implements OnInit {
         if (!parentNode.children) {
           parentNode.children = [];
         }
-        parentNode.children.push(new GroupNode(name, parentNode.item));
+
+        const childGroupNode = new GroupNode(name, parentNode.item);
+        const sChildFqn = ((flatNode.fqn || '') + `/${name}`).replace(
+          /^[/]+/g,
+          ''
+        );
+        childGroupNode.fqn = sChildFqn;
+
+        parentNode.children.push(childGroupNode);
+
         const temp = this.changeWatcher.value;
         this.changeWatcher.next([]);
         this.changeWatcher.next(temp);
