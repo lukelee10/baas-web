@@ -102,7 +102,7 @@
     <mat-form-field>
       <mat-select placeholder="Role" required formControlName="role">
         <mat-option
-          *ngFor="let role of lookupStaticDataService.userRoleData"
+          *ngFor="let role of this?.userRolesArr"
           [value]="role.value"
         >
           {{ role.label }}
