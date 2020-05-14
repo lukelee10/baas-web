@@ -68,13 +68,8 @@ export class UserManagementComponent implements OnInit {
     this.loaderService.Show('Loading Users...');
     this.notificationService.setPopUpTitle('BaaS - Get Users');
     let sub;
-    if (this.userService.IsAdmin) {
+    if (this.userService.IsAdmin || this.userService.IsLead) {
       sub = this.awsLambdaService.getUsers();
-    } else if (this.userService.IsLead) {
-      // TODO need to switch to getUsers modified lambda function once it
-      // recognized user's role
-      // current requirement is Lead will see
-      sub = this.awsLambdaService.getUsersInGroup(this.userService.Group);
     } else {
       sub = null;
     }
@@ -98,10 +93,10 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
-  private getViewModelUsers(users: any): void {
-    for (const item of users.Items) {
-      item.Fullname = this.getName(item.Firstname, item.Lastname);
-      item.Disabled = item.Disabled ? true : false;
+  private getViewModelUsers(users: BaaSUser[]): void {
+    for (const item of users) {
+      item.fullname = this.getName(item.firstname, item.lastname);
+      item.group = item.group._GUID;
       this.usersViewModel.push(item);
     }
   }
@@ -142,7 +137,7 @@ export class UserManagementComponent implements OnInit {
     }
     return `${
       this.selection.isSelected(row) ? 'deselect' : 'select'
-    } row ${row.UserId + 1}`;
+    } row ${row.username + 1}`;
   }
 
   ClearFilter() {
@@ -169,11 +164,11 @@ export class UserManagementComponent implements OnInit {
     // need to save to save to API
     if (event.checked) {
       this.awsLambdaService
-        .deleteUser({ ...user, email: user.UserId })
+        .deleteUser({ ...user, email: user.username })
         .subscribe(
           (data: BaaSUser) => {
             this.notificationService.successful(
-              `User ${data.UserId} has been disabled`
+              `User ${data.username} has been disabled`
             );
           },
           error => {
@@ -184,16 +179,16 @@ export class UserManagementComponent implements OnInit {
           }
         );
     } else {
-      user.Disabled = false;
+      user.isDisabled = false;
       const userChanges = {
-        email: user.UserId,
+        email: user.username,
         disabled: false,
         admin: null
       };
       this.awsLambdaService.updateUser(userChanges).subscribe(
         (data: string) => {
           this.notificationService.successful(
-            `User ${user.UserId} has been enabled`
+            `User ${user.username} has been enabled`
           );
         },
         error => {
@@ -224,18 +219,18 @@ export class UserManagementComponent implements OnInit {
       }
       const { disabled, group, role, firstname, lastname } = result;
       if (disabled !== undefined) {
-        request.Disabled = disabled;
+        request.isDisabled = disabled;
       }
       if (group) {
-        request.Group = group;
+        request.group = group;
       }
       if (role) {
-        request.Role = role;
+        request.role = role;
       }
       if (firstname) {
-        request.Firstname = firstname;
-        request.Lastname = lastname;
-        request.Fullname = this.getName(firstname, lastname);
+        request.firstname = firstname;
+        request.lastname = lastname;
+        request.fullname = this.getName(firstname, lastname);
       }
     });
   }

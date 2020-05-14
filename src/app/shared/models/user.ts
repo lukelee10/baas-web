@@ -1,11 +1,11 @@
 export interface BaaSUser {
-  UserId: string;
-  Fullname: string;
-  Firstname: string;
-  Lastname: string;
-  Group: string;
-  IsAdmin: boolean;
-  Role: string;
-  Disabled: boolean;
+  username: string;
+  fullname: string;
+  firstname: string;
+  lastname: string;
+  group: string | any;
+  isAdmin?: boolean;
+  role: string;
+  isDisabled: boolean;
   GUID?: string;
 }

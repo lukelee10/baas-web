@@ -46,21 +46,21 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit() {
     const {
-      UserId,
-      Firstname,
-      Lastname,
-      Group,
-      Role,
-      Disabled = false
+      username,
+      firstname,
+      lastname,
+      group,
+      role,
+      isDisabled = false
     } = this.user;
     this.form = this.formBuilder.group({
-      email: new FormControl({ value: UserId, disabled: true }),
-      firstname: new FormControl(Firstname, [Validators.required]),
-      lastname: new FormControl(Lastname, [Validators.required]),
-      group: new FormControl({ value: Group, disabled: true }),
+      email: new FormControl({ value: username, disabled: true }),
+      firstname: new FormControl(firstname, [Validators.required]),
+      lastname: new FormControl(lastname, [Validators.required]),
+      group: new FormControl({ value: group, disabled: true }),
       // Validators.required disabled fc does not validate
-      role: new FormControl(Role, [Validators.required]),
-      disabled: new FormControl(Disabled, [Validators.required])
+      role: new FormControl(role, [Validators.required]),
+      disabled: new FormControl(isDisabled, [Validators.required])
     });
     this.form.controls.group.markAsPristine();
     this.dialogRef.backdropClick().subscribe(_ => {
