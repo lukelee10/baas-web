@@ -76,16 +76,16 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >User ID</mat-header-cell
       >
-      <mat-cell *matCellDef="let row" matTooltip="{{ row.UserId }}">
-        {{ row.UserId }}
+      <mat-cell *matCellDef="let row" matTooltip="{{ row.username }}">
+        {{ row.username }}
       </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="Fullname">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell *matCellDef="let row" matTooltip="{{ row.Firstname }}">
-        {{ row.Fullname }}
+      <mat-cell *matCellDef="let row" matTooltip="{{ row.firstname }}">
+        {{ row.fullname }}
       </mat-cell>
     </ng-container>
 
@@ -94,13 +94,13 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Org/Group</mat-header-cell
       >
-      <mat-cell *matCellDef="let row"> {{ row.Group }} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row.group }} </mat-cell>
     </ng-container>
 
     <!-- Role Column -->
     <ng-container matColumnDef="Role">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ roleMap.get(row.Role) }} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ roleMap.get(row.role) }} </mat-cell>
     </ng-container>
 
     <!-- Status Column -->
@@ -111,10 +111,12 @@
       <mat-cell *matCellDef="let row">
         <mat-slide-toggle
           aria-hidden="false"
-          aria-label="{{ row.Disabled ? 'Disabled' : 'Enabled' }} selected user"
-          [checked]="row.Disabled"
+          aria-label="{{
+            row.isDisabled ? 'Disabled' : 'Enabled'
+          }} selected user"
+          [checked]="row.isDisabled"
           (click)="$event.stopPropagation()"
-          [(ngModel)]="row.Disabled"
+          [(ngModel)]="row.isDisabled"
           (change)="toggleDisable($event, row)"
         >
         </mat-slide-toggle>

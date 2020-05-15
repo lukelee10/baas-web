@@ -30,13 +30,13 @@ export class AwsLambdaService {
     });
   }
 
-  getUsers(): Observable<any> {
-    return this.http.get<any>(`${this.apiBase}/users`);
+  getUsers(): Observable<BaaSUser[]> {
+    return this.http.get<BaaSUser[]>(`${this.apiBase}/users`);
   }
 
   // get all the users who group is of groupName or its sub-groups
-  getUsersInGroup(groupName: string): Observable<any> {
-    return this.http.post(`${this.apiBase}/users/query`, {
+  getUsersInGroup(groupName: string): Observable<BaaSUser[]> {
+    return this.http.post<BaaSUser[]>(`${this.apiBase}/users/query`, {
       org: { name: groupName }
     });
   }

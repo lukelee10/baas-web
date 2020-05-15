@@ -23,7 +23,7 @@ export class UserService {
 
   public InitializeUserSession(emailId: string) {
     this.awsLambdaService.getUserByEmailID(emailId).subscribe(
-      data => {
+      (data: BaaSUser) => {
         this.SetLocalSessions(data);
       },
       error => {

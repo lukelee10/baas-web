@@ -99,7 +99,7 @@ describe('UserManagementComponent', () => {
       // fixture.detectChanges();
       fixture.whenStable().then(() => {
         expect(AwsLambdaServiceMock.deleteUser).toHaveBeenCalled();
-        expect(component.usersViewModel[0].Disabled).toBeTruthy(); // event has been called
+        expect(component.usersViewModel[0].isDisabled).toBeTruthy(); // event has been called
       });
     });
   });
@@ -119,7 +119,7 @@ describe('UserManagementComponent', () => {
       // fixture.detectChanges();
       fixture.whenStable().then(() => {
         expect(deleteUserSpy).toHaveBeenCalled();
-        expect(component.usersViewModel[0].Disabled).toBeFalsy(); // event has been called
+        expect(component.usersViewModel[0].isDisabled).toBeFalsy(); // event has been called
       });
     });
   });
@@ -136,7 +136,7 @@ describe('UserManagementComponent', () => {
       slider.triggerEventHandler('change', { checked: false }); // triggerEventHandler
       fixture.whenStable().then(() => {
         expect(updateUserSpy).toHaveBeenCalled();
-        expect(component.usersViewModel[0].Disabled).toBeFalsy(); // event has been called
+        expect(component.usersViewModel[0].isDisabled).toBeFalsy(); // event has been called
         done();
       });
     });
@@ -157,15 +157,15 @@ describe('UserManagementComponent', () => {
       // slider.triggerEventHandler('change', { checked: false }); // triggerEventHandler
       const event = new MatSlideToggleChange(undefined, false);
       component.toggleDisable(event, {
-        UserId: 'user2.lead@leidos.com',
-        Role: 'Lead',
+        username: 'user2.lead@leidos.com',
+        role: 'Lead',
         GUID: '8cf81e00-5363-11ea-b0e8-fbab61f36838',
-        Group: 'DOS',
-        IsAdmin: false,
-        Firstname: 'Test',
-        Lastname: 'Test',
-        Fullname: 'Test Test',
-        Disabled: true
+        group: 'DOS',
+        isAdmin: false,
+        firstname: 'Test',
+        lastname: 'Test',
+        fullname: 'Test Test',
+        isDisabled: true
       });
       fixture.whenStable().then(() => {
         expect(updateUserSpy).toHaveBeenCalled();
@@ -185,15 +185,15 @@ describe('UserManagementComponent', () => {
     it('should not enable user ', async(() => {
       const event = new MatSlideToggleChange(undefined, false);
       component.toggleDisable(event, {
-        UserId: 'user2.lead@leidos.com',
-        Role: 'Lead',
+        username: 'user2.lead@leidos.com',
+        role: 'Lead',
         GUID: '8cf81e00-5363-11ea-b0e8-fbab61f36838',
-        Group: 'DOS',
-        IsAdmin: false,
-        Firstname: 'Test',
-        Lastname: 'Test',
-        Fullname: 'Test Test',
-        Disabled: true
+        group: 'DOS',
+        isAdmin: false,
+        firstname: 'Test',
+        lastname: 'Test',
+        fullname: 'Test Test',
+        isDisabled: true
       });
       fixture.whenStable().then(() => {
         expect(updateUserSpy).toHaveBeenCalled();
@@ -211,15 +211,15 @@ describe('UserManagementComponent', () => {
     it('should not enable user ', async(() => {
       const event = new MatSlideToggleChange(undefined, true);
       component.toggleDisable(event, {
-        UserId: 'user2.lead@leidos.com',
-        Role: 'Lead',
+        username: 'user2.lead@leidos.com',
+        role: 'Lead',
         GUID: '8cf81e00-5363-11ea-b0e8-fbab61f36838',
-        Group: 'DOS',
-        IsAdmin: false,
-        Firstname: 'Test',
-        Lastname: 'Test',
-        Fullname: 'Test Test',
-        Disabled: false
+        group: 'DOS',
+        isAdmin: false,
+        firstname: 'Test',
+        lastname: 'Test',
+        fullname: 'Test Test',
+        isDisabled: false
       });
       fixture.whenStable().then(() => {
         expect(deleteUserSpy).toHaveBeenCalled();
@@ -228,14 +228,13 @@ describe('UserManagementComponent', () => {
   });
   it('should open edit dialog on user correctly', () => {
     const user: BaaSUser = {
-      UserId: 'test@test.gov',
-      Fullname: 'Test Lead',
-      Firstname: 'Test',
-      Lastname: 'Lead',
-      Group: 'ORG/Grp1/Grp11',
-      IsAdmin: false,
-      Role: 'Lead',
-      Disabled: false
+      username: 'test@test.gov',
+      fullname: 'Test Lead',
+      firstname: 'Test',
+      lastname: 'Lead',
+      group: 'ORG/Grp1/Grp11',
+      role: 'Lead',
+      isDisabled: false
     };
 
     expect(
@@ -254,14 +253,13 @@ describe('UserManagementComponent', () => {
   });
   it('should close edit dialog on user correctly', async(() => {
     const user: BaaSUser = {
-      UserId: 'test@test.gov',
-      Fullname: 'Test Lead',
-      Firstname: 'Test',
-      Lastname: 'Lead',
-      Group: 'ORG/Grp1/Grp11',
-      IsAdmin: false,
-      Role: 'Lead',
-      Disabled: false
+      username: 'test@test.gov',
+      fullname: 'Test Lead',
+      firstname: 'Test',
+      lastname: 'Lead',
+      group: 'ORG/Grp1/Grp11',
+      role: 'Lead',
+      isDisabled: false
     };
 
     expect(
