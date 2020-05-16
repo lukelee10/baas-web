@@ -3,13 +3,19 @@ import { FormControl, ValidatorFn } from '@angular/forms';
 /**
  * App Global Variables & Constants
  */
+const httpErrorResponseCode = {
+  InvalidHttpRequest: 400,
+  UnathorizedAccess: 401,
+  TimeOutErrorCode: 401
+};
+
 export const AppGlobalConstants = {
-  TimeOutErrorCode: 401,
   ApplicationError: 422,
   ClientPingInterval: 15,
   MaxAllowedIdleTimeInSeconds: 1200,
   TimeOutInSeconds: 600,
-  GenericUnknownMimeType: 'application/octet-stream'
+  GenericUnknownMimeType: 'application/octet-stream',
+  HttpErrorResponseCode: httpErrorResponseCode
 };
 
 export const enum UserRoles {

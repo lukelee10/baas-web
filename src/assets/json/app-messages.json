@@ -19,7 +19,11 @@
     "title": "API Error",
     "message": "An Error occurred while retrieving the request details, please try again."
   },
-
+  {
+    "index": 5,
+    "title": "API Error",
+    "message": "An Error occured while performing a server operation, please try again."
+  },
   {
     "index": 1000,
     "title": "Password Reset Submission",

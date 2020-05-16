@@ -6,6 +6,7 @@ export enum AppMessage {
   ViewResponseAPIError = 2,
   ViewReponseRequestsAPIError = 3,
   RequestDetailsError = 4,
+  ServerOperationError = 5,
   // *** MESSAGE CODES 1000-1999: Application INFO Messages
   PasswordResetSubmission = 1000
   // *** MESSAGE CODES 2000-: Any Other Messages
