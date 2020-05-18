@@ -6,7 +6,7 @@ import { FormControl, ValidatorFn } from '@angular/forms';
 const httpErrorResponseCode = {
   InvalidHttpRequest: 400,
   UnathorizedAccess: 401,
-  TimeOutErrorCode: 401
+  TimeOutErrorCode: 408
 };
 
 export const AppGlobalConstants = {

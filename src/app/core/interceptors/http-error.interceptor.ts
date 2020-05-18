@@ -18,6 +18,12 @@ import { NotificationService } from './../../shared/services/notification.servic
 import { AppGlobalConstants } from './../app-global-constants';
 import { AuthenticationService } from './../services/authentication.service';
 
+// TODO -- Fix the Server Side Time Out (Session) HTTP Response Code
+// Server is throwing 401 response code from updateActivityTimestamp layer
+// when server session timed out, which we need to revisit and change it to
+// more appropriate http response code
+// On client when the http response code is 408, the client shows
+// AppMessage.SessionTimeOut message, a very friendly message
 @Injectable({
   providedIn: 'root'
 })
