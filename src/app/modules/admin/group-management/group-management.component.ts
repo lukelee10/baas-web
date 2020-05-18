@@ -177,7 +177,7 @@ export class GroupManagementComponent implements OnInit {
    */
   addNewNodeUnder(flatNode: GroupFlatNode, name: string) {
     const newOrg = {
-      org: { parentName: flatNode ? flatNode.fqn : null, name }
+      org: { parentName: flatNode.fqn, name }
     };
     this.awsLambdaService.createOrg(newOrg).subscribe(
       (data: any) => {
@@ -218,7 +218,9 @@ export class GroupManagementComponent implements OnInit {
     this.awsLambdaService.createOrg(newOrg).subscribe(
       (data: any) => {
         this.notificationService.successful(`Organization saved ${data.name}`);
-        this.changeWatcher.value.push(new GroupNode(name));
+        const orgNode = new GroupNode(name);
+        orgNode.fqn = name;
+        this.changeWatcher.value.push(orgNode);
         this.changeWatcher.next(this.changeWatcher.value);
       },
       error => {

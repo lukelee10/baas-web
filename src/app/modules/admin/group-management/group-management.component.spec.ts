@@ -257,4 +257,10 @@ describe('====GroupManagementComponent', () => {
     expect(spyService.calls.any()).toBeFalsy();
     done();
   });
+
+  it('should select a group using selectNode', done => {
+    groupComponent.selectNode(new GroupFlatNode());
+    expect(groupComponent).toBeTruthy();
+    done();
+  });
 });
