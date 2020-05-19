@@ -138,9 +138,9 @@ describe('Http Error Interceptor', () => {
       statusText: 'Unauthorized Http Request'
     };
     const errorMessage =
-      'Error: Http failure response for /fakecall: 401 Unauthorized Http Request';
+      'Error: Http failure response for /fakecall: 403 Unauthorized Http Request';
 
-    it('client return 401 Unauthorized Http Request', inject(
+    it('client return 403 Unauthorized Http Request', inject(
       [HttpClient, HttpTestingController],
       (http: HttpClient, httpMock: HttpTestingController) => {
         http.get('/fakecall').subscribe(
@@ -162,7 +162,7 @@ describe('Http Error Interceptor', () => {
       statusText: 'Http Request Session Timedout'
     };
     const errorMessage =
-      'Error: Http failure response for /fakecall: 408 Http Request Session Timedout';
+      'Error: Http failure response for /fakecall: 401 Http Request Session Timedout';
 
     it('client return undefined error response', inject(
       [HttpClient, HttpTestingController],
@@ -182,7 +182,7 @@ describe('Http Error Interceptor', () => {
     let response: any;
     let errResponse: any;
     const mockErrorResponse = {
-      status: 500,
+      status: AppGlobalConstants.HttpErrorResponseCode.InternalServerError,
       statusText: 'Failed due to Internal Error'
     };
     const errorMessage = `Error: ${appMessagesServiceStub.getMessage(

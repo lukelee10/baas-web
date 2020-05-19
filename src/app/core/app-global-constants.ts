@@ -2,11 +2,13 @@ import { FormControl, ValidatorFn } from '@angular/forms';
 
 /**
  * App Global Variables & Constants
+ * As per https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
  */
 const httpErrorResponseCode = {
   InvalidHttpRequest: 400,
-  UnathorizedAccess: 401,
-  TimeOutErrorCode: 408
+  TimeOutErrorCode: 401,
+  UnathorizedAccess: 403,
+  InternalServerError: 500
 };
 
 export const AppGlobalConstants = {
