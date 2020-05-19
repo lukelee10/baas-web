@@ -18,9 +18,20 @@ import { SharedModule } from './../../../shared/shared.module';
 import { CreateUserComponent } from './create-user.component';
 
 // Mock the SortService class, its method and return it with mock data
-class MockUserService extends UserService {
+class MockUserServiceLead extends UserService {
   get Role(): string {
-    return UserRoles.NonFSPUser;
+    return UserRoles.Lead;
+  }
+  get UserId(): string {
+    return 'test@test.gov';
+  }
+  get Group(): string {
+    return 'DEFAULT';
+  }
+}
+class MockUserServiceAdmin extends UserService {
+  get Role(): string {
+    return UserRoles.Admin;
   }
   get UserId(): string {
     return 'test@test.gov';
@@ -84,7 +95,7 @@ const AwsLambdaServiceMock: any = {
 };
 
 const navigate = jasmine.createSpy('navigate');
-const mockRouter = { navigate };
+const mockRouter = { navigate: jasmine.createSpy('navigate') };
 const fakeActivatedRoute = { queryParams: of({ userid: '123' }) };
 
 const NEW_USER = {
@@ -98,9 +109,6 @@ const NEW_USER = {
 };
 
 describe('CreateUserComponent', () => {
-  let component: CreateUserComponent;
-  let fixture: ComponentFixture<CreateUserComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -121,54 +129,88 @@ describe('CreateUserComponent', () => {
         { provide: Router, useValue: mockRouter },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
-    }).compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CreateUserComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('Form should be valid', () => {
-    component.form.get('email').setValue('test@abc.gov');
-    expect(NEW_USER.email).toEqual('test@abc.gov');
-  });
-
-  it('Admin boolean should be true when role is set to admin', async(() => {
-    component.form.get('email').setValue('user123@leidos.com');
-    component.form.get('password').setValue('P@ssw0rd123!');
-    component.form.get('firstname').setValue('user');
-    component.form.get('lastname').setValue('test');
-    component.form.get('group').setValue('BaaS');
-    component.form.get('role').setValue('Admin');
-    component.form.get('disabled').setValue('true');
-    fixture.detectChanges();
-    const button = fixture.debugElement.nativeElement.querySelectorAll(
-      'button'
-    )[4];
-    button.click();
-    fixture.whenStable().then(() => {
-      expect(adminStatus).toBeTruthy();
     });
   }));
 
-  it('Error when creating new user', () => {
-    const awsLambdaService = fixture.debugElement.injector.get(
-      AwsLambdaService
-    );
-    const mockCall = spyOn(awsLambdaService, 'createUser').and.returnValue(
-      throwError({ status: 404 })
-    );
-    fixture.detectChanges();
-    const mockNotificationService = fixture.debugElement.injector.get(
-      NotificationService
-    );
-    const spymockNotificationService = spyOn(mockNotificationService, 'error');
-    component.submit();
-    fixture.detectChanges();
-    expect(component.errMessage).toBeTruthy();
-    expect(component.errMessage).toEqual('Cannot create new user');
-    expect(spymockNotificationService.calls.any()).toBeTruthy();
-  });
+  testCase(UserRoles.Lead);
+  testCase(UserRoles.Admin);
 });
+
+function testCase(userRole: string) {
+  let component: CreateUserComponent;
+  let fixture: ComponentFixture<CreateUserComponent>;
+  describe(`When ${userRole} is accessing`, () => {
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          {
+            provide: UserService,
+            useValue:
+              userRole === UserRoles.Lead
+                ? MockUserServiceLead
+                : MockUserServiceAdmin
+          }
+        ]
+      }).compileComponents();
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(CreateUserComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should be  a valid form', () => {
+      component.form.get('email').setValue('test@abc.gov');
+      expect(NEW_USER.email).toEqual('test@abc.gov');
+    });
+
+    it(`should have right Admin flag, it should be "${userRole ===
+      UserRoles.Admin}" when role is set to ${userRole}`, async(() => {
+      component.form.get('email').setValue('user123@leidos.com');
+      component.form.get('password').setValue('P@ssw0rd123!');
+      component.form.get('firstname').setValue('user');
+      component.form.get('lastname').setValue('test');
+      component.form.get('group').setValue('BaaS');
+      component.form.get('role').setValue(userRole);
+      component.form.get('disabled').setValue('true');
+      fixture.detectChanges();
+      const button = fixture.debugElement.nativeElement.querySelectorAll(
+        'button'
+      )[4];
+      button.click();
+      fixture.whenStable().then(() => {
+        userRole === UserRoles.Admin
+          ? expect(adminStatus).toBeTruthy()
+          : expect(adminStatus).toBeFalsy();
+      });
+    }));
+
+    it('should able to handle the error', () => {
+      const awsLambdaService = fixture.debugElement.injector.get(
+        AwsLambdaService
+      );
+      const mockCall = spyOn(awsLambdaService, 'createUser').and.returnValue(
+        throwError({ status: 404 })
+      );
+      fixture.detectChanges();
+      const mockNotificationService = fixture.debugElement.injector.get(
+        NotificationService
+      );
+      const spymockNotificationService = spyOn(
+        mockNotificationService,
+        'error'
+      );
+      component.submit();
+      fixture.detectChanges();
+      expect(component.errMessage).toBeTruthy();
+      expect(component.errMessage).toEqual('Cannot create new user');
+      expect(spymockNotificationService.calls.any()).toBeTruthy();
+    });
+
+    it('should handle the cancel event correctly', () => {
+      component.cancel();
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin']);
+    });
+  });
+}

@@ -1,22 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TemplateRef } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import {
-  MatInputModule,
-  MatPaginatorModule,
-  MatSortModule,
-  MatTreeModule
-} from '@angular/material';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
-import { MatTableModule } from '@angular/material/table';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBarRef } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
@@ -25,6 +11,7 @@ import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { AwsLambdaServiceMock } from 'src/app/core/services/aws-lambda.service.spec';
 import { UserService } from 'src/app/core/services/user.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 import {
   GroupFlatNode,
@@ -76,24 +63,7 @@ describe('====GroupManagementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        FormsModule,
-        MatCheckboxModule,
-        MatDialogModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatSnackBarModule,
-        MatTableModule,
-        MatTabsModule,
-        MatToolbarModule,
-        MatTooltipModule,
-        MatTreeModule,
-        HttpClientTestingModule
-      ],
+      imports: [BrowserAnimationsModule, SharedModule, HttpClientTestingModule],
       declarations: [GroupManagementComponent],
       providers: [
         { provide: NotificationService, useValue: notificationServiceStub },

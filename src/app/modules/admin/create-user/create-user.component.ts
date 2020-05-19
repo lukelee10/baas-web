@@ -13,9 +13,13 @@ import {
   validateSpecialChar
 } from 'src/app/core/app-global-constants';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
+import { UserService } from 'src/app/core/services/user.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
-import { LookupStaticDataService } from '../../../shared/services/lookup-static-data.service';
+import {
+  LookupStaticDataService,
+  SelectItem
+} from '../../../shared/services/lookup-static-data.service';
 import { GroupFlatNode } from '../group-management/group-management.component';
 
 @Component({
@@ -24,6 +28,7 @@ import { GroupFlatNode } from '../group-management/group-management.component';
 })
 export class CreateUserComponent implements OnInit {
   form: FormGroup;
+  userRolesArr: SelectItem[];
   get email() {
     return this.form.get('email');
   }
@@ -46,10 +51,17 @@ export class CreateUserComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     public lookupStaticDataService: LookupStaticDataService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
+    this.userRolesArr = this.userService.IsAdmin
+      ? this.lookupStaticDataService.userRoleData
+      : this.lookupStaticDataService.userRoleData.filter(
+          role => role.value !== 'Admin'
+        );
+
     this.form = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [

@@ -7,13 +7,18 @@ import {
   Output,
   TemplateRef
 } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatSlideToggleChange
+} from '@angular/material';
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener
 } from '@angular/material/tree';
 import { BehaviorSubject } from 'rxjs';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
+import { UserService } from 'src/app/core/services/user.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
 /**
@@ -73,6 +78,7 @@ export class GroupManagementComponent implements OnInit {
   constructor(
     private awsLambdaService: AwsLambdaService,
     private notificationService: NotificationService,
+    private userService: UserService,
     public dialog: MatDialog
   ) {
     this.treeFlattener = new MatTreeFlattener(
@@ -98,48 +104,63 @@ export class GroupManagementComponent implements OnInit {
   ngOnInit() {
     const getOrgs = this.awsLambdaService.getOrgs();
     getOrgs.subscribe(orgs => {
-      // orgMap  maps of root org names -> org (name, [children])
-      const orgMap = new Map();
-      // groupMap maps the name of the group -> org (name, [children], parent(optional))
-      const groupMap = new Map();
+      if (orgs.Items) {
+        // orgMap  maps of root org names -> org (name, [children])
+        const orgMap = new Map();
+        // groupMap maps the name of the group -> org (name, [children], parent(optional))
+        const groupMap = new Map();
 
-      // array of root orgs with groups to be inside children
-      const orgList = [];
+        // array of root orgs with groups to be inside children
+        const orgList = [];
 
-      // loop through the subscribed orgs array, creating orgMap and groupMap
-      for (const item of orgs.Items) {
-        if (!item.Parent) {
-          const orgNode = { item: item.OrgId, type: 'org', children: null };
-          orgMap.set(item.OrgId, orgNode);
-        } else {
-          const parentName = item.Parent;
-          const groupNode = {
-            item: item.OrgId,
-            type: 'group',
-            parent: parentName
-          };
+        // loop through the subscribed orgs array, creating orgMap and groupMap
+        for (const item of orgs.Items) {
+          if (!item.Parent) {
+            const orgNode = { item: item.OrgId, type: 'org', children: null };
+            orgMap.set(item.OrgId, orgNode);
+          } else {
+            const parentName = item.Parent;
+            const groupNode = {
+              item: item.OrgId,
+              type: 'group',
+              parent: parentName
+            };
 
-          if (!groupMap.has(parentName)) {
-            groupMap.set(parentName, []);
+            if (!groupMap.has(parentName)) {
+              groupMap.set(parentName, []);
+            }
+            groupMap.get(parentName).push(groupNode);
           }
-          groupMap.get(parentName).push(groupNode);
         }
-      }
 
-      // given the orgMap of roots, and groupMap of nodes, I would sew the children to their parents
-      for (const orgName of orgMap.keys()) {
-        const node = orgMap.get(orgName);
-        node.fqn = orgName;
-        node.children = digOffspring(groupMap, orgName);
-      }
+        // given the orgMap of roots, and groupMap of nodes, I would sew the children to their parents
+        for (const orgName of orgMap.keys()) {
+          const node = orgMap.get(orgName);
+          node.fqn = orgName;
+          node.children = digOffspring(groupMap, orgName);
+        }
 
-      // sort the org names map
-      const orgMapSorted = new Map([...orgMap.entries()].sort());
-      for (const orgName of orgMapSorted.keys()) {
-        orgList.push(orgMapSorted.get(orgName));
+        // sort the org names map
+        const orgMapSorted = new Map([...orgMap.entries()].sort());
+        for (const orgName of orgMapSorted.keys()) {
+          orgList.push(orgMapSorted.get(orgName));
+        }
+        this.changeWatcher.next(orgList);
+      } else {
+        const digKids = (groups = [], pFQN) =>
+          groups.map(grp => {
+            const FQN = `${pFQN}/${grp.group}`;
+            return {
+              item: grp.group,
+              children: digKids(grp.subgroups, FQN),
+              fqn: FQN
+            };
+          });
+        const fqn = this.userService.Group;
+        const kids = digKids(orgs, fqn);
+        const list = [{ item: orgs[0].parent, children: kids, fqn }];
+        this.changeWatcher.next(list);
       }
-
-      this.changeWatcher.next(orgList);
     });
   }
 
@@ -255,5 +276,44 @@ export class GroupManagementComponent implements OnInit {
   }
   selectNode(flatNode) {
     this.selectGroup.emit(flatNode);
+  }
+  toggleDisable(event: MatSlideToggleChange, group: any): void {
+    console.log('toggleDisable ', event); // event.checked
+    // user.Disabled = !user.Disabled;
+    // need to save to save to API
+    if (event.checked) {
+      this.awsLambdaService.disableOrg(group).subscribe(
+        (data: any) => {
+          this.notificationService.successful(`User ${data.UserId} disabled`);
+        },
+        error => {
+          const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
+          this.notificationService.error(
+            `Disabling user failed. ${error} ${detail}`
+          );
+        }
+      );
+    }
+    // else {
+    //   user.Disabled = false;
+    //   const userChanges = {
+    //     email: user.UserId,
+    //     disabled: false,
+    //     admin: null
+    //   };
+    //   this.awsLambdaService.updateUser(userChanges).subscribe(
+    //     (data: string) => {
+    //       this.notificationService.successful(
+    //         `User ${user.UserId} enabled ${data}`
+    //       );
+    //     },
+    //     error => {
+    //       const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
+    //       this.notificationService.error(
+    //         `Enabling user failed. ${error} ${detail}`
+    //       );
+    //     }
+    //   );
+    // }
   }
 }

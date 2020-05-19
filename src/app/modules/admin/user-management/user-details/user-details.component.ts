@@ -13,6 +13,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 
 import { GroupFlatNode } from '../../group-management/group-management.component';
 import { LoaderService } from './../../../../shared/services/loader.service';
+import { UserService } from 'src/app/core/services/user.service';
 
 interface User {
   email: string;
@@ -31,7 +32,6 @@ interface User {
 })
 export class UserDetailsComponent implements OnInit {
   form: FormGroup;
-
   editFlag = true;
 
   constructor(
@@ -40,6 +40,7 @@ export class UserDetailsComponent implements OnInit {
     private loaderService: LoaderService,
     public lookupStaticDataService: LookupStaticDataService,
     private notificationService: NotificationService,
+    public userService: UserService,
     public dialogRef: MatDialogRef<UserDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public user: BaaSUser
   ) {}
