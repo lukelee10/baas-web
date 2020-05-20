@@ -32,11 +32,11 @@ export class UserManagementComponent implements OnInit {
 
   displayedColumns: string[] = [
     'select',
-    'UserId',
-    'Fullname',
-    'Group',
-    'Role',
-    'Disabled',
+    'username',
+    'fullname',
+    'group',
+    'role',
+    'isDisabled',
     'actions'
   ];
   // role maps value to label

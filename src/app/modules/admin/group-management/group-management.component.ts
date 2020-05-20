@@ -74,6 +74,7 @@ export class GroupManagementComponent implements OnInit {
   dialogValue = '';
   dialogRef: MatDialogRef<any, any>;
   isDialogOrg = true;
+  isAddOrgOn = false;
 
   constructor(
     private awsLambdaService: AwsLambdaService,
@@ -102,6 +103,7 @@ export class GroupManagementComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isAddOrgOn = this.userService.IsAdmin && this.addActionOn;
     const getOrgs = this.awsLambdaService.getOrgs();
     getOrgs.subscribe(orgs => {
       if (orgs.Items) {
@@ -184,7 +186,7 @@ export class GroupManagementComponent implements OnInit {
     flatNode.item = node.item;
     flatNode.fqn = node.fqn;
     flatNode.level = level;
-    flatNode.expandable = !!node.children;
+    flatNode.expandable = node.children && node.children.length > 0;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;

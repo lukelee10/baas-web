@@ -7,13 +7,13 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
+import { UserService } from 'src/app/core/services/user.service';
 import { BaaSUser } from 'src/app/shared/models/user';
 import { LookupStaticDataService } from 'src/app/shared/services/lookup-static-data.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
 import { GroupFlatNode } from '../../group-management/group-management.component';
 import { LoaderService } from './../../../../shared/services/loader.service';
-import { UserService } from 'src/app/core/services/user.service';
 
 interface User {
   email: string;
@@ -116,7 +116,7 @@ export class UserDetailsComponent implements OnInit {
       );
     }
     const { group, role, disabled } = userChanges;
-    if (group || role || disabled) {
+    if (group !== undefined || role !== undefined || disabled !== undefined) {
       promises.push(this.awsLambdaService.updateUser(userChanges).toPromise());
     }
 
