@@ -9,7 +9,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { BaaSUser } from 'src/app/shared/models/user';
-import { LookupStaticDataService } from 'src/app/shared/services/lookup-static-data.service';
+import {
+  LookupStaticDataService,
+  SelectItem
+} from 'src/app/shared/services/lookup-static-data.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
 import { GroupFlatNode } from '../../group-management/group-management.component';
@@ -33,6 +36,7 @@ interface User {
 export class UserDetailsComponent implements OnInit {
   form: FormGroup;
   editFlag = true;
+  userRolesArr: SelectItem[];
 
   constructor(
     private awsLambdaService: AwsLambdaService,
@@ -46,6 +50,12 @@ export class UserDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.userRolesArr = this.userService.IsAdmin
+      ? this.lookupStaticDataService.userRoleData
+      : this.lookupStaticDataService.userRoleData.filter(
+          userRole => userRole.value !== 'Admin'
+        );
+
     const {
       username,
       firstname,
