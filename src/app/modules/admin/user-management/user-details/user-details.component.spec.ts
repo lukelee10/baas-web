@@ -11,14 +11,27 @@ import {
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of, throwError } from 'rxjs';
+import { UserRoles } from 'src/app/core/app-global-constants';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { AwsLambdaServiceMock } from 'src/app/core/services/aws-lambda.service.spec';
+import { UserService } from 'src/app/core/services/user.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 import { GroupManagementComponent } from '../../group-management/group-management.component';
 import { UserDetailsComponent } from './user-details.component';
 
+class MockUserServiceAdmin extends UserService {
+  get Role(): string {
+    return UserRoles.Admin;
+  }
+  get UserId(): string {
+    return 'test@test.gov';
+  }
+  get Group(): string {
+    return 'DEFAULT';
+  }
+}
 describe('UserDetailsComponent', () => {
   let component: UserDetailsComponent;
   let fixture: ComponentFixture<UserDetailsComponent>;
@@ -45,6 +58,7 @@ describe('UserDetailsComponent', () => {
       providers: [
         { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
         { provide: MatDialogRef, useValue: dialogMock },
+        { provide: UserService, useValue: MockUserServiceAdmin },
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
