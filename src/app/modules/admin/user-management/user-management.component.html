@@ -72,7 +72,7 @@
     </ng-container>
 
     <!-- User ID Column -->
-    <ng-container matColumnDef="UserId">
+    <ng-container matColumnDef="username">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >User ID</mat-header-cell
       >
@@ -82,7 +82,7 @@
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="Fullname">
+    <ng-container matColumnDef="fullname">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let row" matTooltip="{{ row.firstname }}">
         {{ row.fullname }}
@@ -90,7 +90,7 @@
     </ng-container>
 
     <!-- Org/Group Column -->
-    <ng-container matColumnDef="Group">
+    <ng-container matColumnDef="group">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Org/Group</mat-header-cell
       >
@@ -98,13 +98,13 @@
     </ng-container>
 
     <!-- Role Column -->
-    <ng-container matColumnDef="Role">
+    <ng-container matColumnDef="role">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ roleMap.get(row.role) }} </mat-cell>
     </ng-container>
 
     <!-- Status Column -->
-    <ng-container matColumnDef="Disabled">
+    <ng-container matColumnDef="isDisabled">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Disabled</mat-header-cell
       >

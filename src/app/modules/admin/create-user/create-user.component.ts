@@ -56,6 +56,12 @@ export class CreateUserComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.userRolesArr = this.userService.IsAdmin
+      ? this.lookupStaticDataService.userRoleData
+      : this.lookupStaticDataService.userRoleData.filter(
+          role => role.value !== 'Admin'
+        );
+
     this.form = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [

@@ -80,6 +80,11 @@ export class AwsLambdaService {
   createOrg(newOrg: any) {
     return this.http.post(`${this.apiBase}/orgs`, newOrg);
   }
+  disableOrg(org: any) {
+    return this.http.request('delete', `${this.apiBase}/orgs`, {
+      body: { org }
+    });
+  }
 
   deleteUser(user: any) {
     // user should have at least email as property
