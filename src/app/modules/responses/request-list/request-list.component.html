@@ -27,7 +27,12 @@
           <div fxLayout="row">
             <div fxLayout="column">
               <div class="pic-frame">
-                <img class="resize-keep-aspect" src="{{ request.ImageUrl }}" />
+                <img
+                  class="resize-keep-aspect"
+                  src="{{ request.ImageUrl }}"
+                  alt="Preview Unavailable"
+                  style="font-weight: bold;text-align: center;"
+                />
               </div>
               <div
                 class="status-flag  status-{{
