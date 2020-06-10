@@ -84,7 +84,13 @@ describe('UserDetailsComponent', () => {
   });
 
   it('should setGroup', () => {
-    const gNode = { item: 'ABC', level: 0, expandable: true, fqn: 'ABC' };
+    const gNode = {
+      item: 'ABC',
+      level: 0,
+      expandable: true,
+      fqn: 'ABC',
+      disabled: false
+    };
     component.setGroup(gNode);
     expect(component.form.get('group').value).toEqual('ABC');
   });

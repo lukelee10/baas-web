@@ -115,6 +115,9 @@ export const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
       ? throwError({ status: 404 })
       : of({ status: 'ok' });
   },
+  disableOrg(org: any) {
+    return of({ status: 'ok' });
+  },
   deleteUser(): Observable<any> {
     return of({ status: 'ok' });
   },

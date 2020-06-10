@@ -81,9 +81,11 @@ export class AwsLambdaService {
     return this.http.post(`${this.apiBase}/orgs`, newOrg);
   }
   disableOrg(org: any) {
-    return this.http.request('delete', `${this.apiBase}/orgs`, {
-      body: { org }
-    });
+    return this.http.put(
+      `${this.apiBase}/orgs`,
+      { org },
+      { headers: putHeaders(), responseType: 'text' as 'json' }
+    );
   }
 
   deleteUser(user: any) {
