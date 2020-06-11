@@ -19,6 +19,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
 /**
@@ -27,6 +28,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 export class GroupNode {
   children?: GroupNode[];
   fqn: string;
+  disabled: boolean;
   constructor(public item: string, public parent?: string) {}
 }
 
@@ -36,6 +38,7 @@ export class GroupFlatNode {
   level: number;
   expandable: boolean;
   fqn: string;
+  disabled: boolean;
 }
 
 const digOffspring = (groupMap, fqn) => {
@@ -62,6 +65,7 @@ export class GroupManagementComponent implements OnInit {
   @Input() addActionOn = false;
   @Output() selectGroup = new EventEmitter();
   changeWatcher = new BehaviorSubject<GroupNode[]>([]);
+  showSpinner = false;
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<GroupFlatNode, GroupNode>();
@@ -105,6 +109,7 @@ export class GroupManagementComponent implements OnInit {
   ngOnInit() {
     this.isAddOrgOn = this.userService.IsAdmin && this.addActionOn;
     const getOrgs = this.awsLambdaService.getOrgs();
+
     getOrgs.subscribe(orgs => {
       if (orgs.Items) {
         // orgMap  maps of root org names -> org (name, [children])
@@ -118,14 +123,20 @@ export class GroupManagementComponent implements OnInit {
         // loop through the subscribed orgs array, creating orgMap and groupMap
         for (const item of orgs.Items) {
           if (!item.Parent) {
-            const orgNode = { item: item.OrgId, type: 'org', children: null };
+            const orgNode = {
+              item: item.OrgId,
+              type: 'org',
+              children: null,
+              disabled: item.Disabled || false
+            };
             orgMap.set(item.OrgId, orgNode);
           } else {
             const parentName = item.Parent;
             const groupNode = {
               item: item.OrgId,
               type: 'group',
-              parent: parentName
+              parent: parentName,
+              disabled: item.Disabled || false
             };
 
             if (!groupMap.has(parentName)) {
@@ -160,7 +171,9 @@ export class GroupManagementComponent implements OnInit {
           });
         const fqn = this.userService.Group;
         const kids = digKids(orgs, fqn);
-        const list = [{ item: orgs[0].parent, children: kids, fqn }];
+        const list = [
+          { item: orgs[0].parent, children: kids, fqn, disabled: false }
+        ];
         this.changeWatcher.next(list);
       }
     });
@@ -186,6 +199,7 @@ export class GroupManagementComponent implements OnInit {
     flatNode.item = node.item;
     flatNode.fqn = node.fqn;
     flatNode.level = level;
+    flatNode.disabled = node.disabled;
     flatNode.expandable = node.children && node.children.length > 0;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
@@ -280,42 +294,58 @@ export class GroupManagementComponent implements OnInit {
     this.selectGroup.emit(flatNode);
   }
   toggleDisable(event: MatSlideToggleChange, group: any): void {
-    console.log('toggleDisable ', event); // event.checked
-    // user.Disabled = !user.Disabled;
-    // need to save to save to API
-    if (event.checked) {
-      this.awsLambdaService.disableOrg(group).subscribe(
-        (data: any) => {
-          this.notificationService.successful(`User ${data.UserId} disabled`);
-        },
-        error => {
-          const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
-          this.notificationService.error(
-            `Disabling user failed. ${error} ${detail}`
-          );
+    console.log('toggleDisable ', event);
+    const disabledFlag: boolean = event.checked;
+    if (disabledFlag) {
+      // User is disabling the given Group
+      // Get user confirmation of this important action
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        data: {
+          title: 'Confirm Disable',
+          message: 'Are you sure you want to disable this Group?'
         }
-      );
+      });
+      dialogRef.afterClosed().subscribe(confirmResult => {
+        if (confirmResult) {
+          // User Confirmed
+          this.invokeDisableLambda(group, disabledFlag);
+          group.disabled = true;
+        } else {
+          // User Not Confirmed
+          event.source.checked = false;
+          group.disabled = false;
+        }
+      });
+    } else {
+      // disabledFlag: false, User is enabling the given Group
+      this.invokeDisableLambda(group, disabledFlag);
+      group.disabled = false;
     }
-    // else {
-    //   user.Disabled = false;
-    //   const userChanges = {
-    //     email: user.UserId,
-    //     disabled: false,
-    //     admin: null
-    //   };
-    //   this.awsLambdaService.updateUser(userChanges).subscribe(
-    //     (data: string) => {
-    //       this.notificationService.successful(
-    //         `User ${user.UserId} enabled ${data}`
-    //       );
-    //     },
-    //     error => {
-    //       const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
-    //       this.notificationService.error(
-    //         `Enabling user failed. ${error} ${detail}`
-    //       );
-    //     }
-    //   );
-    // }
+  }
+
+  private invokeDisableLambda(group: any, disableFlag: boolean) {
+    this.showSpinner = true;
+    const groupToDisable = {
+      oldName: group.fqn,
+      disabled: disableFlag
+    };
+    const groupName = group.item;
+    let userMessage = `Successfully ${
+      disableFlag ? 'disabled' : 'enabled'
+    } the Group: ${groupName}`;
+
+    this.awsLambdaService.disableOrg(groupToDisable).subscribe(
+      (data: any) => {
+        this.notificationService.successful(userMessage);
+      },
+      error => {
+        userMessage = `An error occured while ${
+          disableFlag ? 'disabling' : 'enabling'
+        } the Group: ${groupName}. Please try again.   `;
+        this.notificationService.error(userMessage);
+        this.showSpinner = false;
+      },
+      () => (this.showSpinner = false)
+    );
   }
 }

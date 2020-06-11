@@ -26,9 +26,11 @@
     </button>
     <mat-slide-toggle
       *ngIf="addActionOn"
-      [(ngModel)]="node.Disabled"
+      [checked]="node.disabled"
       (change)="toggleDisable($event, node)"
-    ></mat-slide-toggle>
+    >
+      {{ node.disabled ? 'Disabled' : 'Disable' }}
+    </mat-slide-toggle>
   </mat-tree-node>
 
   <!-- This is the tree node template for expandable nodes -->
@@ -52,9 +54,11 @@
     </button>
     <mat-slide-toggle
       *ngIf="addActionOn"
-      [(ngModel)]="node.Disabled"
+      [checked]="node.disabled"
       (change)="toggleDisable($event, node)"
-    ></mat-slide-toggle>
+    >
+      {{ node.disabled ? 'Disabled' : 'Disable' }}
+    </mat-slide-toggle>
   </mat-tree-node>
 </mat-tree>
 <!-- tempalte for soliciting group name -->
@@ -79,3 +83,14 @@
     </button>
   </mat-dialog-actions>
 </ng-template>
+
+<div
+  *ngIf="showSpinner"
+  style="position:absolute; top:50%; left:50%; z-index: 1000;"
+>
+  <mat-spinner
+    matTooltip="Processing..."
+    style="text-align: center"
+    diameter="40"
+  ></mat-spinner>
+</div>
