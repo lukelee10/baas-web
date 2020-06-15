@@ -4,6 +4,7 @@ import { MatInputModule, MatSelectModule } from '@angular/material';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
@@ -28,7 +29,11 @@ class MockUserServiceLead extends UserService {
   get Group(): string {
     return 'DEFAULT';
   }
+  get IsAdmin(): boolean {
+    return false;
+  }
 }
+
 class MockUserServiceAdmin extends UserService {
   get Role(): string {
     return UserRoles.Admin;
@@ -38,6 +43,10 @@ class MockUserServiceAdmin extends UserService {
   }
   get Group(): string {
     return 'DEFAULT';
+  }
+
+  get IsAdmin(): boolean {
+    return true;
   }
 }
 
@@ -127,13 +136,15 @@ describe('CreateUserComponent', () => {
         LoaderService,
         { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
         { provide: Router, useValue: mockRouter },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: UserService, useValue: MockUserServiceAdmin }
       ]
     });
   }));
 
   testCase(UserRoles.Lead);
   testCase(UserRoles.Admin);
+  testCase3();
 });
 
 function testCase(userRole: string) {
@@ -211,6 +222,33 @@ function testCase(userRole: string) {
     it('should handle the cancel event correctly', () => {
       component.cancel();
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/admin']);
+    });
+
+    it('should retrieve the value from email input field', () => {
+      const emailStr = component.email.value;
+      expect(emailStr.length >= 0).toBeTruthy();
+    });
+  });
+}
+function testCase3() {
+  let component2: CreateUserComponent;
+  let fixture2: ComponentFixture<CreateUserComponent>;
+  let passwordField2;
+  let spyMethod;
+  describe(`When password field is on set focus`, () => {
+    beforeEach(() => {
+      fixture2 = TestBed.createComponent(CreateUserComponent);
+      component2 = fixture2.componentInstance;
+      fixture2.detectChanges();
+    });
+
+    it('should attach all the password validators', () => {
+      passwordField2 = fixture2.debugElement.query(
+        By.css('input[type=password]')
+      ).nativeElement;
+      spyMethod = spyOn(component2, 'initPasswordValidators').and.callThrough();
+      passwordField2.dispatchEvent(new Event('focus'));
+      expect(spyMethod).toHaveBeenCalled();
     });
   });
 }

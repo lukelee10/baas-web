@@ -20,8 +20,9 @@
         required
         class="form-control"
         formControlName="password"
+        (focus)="initPasswordValidators()"
       />
-      <mat-error *ngIf="password.errors?.required"
+      <mat-error *ngIf="password.length > 0 && password.errors?.required"
         >You must enter a password</mat-error
       >
       <mat-error *ngIf="password.errors?.minlength"
