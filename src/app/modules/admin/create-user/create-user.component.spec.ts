@@ -156,7 +156,7 @@ function testCase(userRole: string) {
         providers: [
           {
             provide: UserService,
-            useValue:
+            useClass:
               userRole === UserRoles.Lead
                 ? MockUserServiceLead
                 : MockUserServiceAdmin

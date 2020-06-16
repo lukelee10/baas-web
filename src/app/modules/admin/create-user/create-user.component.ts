@@ -72,12 +72,6 @@ export class CreateUserComponent implements OnInit {
       role: new FormControl('', [Validators.required]),
       disabled: new FormControl('', [Validators.required])
     });
-
-    this.userRolesArr = this.userService.IsAdmin
-      ? this.lookupStaticDataService.userRoleData
-      : this.lookupStaticDataService.userRoleData.filter(
-          role => role.value !== 'Admin'
-        );
   }
 
   submit() {
