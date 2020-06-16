@@ -64,15 +64,7 @@ export class CreateUserComponent implements OnInit {
 
     this.form = this.formBuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(12),
-        validateAlphaNumeric,
-        validateSpecialChar,
-        validateNo3Duplicate,
-        validateHas2Case,
-        this.validateNoUserID
-      ]),
+      password: new FormControl(''),
       firstname: new FormControl('', [Validators.required]),
       lastname: new FormControl('', [Validators.required]),
       group: new FormControl({ value: '', disabled: true }),
@@ -121,5 +113,18 @@ export class CreateUserComponent implements OnInit {
   setGroup(node: GroupFlatNode) {
     this.form.controls.group.setValue(node.fqn);
     this.form.controls.group.markAsDirty();
+  }
+
+  public initPasswordValidators() {
+    const passwordControl = this.form.get('password');
+    passwordControl.setValidators([
+      Validators.required,
+      Validators.minLength(12),
+      validateAlphaNumeric,
+      validateSpecialChar,
+      validateNo3Duplicate,
+      validateHas2Case,
+      this.validateNoUserID
+    ]);
   }
 }
