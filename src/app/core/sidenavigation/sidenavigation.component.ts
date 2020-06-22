@@ -71,6 +71,11 @@ export class SideNavigationComponent implements OnInit {
             icon: 'edit'
           });
           this.sideNavItems.push({
+            link: '/changepassword',
+            title: 'Change Password',
+            icon: 'vpn_key'
+          });
+          this.sideNavItems.push({
             link: '/logout',
             title: 'Log Out',
             icon: 'exit_to_app'
