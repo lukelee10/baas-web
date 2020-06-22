@@ -14,7 +14,10 @@ import { UserService } from 'src/app/core/services/user.service';
 import { LoaderService } from 'src/app/shared/services/loader.service';
 
 import { NotificationService } from '../../../shared/services/notification.service';
-import { GroupManagementComponent } from '../group-management/group-management.component';
+import {
+  GroupFlatNode,
+  GroupManagementComponent
+} from '../group-management/group-management.component';
 import { SharedModule } from './../../../shared/shared.module';
 import { CreateUserComponent } from './create-user.component';
 
@@ -145,6 +148,8 @@ describe('CreateUserComponent', () => {
   testCase(UserRoles.Lead);
   testCase(UserRoles.Admin);
   testCase3();
+  testSetGroup();
+  testValidateNoUserID();
 });
 
 function testCase(userRole: string) {
@@ -249,6 +254,67 @@ function testCase3() {
       spyMethod = spyOn(component2, 'initPasswordValidators').and.callThrough();
       passwordField2.dispatchEvent(new Event('focus'));
       expect(spyMethod).toHaveBeenCalled();
+    });
+  });
+}
+function testSetGroup() {
+  let component2: CreateUserComponent;
+  let fixture2: ComponentFixture<CreateUserComponent>;
+  let groupElement;
+  describe(`When picking a group`, () => {
+    beforeEach(() => {
+      fixture2 = TestBed.createComponent(CreateUserComponent);
+      component2 = fixture2.componentInstance;
+      fixture2.detectChanges();
+      const nd = new GroupFlatNode();
+      nd.fqn = 'AB/CD';
+      component2.setGroup(nd);
+
+      groupElement = fixture2.debugElement.query(By.css('input[type=password]'))
+        .nativeElement;
+      groupElement.dispatchEvent(new Event('focus'));
+      groupElement.value = 'fddfd';
+      groupElement.dispatchEvent(new Event('blur'));
+      fixture2.detectChanges();
+    });
+
+    it('should have password field be invalid', done => {
+      expect(component2.form.controls.password.valid).toBeFalsy();
+      done();
+    });
+  });
+}
+function testValidateNoUserID() {
+  const USER_NAME = 'abc@test.gov';
+  let component: CreateUserComponent;
+  let fixture: ComponentFixture<CreateUserComponent>;
+  describe(`When password field has username in it.`, () => {
+    beforeEach(() => {
+      fixture = TestBed.createComponent(CreateUserComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      component.initPasswordValidators();
+    });
+
+    it('should attach all the password validators', done => {
+      component.form.get('email').setValue(USER_NAME);
+      component.form.get('password').setValue(`123${USER_NAME}abc`);
+      const pForm = component.form.controls.password;
+
+      fixture.whenStable().then(() => {
+        expect(pForm.valid).toBeFalsy();
+        done();
+      });
+    });
+    it('should attach all the password validators', done => {
+      component.form.get('email').setValue(USER_NAME);
+      component.form.get('password').setValue(`123ABC%%#abc`);
+      const pForm = component.form.controls.password;
+
+      fixture.whenStable().then(() => {
+        expect(pForm.valid).toBeTruthy();
+        done();
+      });
     });
   });
 }
