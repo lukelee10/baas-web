@@ -10,6 +10,7 @@ import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.compone
 import { LogOutComponent } from './log-out/log-out.component';
 import { LoginComponent } from './login/login.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { NewPasswordComponent } from './new-password/new-password.component';
     ForgotPasswordComponent,
     LogOutComponent,
     EditProfileComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CoreModule,
