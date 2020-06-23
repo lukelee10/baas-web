@@ -60,11 +60,11 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
   });
 
   it('ChangePasswordComponent - Current Password Validation Negative Test ', () => {
-    component.changePaaswordFormGroup.controls.currentPwd.setValue('');
+    component.changePasswordFormGroup.controls.currentPwd.setValue('');
     expect(
-      component.changePaaswordFormGroup.controls.currentPwd.valid
+      component.changePasswordFormGroup.controls.currentPwd.valid
     ).toBeFalsy();
-    expect(component.changePaaswordFormGroup.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
 
     fixture.detectChanges();
     expect(clearEl.nativeElement.disabled).toBeFalsy();
@@ -72,13 +72,13 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
   });
 
   it('ChangePasswordComponent - Current Password Validation Positive Test ', () => {
-    component.changePaaswordFormGroup.controls.currentPwd.setValue(
+    component.changePasswordFormGroup.controls.currentPwd.setValue(
       'etytyte2222'
     );
     expect(
-      component.changePaaswordFormGroup.controls.currentPwd.valid
+      component.changePasswordFormGroup.controls.currentPwd.valid
     ).toBeTruthy();
-    expect(component.changePaaswordFormGroup.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
 
     fixture.detectChanges();
     expect(clearEl.nativeElement.disabled).toBeFalsy();
@@ -86,9 +86,9 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
   });
 
   it('ChangePasswordComponent - New Password Validation Negative Test ', () => {
-    component.changePaaswordFormGroup.controls.newPwd.setValue('');
-    expect(component.changePaaswordFormGroup.controls.newPwd.valid).toBeFalsy();
-    expect(component.changePaaswordFormGroup.valid).toBeFalsy();
+    component.changePasswordFormGroup.controls.newPwd.setValue('');
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
 
     fixture.detectChanges();
     expect(clearEl.nativeElement.disabled).toBeFalsy();
@@ -96,13 +96,13 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
   });
 
   it('ChangePasswordComponent - New Password Validation Positive Test ', () => {
-    component.changePaaswordFormGroup.controls.newPwd.setValue(
+    component.changePasswordFormGroup.controls.newPwd.setValue(
       'etytekjgkte2222'
     );
     expect(
-      component.changePaaswordFormGroup.controls.newPwd.valid
+      component.changePasswordFormGroup.controls.newPwd.valid
     ).toBeTruthy();
-    expect(component.changePaaswordFormGroup.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
 
     fixture.detectChanges();
     expect(clearEl.nativeElement.disabled).toBeFalsy();
@@ -110,11 +110,11 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
   });
 
   it('ChangePasswordComponent - Confirm Password Validation Negative Test ', () => {
-    component.changePaaswordFormGroup.controls.confirmPwd.setValue('');
+    component.changePasswordFormGroup.controls.confirmPwd.setValue('');
     expect(
-      component.changePaaswordFormGroup.controls.confirmPwd.valid
+      component.changePasswordFormGroup.controls.confirmPwd.valid
     ).toBeFalsy();
-    expect(component.changePaaswordFormGroup.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
 
     fixture.detectChanges();
     expect(clearEl.nativeElement.disabled).toBeFalsy();
@@ -122,13 +122,13 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
   });
 
   it('ChangePasswordComponent - Confirm Password Validation Positive Test ', () => {
-    component.changePaaswordFormGroup.controls.confirmPwd.setValue(
+    component.changePasswordFormGroup.controls.confirmPwd.setValue(
       'hjfjhfjfhf'
     );
     expect(
-      component.changePaaswordFormGroup.controls.confirmPwd.valid
+      component.changePasswordFormGroup.controls.confirmPwd.valid
     ).toBeTruthy();
-    expect(component.changePaaswordFormGroup.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
 
     fixture.detectChanges();
     expect(clearEl.nativeElement.disabled).toBeFalsy();
@@ -136,25 +136,25 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
   });
 
   it('ChangePasswordComponent - Submit Button Enabled Test ', () => {
-    component.changePaaswordFormGroup.controls.currentPwd.setValue(
+    component.changePasswordFormGroup.controls.currentPwd.setValue(
       'etytyte2222'
     );
-    component.changePaaswordFormGroup.controls.newPwd.setValue(
+    component.changePasswordFormGroup.controls.newPwd.setValue(
       'etytekjgkte2222'
     );
-    component.changePaaswordFormGroup.controls.confirmPwd.setValue(
+    component.changePasswordFormGroup.controls.confirmPwd.setValue(
       'hjfjhfjfhf'
     );
     expect(
-      component.changePaaswordFormGroup.controls.currentPwd.valid
+      component.changePasswordFormGroup.controls.currentPwd.valid
     ).toBeTruthy();
     expect(
-      component.changePaaswordFormGroup.controls.newPwd.valid
+      component.changePasswordFormGroup.controls.newPwd.valid
     ).toBeTruthy();
     expect(
-      component.changePaaswordFormGroup.controls.confirmPwd.valid
+      component.changePasswordFormGroup.controls.confirmPwd.valid
     ).toBeTruthy();
-    expect(component.changePaaswordFormGroup.valid).toBeTruthy();
+    expect(component.changePasswordFormGroup.valid).toBeTruthy();
 
     fixture.detectChanges();
     expect(clearEl.nativeElement.disabled).toBeFalsy();
@@ -173,13 +173,13 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
       'error'
     );
 
-    component.changePaaswordFormGroup.controls.currentPwd.setValue(
+    component.changePasswordFormGroup.controls.currentPwd.setValue(
       'etytyte2222'
     );
-    component.changePaaswordFormGroup.controls.newPwd.setValue(
+    component.changePasswordFormGroup.controls.newPwd.setValue(
       'etytekjgkte2222'
     );
-    component.changePaaswordFormGroup.controls.confirmPwd.setValue(
+    component.changePasswordFormGroup.controls.confirmPwd.setValue(
       'hjfjhfjfhf'
     );
     fixture.detectChanges();
@@ -258,13 +258,13 @@ describe('ChangePasswordComponent When Server Call is Failed', () => {
       'error'
     );
 
-    component.changePaaswordFormGroup.controls.currentPwd.setValue(
+    component.changePasswordFormGroup.controls.currentPwd.setValue(
       'etytyte2222'
     );
-    component.changePaaswordFormGroup.controls.newPwd.setValue(
+    component.changePasswordFormGroup.controls.newPwd.setValue(
       'etytekjgkte2222'
     );
-    component.changePaaswordFormGroup.controls.confirmPwd.setValue(
+    component.changePasswordFormGroup.controls.confirmPwd.setValue(
       'hjfjhfjfhf'
     );
     fixture.detectChanges();
