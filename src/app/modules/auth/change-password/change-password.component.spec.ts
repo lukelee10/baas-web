@@ -161,6 +161,19 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
+  it('ChangePasswordComponent - New Password Is Identical to Current Password', () => {
+    component.changePasswordFormGroup.controls.currentPwd.setValue(
+      STRONG_PASSWORD
+    );
+    component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+
   it('ChangePasswordComponent - New Password Is Strong', () => {
     component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
     expect(
