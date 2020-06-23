@@ -236,7 +236,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     );
     expect(
       component.changePasswordFormGroup.controls.confirmPwd.valid
-    ).toBeTruthy();
+    ).toBeFalsy();
     expect(component.changePasswordFormGroup.valid).toBeFalsy();
 
     fixture.detectChanges();
@@ -245,8 +245,9 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
   });
 
   it('ChangePasswordComponent - Confirm Password Validation Positive Test ', () => {
+    component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
     component.changePasswordFormGroup.controls.confirmPwd.setValue(
-      'hjfjhfjfhf'
+      STRONG_PASSWORD
     );
     expect(
       component.changePasswordFormGroup.controls.confirmPwd.valid
