@@ -10,6 +10,8 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators
 } from '@angular/forms';
 
@@ -62,6 +64,7 @@ export class ChangePasswordComponent implements OnInit {
         confirmPwd: new FormControl('', [Validators.required])
       },
       {
+        validators: this.buildFormValidators()
       }
     );
   }
@@ -85,5 +88,21 @@ export class ChangePasswordComponent implements OnInit {
           this.notificationService.error(error);
         }
       );
+  }
+
+  buildFormValidators(): Array<ValidatorFn> {
+    const aValidators = [];
+    const validateCheckConfirmPassword = (
+      group: FormGroup
+    ): ValidationErrors | null => {
+      const { newPwd, confirmPwd } = group.controls;
+      const oErrMsg = {
+        validateCheckConfirmPassword: 'Values must be identical'
+      };
+      confirmPwd.setErrors(newPwd.value !== confirmPwd.value ? oErrMsg : null);
+      return;
+    };
+    aValidators.push(validateCheckConfirmPassword);
+    return aValidators;
   }
 }
