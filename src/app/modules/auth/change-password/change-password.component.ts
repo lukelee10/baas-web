@@ -13,6 +13,11 @@ import {
   Validators
 } from '@angular/forms';
 
+import {
+  AppGlobalConstants,
+  PasswordValidators
+} from 'src/app/core/app-global-constants';
+
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { AwsLambdaService } from '../../../core/services/aws-lambda.service';
 
@@ -43,11 +48,22 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit() {
     this.LoggedUser = this.authenticationService.LoggedUser;
 
-      currentPwd: new FormControl('', [Validators.required]),
-      newPwd: new FormControl('', [Validators.required]),
-      confirmPwd: new FormControl('', [Validators.required])
-    });
+    const newPasswordValidators = [
+      Validators.required,
+      Validators.minLength(AppGlobalConstants.MinPasswordLength),
+      PasswordValidators.buildForbiddenUserIdValidator(this.LoggedUser),
+      ...PasswordValidators.CharClassValidators
+    ];
+
     this.changePasswordFormGroup = this.fb.group(
+      {
+        currentPwd: new FormControl('', [Validators.required]),
+        newPwd: new FormControl('', newPasswordValidators),
+        confirmPwd: new FormControl('', [Validators.required])
+      },
+      {
+      }
+    );
   }
 
   onSubmit() {
