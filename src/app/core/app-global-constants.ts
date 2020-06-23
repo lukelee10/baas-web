@@ -126,6 +126,7 @@ export const validateHasNumeric: ValidatorFn = (control: FormControl) => {
   return bHasDigits ? null : oFailureResult;
 };
 
+/** @todo This check is not in compliance with security requirements. */
 export const validateNo3Duplicate: ValidatorFn = (c: FormControl) => {
   return /(\S)(\1{3,})/g.test(c.value.replace(/\s+/g, ' '))
     ? { validateNo3Duplicate: true }
