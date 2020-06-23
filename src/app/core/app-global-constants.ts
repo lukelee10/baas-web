@@ -75,9 +75,9 @@ export const PasswordCharacterClasses = {
   SpecialChars: new Set([...'`~!@#$%^&*()_+-={}|[]\\:";\'<>?,./'])
 };
 
-export const validateSpecialChars: ValidatorFn = (control: FormControl) => {
+export const validateHasSpecialChar: ValidatorFn = (control: FormControl) => {
   const oFailureResult = {
-    validateSpecialChars:
+    validateHasSpecialChar:
       'Must contain special characters from the following set: ' +
       [...PasswordCharacterClasses.SpecialChars].join('')
   };
@@ -175,4 +175,14 @@ export const validateNo3Duplicate: ValidatorFn = (c: FormControl) => {
 
 export const validateHas2Case: ValidatorFn = (c: FormControl) => {
   return /[a-z]/ && /[A-Z]/.test(c.value) ? null : { validateHas2Case: true };
+};
+
+export const PasswordValidators = {
+  CharClassValidators: [
+    validateHasSpecialChar,
+    validateHasNumeric,
+    validateHasAlphaUpper,
+    validateHasAlphaLower,
+    validateNo3Duplicate
+  ],
 };
