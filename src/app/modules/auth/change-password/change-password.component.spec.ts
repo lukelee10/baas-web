@@ -12,6 +12,7 @@ import { ChangePasswordComponent } from './change-password.component';
 import { AwsLambdaService } from '../../../core/services/aws-lambda.service';
 import { LoaderService } from '../../../shared/services/loader.service';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 
 const MIN_PASSWORD_LENGTH = 12;
 const CURRENT_PASSWORD = '*=L}lY34;B]@FgR';
@@ -20,6 +21,11 @@ const PASSWORD_WITHOUT_ALPHA_LOWER = '[~.1@XPL11LW^$';
 const PASSWORD_WITHOUT_ALPHA_UPPER = '[~.1@xpl22lw^$';
 const PASSWORD_WITHOUT_SPECIAL_CHAR = '21X1pl33lWJm7r';
 const PASSWORD_WITHOUT_NUMERIC = 'jX_cTwl;jXj|Zk';
+
+const mockAuthServiceInfo = {
+  LoggedUser: 'username@example.gov',
+  JwtToken: 'fakeToken'
+};
 
 describe('ChangePasswordComponent When Server Call is Successful', () => {
   let component: ChangePasswordComponent;
@@ -45,6 +51,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
         SharedModule
       ],
       providers: [
+        { provide: AuthenticationService, useValue: mockAuthServiceInfo },
         { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
         NotificationService,
         LoaderService
@@ -312,6 +319,7 @@ describe('ChangePasswordComponent When Server Call is Failed', () => {
         SharedModule
       ],
       providers: [
+        { provide: AuthenticationService, useValue: mockAuthServiceInfo },
         { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
         NotificationService,
         LoaderService
