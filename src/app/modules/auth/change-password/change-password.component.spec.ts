@@ -137,6 +137,18 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
+  it('ChangePasswordComponent - New Password Missing Special Characters', () => {
+    component.changePasswordFormGroup.controls.newPwd.setValue(
+      PASSWORD_WITHOUT_SPECIAL_CHAR
+    );
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+
   it('ChangePasswordComponent - New Password Is Strong', () => {
     component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
     expect(
