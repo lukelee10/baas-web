@@ -101,10 +101,19 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
-  it('ChangePasswordComponent - New Password Validation Positive Test ', () => {
+  it('ChangePasswordComponent - New Password Missing Numeric Digits', () => {
     component.changePasswordFormGroup.controls.newPwd.setValue(
-      'etytekjgkte2222'
+      PASSWORD_WITHOUT_NUMERIC
     );
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+  it('ChangePasswordComponent - New Password Is Strong', () => {
+    component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
     expect(
       component.changePasswordFormGroup.controls.newPwd.valid
     ).toBeTruthy();
