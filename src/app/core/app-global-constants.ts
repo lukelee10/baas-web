@@ -17,7 +17,8 @@ export const AppGlobalConstants = {
   MaxAllowedIdleTimeInSeconds: 1200,
   TimeOutInSeconds: 600,
   GenericUnknownMimeType: 'application/octet-stream',
-  HttpErrorResponseCode: httpErrorResponseCode
+  HttpErrorResponseCode: httpErrorResponseCode,
+  MinPasswordLength: 12
 };
 
 export const enum UserRoles {
