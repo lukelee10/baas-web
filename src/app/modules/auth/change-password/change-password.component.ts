@@ -96,10 +96,23 @@ export class ChangePasswordComponent implements OnInit {
       group: FormGroup
     ): ValidationErrors | null => {
       const { newPwd, confirmPwd } = group.controls;
+      const sErrName = 'validateCheckConfirmPassword';
       const oErrMsg = {
-        validateCheckConfirmPassword: 'Values must be identical'
+        [sErrName]: 'Values must be identical'
       };
-      confirmPwd.setErrors(newPwd.value !== confirmPwd.value ? oErrMsg : null);
+
+      const bDoNotMatch = newPwd.value !== confirmPwd.value;
+      const bHasError = confirmPwd.errors && confirmPwd.errors[sErrName];
+      if (bDoNotMatch && !bHasError) {
+        const newErrors = Object.create(confirmPwd.errors || {});
+        Object.assign(newErrors, oErrMsg);
+        confirmPwd.setErrors(newErrors);
+      } else if (!bDoNotMatch && bHasError) {
+        delete confirmPwd.errors[sErrName];
+        if (Object.keys(confirmPwd.errors).length === 0) {
+          confirmPwd.setErrors(null);
+        }
+      }
       return;
     };
     aValidators.push(validateCheckConfirmPassword);
@@ -108,10 +121,23 @@ export class ChangePasswordComponent implements OnInit {
       group: FormGroup
     ): ValidationErrors | null => {
       const { currentPwd, newPwd } = group.controls;
+      const sErrName = 'validateCurrentIsNotNewPassword';
       const oErrMsg = {
-        validateCurrentIsNotNewPassword: 'Values cannot be identical'
+        [sErrName]: 'Values cannot be identical'
       };
-      newPwd.setErrors(newPwd.value === currentPwd.value ? oErrMsg : null);
+
+      const bPwdsMatch = newPwd.value === currentPwd.value;
+      const bHasError = newPwd.errors && newPwd.errors[sErrName];
+      if (bPwdsMatch && !bHasError) {
+        const newErrors = Object.create(newPwd.errors || {});
+        Object.assign(newErrors, oErrMsg);
+        newPwd.setErrors(newErrors);
+      } else if (!bPwdsMatch && bHasError) {
+        delete newPwd.errors[sErrName];
+        if (Object.keys(newPwd.errors).length === 0) {
+          newPwd.setErrors(null);
+        }
+      }
       return;
     };
     aValidators.push(validateCurrentIsNotNewPassword);
