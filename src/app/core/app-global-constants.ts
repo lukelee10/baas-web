@@ -50,6 +50,76 @@ export const enum RequestStatusFlags {
   NoLead = 'NL',
   EmptyString = 'NA'
 }
+/** Helper function for generating arrays of integer ranges. */
+function getIntsInRange(startingInt: number, endingInt: number): Array<number> {
+  const iInclusiveItemCount = 1 + endingInt - startingInt;
+  const aNums = new Array(iInclusiveItemCount);
+  for (let i = 0; i < iInclusiveItemCount; i++) {
+    aNums[i] = i + startingInt;
+  }
+  return aNums;
+}
+
+/** Helper function for generating arrays of character ranges. */
+function getCharsBetween(startChar: string, endChar: string): Array<string> {
+  const charCodeStart = startChar.charCodeAt(0);
+  const charCodeEnd = endChar.charCodeAt(0);
+  const aCharCodesInRange = getIntsInRange(charCodeStart, charCodeEnd);
+  return Array.from(String.fromCharCode(...aCharCodesInRange));
+}
+
+export const PasswordCharacterClasses = {
+  AlphaUpper: new Set(getCharsBetween('A', 'Z')),
+  AlphaLower: new Set(getCharsBetween('a', 'z')),
+  NumericDigits: new Set(getCharsBetween('0', '9')),
+  SpecialChars: new Set([...'`~!@#$%^&*()_+-={}|[]\\:";\'<>?,./'])
+};
+
+export const validateSpecialChars: ValidatorFn = (control: FormControl) => {
+  const oFailureResult = {
+    validateSpecialChars:
+      'Must contain special characters from the following set: ' +
+      [...PasswordCharacterClasses.SpecialChars].join('')
+  };
+  const aCharsInField = [...control.value];
+  const bHasChars = aCharsInField.some(c =>
+    PasswordCharacterClasses.SpecialChars.has(c)
+  );
+  return bHasChars ? null : oFailureResult;
+};
+
+export const validateHasAlphaLower: ValidatorFn = (control: FormControl) => {
+  const oFailureResult = {
+    validateHasAlphaLower: 'Must contain lowercase characters'
+  };
+  const aCharsInField = [...control.value];
+  const bHasChars = aCharsInField.some(c =>
+    PasswordCharacterClasses.AlphaLower.has(c)
+  );
+  return bHasChars ? null : oFailureResult;
+};
+
+export const validateHasAlphaUpper: ValidatorFn = (control: FormControl) => {
+  const oFailureResult = {
+    validateHasAlphaUpper: 'Must contain uppercase characters'
+  };
+  const aCharsInField = [...control.value];
+  const bHasChars = aCharsInField.some(c =>
+    PasswordCharacterClasses.AlphaUpper.has(c)
+  );
+  return bHasChars ? null : oFailureResult;
+};
+
+export const validateHasNumeric: ValidatorFn = (control: FormControl) => {
+  const oFailureResult = {
+    validateHasNumeric: 'Must contain numeric digits'
+  };
+  const aCharsInField = [...control.value];
+  const bHasDigits = aCharsInField.some(c =>
+    PasswordCharacterClasses.NumericDigits.has(c)
+  );
+  return bHasDigits ? null : oFailureResult;
+};
 
 // At least 1 special characters: `~!@#$%^&*()_+-={}|[]\:";'<>?,./
 export const validateSpecialChar: ValidatorFn = (c: FormControl) => {
