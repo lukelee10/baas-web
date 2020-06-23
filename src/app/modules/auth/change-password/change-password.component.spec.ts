@@ -198,6 +198,21 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
+  it('ChangePasswordComponent - Confirm Password Is Different than New Password', () => {
+    component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
+    component.changePasswordFormGroup.controls.confirmPwd.setValue(
+      CURRENT_PASSWORD
+    );
+    expect(
+      component.changePasswordFormGroup.controls.confirmPwd.valid
+    ).toBeTruthy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+
   it('ChangePasswordComponent - Confirm Password Validation Positive Test ', () => {
     component.changePasswordFormGroup.controls.confirmPwd.setValue(
       'hjfjhfjfhf'
