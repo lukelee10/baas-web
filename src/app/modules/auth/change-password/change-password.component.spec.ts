@@ -22,8 +22,9 @@ const PASSWORD_WITHOUT_ALPHA_UPPER = '[~.1@xpl22lw^$';
 const PASSWORD_WITHOUT_SPECIAL_CHAR = '21X1pl33lWJm7r';
 const PASSWORD_WITHOUT_NUMERIC = 'jX_cTwl;jXj|Zk';
 
+const MOCKED_USERNAME = 'username@example.gov';
 const mockAuthServiceInfo = {
-  LoggedUser: 'username@example.gov',
+  LoggedUser: MOCKED_USERNAME,
   JwtToken: 'fakeToken'
 };
 
@@ -173,6 +174,29 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
       STRONG_PASSWORD
     );
     component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+
+  it('ChangePasswordComponent - New Password Contains Username', () => {
+    // Build the password by toggling each character of the username and
+    //   then embedding that result within a strong password.
+    const aToggleCasedUsername = [...MOCKED_USERNAME].map((c, i) =>
+      // Invoke 'toLowerCase' when i is even; else, 'toUpperCase'
+      c[['toLowerCase', 'toUpperCase'][i % 2]]()
+    );
+    const sPasswordWithUsername = '~1_' + aToggleCasedUsername.join('') + '_3~';
+
+    component.changePasswordFormGroup.controls.currentPwd.setValue(
+      CURRENT_PASSWORD
+    );
+    component.changePasswordFormGroup.controls.newPwd.setValue(
+      sPasswordWithUsername
+    );
     expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
     expect(component.changePasswordFormGroup.valid).toBeFalsy();
 
