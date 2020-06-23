@@ -166,12 +166,6 @@ export const validateSpecialChar: ValidatorFn = (c: FormControl) => {
   const bag = ascii.filter(ch => specialRange.includes(ch));
   return bag.length >= 1 ? null : { validateSpecialChar: true };
 };
-export const validateAlphaNumeric: ValidatorFn = (c: FormControl) => {
-  return /((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9]))/.test(c.value)
-    ? null
-    : { validateAlphaNumeric: true };
-};
-
 export const validateNo3Duplicate: ValidatorFn = (c: FormControl) => {
   return /(\S)(\1{3,})/g.test(c.value.replace(/\s+/g, ' '))
     ? { validateNo3Duplicate: true }
