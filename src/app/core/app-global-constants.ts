@@ -172,10 +172,6 @@ export const validateNo3Duplicate: ValidatorFn = (c: FormControl) => {
     : null;
 };
 
-export const validateHas2Case: ValidatorFn = (c: FormControl) => {
-  return /[a-z]/ && /[A-Z]/.test(c.value) ? null : { validateHas2Case: true };
-};
-
 export const PasswordValidators = {
   CharClassValidators: [
     validateHasSpecialChar,
