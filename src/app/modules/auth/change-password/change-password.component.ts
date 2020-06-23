@@ -1,7 +1,7 @@
 // TODO Technical Dedt -- Clean the change-password.component.ts
 // Reason for adding ViewEncapsulation in import statement
 // and encapsulation: ViewEncapsulation.None in @Component are to
-// consider the mat-form-field styles from login.component.scss
+// consider the mat-form-field styles from change-password.component.scss
 // instead of from styles.scss.  Once we clean the styles.scss,
 // we can take out the 'ViewEncapsulation' and 'encapsulation: ViewEncapsulation.None'
 // from this file
