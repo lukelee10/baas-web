@@ -27,11 +27,9 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
   let clearEl: DebugElement;
   let submitEl: DebugElement;
 
-  const currentPassword = 'etytyte2222';
-
   const AwsLambdaServiceMock: any = {
     changePassword(value: any): Observable<any> {
-      return value.CurrentPassword.includes(currentPassword)
+      return value.CurrentPassword.includes(CURRENT_PASSWORD)
         ? of({ data: true })
         : throwError({ status: 404 });
     }
@@ -81,7 +79,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
 
   it('ChangePasswordComponent - Current Password Validation Positive Test ', () => {
     component.changePasswordFormGroup.controls.currentPwd.setValue(
-      'etytyte2222'
+      CURRENT_PASSWORD
     );
     expect(
       component.changePasswordFormGroup.controls.currentPwd.valid
@@ -145,13 +143,11 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
 
   it('ChangePasswordComponent - Submit Button Enabled Test ', () => {
     component.changePasswordFormGroup.controls.currentPwd.setValue(
-      'etytyte2222'
+      CURRENT_PASSWORD
     );
-    component.changePasswordFormGroup.controls.newPwd.setValue(
-      'etytekjgkte2222'
-    );
+    component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
     component.changePasswordFormGroup.controls.confirmPwd.setValue(
-      'hjfjhfjfhf'
+      STRONG_PASSWORD
     );
     expect(
       component.changePasswordFormGroup.controls.currentPwd.valid
@@ -182,13 +178,11 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     );
 
     component.changePasswordFormGroup.controls.currentPwd.setValue(
-      'etytyte2222'
+      CURRENT_PASSWORD
     );
-    component.changePasswordFormGroup.controls.newPwd.setValue(
-      'etytekjgkte2222'
-    );
+    component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
     component.changePasswordFormGroup.controls.confirmPwd.setValue(
-      'hjfjhfjfhf'
+      STRONG_PASSWORD
     );
     fixture.detectChanges();
     expect(clearEl.nativeElement.disabled).toBeFalsy();
@@ -214,11 +208,9 @@ describe('ChangePasswordComponent When Server Call is Failed', () => {
   let clearEl: DebugElement;
   let submitEl: DebugElement;
 
-  const currentPassword = 'etytyte2222';
-
   const AwsLambdaServiceMock: any = {
     changePassword(value: any): Observable<any> {
-      return value.CurrentPassword.includes(currentPassword)
+      return value.CurrentPassword.includes(CURRENT_PASSWORD)
         ? throwError({ status: 404 })
         : of({ data: true });
     }
@@ -267,13 +259,11 @@ describe('ChangePasswordComponent When Server Call is Failed', () => {
     );
 
     component.changePasswordFormGroup.controls.currentPwd.setValue(
-      'etytyte2222'
+      CURRENT_PASSWORD
     );
-    component.changePasswordFormGroup.controls.newPwd.setValue(
-      'etytekjgkte2222'
-    );
+    component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
     component.changePasswordFormGroup.controls.confirmPwd.setValue(
-      'hjfjhfjfhf'
+      STRONG_PASSWORD
     );
     fixture.detectChanges();
     expect(clearEl.nativeElement.disabled).toBeFalsy();
