@@ -30,9 +30,10 @@
       >
       <mat-error
         *ngIf="
-          password.errors?.validateSpecialChar ||
-          password.errors?.validateHas2Case ||
-          password.errors?.validateAlphaNumeric
+          password.errors?.validateHasAlphaLower ||
+          password.errors?.validateHasAlphaUpper ||
+          password.errors?.validateHasNumeric ||
+          password.errors?.validateHasSpecialChar
         "
       >
         <p>
