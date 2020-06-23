@@ -62,7 +62,7 @@ export class ChangePasswordComponent implements OnInit {
       .subscribe(
         data => {
           this.loaderService.Hide();
-          this.notificationService.notify('Password Changed Sucessfully.');
+          this.notificationService.successful('Password Changed Sucessfully.');
         },
         error => {
           this.loaderService.Hide();
