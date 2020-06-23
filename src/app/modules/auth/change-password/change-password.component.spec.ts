@@ -61,7 +61,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     submitEl = fixture.debugElement.query(By.css('button[type=submit]'));
   });
 
-  it('should create Change Password', () => {
+  it('should create Change Password component', () => {
     expect(component).toBeTruthy();
   });
 
