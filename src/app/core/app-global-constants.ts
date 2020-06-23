@@ -1,4 +1,9 @@
-import { FormControl, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  Validators,
+  ValidatorFn
+} from '@angular/forms';
 
 /**
  * App Global Variables & Constants
@@ -185,4 +190,15 @@ export const PasswordValidators = {
     validateHasAlphaLower,
     validateNo3Duplicate
   ],
+  buildForbiddenUserIdValidator: (userId: string): ValidatorFn => {
+    // String replacement below is stolen from baas-services/baasGeneralUtils
+    const sRegExEscapedUserId = userId.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+    const oFailureResult = {
+      forbiddenUserId: 'Cannot contain username'
+    };
+    return (control: AbstractControl) => {
+      const forbiddenPattern = new RegExp(`^.*${sRegExEscapedUserId}.*$`, 'gi');
+      return forbiddenPattern.test(control.value) ? oFailureResult : null;
+    };
+  }
 };
