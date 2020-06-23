@@ -35,6 +35,7 @@
             [formControl]="email"
             required
             aria-label="Enter Email"
+            (keyup.enter)="clickLogin()"
           />
           <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
         </mat-form-field>
@@ -58,6 +59,7 @@
             [type]="hide ? 'password' : 'text'"
             aria-label="Enter Password"
             [formControl]="passWord"
+            (keyup.enter)="clickLogin()"
           />
           <button
             mat-icon-button
