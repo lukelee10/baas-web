@@ -103,6 +103,18 @@ export class ChangePasswordComponent implements OnInit {
       return;
     };
     aValidators.push(validateCheckConfirmPassword);
+
+    const validateCurrentIsNotNewPassword = (
+      group: FormGroup
+    ): ValidationErrors | null => {
+      const { currentPwd, newPwd } = group.controls;
+      const oErrMsg = {
+        validateCurrentIsNotNewPassword: 'Values cannot be identical'
+      };
+      newPwd.setErrors(newPwd.value === currentPwd.value ? oErrMsg : null);
+      return;
+    };
+    aValidators.push(validateCurrentIsNotNewPassword);
     return aValidators;
   }
 }
