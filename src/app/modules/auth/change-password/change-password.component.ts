@@ -30,7 +30,7 @@ export class ChangePasswordComponent implements OnInit {
   currentPwdVisibleOff = true;
   newPwdVisibleOff = true;
   confirmPwdVisibleOff = true;
-  changePaaswordFormGroup: FormGroup;
+  changePasswordFormGroup: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -43,15 +43,15 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit() {
     this.LoggedUser = this.authenticationService.LoggedUser;
 
-    this.changePaaswordFormGroup = this.fb.group({
       currentPwd: new FormControl('', [Validators.required]),
       newPwd: new FormControl('', [Validators.required]),
       confirmPwd: new FormControl('', [Validators.required])
     });
+    this.changePasswordFormGroup = this.fb.group(
   }
 
   onSubmit() {
-    const formData = this.changePaaswordFormGroup.value;
+    const formData = this.changePasswordFormGroup.value;
 
     this.loaderService.Show('Changing Password...');
     this.awsLambdaService
