@@ -149,6 +149,18 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
+  it('ChangePasswordComponent - New Password Too Short', () => {
+    component.changePasswordFormGroup.controls.newPwd.setValue(
+      STRONG_PASSWORD.slice(0, MIN_PASSWORD_LENGTH - 1)
+    );
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+
   it('ChangePasswordComponent - New Password Is Strong', () => {
     component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
     expect(
