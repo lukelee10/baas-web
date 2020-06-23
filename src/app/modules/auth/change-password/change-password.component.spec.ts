@@ -91,7 +91,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
-  it('ChangePasswordComponent - New Password Validation Negative Test ', () => {
+  it('ChangePasswordComponent - New Password Is Empty', () => {
     component.changePasswordFormGroup.controls.newPwd.setValue('');
     expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
     expect(component.changePasswordFormGroup.valid).toBeFalsy();
@@ -115,7 +115,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
-  it('ChangePasswordComponent - Confirm Password Validation Negative Test ', () => {
+  it('ChangePasswordComponent - Confirm Password Is Empty', () => {
     component.changePasswordFormGroup.controls.confirmPwd.setValue('');
     expect(
       component.changePasswordFormGroup.controls.confirmPwd.valid
