@@ -7,10 +7,10 @@
 // from this file
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {
+  FormBuilder,
   FormControl,
-  Validators,
   FormGroup,
-  FormBuilder
+  Validators
 } from '@angular/forms';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
