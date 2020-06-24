@@ -199,6 +199,20 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
+  it('ChangePasswordComponent - New Password Has Permissible Consecutive Duplicated Chars', () => {
+    component.changePasswordFormGroup.controls.newPwd.setValue(
+      PASSWORD_WITH_PERMISSIBLE_CONSECUTIVE_DUPLICATES
+    );
+    expect(
+      component.changePasswordFormGroup.controls.newPwd.valid
+    ).toBeTruthy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+
   it('ChangePasswordComponent - New Password Contains Username', () => {
     // Build the password by toggling each character of the username and
     //   then embedding that result within a strong password.
