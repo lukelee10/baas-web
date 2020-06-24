@@ -15,12 +15,17 @@ import { NotificationService } from '../../../shared/services/notification.servi
 import { AuthenticationService } from '../../../core/services/authentication.service';
 
 const MIN_PASSWORD_LENGTH = 12;
+const MAX_DUPLICATE_COUNT = 3;
 const CURRENT_PASSWORD = '*=L}lY34;B]@FgR';
 const STRONG_PASSWORD = '[~.1@xPLiiLw^$';
 const PASSWORD_WITHOUT_ALPHA_LOWER = '[~.1@XPL11LW^$';
 const PASSWORD_WITHOUT_ALPHA_UPPER = '[~.1@xpl22lw^$';
 const PASSWORD_WITHOUT_SPECIAL_CHAR = '21X1pl33lWJm7r';
 const PASSWORD_WITHOUT_NUMERIC = 'jX_cTwl;jXj|Zk';
+const PASSWORD_WITH_TOO_MANY_CONSECUTIVE_DUPLICATES =
+  STRONG_PASSWORD + 'R'.repeat(1 + MAX_DUPLICATE_COUNT);
+const PASSWORD_WITH_PERMISSIBLE_CONSECUTIVE_DUPLICATES =
+  STRONG_PASSWORD.replace(/R+$/g, '') + 'R'.repeat(MAX_DUPLICATE_COUNT);
 
 const MOCKED_USERNAME = 'username@example.gov';
 const mockAuthServiceInfo = {
@@ -174,6 +179,18 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
       STRONG_PASSWORD
     );
     component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+
+  it('ChangePasswordComponent - New Password Has Excessive Consecutive Duplicated Chars', () => {
+    component.changePasswordFormGroup.controls.newPwd.setValue(
+      PASSWORD_WITH_TOO_MANY_CONSECUTIVE_DUPLICATES
+    );
     expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
     expect(component.changePasswordFormGroup.valid).toBeFalsy();
 
