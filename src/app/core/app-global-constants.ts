@@ -79,6 +79,13 @@ export const PasswordCharacterClasses = {
   NumericDigits: new Set(getCharsBetween('0', '9')),
   SpecialChars: new Set([...'`~!@#$%^&*()_+-={}|[]\\:";\'<>?,./'])
 };
+/**
+ * Function to simply check if value is NULL and return default if it is. This
+ * function exists solely to centralize this conditional branch to avoid making
+ * a conditional branch in every "validate*" function below.
+ */
+const requireNonNullOrElse = (val, defVal = '') =>
+  val !== null ? val : defVal;
 
 export const validateHasSpecialChar: ValidatorFn = (control: FormControl) => {
   const oFailureResult = {
@@ -86,7 +93,7 @@ export const validateHasSpecialChar: ValidatorFn = (control: FormControl) => {
       'Must contain special characters from the following set: ' +
       [...PasswordCharacterClasses.SpecialChars].join('')
   };
-  const aCharsInField = [...control.value];
+  const aCharsInField = [...requireNonNullOrElse(control.value)];
   const bHasChars = aCharsInField.some(c =>
     PasswordCharacterClasses.SpecialChars.has(c)
   );
@@ -97,7 +104,7 @@ export const validateHasAlphaLower: ValidatorFn = (control: FormControl) => {
   const oFailureResult = {
     validateHasAlphaLower: 'Must contain lowercase characters'
   };
-  const aCharsInField = [...control.value];
+  const aCharsInField = [...requireNonNullOrElse(control.value)];
   const bHasChars = aCharsInField.some(c =>
     PasswordCharacterClasses.AlphaLower.has(c)
   );
@@ -108,7 +115,7 @@ export const validateHasAlphaUpper: ValidatorFn = (control: FormControl) => {
   const oFailureResult = {
     validateHasAlphaUpper: 'Must contain uppercase characters'
   };
-  const aCharsInField = [...control.value];
+  const aCharsInField = [...requireNonNullOrElse(control.value)];
   const bHasChars = aCharsInField.some(c =>
     PasswordCharacterClasses.AlphaUpper.has(c)
   );
@@ -119,7 +126,7 @@ export const validateHasNumeric: ValidatorFn = (control: FormControl) => {
   const oFailureResult = {
     validateHasNumeric: 'Must contain numeric digits'
   };
-  const aCharsInField = [...control.value];
+  const aCharsInField = [...requireNonNullOrElse(control.value)];
   const bHasDigits = aCharsInField.some(c =>
     PasswordCharacterClasses.NumericDigits.has(c)
   );
@@ -128,7 +135,9 @@ export const validateHasNumeric: ValidatorFn = (control: FormControl) => {
 
 /** @todo This check is not in compliance with security requirements. */
 export const validateNo3Duplicate: ValidatorFn = (c: FormControl) => {
-  return /(\S)(\1{3,})/g.test(c.value.replace(/\s+/g, ' '))
+  return /(\S)(\1{3,})/g.test(
+    requireNonNullOrElse(c.value).replace(/\s+/g, ' ')
+  )
     ? { validateNo3Duplicate: true }
     : null;
 };
@@ -149,7 +158,8 @@ export const PasswordValidators = {
     };
     return (control: AbstractControl) => {
       const forbiddenPattern = new RegExp(`^.*${sRegExEscapedUserId}.*$`, 'gi');
-      return forbiddenPattern.test(control.value) ? oFailureResult : null;
+      const sValToTest = requireNonNullOrElse(control.value);
+      return forbiddenPattern.test(sValToTest) ? oFailureResult : null;
     };
   }
 };
