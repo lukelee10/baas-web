@@ -10,7 +10,8 @@ import {
   FormControl,
   Validators,
   FormGroup,
-  FormBuilder
+  FormBuilder,
+  NgForm
 } from '@angular/forms';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
@@ -50,7 +51,7 @@ export class ChangePasswordComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(form: NgForm) {
     const formData = this.changePasswordFormGroup.value;
 
     this.loaderService.Show('Changing Password...');
@@ -62,7 +63,8 @@ export class ChangePasswordComponent implements OnInit {
       .subscribe(
         data => {
           this.loaderService.Hide();
-          this.notificationService.successful('Password Changed Sucessfully.');
+          form.resetForm();
+          this.notificationService.successful('Password Changed Successfully.');
         },
         error => {
           this.loaderService.Hide();
