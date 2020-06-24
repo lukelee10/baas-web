@@ -33,6 +33,8 @@ import { NotificationService } from './../../../shared/services/notification.ser
   encapsulation: ViewEncapsulation.None
 })
 export class ChangePasswordComponent implements OnInit {
+  /** Re-exported version of MinPasswordLength so it can be shown on HTML form. */
+  readonly MinPasswordLength: number = AppGlobalConstants.MinPasswordLength;
   LoggedUser: string;
   currentPwdVisibleOff = true;
   newPwdVisibleOff = true;
