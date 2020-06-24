@@ -7,6 +7,7 @@ import { ForgotPasswordComponent } from './forgotpassword/forgotpassword.compone
 import { LogOutComponent } from './log-out/log-out.component';
 import { LoginComponent } from './login/login.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const authRoutes: Routes = [
   {
@@ -25,6 +26,11 @@ const authRoutes: Routes = [
         path: 'editprofile',
         canActivate: [AuthenticationGuard],
         component: EditProfileComponent
+      },
+      {
+        path: 'changepassword',
+        canActivate: [AuthenticationGuard],
+        component: ChangePasswordComponent
       },
       {
         path: 'forgotpassword',

@@ -109,4 +109,12 @@ export class AwsLambdaService {
       { headers: putHeaders(), responseType: 'text' as 'json' }
     );
   }
+
+  changePassword(data: any) {
+    return this.http.put(
+      `${this.apiBase}/changePassword`,
+      { CurrentPassword: data.CurrentPassword, NewPassword: data.NewPassword },
+      { headers: putHeaders(), responseType: 'text' as 'json' }
+    );
+  }
 }
