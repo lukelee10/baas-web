@@ -43,7 +43,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     changePassword(value: any): Observable<any> {
       return value.CurrentPassword.includes(CURRENT_PASSWORD)
         ? of({ data: true })
-        : throwError({ status: 404 });
+        : throwError({ status: 422 });
     }
   };
 
@@ -359,7 +359,7 @@ describe('ChangePasswordComponent When Server Call is Failed', () => {
   const AwsLambdaServiceMock: any = {
     changePassword(value: any): Observable<any> {
       return value.CurrentPassword.includes(CURRENT_PASSWORD)
-        ? throwError({ status: 404 })
+        ? throwError({ status: 422 })
         : of({ data: true });
     }
   };
