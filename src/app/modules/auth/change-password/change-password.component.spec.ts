@@ -78,7 +78,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(component).toBeTruthy();
   });
 
-  it('ChangePasswordComponent - Current Password Validation Negative Test ', () => {
+  it('ChangePasswordComponent - Current Password Validation Negative Test', () => {
     component.changePasswordFormGroup.controls.currentPwd.setValue('');
     expect(
       component.changePasswordFormGroup.controls.currentPwd.valid
@@ -90,7 +90,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
-  it('ChangePasswordComponent - Current Password Validation Positive Test ', () => {
+  it('ChangePasswordComponent - Current Password Validation Positive Test', () => {
     component.changePasswordFormGroup.controls.currentPwd.setValue(
       CURRENT_PASSWORD
     );
@@ -275,7 +275,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
-  it('ChangePasswordComponent - Confirm Password Validation Positive Test ', () => {
+  it('ChangePasswordComponent - Confirm Password Validation Positive Test', () => {
     component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
     component.changePasswordFormGroup.controls.confirmPwd.setValue(
       STRONG_PASSWORD
@@ -290,7 +290,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
-  it('ChangePasswordComponent - Submit Button Enabled Test ', () => {
+  it('ChangePasswordComponent - Submit Button Enabled Test', () => {
     component.changePasswordFormGroup.controls.currentPwd.setValue(
       CURRENT_PASSWORD
     );
@@ -314,7 +314,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeFalsy();
   });
 
-  it('Pressing Submit with mock server call successful', async(() => {
+  it('ChangePasswordComponent - Should Use NotificationService to Show a "Success" Message', async(() => {
     const loaderServiceShow = spyOn(LoaderService.prototype, 'Show');
     const loaderServiceHide = spyOn(LoaderService.prototype, 'Hide');
     const notificationServiceSuccessful = spyOn(
@@ -343,7 +343,6 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
       expect(loaderServiceShow).toHaveBeenCalledTimes(1);
       expect(loaderServiceHide).toHaveBeenCalled();
       expect(loaderServiceHide).toHaveBeenCalledTimes(1);
-
       expect(notificationServiceSuccessful).toHaveBeenCalled();
       expect(notificationServiceSuccessful).toHaveBeenCalledTimes(1);
       expect(notificationServiceError).toHaveBeenCalledTimes(0);
