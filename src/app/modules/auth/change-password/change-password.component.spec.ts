@@ -345,7 +345,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
       expect(loaderServiceHide).toHaveBeenCalledTimes(1);
       expect(notificationServiceSuccessful).toHaveBeenCalled();
       expect(notificationServiceSuccessful).toHaveBeenCalledTimes(1);
-      expect(notificationServiceError).toHaveBeenCalledTimes(0);
+      expect(notificationServiceError).not.toHaveBeenCalled();
     });
   }));
 });
@@ -425,7 +425,7 @@ describe('ChangePasswordComponent When Server Call is Failed', () => {
       expect(loaderServiceHide).toHaveBeenCalled();
       expect(loaderServiceHide).toHaveBeenCalledTimes(1);
 
-      expect(notificationServiceSuccessful).toHaveBeenCalledTimes(0);
+      expect(notificationServiceSuccessful).not.toHaveBeenCalled();
       expect(notificationServiceError).toHaveBeenCalled();
       expect(notificationServiceError).toHaveBeenCalledTimes(1);
     });
