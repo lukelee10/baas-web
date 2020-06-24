@@ -52,7 +52,6 @@ export class ChangePasswordComponent implements OnInit {
 
   ngOnInit() {
     this.LoggedUser = this.authenticationService.LoggedUser;
-
     const newPasswordValidators = [
       Validators.required,
       Validators.minLength(AppGlobalConstants.MinPasswordLength),
