@@ -19,7 +19,12 @@
   background-color: #e5e8e8;
   padding: 4px;
   font-size: small;
+}
+
+.infoBar-Head {
+  @extend .infoBar;
   font-weight: bold;
+  font-style: normal;
 }
 
 .requestContainer {

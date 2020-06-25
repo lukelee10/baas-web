@@ -3,6 +3,8 @@ export interface UserPackage {
   Created: Date;
   Name: string;
   RequestCount: number;
+  User: string;
+  Group: string;
 }
 
 export interface UserPackageResponse {
