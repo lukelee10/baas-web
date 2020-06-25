@@ -7,10 +7,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
-  validateAlphaNumeric,
-  validateHas2Case,
-  validateNo3Duplicate,
-  validateSpecialChar
+  AppGlobalConstants,
+  PasswordValidators
 } from 'src/app/core/app-global-constants';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -125,12 +123,9 @@ export class CreateUserComponent implements OnInit {
     const passwordControl = this.form.get('password');
     passwordControl.setValidators([
       Validators.required,
-      Validators.minLength(12),
-      validateAlphaNumeric,
-      validateSpecialChar,
-      validateNo3Duplicate,
-      validateHas2Case,
-      this.validateNoUserID
+      Validators.minLength(AppGlobalConstants.MinPasswordLength),
+      this.validateNoUserID,
+      ...PasswordValidators.CharClassValidators
     ]);
   }
 }

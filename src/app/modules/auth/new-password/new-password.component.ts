@@ -3,10 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AppGlobalConstants,
-  validateAlphaNumeric,
-  validateHas2Case,
-  validateNo3Duplicate,
-  validateSpecialChar
+  PasswordValidators
 } from 'src/app/core/app-global-constants';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 
@@ -54,13 +51,10 @@ export class NewPasswordComponent implements OnInit {
     // should be expecting token from path.
     this.password = new FormControl('', [
       Validators.required,
-      Validators.minLength(12),
-      validateAlphaNumeric,
-      validateSpecialChar,
-      validateNo3Duplicate,
-      validateHas2Case,
+      Validators.minLength(AppGlobalConstants.MinPasswordLength),
       this.validateNoUserID,
-      this.compare
+      this.compare,
+      ...PasswordValidators.CharClassValidators
     ]);
     this.password2 = new FormControl('', [Validators.required, this.compare]);
     this.route.queryParams.subscribe(params => {
