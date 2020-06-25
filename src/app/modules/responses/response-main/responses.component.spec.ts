@@ -92,7 +92,9 @@ describe('ResponsesComponent', () => {
       PackageId: '1234ABCD',
       Created: undefined,
       Name: undefined,
-      RequestCount: undefined
+      RequestCount: undefined,
+      User: undefined,
+      Group: undefined
     };
     component.packageClick(userPackage);
     expect(component.selectedPackageObj.PackageId === '1234ABCD').toBeTruthy();

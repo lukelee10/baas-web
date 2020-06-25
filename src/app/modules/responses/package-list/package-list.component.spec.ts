@@ -103,7 +103,9 @@ describe('PackageListComponent', () => {
       PackageId: '4b492006-9102-4aed-8f67-00f3a9f8f7c4',
       Created: undefined,
       Name: undefined,
-      RequestCount: undefined
+      RequestCount: undefined,
+      User: undefined,
+      Group: undefined
     };
 
     component.packageClick(userPackage);

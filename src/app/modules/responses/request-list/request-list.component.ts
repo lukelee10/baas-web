@@ -41,7 +41,9 @@ export class RequestListComponent implements OnInit, OnChanges {
       PackageId: '',
       Created: undefined,
       Name: ' Loading...',
-      RequestCount: undefined
+      RequestCount: undefined,
+      User: undefined,
+      Group: undefined
     };
   }
 
