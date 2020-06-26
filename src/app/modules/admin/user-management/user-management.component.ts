@@ -162,43 +162,29 @@ export class UserManagementComponent implements OnInit {
     console.log('toggleDisable ', event); // event.checked
     // user.Disabled = !user.Disabled;
     // need to save to save to API
-    if (event.checked) {
-      this.awsLambdaService
-        .deleteUser({ ...user, email: user.username })
-        .subscribe(
-          (data: BaaSUser) => {
-            this.notificationService.successful(
-              `User ${data.username} has been disabled`
-            );
-          },
-          error => {
-            const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
-            this.notificationService.error(
-              `Disabling user failed. ${error} ${detail}`
-            );
-          }
+    const userChanges = {
+      email: user.username,
+      disabled: event.checked,
+      admin: null
+    };
+    this.awsLambdaService.updateUser(userChanges).subscribe(
+      (data: string) => {
+        this.notificationService.successful(
+          `User ${user.username} has been ${
+            event.checked ? 'disabled' : 'enabled'
+          }`
         );
-    } else {
-      user.isDisabled = false;
-      const userChanges = {
-        email: user.username,
-        disabled: false,
-        admin: null
-      };
-      this.awsLambdaService.updateUser(userChanges).subscribe(
-        (data: string) => {
-          this.notificationService.successful(
-            `User ${user.username} has been enabled`
-          );
-        },
-        error => {
-          const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
-          this.notificationService.error(
-            `Enabling user failed. ${error} ${detail}`
-          );
-        }
-      );
-    }
+      },
+      error => {
+        user.isDisabled = !event.checked;
+        const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
+        this.notificationService.error(
+          `${
+            event.checked ? 'Disabling' : 'Enabling'
+          } user failed. ${error} ${detail}`
+        );
+      }
+    );
   }
 
   openDialog(request: BaaSUser): void {
