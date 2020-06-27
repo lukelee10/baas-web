@@ -75,6 +75,14 @@ export const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
         firstname: 'Test',
         CreatedAt: '2020-02-19T22:02:42.016Z',
         isDisabled: true
+      },
+      {
+        username: 'no.name@leidos.com',
+        role: 'Lead',
+        GUID: '8cf81e00-5363-11ea-b0e8-fbab61f36838',
+        group: 'DOS',
+        CreatedAt: '2020-02-19T22:02:42.016Z',
+        isDisabled: true
       }
     ]);
   },

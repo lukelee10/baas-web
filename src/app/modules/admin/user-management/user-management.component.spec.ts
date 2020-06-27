@@ -66,10 +66,6 @@ describe('UserManagementComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should getUsers correctly as Admin user', () => {
     component.getUsers();
     expect(component.usersViewModel.length).toBeGreaterThan(0);
@@ -77,6 +73,8 @@ describe('UserManagementComponent', () => {
   it('should filter correctly as Admin user', () => {
     component.applyFilter('test1');
     expect(component.dataSource.filter).toEqual('test1');
+    component.applyFilter(null);
+    expect(component.dataSource.filter).toBeFalsy();
   });
   it('should clear fitler correctly as Admin user', () => {
     component.ClearFilter();
@@ -85,7 +83,12 @@ describe('UserManagementComponent', () => {
   });
   it('should toggle user selection correctly', () => {
     component.masterToggle();
-    expect(component.dataSource.data[0]).toBeTruthy();
+    fixture.detectChanges();
+    expect(component.selection.selected.length).toBeGreaterThan(0);
+    component.masterToggle();
+    fixture.detectChanges();
+    expect(component.selection.selected.length === 0).toBeTruthy();
+    // expect(component.dataSource.data[0]).toBeFalsy();
   });
   describe('when updateUser lambda works correctly', () => {
     beforeEach(() => {
@@ -305,7 +308,7 @@ describe('UserManagementComponent', () => {
     });
     it('should not get-users ', async(() => {
       component.getUsers();
-      expect(component.usersViewModel.length).toEqual(4);
+      expect(component.usersViewModel.length).toEqual(5);
     }));
   });
 });
