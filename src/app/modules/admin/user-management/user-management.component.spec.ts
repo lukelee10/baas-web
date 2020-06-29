@@ -88,7 +88,6 @@ describe('UserManagementComponent', () => {
     component.masterToggle();
     fixture.detectChanges();
     expect(component.selection.selected.length === 0).toBeTruthy();
-    // expect(component.dataSource.data[0]).toBeFalsy();
   });
   describe('when updateUser lambda works correctly', () => {
     beforeEach(() => {
@@ -99,7 +98,6 @@ describe('UserManagementComponent', () => {
       const slider = componentDebug.query(By.directive(MatSlideToggle));
 
       slider.triggerEventHandler('change', { checked: true }); // triggerEventHandler
-      // fixture.detectChanges();
       fixture.whenStable().then(() => {
         expect(AwsLambdaServiceMock.updateUser).toHaveBeenCalled();
         expect(component.usersViewModel[0].isDisabled).toBeTruthy(); // event has been called
