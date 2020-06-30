@@ -94,8 +94,8 @@ const requireNonNullOrElse = (val, defVal = '') =>
  * This function is basically stolen from baas-services/baasGeneralUtils
  *
  * @method escapeRegExp
- * @param {string} str String to escape as a RegEx pattern.
- * @return {string} String with regexp special characters escaped.
+ * @param str String to escape as a RegEx pattern.
+ * @return String with regexp special characters escaped.
  */
 function escapeRegExp(str: string): string {
   return str.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
