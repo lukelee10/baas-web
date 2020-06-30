@@ -147,13 +147,23 @@ export const validateHasNumeric: ValidatorFn = (control: FormControl) => {
   return bHasDigits ? null : oFailureResult;
 };
 
-/** @todo This check is not in compliance with security requirements. */
 export const validateNo3Duplicate: ValidatorFn = (c: FormControl) => {
-  return /(\S)(\1{3,})/g.test(
-    requireNonNullOrElse(c.value).replace(/\s+/g, ' ')
-  )
-    ? { validateNo3Duplicate: true }
-    : null;
+  const aCharStrings = [...Object.values(PasswordCharacterClasses)]
+    .map(aset => Array.from(aset))
+    .map(a => a.join(''));
+  const aRegPats = aCharStrings
+    .map(escapeRegExp)
+    .map(s => new RegExp(`.*[ ${s}]{4}.*`, 'g'));
+
+  const sval = requireNonNullOrElse(c.value);
+  const bDoesHaveStreakOfSameClass = aRegPats.some(pat => pat.test(sval));
+  // TODO Again remove this below:
+  console.log(
+    'Password ("%s") does have streak of matching class? %s',
+    sval,
+    bDoesHaveStreakOfSameClass
+  );
+  return bDoesHaveStreakOfSameClass ? { validateNo3Duplicate: true } : null;
 };
 
 export const PasswordValidators = {
