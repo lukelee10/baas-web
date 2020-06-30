@@ -1,21 +1,7 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  TemplateRef
-} from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MatSlideToggleChange
-} from '@angular/material';
-import {
-  MatTreeFlatDataSource,
-  MatTreeFlattener
-} from '@angular/material/tree';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import { MatDialog, MatDialogRef, MatSlideToggleChange } from '@angular/material';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { BehaviorSubject } from 'rxjs';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -166,7 +152,8 @@ export class GroupManagementComponent implements OnInit {
             return {
               item: grp.group,
               children: digKids(grp.subgroups, FQN),
-              fqn: FQN
+              fqn: FQN,
+              disabled: grp.disabled
             };
           });
         const fqn = this.userService.Group;

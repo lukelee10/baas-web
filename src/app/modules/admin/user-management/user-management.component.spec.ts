@@ -66,10 +66,6 @@ describe('UserManagementComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should getUsers correctly as Admin user', () => {
     component.getUsers();
     expect(component.usersViewModel.length).toBeGreaterThan(0);
@@ -77,6 +73,8 @@ describe('UserManagementComponent', () => {
   it('should filter correctly as Admin user', () => {
     component.applyFilter('test1');
     expect(component.dataSource.filter).toEqual('test1');
+    component.applyFilter(null);
+    expect(component.dataSource.filter).toBeFalsy();
   });
   it('should clear fitler correctly as Admin user', () => {
     component.ClearFilter();
@@ -85,29 +83,32 @@ describe('UserManagementComponent', () => {
   });
   it('should toggle user selection correctly', () => {
     component.masterToggle();
-    expect(component.dataSource.data[0]).toBeTruthy();
+    fixture.detectChanges();
+    expect(component.selection.selected.length).toBeGreaterThan(0);
+    component.masterToggle();
+    fixture.detectChanges();
+    expect(component.selection.selected.length === 0).toBeTruthy();
   });
-  describe('when deleteUser lambda works correctly', () => {
+  describe('when updateUser lambda works correctly', () => {
     beforeEach(() => {
-      spyOn(AwsLambdaServiceMock, 'deleteUser').and.callThrough();
+      spyOn(AwsLambdaServiceMock, 'updateUser').and.callThrough();
     });
     it('should disable user correctly', () => {
       const componentDebug = fixture.debugElement;
       const slider = componentDebug.query(By.directive(MatSlideToggle));
 
       slider.triggerEventHandler('change', { checked: true }); // triggerEventHandler
-      // fixture.detectChanges();
       fixture.whenStable().then(() => {
-        expect(AwsLambdaServiceMock.deleteUser).toHaveBeenCalled();
+        expect(AwsLambdaServiceMock.updateUser).toHaveBeenCalled();
         expect(component.usersViewModel[0].isDisabled).toBeTruthy(); // event has been called
       });
     });
   });
-  describe('when deleteUser lambda failed', () => {
+  describe('when updateUser lambda failed', () => {
     let deleteUserSpy;
     beforeEach(() => {
       const lambda = fixture.debugElement.injector.get(AwsLambdaService);
-      deleteUserSpy = spyOn(lambda, 'deleteUser').and.returnValue(
+      deleteUserSpy = spyOn(lambda, 'updateUser').and.returnValue(
         throwError({ status: 404, errorDetail: 'kaput' })
       );
     });
@@ -204,7 +205,7 @@ describe('UserManagementComponent', () => {
     let deleteUserSpy;
     beforeEach(() => {
       const lambda = fixture.debugElement.injector.get(AwsLambdaService);
-      deleteUserSpy = spyOn(lambda, 'deleteUser').and.returnValue(
+      deleteUserSpy = spyOn(lambda, 'updateUser').and.returnValue(
         throwError({ status: 404, message: 'kaput' })
       );
     });
@@ -305,7 +306,7 @@ describe('UserManagementComponent', () => {
     });
     it('should not get-users ', async(() => {
       component.getUsers();
-      expect(component.usersViewModel.length).toEqual(4);
+      expect(component.usersViewModel.length).toEqual(5);
     }));
   });
 });

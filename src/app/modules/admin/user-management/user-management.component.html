@@ -114,7 +114,6 @@
           aria-label="{{
             row.isDisabled ? 'Disabled' : 'Enabled'
           }} selected user"
-          [checked]="row.isDisabled"
           (click)="$event.stopPropagation()"
           [(ngModel)]="row.isDisabled"
           (change)="toggleDisable($event, row)"
