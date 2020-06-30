@@ -50,10 +50,14 @@ export class LoginComponent implements OnInit {
 
   clickLogin() {
     this.authenticationSVC.AuthenticateUser(
-      this.email.value,
+      this.getEmail(),
       this.passWord.value,
       this
     );
+  }
+
+  getEmail() {
+    return this.email.value.toLowerCase();
   }
 
   async cognitoCallback(message: string, result: any) {
@@ -65,7 +69,7 @@ export class LoginComponent implements OnInit {
     } else {
       // success
       this.setAuthenticationVals(result);
-      this.userService.InitializeUserSession(this.email.value);
+      this.userService.InitializeUserSession(this.getEmail());
       const returnUrl = this.activatedRoute.snapshot.queryParams[
         'returnUrl'.toString()
       ];
@@ -78,8 +82,8 @@ export class LoginComponent implements OnInit {
   }
 
   private setAuthenticationVals(result: any) {
-    this.authenticationSVC.LoggedUser = this.email.value;
+    this.authenticationSVC.LoggedUser = this.getEmail();
     this.authenticationSVC.JwtToken = result.getIdToken().getJwtToken();
-    this.awsLambdaService.auditLog(this.email.value, 'Login');
+    this.awsLambdaService.auditLog(this.getEmail(), 'Login');
   }
 }
