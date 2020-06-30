@@ -158,12 +158,6 @@ export const validateNo3Duplicate: ValidatorFn = (c: FormControl) => {
 
   const sval = requireNonNullOrElse(c.value);
   const bDoesHaveStreakOfSameClass = aRegPats.some(pat => pat.test(sval));
-  // TODO Again remove this below:
-  console.log(
-    'Password ("%s") does have streak of matching class? %s',
-    sval,
-    bDoesHaveStreakOfSameClass
-  );
   return bDoesHaveStreakOfSameClass ? { validateNo3Duplicate: true } : null;
 };
 
