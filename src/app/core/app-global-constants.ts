@@ -87,6 +87,20 @@ export const PasswordCharacterClasses = {
 const requireNonNullOrElse = (val, defVal = '') =>
   val !== null ? val : defVal;
 
+/**
+ * Escape a provided string so it is suitable for embedding into a RegEx
+ * pattern. I hate this approach, but JavaScript does not have a built-in
+ * approach for this.
+ * This function is basically stolen from baas-services/baasGeneralUtils
+ *
+ * @method escapeRegExp
+ * @param {string} str String to escape as a RegEx pattern.
+ * @return {string} String with regexp special characters escaped.
+ */
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+}
+
 export const validateHasSpecialChar: ValidatorFn = (control: FormControl) => {
   const oFailureResult = {
     validateHasSpecialChar:
