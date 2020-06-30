@@ -148,12 +148,13 @@ export const validateHasNumeric: ValidatorFn = (control: FormControl) => {
 };
 
 export const validateNo3Duplicate: ValidatorFn = (c: FormControl) => {
+  const iMaxContinuousSameClass = 4;
   const aCharStrings = [...Object.values(PasswordCharacterClasses)]
     .map(aset => Array.from(aset))
     .map(a => a.join(''));
   const aRegPats = aCharStrings
     .map(escapeRegExp)
-    .map(s => new RegExp(`.*[ ${s}]{4}.*`, 'g'));
+    .map(s => new RegExp(`.*[ ${s}]{${iMaxContinuousSameClass}}.*`, 'g'));
 
   const sval = requireNonNullOrElse(c.value);
   const bDoesHaveStreakOfSameClass = aRegPats.some(pat => pat.test(sval));
