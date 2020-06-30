@@ -165,8 +165,7 @@ export const PasswordValidators = {
     validateNo3Duplicate
   ],
   buildForbiddenUserIdValidator: (userId: string): ValidatorFn => {
-    // String replacement below is stolen from baas-services/baasGeneralUtils
-    const sRegExEscapedUserId = userId.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+    const sRegExEscapedUserId = escapeRegExp(userId);
     const oFailureResult = {
       forbiddenUserId: 'Cannot contain username'
     };
