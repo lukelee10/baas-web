@@ -1,9 +1,4 @@
-import {
-  AbstractControl,
-  FormControl,
-  Validators,
-  ValidatorFn
-} from '@angular/forms';
+import { AbstractControl, FormControl, ValidatorFn } from '@angular/forms';
 
 /**
  * App Global Variables & Constants
@@ -19,8 +14,8 @@ const httpErrorResponseCode = {
 export const AppGlobalConstants = {
   ApplicationError: 422,
   ClientPingInterval: 15,
-  MaxAllowedIdleTimeInSeconds: 1200,
-  TimeOutInSeconds: 600,
+  MaxAllowedIdleTimeInSeconds: 1020,
+  TimeOutInSeconds: 180,
   GenericUnknownMimeType: 'application/octet-stream',
   HttpErrorResponseCode: httpErrorResponseCode,
   MinPasswordLength: 12
