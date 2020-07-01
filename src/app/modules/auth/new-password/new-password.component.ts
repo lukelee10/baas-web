@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  AppGlobalConstants,
-  PasswordValidators
-} from 'src/app/core/app-global-constants';
+import { AppGlobalConstants } from 'src/app/core/app-global-constants';
+import { PasswordValidators } from 'src/app/core/app-global-utils';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 
 import { LoaderService } from './../../../shared/services/loader.service';

@@ -6,10 +6,9 @@ import {
   Validators
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import {
-  AppGlobalConstants,
-  PasswordValidators
-} from 'src/app/core/app-global-constants';
+import { AppGlobalConstants } from 'src/app/core/app-global-constants';
+import { PasswordValidators } from 'src/app/core/app-global-utils';
+
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';

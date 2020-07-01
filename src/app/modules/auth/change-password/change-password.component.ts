@@ -16,10 +16,8 @@ import {
   Validators
 } from '@angular/forms';
 
-import {
-  AppGlobalConstants,
-  PasswordValidators
-} from 'src/app/core/app-global-constants';
+import { AppGlobalConstants } from 'src/app/core/app-global-constants';
+import { PasswordValidators } from 'src/app/core/app-global-utils';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { AwsLambdaService } from '../../../core/services/aws-lambda.service';
