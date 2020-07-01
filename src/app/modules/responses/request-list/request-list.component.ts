@@ -6,6 +6,7 @@ import {
   AppMessage,
   AppMessagesService
 } from 'src/app/core/services/app-messages.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { PackageRequestService } from 'src/app/core/services/package-request.service';
 import { Request } from 'src/app/shared/models/package-requests';
 import { UserPackage } from 'src/app/shared/models/user-package';
@@ -20,7 +21,7 @@ import { RequestDetailsComponent } from '../request-details/request-details.comp
 })
 export class RequestListComponent implements OnInit, OnChanges {
   showSpinner = true;
-  deatilsPopup: MatDialogRef<RequestDetailsComponent, any>;
+  detailsPopup: MatDialogRef<RequestDetailsComponent, any>;
   Object = Object;
 
   packageRequests = new Array<Request>();
@@ -33,6 +34,7 @@ export class RequestListComponent implements OnInit, OnChanges {
     private packageRequestService: PackageRequestService,
     private notificationService: NotificationService,
     private appMessagesService: AppMessagesService,
+    private authenticationService: AuthenticationService,
     public dialog: MatDialog
   ) {}
 
@@ -45,6 +47,11 @@ export class RequestListComponent implements OnInit, OnChanges {
       User: undefined,
       Group: undefined
     };
+    this.authenticationService.getUserLoggedIn().subscribe(userLoggedIn => {
+      if (!userLoggedIn && this.detailsPopup) {
+        this.detailsPopup.close();
+      }
+    });
   }
 
   ngOnChanges(changes: any) {
@@ -124,7 +131,7 @@ export class RequestListComponent implements OnInit, OnChanges {
   }
 
   openDialog(request: Request): void {
-    this.deatilsPopup = this.dialog.open(RequestDetailsComponent, {
+    this.detailsPopup = this.dialog.open(RequestDetailsComponent, {
       width: '800px',
       height: '700px',
       data: request
