@@ -87,7 +87,7 @@ export class RequestDetailsComponent implements OnInit {
         ButtonIcon: 'arrow_right',
         DivClassRight: '',
         DivExpandedRight: true,
-        TitleRight: ' RESPONSE LOG',
+        TitleRight: ' TRANSACTION LOG',
         ToolTipToggleButton: 'Click to Collapse'
       } as PageSettings;
     } else {
