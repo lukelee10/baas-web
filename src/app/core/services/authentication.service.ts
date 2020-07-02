@@ -94,6 +94,6 @@ export class AuthenticationService {
   }
 
   getUserLoggedIn(): Observable<boolean> {
-    return this.userLoggedIn.asObservable();
+    return this.userLoggedIn;
   }
 }

@@ -1,10 +1,3 @@
-import {
-  AbstractControl,
-  FormControl,
-  Validators,
-  ValidatorFn
-} from '@angular/forms';
-
 /**
  * App Global Variables & Constants
  * As per https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
@@ -19,8 +12,8 @@ const httpErrorResponseCode = {
 export const AppGlobalConstants = {
   ApplicationError: 422,
   ClientPingInterval: 15,
-  MaxAllowedIdleTimeInSeconds: 1200,
-  TimeOutInSeconds: 600,
+  MaxAllowedIdleTimeInSeconds: 1020,
+  TimeOutInSeconds: 180,
   GenericUnknownMimeType: 'application/octet-stream',
   HttpErrorResponseCode: httpErrorResponseCode,
   MinPasswordLength: 12
@@ -55,111 +48,3 @@ export const enum RequestStatusFlags {
   NoLead = 'NL',
   EmptyString = 'NA'
 }
-/** Helper function for generating arrays of integer ranges. */
-function getIntsInRange(startingInt: number, endingInt: number): Array<number> {
-  const iInclusiveItemCount = 1 + endingInt - startingInt;
-  const aNums = new Array(iInclusiveItemCount);
-  for (let i = 0; i < iInclusiveItemCount; i++) {
-    aNums[i] = i + startingInt;
-  }
-  return aNums;
-}
-
-/** Helper function for generating arrays of character ranges. */
-function getCharsBetween(startChar: string, endChar: string): Array<string> {
-  const charCodeStart = startChar.charCodeAt(0);
-  const charCodeEnd = endChar.charCodeAt(0);
-  const aCharCodesInRange = getIntsInRange(charCodeStart, charCodeEnd);
-  return Array.from(String.fromCharCode(...aCharCodesInRange));
-}
-
-export const PasswordCharacterClasses = {
-  AlphaUpper: new Set(getCharsBetween('A', 'Z')),
-  AlphaLower: new Set(getCharsBetween('a', 'z')),
-  NumericDigits: new Set(getCharsBetween('0', '9')),
-  SpecialChars: new Set([...'`~!@#$%^&*()_+-={}|[]\\:";\'<>?,./'])
-};
-/**
- * Function to simply check if value is NULL and return default if it is. This
- * function exists solely to centralize this conditional branch to avoid making
- * a conditional branch in every "validate*" function below.
- */
-const requireNonNullOrElse = (val, defVal = '') =>
-  val !== null ? val : defVal;
-
-export const validateHasSpecialChar: ValidatorFn = (control: FormControl) => {
-  const oFailureResult = {
-    validateHasSpecialChar:
-      'Must contain special characters from the following set: ' +
-      [...PasswordCharacterClasses.SpecialChars].join('')
-  };
-  const aCharsInField = [...requireNonNullOrElse(control.value)];
-  const bHasChars = aCharsInField.some(c =>
-    PasswordCharacterClasses.SpecialChars.has(c)
-  );
-  return bHasChars ? null : oFailureResult;
-};
-
-export const validateHasAlphaLower: ValidatorFn = (control: FormControl) => {
-  const oFailureResult = {
-    validateHasAlphaLower: 'Must contain lowercase characters'
-  };
-  const aCharsInField = [...requireNonNullOrElse(control.value)];
-  const bHasChars = aCharsInField.some(c =>
-    PasswordCharacterClasses.AlphaLower.has(c)
-  );
-  return bHasChars ? null : oFailureResult;
-};
-
-export const validateHasAlphaUpper: ValidatorFn = (control: FormControl) => {
-  const oFailureResult = {
-    validateHasAlphaUpper: 'Must contain uppercase characters'
-  };
-  const aCharsInField = [...requireNonNullOrElse(control.value)];
-  const bHasChars = aCharsInField.some(c =>
-    PasswordCharacterClasses.AlphaUpper.has(c)
-  );
-  return bHasChars ? null : oFailureResult;
-};
-
-export const validateHasNumeric: ValidatorFn = (control: FormControl) => {
-  const oFailureResult = {
-    validateHasNumeric: 'Must contain numeric digits'
-  };
-  const aCharsInField = [...requireNonNullOrElse(control.value)];
-  const bHasDigits = aCharsInField.some(c =>
-    PasswordCharacterClasses.NumericDigits.has(c)
-  );
-  return bHasDigits ? null : oFailureResult;
-};
-
-/** @todo This check is not in compliance with security requirements. */
-export const validateNo3Duplicate: ValidatorFn = (c: FormControl) => {
-  return /(\S)(\1{3,})/g.test(
-    requireNonNullOrElse(c.value).replace(/\s+/g, ' ')
-  )
-    ? { validateNo3Duplicate: true }
-    : null;
-};
-
-export const PasswordValidators = {
-  CharClassValidators: [
-    validateHasSpecialChar,
-    validateHasNumeric,
-    validateHasAlphaUpper,
-    validateHasAlphaLower,
-    validateNo3Duplicate
-  ],
-  buildForbiddenUserIdValidator: (userId: string): ValidatorFn => {
-    // String replacement below is stolen from baas-services/baasGeneralUtils
-    const sRegExEscapedUserId = userId.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
-    const oFailureResult = {
-      forbiddenUserId: 'Cannot contain username'
-    };
-    return (control: AbstractControl) => {
-      const forbiddenPattern = new RegExp(`^.*${sRegExEscapedUserId}.*$`, 'gi');
-      const sValToTest = requireNonNullOrElse(control.value);
-      return forbiddenPattern.test(sValToTest) ? oFailureResult : null;
-    };
-  }
-};

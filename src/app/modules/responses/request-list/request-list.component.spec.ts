@@ -10,6 +10,7 @@ import {
   VettingStatusShortenPipe
 } from 'src/app/core/pipes/vetting-status-shorten.pipe';
 import { AppMessagesService } from 'src/app/core/services/app-messages.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { PackageRequestService } from 'src/app/core/services/package-request.service';
 import {
   PackageRequestResponse,
@@ -21,6 +22,27 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { RequestDetailsComponent } from '../request-details/request-details.component';
 import { SharedModule } from './../../../shared/shared.module';
 import { RequestListComponent } from './request-list.component';
+
+const testRequest: Request = {
+  Modality: 'FACE',
+  Comments: '',
+  PackageId: 'fcb5f8ff-618b-4848-9dbb-7d8265f815e7',
+  GlobalAccess: 1,
+  Systems: ['HIGHTOP', 'LOWBALL'],
+  Status: 'PENDING',
+  MimeType: 'image/jpeg',
+  Classification: 'U',
+  Group: 'US/Virginia',
+  FileName: 'Mickey-mouse.jpg',
+  Created: undefined,
+  Results: [],
+  StatusTimestamp: undefined,
+  FileSize: 23073,
+  User: 'nkgroup@test.com',
+  Id: 'f9a01b07-5b5e-403d-b10f-2f5d96c7a8c3',
+  Name: 'AutoTest Single by GroupLead',
+  ImageUrl: '../../../assets/mock-pics/Christian_Bale.jpg'
+};
 
 class MockPackageRequestService extends PackageRequestService {
   public getEndPointURL() {
@@ -151,9 +173,13 @@ class MockPackageRequestService extends PackageRequestService {
 }
 
 describe('RequestListComponent', () => {
+  let authenticationServiceStub: Partial<AuthenticationService>;
   let component: RequestListComponent;
   let fixture: ComponentFixture<RequestListComponent>;
 
+  authenticationServiceStub = {
+    getUserLoggedIn: () => of(false)
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -170,6 +196,7 @@ describe('RequestListComponent', () => {
       ],
       providers: [
         { provide: PackageRequestService, useClass: MockPackageRequestService },
+        { provide: AuthenticationService, useValue: authenticationServiceStub },
         NotificationService
       ]
     })
@@ -186,13 +213,12 @@ describe('RequestListComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('Verify RequestListComponent creation', () => {
+  it('should cover RequestListComponent creation', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
-  it('Verify RequestListComponent ngOnChanges', () => {
-    // fixture.detectChanges();
+  it('should cover RequestListComponent ngOnChanges', () => {
     const userPackage: UserPackage = {
       PackageId: '4b492006-9102-4aed-8f67-00f3a9f8f7c4',
       Created: undefined,
@@ -211,13 +237,24 @@ describe('RequestListComponent', () => {
     expect(spyAFunction.calls.any()).toBeTruthy();
   });
 
-  it('Verify RequestListComponent getRequests', () => {
+  it('should cover RequestListComponent ngOnChanges with nothing', () => {
+    component.packageObj = undefined;
+
+    const spyAFunction = spyOn<any>(component, 'getRequests');
+    component.ngOnChanges({
+      packageObj: new SimpleChange(null, component.packageObj, true)
+    });
+    fixture.detectChanges();
+    expect(spyAFunction.calls.any()).toBeFalsy();
+  });
+
+  it('should cover RequestListComponent getRequests', () => {
     fixture.detectChanges();
     component.getRequests('32323223232');
     expect(component).toBeTruthy();
   });
 
-  it('Verify the Service Call Failure proper handling', () => {
+  it('should cover the Service Call Failure proper handling', () => {
     const packageRequestService = fixture.debugElement.injector.get(
       PackageRequestService
     );
@@ -241,32 +278,19 @@ describe('RequestListComponent', () => {
     expect(spymockAppMessagesService.calls.any()).toBeTruthy();
   });
 
-  it('Verify RequestListComponent openDialog', () => {
+  it('should cover RequestListComponent openDialog', () => {
     fixture.detectChanges();
-    const testRequest: Request = {
-      Modality: 'FACE',
-      Comments: '',
-      PackageId: 'fcb5f8ff-618b-4848-9dbb-7d8265f815e7',
-      GlobalAccess: 1,
-      Systems: ['HIGHTOP', 'LOWBALL'],
-      Status: 'PENDING',
-      MimeType: 'image/jpeg',
-      Classification: 'U',
-      Group: 'US/Virginia',
-      FileName: 'Mickey-mouse.jpg',
-      Created: undefined,
-      Results: [],
-      StatusTimestamp: undefined,
-      FileSize: 23073,
-      User: 'nkgroup@test.com',
-      Id: 'f9a01b07-5b5e-403d-b10f-2f5d96c7a8c3',
-      Name: 'AutoTest Single by GroupLead',
-      ImageUrl: '../../../assets/mock-pics/Christian_Bale.jpg'
-    };
     component.openDialog(testRequest);
     expect(
-      component.deatilsPopup.id.toString().indexOf('mat-dialog') >= 0
+      component.detailsPopup.id.toString().indexOf('mat-dialog') >= 0
     ).toBeTruthy();
+
+    expect(component).toBeTruthy();
+  });
+
+  it('should cover RequestListComponent closeDialog', () => {
+    component.openDialog(testRequest);
+    fixture.detectChanges();
 
     expect(component).toBeTruthy();
   });
