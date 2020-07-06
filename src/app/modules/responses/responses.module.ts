@@ -26,9 +26,9 @@ import { ResponsesRoutingModule } from './responses-routing.module';
   ],
   imports: [
     CommonModule,
-    ResponsesRoutingModule,
     DragDropModule,
     FlexLayoutModule,
+    ResponsesRoutingModule,
     SharedModule
   ],
   entryComponents: [RequestDetailsComponent]
