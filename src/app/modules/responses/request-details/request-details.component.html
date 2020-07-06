@@ -1,6 +1,20 @@
-<div fxLayout="column" fxFlexAlign="center center">
-  <div fxLayout="row" fxFlex="100" class="reqdetails-title-bar ">
-    <div fxFlex="95">Request Details</div>
+<div
+  class="draggable-request-details"
+  fxLayout="column"
+  fxFlexAlign="center center"
+  cdkDrag
+  cdkDragRootElement=".cdk-overlay-pane"
+>
+  <div fxLayout="row" fxFlex="100" class="reqdetails-title-bar">
+    <div
+      fxFlex="4"
+      matTooltip="Drag to Move"
+      class="request-details-drag-handle"
+      cdkDragHandle
+    >
+      <mat-icon>drag_indicator</mat-icon>
+    </div>
+    <div fxFlex="91">Request Details</div>
     <button
       mat-stroked-button
       color="primary"

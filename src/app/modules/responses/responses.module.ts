@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 import {
   VettingStatusPipe,
   VettingStatusShortenPipe
@@ -25,6 +27,7 @@ import { ResponsesRoutingModule } from './responses-routing.module';
   imports: [
     CommonModule,
     ResponsesRoutingModule,
+    DragDropModule,
     FlexLayoutModule,
     SharedModule
   ],
