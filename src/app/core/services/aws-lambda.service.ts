@@ -87,7 +87,13 @@ export class AwsLambdaService {
       { headers: putHeaders(), responseType: 'text' as 'json' }
     );
   }
-
+  UpdateOrg(org: any) {
+    return this.http.put(
+      `${this.apiBase}/orgs`,
+      { org },
+      { headers: putHeaders(), responseType: 'text' as 'json' }
+    );
+  }
   deleteUser(user: any) {
     // user should have at least email as property
     return this.http.request('delete', `${this.apiBase}/users`, {
