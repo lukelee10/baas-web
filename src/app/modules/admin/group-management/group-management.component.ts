@@ -246,6 +246,45 @@ export class GroupManagementComponent implements OnInit {
   }
 
   /**
+   * Save to API, if succssful, rename a current node with a new name.
+   * @param name is the name of the new group
+   * @param flatNode is the parent node
+   */
+  renameNode(flatNode: GroupFlatNode, name: string) {
+    const renamedOrg = {
+      org: { oldName: flatNode.fqn, name: name }
+    };
+    this.notificationService.error(JSON.stringify(renamedOrg));
+
+    this.awsLambdaService.UpdateOrg(renamedOrg).subscribe(
+      (data: any) => {
+        this.notificationService.successful(`Group saved ${data.name}`);
+        const parentNode = this.flatNodeMap.get(flatNode);
+        if (!parentNode.children) {
+          parentNode.children = [];
+        }
+
+        const childGroupNode = new GroupNode(name, parentNode.item);
+        const sChildFqn = ((flatNode.fqn || '') + `/${name}`).replace(
+          /^[/]+/g,
+          ''
+        );
+        childGroupNode.fqn = sChildFqn;
+
+        parentNode.children.push(childGroupNode);
+
+        const temp = this.changeWatcher.value;
+        this.changeWatcher.next([]);
+        this.changeWatcher.next(temp);
+        this.treeControl.expand(flatNode);
+      },
+      error => {
+        this.notificationService.error(`Saving group failed. ${error}`);
+      }
+    );
+  }
+
+  /**
    * Save eto API, if successful, add the new nestedNode
    * @param name is the given name of new org
    */
@@ -282,11 +321,25 @@ export class GroupManagementComponent implements OnInit {
     templateRef: TemplateRef<any>,
     flatNode: GroupFlatNode
   ) {
-    this.isDialogOrg = false;
+    this.isDialogOrg = false;    
     this.dialogRef = this.dialog.open(templateRef);
     this.dialogRef.afterClosed().subscribe(newName => {
       if (newName) {
         this.addNewNodeUnder(flatNode, newName);
+      }
+      this.dialogValue = '';
+    });
+  }
+  askGroupNameAndRenameNode(
+    templateRef: TemplateRef<any>,
+    flatNode: GroupFlatNode
+  ) {
+    this.isDialogOrg = false;   
+    this.dialogValue = flatNode.item; 
+    this.dialogRef = this.dialog.open(templateRef);
+    this.dialogRef.afterClosed().subscribe(newName => {
+      if (newName) {
+        this.renameNode(flatNode, newName);
       }
       this.dialogValue = '';
     });

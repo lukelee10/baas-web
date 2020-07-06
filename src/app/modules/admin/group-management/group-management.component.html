@@ -24,6 +24,14 @@
     >
       <mat-icon>add</mat-icon>
     </button>
+    <!-- EditGroupName -->
+    <button 
+      mat-icon-button
+      (click)="askGroupNameAndRenameNode(solicitNewGroupName, node)"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+
     <mat-slide-toggle
       *ngIf="addActionOn"
       [checked]="node.disabled"
@@ -49,9 +57,18 @@
       *ngIf="addActionOn"
       mat-icon-button
       (click)="askGroupNameAndAddToNode(solicitGroupName, node)"
-    >
+    >    
       <mat-icon>add</mat-icon>
     </button>
+
+    <!-- EditGroupName -->
+    <button 
+      mat-icon-button
+      (click)="askGroupNameAndRenameNode(solicitNewGroupName, node)"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+
     <mat-slide-toggle
       *ngIf="addActionOn"
       [checked]="node.disabled"
@@ -84,6 +101,28 @@
   </mat-dialog-actions>
 </ng-template>
 
+<!-- tempalte for soliciting new group name -->
+<ng-template #solicitNewGroupName>
+  <h2 matDialogTitle>
+    Please edit your {{ isDialogOrg ? 'organization' : 'group' }} name
+  </h2>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label
+        >Rename your {{ isDialogOrg ? 'organization' : 'group' }}</mat-label
+      >
+      <input matInput [(ngModel)]="dialogValue" />
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [matDialogClose]>
+      Cancel
+    </button>
+    <button mat-button [matDialogClose]="dialogValue" color="primary">
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-template>
 <div
   *ngIf="showSpinner"
   style="position:absolute; top:50%; left:50%; z-index: 1000;"
