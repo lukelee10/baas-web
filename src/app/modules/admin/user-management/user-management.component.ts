@@ -84,7 +84,7 @@ export class UserManagementComponent implements OnInit {
           this.sort.start = 'asc';
           this.dataSource.sort = this.sort;
           this.loaderService.Hide();
-          // this.notificationService.notify('Successful !!!');
+          this.notificationService.notify('Successful !!!');
         },
         error => {
           this.loaderService.Hide();
