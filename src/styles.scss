@@ -70,3 +70,9 @@ mat-form-field {
     }
   }
 }
+
+// Without this style override, all pop-ups have 24px of whitespace padding on
+// all sides.
+mat-dialog-container.mat-dialog-container {
+  padding: 0;
+}
