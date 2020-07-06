@@ -42,7 +42,7 @@ export class RequestListComponent implements OnInit, OnChanges {
     this.packageObj = {
       PackageId: '',
       Created: undefined,
-      Name: ' Loading...',
+      Name: 'Loading...',
       RequestCount: undefined,
       User: undefined,
       Group: undefined
