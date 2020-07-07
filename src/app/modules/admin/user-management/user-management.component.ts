@@ -220,4 +220,8 @@ export class UserManagementComponent implements OnInit {
       }
     });
   }
+
+  reloadControl(): void {
+    window.location.reload();
+  }
 }
