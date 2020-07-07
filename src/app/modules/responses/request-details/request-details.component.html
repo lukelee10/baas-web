@@ -94,8 +94,7 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="!showSpinner" fxLayout="row" [fxFlex]="100" fxFlexOffset="1">
+  <div *ngIf="!showSpinner" fxLayout="row" [fxFlex]="100" fxFlexOffset="1" class="no-scrolling-overflow">
     <div [fxFlex]="pageSettings.FlexLeft" class="details-H2">
       VETTING SYSTEM RESPONSES
     </div>
@@ -241,6 +240,7 @@
     *ngIf="showSpinner"
     fxFlexOffset="20"
     fxLayoutAlign="center center"
+    class="no-scrolling-overflow"
   >
     <mat-spinner
       matTooltip="Loading data"
