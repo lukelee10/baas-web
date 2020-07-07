@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../services/authentication.service';
-import { AwsLambdaService } from '../services/aws-lambda.service';
 import { UserService } from '../services/user.service';
 import { NavItem } from './../../shared/models/nav-item';
 
@@ -19,7 +18,6 @@ export class SideNavigationComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private awsLambdaService: AwsLambdaService,
     private authenticationService: AuthenticationService,
     private userService: UserService
   ) {}
@@ -92,11 +90,6 @@ export class SideNavigationComponent implements OnInit {
     this.sidenavClose.emit();
 
     if (elementTitle === 'Log Out') {
-      this.awsLambdaService.auditLog(
-        this.authenticationService.LoggedUser,
-        'LogOut'
-      );
-      this.authenticationService.Logout();
       this.router.navigate(['/logout']);
     }
   };
