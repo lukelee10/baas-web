@@ -33,6 +33,7 @@ $requestDetailsZIndex: 1;
 
   // Transformation to zoom-in on image
   &:hover {
+    position: fixed;
     z-index: calc(#{$requestDetailsZIndex} + 1);
 
     img {
