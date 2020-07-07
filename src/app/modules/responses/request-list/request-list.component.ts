@@ -124,6 +124,7 @@ export class RequestListComponent implements OnInit, OnChanges {
     this.detailsPopup = this.dialog.open(RequestDetailsComponent, {
       width: '800px',
       height: '700px',
+      panelClass: ['cdk-overlay-pane', 'baas-request-details-dialog-container'],
       data: request
     });
   }

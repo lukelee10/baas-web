@@ -71,8 +71,15 @@ mat-form-field {
   }
 }
 
-// Without this style override, all pop-ups have 24px of whitespace padding on
-// all sides.
-mat-dialog-container.mat-dialog-container {
-  padding: 0;
+/*
+ * Unfortunately, there is no way to customize a mat-dialog-container
+ * class without touching the global styles.scss file.
+ * This SCSS rule uses the ability to customize the class name of a MatDialog's
+ * panel element (which is a parent element to mat-dialog-container) in order to
+ * select and override details for this specific type of element.
+ */
+.baas-request-details-dialog-container {
+  .mat-dialog-container {
+    padding: 0;
+  }
 }
