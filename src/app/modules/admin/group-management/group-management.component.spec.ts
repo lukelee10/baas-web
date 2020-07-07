@@ -214,6 +214,47 @@ describe('====GroupManagementComponent', () => {
       done();
     });
 
+    it('should not call updateOrg lambda function when user did not enter data', done => {
+      const mockAwsLambdaService = groupFixture.debugElement.injector.get(
+        AwsLambdaService
+      );
+
+      const mockAwsLambdaServiceCall = spyOn(
+        mockAwsLambdaService,
+        'updateOrg'
+      ).and.returnValue(
+        // simulate the 404 error
+        throwError({ status: 404 })
+      );
+
+      const dialogRefMock = TestBed.get(MatDialog);
+      const returnedVal = {
+        afterClosed: () => of(null)
+      };
+
+      spyOn(dialogRefMock, 'open').and.returnValue(returnedVal);
+      const de: TemplateRef<any> = (groupFixture.debugElement.query(
+        By.css('#solicitNewGroupName')
+      ) as unknown) as TemplateRef<any>;
+      const testNode: GroupFlatNode = {
+        item: 'Test-Item',
+        level: 0,
+        expandable: false,
+        fqn: 'ABC/leaf1',
+        disabled: false
+      };
+      groupComponent.flatNodeMap.set(testNode, testNode);
+      const mockNotificationService = groupFixture.debugElement.injector.get(
+        NotificationService
+      );
+      const spyService = spyOn(mockNotificationService, 'error');
+      groupComponent.askGroupNameAndAddToNode(de, testNode);
+      expect(groupComponent).toBeTruthy();
+      expect(mockAwsLambdaServiceCall).not.toHaveBeenCalled();
+      expect(spyService.calls.any()).toBeFalsy();
+      done();
+    });
+
     it('should not call newOrg lambda function when user did not enter data', done => {
       const mockAwsLambdaService = groupFixture.debugElement.injector.get(
         AwsLambdaService
