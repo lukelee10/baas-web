@@ -30,7 +30,6 @@ export class UserAgreementComponent implements OnInit {
 
   clickDecline() {
     this.authenticationService.IsAgreementAccepted = false;
-    this.authenticationService.Logout();
     this.router.navigate(['/logout']);
     this.userService.GetLatestMenuContext(false);
   }

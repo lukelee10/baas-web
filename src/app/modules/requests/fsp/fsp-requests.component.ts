@@ -10,15 +10,17 @@ import { Guid } from 'guid-typescript';
 import * as moment_ from 'moment';
 import { from } from 'rxjs';
 import { concatMap, finalize } from 'rxjs/operators';
+import { MatFileUploadQueueComponent } from 'src/app/shared/components/multi-file-upload/matFileUpload';
+
 import { environment } from './../../../../environments/environment';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { UserService } from './../../../core/services/user.service';
-// tslint:disable-next-line: max-line-length
-import { MatFileUploadQueueComponent } from './../../../shared/components/multi-file-upload/matFileUploadQueue/matFileUploadQueue.component';
 import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
 import { RequestModel } from './../../models/request-model';
 
+// tslint:disable-next-line: max-line-length
+// tslint:disable-next-line: max-line-length
 const moment = moment_;
 
 @Component({
@@ -72,6 +74,10 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
       this.filesValidationError = false;
       this.filesValidationMessage = `Number of Files in Package: ${numberOfFiles}`;
     }
+  }
+
+  isDirty() {
+    return this.form.dirty || this.matFileUploadQueueComponent.files.length > 0;
   }
 
   IsFileUploadFormValid(): boolean {

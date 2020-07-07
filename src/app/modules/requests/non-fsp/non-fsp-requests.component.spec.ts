@@ -465,4 +465,12 @@ describe('RequestsComponent::(*NON-FSP Version)', () => {
     expect(button.disabled).toBeFalsy();
     button.click();
   }));
+
+  it('Should be dirty after put in form values', async(() => {
+    // not set the form, not set the files.
+    nonFSPComponentInstance.vettingSystems.push('LOWBALL');
+    nonFSPFixture.detectChanges();
+
+    expect(nonFSPComponentInstance.isDirty()).toBeTruthy();
+  }));
 });
