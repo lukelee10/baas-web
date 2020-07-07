@@ -157,6 +157,28 @@ describe('====GroupManagementComponent', () => {
       done();
     });
 
+    it('should rename a group correctly using askGroupNameAndRenameNode', done => {
+      const de: TemplateRef<any> = (groupFixture.debugElement.query(
+        By.css('#solicitNewGroupName')
+      ) as unknown) as TemplateRef<any>;
+      const testNode: GroupFlatNode = {
+        item: 'Test-Item',
+        level: 0,
+        expandable: false,
+        fqn: 'ABC/leaf1',
+        disabled: false
+      };
+      groupComponent.flatNodeMap.set(testNode, testNode);
+      const mockNotificationService = groupFixture.debugElement.injector.get(
+        NotificationService
+      );
+      const spyService = spyOn(mockNotificationService, 'successful');
+      groupComponent.askGroupNameAndAddToNode(de, testNode);
+      expect(groupComponent).toBeTruthy();
+      expect(spyService.calls.any()).toBeTruthy();
+      done();
+    });
+
     it('should show error screen when createOrg fails on adding a group', done => {
       const mockAwsLambdaService = groupFixture.debugElement.injector.get(
         AwsLambdaService
