@@ -24,16 +24,23 @@ $requestDetailsZIndex: 1;
   padding: 4px;
   //  overflow: hidden;
 }
-.pic-frame--quick-zoom img {
-  transform-origin: 0 0;
-  transition: transform 0.25s, visibility 0.25s ease-in;
-}
 
-/* The Transformation */
-.pic-frame--quick-zoom:hover img {
-  transform: scale(3);
-  border: 2px solid lightgray;
-  z-index: 2;
+.pic-frame--quick-zoom {
+  img {
+    transform-origin: 0 0;
+    transition: transform 0.25s, visibility 0.25s ease-in;
+  }
+
+  // Transformation to zoom-in on image
+  &:hover {
+    z-index: calc(#{$requestDetailsZIndex} + 1);
+
+    img {
+      transform: scale(3);
+      border: 2px solid lightgray;
+      overflow: visible;
+    }
+  }
 }
 
 .modality-flag {
