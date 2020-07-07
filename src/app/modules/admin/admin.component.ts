@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+
+import { GroupManagementComponent } from './group-management/group-management.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 @Component({
   selector: 'app-admin',
@@ -6,7 +9,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
+  @ViewChild(UserManagementComponent, { static: true })
+  private userManagementComponent: UserManagementComponent;
+  @ViewChild(GroupManagementComponent, { static: true })
+  private groupManagementComponent: GroupManagementComponent;
+
   constructor() {}
 
   ngOnInit() {}
+
+  tabClick(tab) {
+    if (tab.index === 0) {
+      // refresh the user list
+      this.userManagementComponent.reloadControl();
+    } else {
+      // refresh the org list
+      this.groupManagementComponent.getOrgs();
+    }
+  }
 }
