@@ -1,7 +1,5 @@
 // TODO Once we address Advanced interactive password validation
-// (https://jira.sdo.leidos.com/browse/BAASU-379), from the following style block
-// all we need are width and margin-right styles
-// and all others can removed (host and ng-deep can also be removed)
+// (https://jira.sdo.leidos.com/browse/BAASU-379), following style block can be removed
 
 /* work around for mat-error */
 
@@ -19,9 +17,6 @@
 // We used encapsulation: ViewEncapsulation.None, but this was bleeding styles into other components
 // So we are using ng-deep
 :host ::ng-deep .mat-form-field {
-  width: 500px;
-  margin-right: 24px;
-
   &-underline {
     position: static;
   }

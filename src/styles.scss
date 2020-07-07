@@ -26,47 +26,10 @@ body {
   background-color: #f1f1f1;
   margin: 10px;
   text-align: center;
-  // line-height: 0px;
   font-size: 18px;
 }
 
 .active-link {
   color: white !important;
   background-color: navy;
-}
-
-/* work around for mat-error */
-// TODO Technical Dedt -- Clean the styles.scss
-// Not a good practice of keeping styles in styles.scss, unless you want
-// the same styles for the same control through out the application
-mat-form-field {
-  &.ng-valid {
-    .mat-form-field-wrapper {
-      padding-bottom: 1.25em;
-      padding-inline-end: 2em;
-    }
-  }
-
-  &.ng-invalid,
-  &.mat-form-field-invalid {
-    .mat-form-field-wrapper {
-      padding-bottom: 7px;
-    }
-  }
-
-  &.ng-untouched {
-    .mat-form-field-wrapper {
-      padding-bottom: 1.25em;
-    }
-  }
-
-  .mat-form-field {
-    &-underline {
-      position: static;
-    }
-
-    &-subscript-wrapper {
-      position: static;
-    }
-  }
 }
