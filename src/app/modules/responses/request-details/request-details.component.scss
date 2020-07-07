@@ -267,13 +267,6 @@ $requestDetailsZIndex: 1;
   font-size: small;
 }
 
-.request-details-drag-handle {
-  color: #ededed;
-  width: 24px;
-  min-height: 12px;
-  cursor: move;
-}
-
 .draggable-request-details {
   z-index: $requestDetailsZIndex;
   position: relative;
@@ -281,4 +274,11 @@ $requestDetailsZIndex: 1;
   display: flex;
   min-width: 10vw;
   min-height: 5vh;
+
+  .request-details-drag-handle {
+    color: #ededed;
+    width: 24px;
+    min-height: 12px;
+    cursor: move;
+  }
 }
