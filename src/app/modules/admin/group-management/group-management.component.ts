@@ -254,36 +254,26 @@ export class GroupManagementComponent implements OnInit {
    * @param flatNode is the parent node
    */
   renameNode(flatNode: GroupFlatNode, name: string) {
+    this.showSpinner = true;
+
+    const oldFqn = (flatNode.fqn || '');
+    const renamedFqn = oldFqn.replace(oldFqn.substring(oldFqn.lastIndexOf('/')),'/' + name);
     const renamedOrg = {
-      org: { oldName: flatNode.fqn, name: name }
+      oldName: flatNode.fqn, name: renamedFqn
     };
-    this.notificationService.error(JSON.stringify(renamedOrg));
+    let userMessage = 'Successfully Updated the Group Name';   
 
     this.awsLambdaService.UpdateOrg(renamedOrg).subscribe(
       (data: any) => {
-        this.notificationService.successful(`Group saved ${data.name}`);
-        const parentNode = this.flatNodeMap.get(flatNode);
-        if (!parentNode.children) {
-          parentNode.children = [];
-        }
-
-        const childGroupNode = new GroupNode(name, parentNode.item);
-        const sChildFqn = ((flatNode.fqn || '') + `/${name}`).replace(
-          /^[/]+/g,
-          ''
-        );
-        childGroupNode.fqn = sChildFqn;
-
-        parentNode.children.push(childGroupNode);
-
-        const temp = this.changeWatcher.value;
-        this.changeWatcher.next([]);
-        this.changeWatcher.next(temp);
-        this.treeControl.expand(flatNode);
+        this.notificationService.successful(userMessage);
+        this.ngOnInit();        
       },
-      error => {
-        this.notificationService.error(`Saving group failed. ${error}`);
-      }
+    error => {
+        userMessage = "An error occured while Updating the Group Name. Please try again.";
+        this.notificationService.error(userMessage);
+        this.showSpinner = false;
+      },
+      () => (this.showSpinner = false)
     );
   }
 

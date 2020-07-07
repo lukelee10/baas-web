@@ -66,7 +66,7 @@
       mat-icon-button
       (click)="askGroupNameAndRenameNode(solicitNewGroupName, node)"
     >
-      <mat-icon>edit</mat-icon>
+      <mat-icon matTooltip="Edit"style="font-size: 15px">edit</mat-icon>
     </button>
 
     <mat-slide-toggle
@@ -111,7 +111,7 @@
       <mat-label
         >Rename your {{ isDialogOrg ? 'organization' : 'group' }}</mat-label
       >
-      <input matInput [(ngModel)]="dialogValue" />
+      <input matInput onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9]/g) === null" [(ngModel)]="dialogValue" />
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
