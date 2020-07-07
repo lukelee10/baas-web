@@ -64,14 +64,12 @@ export class NewPasswordComponent implements OnInit {
   submit() {
     this.loaderService.Show('Sending Reset password request...');
     this.notificationService.setPopUpTitle('BaaS - Setting New Password');
-    let responseData;
     this.errMessage = null;
     const newCredential = { ...this.output, password: '' };
     newCredential.password = this.password.value;
     this.awsLambdaService.confirmPassword(newCredential).subscribe(
       data => {
         this.loaderService.Hide();
-        responseData = data;
         this.notificationService.notify('Password setting successful !!!');
         this.notificationService.debugLogging(
           'POST Request is successful ',
