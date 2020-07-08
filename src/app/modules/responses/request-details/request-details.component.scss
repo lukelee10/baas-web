@@ -200,6 +200,11 @@ $requestDetailsZIndex: 1;
   padding: 2px;
 }
 
+.request-details-summary-info {
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
 .request-detail-label {
   font-size: small;
   color: rgb(93, 109, 126);
