@@ -16,7 +16,7 @@ import {
   MatTreeFlatDataSource,
   MatTreeFlattener
 } from '@angular/material/tree';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -106,7 +106,7 @@ export class GroupManagementComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): Observable<boolean> {
     this.isAddOrgOn = this.userService.IsAdmin && this.addActionOn;
     const getOrgs = this.awsLambdaService.getOrgs();
 
@@ -178,6 +178,7 @@ export class GroupManagementComponent implements OnInit {
         this.changeWatcher.next(list);
       }
     });
+    return true;
   }
 
   getLevel = (node: GroupFlatNode) => node.level;
@@ -263,27 +264,12 @@ export class GroupManagementComponent implements OnInit {
     this.awsLambdaService.UpdateOrg(renamedOrg).subscribe(
       (data: any) => {
         this.notificationService.successful(userMessage);
-        // const groupNode = this.flatNodeMap.get(flatNode);
-        // groupNode.item = name;
-        // groupNode.fqn = renamedFqn;
-        // flatNode.item = name;
-        // flatNode.fqn = renamedFqn;
- 
-        // const temp = this.changeWatcher.value;
-        // this.changeWatcher.next([]);
-        // this.changeWatcher.next(temp);
-        // this.treeControl.expand(flatNode); 
-
-        this.ngOnInit();   
-
+        this.ngOnInit();
       },
     error => {
-        userMessage = "An error occured while Updating the Group Name. Please try again.";
-        this.notificationService.error(userMessage);
-        this.showSpinner = false;
-      },
-      () => (this.showSpinner = false)
-    );
+        userMessage = 'An error occured while Updating the Group Name. Please try again.';
+    },  
+    () => (this.showSpinner = false));
   }
 
   /**
