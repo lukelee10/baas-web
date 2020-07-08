@@ -52,10 +52,10 @@ body {
     // in case the user-agent does not support that functionality, first define
     // a simple value and then ask the browser to interpret `min(...)`. This
     // will ensure that a reasonable value is used as a fallback.
-    width: 50vw;
-    width: min(800px, 50vw);
     height: 88vh;
+    width: 50vw;
     height: min(700px, 88vh);
+    width: min(800px, 50vw);
 
     min-height: 10vh;
     min-width: 36.5vw;
