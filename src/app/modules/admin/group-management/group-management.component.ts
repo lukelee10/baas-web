@@ -263,7 +263,19 @@ export class GroupManagementComponent implements OnInit {
     this.awsLambdaService.UpdateOrg(renamedOrg).subscribe(
       (data: any) => {
         this.notificationService.successful(userMessage);
-        this.ngOnInit();        
+        // const groupNode = this.flatNodeMap.get(flatNode);
+        // groupNode.item = name;
+        // groupNode.fqn = renamedFqn;
+        // flatNode.item = name;
+        // flatNode.fqn = renamedFqn;
+ 
+        // const temp = this.changeWatcher.value;
+        // this.changeWatcher.next([]);
+        // this.changeWatcher.next(temp);
+        // this.treeControl.expand(flatNode); 
+
+        this.ngOnInit();   
+
       },
     error => {
         userMessage = "An error occured while Updating the Group Name. Please try again.";
