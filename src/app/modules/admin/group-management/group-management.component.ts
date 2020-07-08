@@ -7,6 +7,7 @@ import {
   Output,
   TemplateRef
 } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
@@ -66,6 +67,7 @@ export class GroupManagementComponent implements OnInit {
   @Output() selectGroup = new EventEmitter();
   changeWatcher = new BehaviorSubject<GroupNode[]>([]);
   showSpinner = false;
+  entity = new FormControl('');
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<GroupFlatNode, GroupNode>();
@@ -273,6 +275,8 @@ export class GroupManagementComponent implements OnInit {
   askGroupNameAndAddRoot(templateRef: TemplateRef<any>) {
     this.isDialogOrg = true;
     this.dialogRef = this.dialog.open(templateRef);
+    this.entity.markAsPristine();
+    this.entity.clearValidators();
     this.dialogRef.afterClosed().subscribe(newName => {
       if (newName) {
         this.addNewNode(newName);
@@ -287,6 +291,8 @@ export class GroupManagementComponent implements OnInit {
   ) {
     this.isDialogOrg = false;
     this.dialogRef = this.dialog.open(templateRef);
+    this.entity.markAsPristine();
+    this.entity.clearValidators();
     this.dialogRef.afterClosed().subscribe(newName => {
       if (newName) {
         this.addNewNodeUnder(flatNode, newName);
@@ -351,5 +357,9 @@ export class GroupManagementComponent implements OnInit {
       },
       () => (this.showSpinner = false)
     );
+  }
+
+  attachEvents() {
+    this.entity.setValidators([Validators.required]);
   }
 }
