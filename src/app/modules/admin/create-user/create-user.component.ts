@@ -20,7 +20,8 @@ import { GroupFlatNode } from '../group-management/group-management.component';
 
 @Component({
   selector: 'app-create-user',
-  templateUrl: './create-user.component.html'
+  templateUrl: './create-user.component.html',
+  styleUrls: ['./create-user.component.scss']
 })
 export class CreateUserComponent implements OnInit {
   form: FormGroup;
