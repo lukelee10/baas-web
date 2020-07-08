@@ -61,5 +61,21 @@ body {
     min-width: 36.5vw;
     max-height: 100%;
     max-width: 100%;
+
+    // TODO: We should consider converting these scrollbar styles into a Mixin
+    scrollbar-width: thin;
+    scrollbar-color: #90a4ae #cfd8dc;
+    &::-webkit-scrollbar {
+      width: 0.8em;
+      height: 0.5em;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(gray, 0.1);
+      border-radius: 3px;
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
   }
 }
