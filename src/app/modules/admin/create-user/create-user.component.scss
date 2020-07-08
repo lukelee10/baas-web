@@ -14,8 +14,7 @@
 // the style can bleed into other components.
 // There are lot of forum discussions on usage of ng-deep; some says it is not going to be deprecated
 // There is alternative for ng-deep and that is set the component to encapsulation: ViewEncapsulation.None
-// We used encapsulation: ViewEncapsulation.None, but this was bleeding styles into other components
-// So we are using ng-deep
+// But we are using ng-deep
 :host ::ng-deep .mat-form-field {
   &-underline {
     position: static;
