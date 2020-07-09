@@ -96,6 +96,13 @@ $lengthOfStandardRequestId: 36ch;
   padding: 5px;
   background-color: #e5e8e8;
 }
+
+// When the "Alert.Level" field on a response is an empty string, this becomes
+// rule is activated, since class is populated as: "head-alert--" + ""
+.head-alert-- {
+  visibility: hidden;
+}
+
 .head-alert--warning {
   color: white;
   display: inline !important;
