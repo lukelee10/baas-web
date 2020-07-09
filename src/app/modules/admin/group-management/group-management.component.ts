@@ -16,7 +16,7 @@ import {
   MatTreeFlatDataSource,
   MatTreeFlattener
 } from '@angular/material/tree';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -181,6 +181,7 @@ export class GroupManagementComponent implements OnInit {
         this.changeWatcher.next(list);
       }
     });
+    return true;
   }
 
   getLevel = (node: GroupFlatNode) => node.level;
