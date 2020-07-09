@@ -27,7 +27,7 @@ export class RequestsComponent implements OnInit {
   ngOnInit() {}
 
   @HostListener('window:beforeunload', ['$event'])
-  unloadHandler(event: Event) {
+  beforeUnloadHandler(event: Event) {
     event.returnValue = !this.isDirty();
   }
 
