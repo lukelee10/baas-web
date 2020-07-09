@@ -82,9 +82,15 @@ $lengthOfStandardRequestId: 36ch;
   padding: 2px;
   background-color: #e5e8e8;
   font-weight: bold;
+  // Specify height using most-likely supported unit ascending to least-likely
+  // supported units.
   height: 30px;
+  height: 4ex;
+  line-height: 4ex;
   min-width: 130px;
+  display: inline-block;
 }
+
 .head-alert {
   height: 30px;
   padding: 5px;
