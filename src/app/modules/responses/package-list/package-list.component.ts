@@ -22,7 +22,7 @@ import {
 })
 export class PackageListComponent implements OnInit, OnChanges {
   userPackages = new Array<UserPackage>();
-  showSpinner = true;
+  showSpinner = false;
   currentLastItem = '';
   initLoad = false;
   @Input()
