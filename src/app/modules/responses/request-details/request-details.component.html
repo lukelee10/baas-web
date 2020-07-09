@@ -6,24 +6,25 @@
   cdkDragRootElement=".cdk-overlay-pane"
   cdkDragBoundary=".cdk-overlay-container"
 >
-  <div fxLayout="row" fxFlex="100" class="reqdetails-title-bar">
+  <div class="reqdetails-title-bar no-scrolling-overflow">
     <div
-      fxFlex="4"
       matTooltip="Drag to Move"
       class="request-details-drag-handle"
       cdkDragHandle
     >
       <mat-icon>drag_indicator</mat-icon>
     </div>
-    <div fxFlex="91">Request Details</div>
-    <button
-      mat-stroked-button
-      color="primary"
-      (click)="closePopup()"
-      class="baas-mat-close-button"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
+    <div>Request Details</div>
+    <div class="requestdetails-close-button">
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="closePopup()"
+        class="baas-mat-close-button"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
   </div>
   <div
     fxFlex="100"
