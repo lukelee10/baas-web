@@ -12,6 +12,7 @@ import { from } from 'rxjs';
 import { concatMap, finalize } from 'rxjs/operators';
 import { MatFileUploadQueueComponent } from 'src/app/shared/components/multi-file-upload/matFileUpload';
 
+import { ProviderCheckboxesComponent } from '../provider-checkboxes/provider-checkboxes.component';
 import { environment } from './../../../../environments/environment';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { UserService } from './../../../core/services/user.service';
@@ -31,6 +32,8 @@ const moment = moment_;
 export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
   @ViewChild(MatFileUploadQueueComponent, { static: false })
   private matFileUploadQueueComponent: MatFileUploadQueueComponent;
+  @ViewChild(ProviderCheckboxesComponent, { static: false })
+  private providerCheckboxes: ProviderCheckboxesComponent;
   filesValidationError: boolean;
   allowedFileSize = `File cannot be more than ${environment.MaxFileSizeForPackage} MB size`;
   vettingSystems: string[] = [];
@@ -283,6 +286,13 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
 
   private resetTheForm() {
     this.form.reset();
+    Object.keys(this.form.controls).forEach(key => {
+      this.form.controls[key].setErrors(null);
+    });
+
+    if (this.providerCheckboxes) {
+      this.providerCheckboxes.reset();
+    }
     if (this.matFileUploadQueueComponent) {
       this.matFileUploadQueueComponent.removeAll();
     }
