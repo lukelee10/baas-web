@@ -1,6 +1,6 @@
 <div class="flex-container">
   <div>
-    <mat-tab-group>
+    <mat-tab-group (selectedTabChange)="tabClick($event)">
       <mat-tab>
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon-margin">supervisor_account</mat-icon>

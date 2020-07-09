@@ -108,8 +108,11 @@ export class GroupManagementComponent implements OnInit {
 
   ngOnInit() {
     this.isAddOrgOn = this.userService.IsAdmin && this.addActionOn;
-    const getOrgs = this.awsLambdaService.getOrgs();
+    this.getOrgs();
+  }
 
+  getOrgs() {
+    const getOrgs = this.awsLambdaService.getOrgs();
     getOrgs.subscribe(orgs => {
       if (orgs.Items) {
         // orgMap  maps of root org names -> org (name, [children])

@@ -4,47 +4,7 @@
   min-width: 520px;
 }
 
-/* work around for mat-error */
-
-// TODO Technical Dedt -- Clean the styles.scss
-// Not a good practice of keeping the following styles in styles.scss,
-// unless you want the same styles for the same control
-// through out the application
-
-/* Reason for setting the padding-inline-end to 0em, 
-   is to oveeride this with the one from the styles.scss.
-   Once we clean the styles.scss, we can remove the padding-inline-end
-*/
-mat-form-field {
+.login-mat-form-field {
   width: 40ch;
   max-width: 90vw;
-  &.ng-valid {
-    .mat-form-field-wrapper {
-      padding-bottom: 1.25em;
-      padding-inline-end: 0em;
-    }
-  }
-
-  &.ng-invalid,
-  &.mat-form-field-invalid {
-    .mat-form-field-wrapper {
-      padding-bottom: 7px;
-    }
-  }
-
-  &.ng-untouched {
-    .mat-form-field-wrapper {
-      padding-bottom: 1.25em;
-    }
-  }
-
-  .mat-form-field {
-    &-underline {
-      position: static;
-    }
-
-    &-subscript-wrapper {
-      position: static;
-    }
-  }
 }
