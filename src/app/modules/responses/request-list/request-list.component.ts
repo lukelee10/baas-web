@@ -20,7 +20,7 @@ import { RequestDetailsComponent } from '../request-details/request-details.comp
   styleUrls: ['./request-list.component.scss']
 })
 export class RequestListComponent implements OnInit, OnChanges {
-  showSpinner = true;
+  showSpinner = false;
   detailsPopup: MatDialogRef<RequestDetailsComponent, any>;
   Object = Object;
 
@@ -42,7 +42,7 @@ export class RequestListComponent implements OnInit, OnChanges {
     this.packageObj = {
       PackageId: '',
       Created: undefined,
-      Name: ' Loading...',
+      Name: '',
       RequestCount: undefined,
       User: undefined,
       Group: undefined
