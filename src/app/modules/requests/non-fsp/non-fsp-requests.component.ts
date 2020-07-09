@@ -20,7 +20,6 @@ import { LookupStaticDataService } from './../../../shared/services/lookup-stati
 import { NotificationService } from './../../../shared/services/notification.service';
 import { RequestModel } from './../../models/request-model';
 
-// tslint:disable-next-line: max-line-length
 const moment = moment_;
 
 @Component({
