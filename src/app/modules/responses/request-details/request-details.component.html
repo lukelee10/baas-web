@@ -67,7 +67,11 @@
         <div fxFlex="10"></div>
         <div fxFlex="10" class="modality-flag">{{ request.Modality }}</div>
       </div>
-      <div fxLayout="row" fxFlexOffset="2">
+      <div
+        fxLayout="row wrap"
+        fxFlexOffset="1"
+        class="request-detail-line-item"
+      >
         <div fxFlex="15" class="request-detail-label">Request:</div>
         <div fxFlex="65" class="digit-bar">
           {{ request.Id }}
@@ -82,13 +86,13 @@
           >&nbsp;
         </div>
       </div>
-      <div fxLayout="row" fxFlexOffset="1">
+      <div fxLayout="row" fxFlexOffset="1" class="request-detail-line-item">
         <div fxFlex="15" class="request-detail-label">File:</div>
         <div fxFlex="85" class="request-detail-text">
           {{ requestDetails?.Filename }}
         </div>
       </div>
-      <div fxLayout="row" fxFlexOffset="1">
+      <div fxLayout="row" fxFlexOffset="1" class="request-detail-line-item">
         <div fxFlex="15" class="request-detail-label">Submitted:</div>
         <div fxFlex="85" class="request-detail-text">
           {{ request.StatusTimestamp | date: 'medium' }}

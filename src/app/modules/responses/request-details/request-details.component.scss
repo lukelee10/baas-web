@@ -217,16 +217,15 @@ $lengthOfStandardRequestId: 36ch;
   border-radius: 5px;
 }
 
-.request-detail-label {
+.request-detail-line-item {
   font-size: small;
   color: rgb(93, 109, 126);
-  font-weight: bold;
+  .request-detail-label {
+    font-weight: bold;
+    min-width: 10ch;
+  }
 }
 
-.request-detail-text {
-  font-size: small;
-  color: rgb(93, 109, 126);
-}
 
 .toggle-icon {
   color: rgb(93, 109, 126);
