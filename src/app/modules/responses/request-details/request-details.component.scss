@@ -1,4 +1,6 @@
 $requestDetailsZIndex: 1;
+$longestRequestStatusChar: 18ch;
+$lengthOfStandardRequestId: 36ch;
 
 .reqdetails-title-bar {
   background-color: rgba(#3f51b5, 0.85);
