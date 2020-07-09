@@ -303,6 +303,8 @@ $lengthOfStandardRequestId: 36ch;
     width: 24px;
     min-height: 12px;
     cursor: move;
+    top: 50%;
+    transform: translateY(12.5%);
   }
 
   > *:not(.no-scrolling-overflow) {
