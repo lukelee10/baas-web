@@ -125,9 +125,13 @@ $lengthOfStandardRequestId: 36ch;
 }
 
 .status-flag {
-  width: 130px !important;
-  font-size: smaller;
+  padding: 2px 4px;
+  box-sizing: border-box;
+  text-align: center;
+  width: 100%;
+  font-size: small;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .status-grid-left {
@@ -136,10 +140,6 @@ $lengthOfStandardRequestId: 36ch;
   padding: 4px;
 }
 
-.status-flag {
-  padding: 4px;
-  font-size: small;
-}
 .status-PND {
   background-color: rgba(gray, 0.6);
   color: black;
