@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import {
@@ -51,6 +51,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         } else {
           // server-side error
           const httpErrorResponseCode = error.status;
+          const errorBody = error.error.body
+            ? JSON.parse(error.error.body)
+            : null;
           if (
             httpErrorResponseCode ===
             AppGlobalConstants.HttpErrorResponseCode.TimeOutErrorCode
@@ -59,10 +62,19 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               this.appMessagesService.getMessage(AppMessage.SessionTimeOut),
               this.appMessagesService.getTitle(AppMessage.SessionTimeOut)
             );
-
             this.authenticationService.Logout();
             this.router.navigate(['/login']);
             return of(null);
+          } else if (
+            errorBody &&
+            errorBody.errorDetail &&
+            errorBody.errorDetail.length > 0
+          ) {
+            this.notificationService.error(
+              errorBody.errorDetail,
+              'BaaS Notification - Error'
+            );
+            return throwError(errorMessage);
           } else {
             const err = typeof error.error === 'string' ? error : error.error;
             errorMessage = err.errorDetail ? err.errorDetail : error.message;

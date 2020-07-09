@@ -1,11 +1,4 @@
-// TODO Technical Dedt -- Clean the change-password.component.ts
-// Reason for adding ViewEncapsulation in import statement
-// and encapsulation: ViewEncapsulation.None in @Component are to
-// consider the mat-form-field styles from change-password.component.scss
-// instead of from styles.scss.  Once we clean the styles.scss,
-// we can take out the 'ViewEncapsulation' and 'encapsulation: ViewEncapsulation.None'
-// from this file
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -28,8 +21,7 @@ import { NotificationService } from './../../../shared/services/notification.ser
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./change-password.component.scss']
 })
 export class ChangePasswordComponent implements OnInit {
   /** Re-exported version of MinPasswordLength so it can be shown on HTML form. */
