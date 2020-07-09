@@ -209,7 +209,11 @@ $lengthOfStandardRequestId: 36ch;
   font-size: small;
   font-weight: bold;
   color: #616a6b;
-  padding: 2px;
+  padding: 0 0.5ch;
+  height: 3ex;
+  line-height: 3ex;
+  width: calc(#{$lengthOfStandardRequestId} + 2ch);
+  min-width: calc(#{$lengthOfStandardRequestId} + 2ch);
 }
 
 .request-details-summary-info {
