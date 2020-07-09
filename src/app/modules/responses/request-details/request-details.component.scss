@@ -31,14 +31,15 @@ $lengthOfStandardRequestId: 36ch;
 }
 
 .pic-frame {
-  // width: 100%;
   max-width: 100%;
   height: 100%;
-  object-fit: scale-down;
+  object-fit: contain;
   background-color: #e5e8e8;
   padding: 0;
   box-sizing: border-box;
-  margin: 0 auto;
+  margin: 0;
+  width: 100%;
+  vertical-align: middle;
 }
 
 .resize-keep-aspect {
@@ -50,17 +51,27 @@ $lengthOfStandardRequestId: 36ch;
 }
 
 .pic-frame--quick-zoom {
+  text-align: center;
   img {
     transform-origin: 0 0;
     transition: transform 0.25s, visibility 0.25s ease-in;
+    display: inline-block;
   }
   // Transformation to zoom-in on image
   &:hover {
+    // Set explicit sizing prior to zoom transformation, otherwise the image
+    // will fill the Right and Bottom of the page.
+    max-width: calc(#{$longestRequestStatusChar} + 1ch);
+    max-height: 170px;
+
+    text-align: left;
+
     position: fixed;
     z-index: calc(#{$requestDetailsZIndex} + 1);
+
     img {
       transform: scale(3);
-      border: 2px solid lightgray;
+      box-shadow: 0px 0px 1px 1px lightgray;
       overflow: visible;
     }
   }
