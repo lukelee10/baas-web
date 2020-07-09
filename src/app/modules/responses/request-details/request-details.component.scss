@@ -256,6 +256,9 @@ $lengthOfStandardRequestId: 36ch;
 .request-details-summary-info {
   border: 1px solid gray;
   border-radius: 5px;
+  // The following line can be enabled to disable wrapping on the flex
+  // containers:
+  // min-width: 688px;
 }
 
 .request-detail-line-item {
