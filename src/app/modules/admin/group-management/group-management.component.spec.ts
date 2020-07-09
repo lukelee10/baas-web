@@ -159,7 +159,7 @@ describe('====GroupManagementComponent', () => {
 
     it('should rename a group correctly using askGroupNameAndRenameNode', done => {
       const de: TemplateRef<any> = (groupFixture.debugElement.query(
-        By.css('#solicitNewGroupName')
+        By.css('#solicitEditedGroupName')
       ) as unknown) as TemplateRef<any>;
       const testNode: GroupFlatNode = {
         item: 'Test-Item',
@@ -234,7 +234,7 @@ describe('====GroupManagementComponent', () => {
 
       spyOn(dialogRefMock, 'open').and.returnValue(returnedVal);
       const de: TemplateRef<any> = (groupFixture.debugElement.query(
-        By.css('#solicitNewGroupName')
+        By.css('#solicitEditedGroupName')
       ) as unknown) as TemplateRef<any>;
       const testNode: GroupFlatNode = {
         item: 'Test-Item',

@@ -134,6 +134,9 @@ export const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
   },
   updateUserName(user: any): Observable<any> {
     return of({ status: 'ok', user });
+  },
+  updateOrg(org: any): Observable<any> {
+    return of({ status: 'ok', org });
   }
 };
 

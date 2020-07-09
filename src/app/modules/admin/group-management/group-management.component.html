@@ -27,7 +27,7 @@
     <!-- EditGroupName -->
     <button 
       mat-icon-button
-      (click)="askGroupNameAndRenameNode(solicitNewGroupName, node)"
+      (click)="askGroupNameAndRenameNode(solicitEditedGroupName, node)"
     >
     <mat-icon matTooltip="Edit Group Name" style="font-size: 15px">edit</mat-icon>
     </button>
@@ -64,7 +64,7 @@
     <!-- EditGroupName -->
     <button 
       mat-icon-button
-      (click)="askGroupNameAndRenameNode(solicitNewGroupName, node)"
+      (click)="askGroupNameAndRenameNode(solicitEditedGroupName, node)"
     >
       <mat-icon matTooltip="Edit Group Name" style="font-size: 15px">edit</mat-icon>
     </button>
@@ -102,7 +102,7 @@
 </ng-template>
 
 <!-- tempalte for soliciting new group name -->
-<ng-template #solicitNewGroupName>
+<ng-template #solicitEditedGroupName>
   <h2 matDialogTitle>
     Please edit your {{ isDialogOrg ? 'organization' : 'group' }} name
   </h2>
@@ -111,7 +111,7 @@
       <mat-label
         >Rename your {{ isDialogOrg ? 'organization' : 'group' }}</mat-label
       >
-      <input matInput onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9]/g) === null" [(ngModel)]="dialogValue" />
+      <input matInput pattern="[^/]+" title="Cannot contain forward slash" onkeypress="return '/'.charCodeAt(0) !== event.charCode" [(ngModel)]="dialogValue" />
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">

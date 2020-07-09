@@ -87,7 +87,7 @@ export class AwsLambdaService {
       { headers: putHeaders(), responseType: 'text' as 'json' }
     );
   }
-  UpdateOrg(org: any) {
+  updateOrg(org: any) {
     return this.http.put(
       `${this.apiBase}/orgs`,
       { org },

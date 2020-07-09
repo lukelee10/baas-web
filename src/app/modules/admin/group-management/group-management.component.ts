@@ -16,7 +16,7 @@ import {
   MatTreeFlatDataSource,
   MatTreeFlattener
 } from '@angular/material/tree';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -106,7 +106,7 @@ export class GroupManagementComponent implements OnInit {
     });
   }
 
-  ngOnInit(): Observable<boolean> {
+  ngOnInit() {
     this.isAddOrgOn = this.userService.IsAdmin && this.addActionOn;
     const getOrgs = this.awsLambdaService.getOrgs();
 
@@ -178,7 +178,6 @@ export class GroupManagementComponent implements OnInit {
         this.changeWatcher.next(list);
       }
     });
-    return true;
   }
 
   getLevel = (node: GroupFlatNode) => node.level;
@@ -255,21 +254,42 @@ export class GroupManagementComponent implements OnInit {
     this.showSpinner = true;
 
     const oldFqn = (flatNode.fqn || '');
-    const renamedFqn = oldFqn.replace(oldFqn.substring(oldFqn.lastIndexOf('/')),'/' + name);
+    // const renamedFqn = oldFqn.replace(oldFqn.substring(oldFqn.lastIndexOf('/')),'/' + name);
+    const fqnTokens = oldFqn.split('/');
+   
+    // Remove old name & insert new name
+    fqnTokens.pop();
+    fqnTokens.push(name);
+    const renamedFqn = fqnTokens.join('/');
     const renamedOrg = {
       oldName: flatNode.fqn, name: renamedFqn
     };
     let userMessage = 'Successfully Updated the Group Name';   
 
-    this.awsLambdaService.UpdateOrg(renamedOrg).subscribe(
+    this.awsLambdaService.updateOrg(renamedOrg).subscribe(
       (data: any) => {
         this.notificationService.successful(userMessage);
-        this.ngOnInit();
+        // const groupNode = this.flatNodeMap.get(flatNode);
+        // groupNode.item = name;
+        // groupNode.fqn = renamedFqn;
+        // flatNode.item = name;
+        // flatNode.fqn = renamedFqn;
+ 
+        // const temp = this.changeWatcher.value;
+        // this.changeWatcher.next([]);
+        // this.changeWatcher.next(temp);
+        // this.treeControl.expand(flatNode); 
+
+        this.ngOnInit();   
+
       },
     error => {
-        userMessage = 'An error occured while Updating the Group Name. Please try again.';
-    },  
-    () => (this.showSpinner = false));
+        userMessage = "An error occured while Updating the Group Name. Please try again.";
+        this.notificationService.error(userMessage);
+        this.showSpinner = false;
+      },
+      () => (this.showSpinner = false)
+    );
   }
 
   /**
