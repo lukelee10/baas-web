@@ -325,8 +325,8 @@ export class GroupManagementComponent implements OnInit {
             }
           })
       },
-    error => {
-        userMessage = "An error occured while Updating the Group Name. Please try again.";
+      error => {
+        userMessage = 'An error occured while Updating the Group Name. Please try again.';
         this.notificationService.error(userMessage);
         this.showSpinner = false;
       },
