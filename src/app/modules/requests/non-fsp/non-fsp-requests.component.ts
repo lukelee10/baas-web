@@ -227,7 +227,7 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
 
           if (showNotification) {
             this.resetTheForm();
-            this.notificationService.notify('Package has been submitted!');
+            this.notificationService.notify('Package has been submitted');
           }
         })
       )
