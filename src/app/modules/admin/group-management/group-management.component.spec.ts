@@ -88,20 +88,30 @@ describe('====GroupManagementComponent', () => {
       groupFixture.detectChanges();
     });
 
-    it('should show tree', done => {
-      expect(groupComponent).toBeTruthy();
-      const orgs = groupFixture.debugElement.nativeElement.querySelectorAll(
-        'mat-tree-node'
-      );
-      expect(orgs.length).toEqual(3);
-      done();
-    });
-
     it('should add an org correctly using askGroupNameAndAddRoot', done => {
       const de: TemplateRef<any> = (groupFixture.debugElement.query(
         By.css('#solicitGroupName')
       ) as unknown) as TemplateRef<any>;
       groupComponent.askGroupNameAndAddRoot(de);
+
+      expect(groupComponent).toBeTruthy();
+
+      done();
+    });
+
+    it('should rename an org correctly using askGroupNameAndRenameNode', done => {
+      const de: TemplateRef<any> = (groupFixture.debugElement.query(
+        By.css('#solicitEditedGroupName')
+      ) as unknown) as TemplateRef<any>;
+      const testNode: GroupFlatNode = {
+        item: 'Test-Item',
+        level: 0,
+        expandable: false,
+        fqn: 'ABC/leaf1',
+        disabled: false
+      };
+
+      groupComponent.askGroupNameAndRenameNode(de, testNode);
 
       expect(groupComponent).toBeTruthy();
 
@@ -128,6 +138,39 @@ describe('====GroupManagementComponent', () => {
       );
       const spyService = spyOn(mockNotificationService, 'error');
       groupComponent.askGroupNameAndAddRoot(de);
+
+      expect(groupComponent).toBeTruthy();
+      expect(spyService.calls.any()).toBeTruthy();
+
+      done();
+    });
+
+    it('should show error when updateOrg fails on rename an org', done => {
+      const mockAwsLambdaService = groupFixture.debugElement.injector.get(
+        AwsLambdaService
+      );
+      const testNode: GroupFlatNode = {
+        item: 'Test-Item',
+        level: 0,
+        expandable: false,
+        fqn: 'ABC/leaf1',
+        disabled: false
+      };
+      const mockAwsLambdaServiceCall = spyOn(
+        mockAwsLambdaService,
+        'updateOrg'
+      ).and.returnValue(
+        // simulate the 404 error
+        throwError({ status: 404 })
+      );
+      const de: TemplateRef<any> = (groupFixture.debugElement.query(
+        By.css('#solicitEditedGroupName')
+      ) as unknown) as TemplateRef<any>;
+      const mockNotificationService = groupFixture.debugElement.injector.get(
+        NotificationService
+      );
+      const spyService = spyOn(mockNotificationService, 'error');
+      groupComponent.askGroupNameAndRenameNode(de, testNode);
 
       expect(groupComponent).toBeTruthy();
       expect(spyService.calls.any()).toBeTruthy();
@@ -173,7 +216,7 @@ describe('====GroupManagementComponent', () => {
         NotificationService
       );
       const spyService = spyOn(mockNotificationService, 'successful');
-      groupComponent.askGroupNameAndAddToNode(de, testNode);
+      groupComponent.askGroupNameAndRenameNode(de, testNode);
       expect(groupComponent).toBeTruthy();
       expect(spyService.calls.any()).toBeTruthy();
       done();
@@ -214,48 +257,7 @@ describe('====GroupManagementComponent', () => {
       done();
     });
 
-    it('should not call updateOrg lambda function when user did not enter data', done => {
-      const mockAwsLambdaService = groupFixture.debugElement.injector.get(
-        AwsLambdaService
-      );
-
-      const mockAwsLambdaServiceCall = spyOn(
-        mockAwsLambdaService,
-        'updateOrg'
-      ).and.returnValue(
-        // simulate the 404 error
-        throwError({ status: 404 })
-      );
-
-      const dialogRefMock = TestBed.get(MatDialog);
-      const returnedVal = {
-        afterClosed: () => of(null)
-      };
-
-      spyOn(dialogRefMock, 'open').and.returnValue(returnedVal);
-      const de: TemplateRef<any> = (groupFixture.debugElement.query(
-        By.css('#solicitEditedGroupName')
-      ) as unknown) as TemplateRef<any>;
-      const testNode: GroupFlatNode = {
-        item: 'Test-Item',
-        level: 0,
-        expandable: false,
-        fqn: 'ABC/leaf1',
-        disabled: false
-      };
-      groupComponent.flatNodeMap.set(testNode, testNode);
-      const mockNotificationService = groupFixture.debugElement.injector.get(
-        NotificationService
-      );
-      const spyService = spyOn(mockNotificationService, 'error');
-      groupComponent.askGroupNameAndAddToNode(de, testNode);
-      expect(groupComponent).toBeTruthy();
-      expect(mockAwsLambdaServiceCall).not.toHaveBeenCalled();
-      expect(spyService.calls.any()).toBeFalsy();
-      done();
-    });
-
-    it('should not call newOrg lambda function when user did not enter data', done => {
+      it('should not call newOrg lambda function when user did not enter data', done => {
       const mockAwsLambdaService = groupFixture.debugElement.injector.get(
         AwsLambdaService
       );
@@ -302,10 +304,48 @@ describe('====GroupManagementComponent', () => {
       done();
     });
   });
-  // test toggleDisable when Group is Disabled
-  testToggleDisable(groupFixture, groupComponent, true);
-  // test toggleDisable when Group is Enabled
-  testToggleDisable(groupFixture, groupComponent, false);
+
+  it('should not call updateOrg lambda function when user did not enter data', done => {
+    const mockAwsLambdaService = groupFixture.debugElement.injector.get(
+      AwsLambdaService
+    );
+
+    const mockAwsLambdaServiceCall = spyOn(
+      mockAwsLambdaService,
+      'updateOrg'
+    ).and.returnValue(
+      // simulate the 404 error
+      throwError({ status: 404 })
+    );
+
+    const dialogRefMock = TestBed.get(MatDialog);
+    const returnedVal = {
+      afterClosed: () => of(null)
+    };
+
+    spyOn(dialogRefMock, 'open').and.returnValue(returnedVal);
+    const de: TemplateRef<any> = (groupFixture.debugElement.query(
+      By.css('#solicitEditedGroupName')
+    ) as unknown) as TemplateRef<any>;
+    const testNode: GroupFlatNode = {
+      item: 'Test-Item',
+      level: 0,
+      expandable: false,
+      fqn: 'ABC/leaf1',
+      disabled: false
+    };
+    groupComponent.flatNodeMap.set(testNode, testNode);
+    const mockNotificationService = groupFixture.debugElement.injector.get(
+      NotificationService
+    );
+    const spyService = spyOn(mockNotificationService, 'error');
+    groupComponent.askGroupNameAndAddToNode(de, testNode);
+    expect(groupComponent).toBeTruthy();
+    expect(mockAwsLambdaServiceCall).not.toHaveBeenCalled();
+    expect(spyService.calls.any()).toBeFalsy();
+    done();
+  });
+
   // test toggleDisable when Lambda Service disableOrg failes
   describe('When Service Lambda - disableOrg functions fails', () => {
     let mockAwsLambdaService;
@@ -353,53 +393,19 @@ describe('====GroupManagementComponent', () => {
       expect(spyNotificationService.calls.any()).toBeTruthy();
       done();
     });
-  });
-});
 
-function testToggleDisable(
-  groupFixture: ComponentFixture<GroupManagementComponent>,
-  groupComponent: GroupManagementComponent,
-  testDisable: boolean
-) {
-  const testCase = testDisable ? 'disable' : 'enable';
-  describe(`When Group disable slider toggled to ${testCase}d`, () => {
-    const testNode: GroupFlatNode = {
-      item: 'Group-To-Disable',
-      level: 0,
-      expandable: false,
-      fqn: 'Group-To-Disable',
-      disabled: !testDisable
-    };
-
-    beforeEach(() => {
-      groupFixture = TestBed.createComponent(GroupManagementComponent);
-      groupComponent = groupFixture.componentInstance;
-      groupComponent.addActionOn = true;
-      groupFixture.detectChanges();
-    });
-    it('should trigger the toggleDisable event', done => {
-      groupComponent.selectNode(new GroupFlatNode());
-      expect(groupComponent).toBeTruthy();
-      const componentDebug = groupFixture.debugElement;
-      const slider = componentDebug.query(By.directive(MatSlideToggle));
-      spyOn(groupComponent, 'toggleDisable'); // set your spy
-      slider.triggerEventHandler('change', null); // triggerEventHandler
-      expect(groupComponent.toggleDisable).toHaveBeenCalled(); // event has been called
-      done();
-    });
-
-    it(`should  be ${testCase}d`, done => {
+    it(`should  handle the exception`, done => {
       const componentDebug = groupFixture.debugElement;
       const slider = (componentDebug.query(
         By.directive(MatSlideToggle)
       ) as unknown) as MatSlideToggle;
       const sliderChangeEvent: MatSlideToggleChange = new MatSlideToggleChange(
         slider,
-        testDisable
+        false
       );
       groupComponent.toggleDisable(sliderChangeEvent, testNode);
-      expect(testNode.disabled === testDisable).toBeTruthy();
+      expect(spyNotificationService.calls.any()).toBeTruthy();
       done();
     });
   });
-}
+});
