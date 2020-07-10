@@ -9,6 +9,18 @@ $lengthOfStandardRequestId: 36ch;
   text-align: left;
   border: 2px solid #3f51b5;
   border-radius: 5px;
+  // Not all WebBrowsers support the grab cursor, so move is assinged as a
+  // fallback value.
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  &:active {
+    cursor: grabbing;
+    cursor: grab;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
 
   & > * {
     align-self: center;
@@ -22,6 +34,7 @@ $lengthOfStandardRequestId: 36ch;
 
   .request-details-close-button {
     float: right;
+    cursor: pointer !important;
   }
 }
 
