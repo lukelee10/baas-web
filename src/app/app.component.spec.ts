@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -58,6 +59,7 @@ describe('AppComponent', () => {
         MatListModule,
         MatMenuModule,
         MatProgressSpinnerModule,
+        MatSidenavModule,
         MatToolbarModule,
         MatTooltipModule
       ],
