@@ -6,16 +6,9 @@
   cdkDragRootElement=".cdk-overlay-pane"
   cdkDragBoundary=".cdk-overlay-container"
 >
-  <div class="reqdetails-title-bar no-scrolling-overflow">
-    <div
-      matTooltip="Drag to Move"
-      class="request-details-drag-handle"
-      cdkDragHandle
-    >
-      <mat-icon>drag_indicator</mat-icon>
-    </div>
-    <div>Request Details</div>
-    <div class="requestdetails-close-button">
+  <div class="reqdetails-title-bar no-scrolling-overflow" cdkDragHandle>
+    <div class="request-details-title">Request Details</div>
+    <div class="request-details-close-button">
       <button
         mat-stroked-button
         color="primary"

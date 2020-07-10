@@ -16,7 +16,11 @@ $lengthOfStandardRequestId: 36ch;
     vertical-align: middle;
   }
 
-  .requestdetails-close-button {
+  .request-details-title {
+    padding-left: 1ch;
+  }
+
+  .request-details-close-button {
     float: right;
   }
 }
@@ -344,15 +348,6 @@ $lengthOfStandardRequestId: 36ch;
   display: flex;
   min-width: 10vw;
   min-height: 5vh;
-
-  .request-details-drag-handle {
-    color: #ededed;
-    width: 24px;
-    min-height: 12px;
-    cursor: move;
-    top: 50%;
-    transform: translateY(12.5%);
-  }
 
   > *:not(.no-scrolling-overflow) {
     overflow: auto;
