@@ -5,7 +5,7 @@
       mode="side"
       [ngStyle]="{
         'width.em': sidenavWidth,
-        'background-color': sidenavBgColor
+        'background-color': middleNavBgColor
       }"
       opened="true"
     >
@@ -49,6 +49,7 @@
     <mat-drawer-content>
       <mat-drawer-container autosize>
         <mat-drawer
+          class="baas-packages-mat-drawer-outer"
           fxLayout="column"
           mode="side"
           [ngStyle]="{
