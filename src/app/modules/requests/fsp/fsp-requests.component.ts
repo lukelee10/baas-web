@@ -208,9 +208,7 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
 
           if (showNotification) {
             this.resetTheForm();
-            this.notificationService.notify(
-              'BaaS - Created package successfully !!!'
-            );
+            this.notificationService.notify('Package has been submitted');
           }
         })
       )

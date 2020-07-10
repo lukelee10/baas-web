@@ -70,7 +70,7 @@ export class NewPasswordComponent implements OnInit {
     this.awsLambdaService.confirmPassword(newCredential).subscribe(
       data => {
         this.loaderService.Hide();
-        this.notificationService.notify('Password setting successful !!!');
+        this.notificationService.notify('Successfully changed password');
         this.notificationService.debugLogging(
           'POST Request is successful ',
           data
