@@ -237,19 +237,21 @@ describe('UserManagementComponent', () => {
       role: 'Lead',
       isDisabled: false
     };
-
-    expect(
-      fixture.debugElement.nativeNode.parentElement.querySelector(
+    const tally = [
+      ...fixture.debugElement.nativeNode.parentElement.querySelectorAll(
         'mat-dialog-container'
       )
-    ).toBeFalsy();
+    ].filter(node => !node.innerText.includes('BaaS Notification')).length;
+    expect(tally).toEqual(0);
     component.openDialog(user);
     fixture.whenStable().then(() => {
-      expect(
-        fixture.debugElement.nativeNode.parentElement.querySelector(
+      const afterTally = [
+        ...fixture.debugElement.nativeNode.parentElement.querySelectorAll(
           'mat-dialog-container'
         )
-      ).toBeTruthy();
+      ].filter(node => node.innerText.includes('Edit User')).length;
+      // Edit User
+      expect(afterTally).toEqual(1);
     });
   });
   it('should close edit dialog on user correctly', async(() => {
@@ -263,21 +265,28 @@ describe('UserManagementComponent', () => {
       isDisabled: false
     };
 
-    expect(
-      fixture.debugElement.nativeNode.parentElement.querySelector(
+    const tally = [
+      ...fixture.debugElement.nativeNode.parentElement.querySelectorAll(
         'mat-dialog-container'
       )
-    ).toBeFalsy();
+    ].filter(node => !node.innerText.includes('BaaS Notification')).length;
+    expect(tally).toEqual(0);
     component.openDialog(user);
+    component.detailsPopup.close({
+      disabled: true,
+      group: 'US/VA',
+      role: 'Admin',
+      firstname: 'test',
+      lastname: 'test'
+    });
     fixture.whenStable().then(() => {
-      component.detailsPopup.close({
-        disabled: true,
-        group: 'US/VA',
-        role: 'Admin',
-        firstname: 'test',
-        lastname: 'test'
-      });
-      expect(true).toBeTruthy();
+      const afterTally = [
+        ...fixture.debugElement.nativeNode.parentElement.querySelectorAll(
+          'mat-dialog-container'
+        )
+      ].filter(node => node.innerText.includes('Edit User')).length;
+      // Edit User
+      expect(afterTally).toEqual(0);
     });
   }));
   it('should getUsers correctly as Lead user', () => {
