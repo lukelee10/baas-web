@@ -19,8 +19,6 @@ import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
 import { RequestModel } from './../../models/request-model';
 
-// tslint:disable-next-line: max-line-length
-// tslint:disable-next-line: max-line-length
 const moment = moment_;
 
 @Component({
