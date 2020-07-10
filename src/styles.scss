@@ -42,6 +42,7 @@ body {
  * select and override details for this specific type of element.
  */
 .baas-request-details-dialog-container {
+  // TODO One day we should find a way to move these styles to a component-level
   max-height: 90vh;
   max-width: 100vw;
   .mat-dialog-container {
