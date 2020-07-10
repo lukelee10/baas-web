@@ -1,22 +1,32 @@
-<div fxLayout="column" fxFlexAlign="center center">
-  <div fxLayout="row" fxFlex="100" class="reqdetails-title-bar ">
-    <div fxFlex="95">Request Details</div>
-    <button
-      mat-stroked-button
-      color="primary"
-      (click)="closePopup()"
-      style="color: white; font-size: small"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
+<div
+  class="draggable-request-details"
+  fxLayout="column"
+  fxFlexAlign="center center"
+  cdkDrag
+  cdkDragRootElement=".cdk-overlay-pane"
+  cdkDragBoundary=".cdk-overlay-container"
+>
+  <div class="reqdetails-title-bar no-scrolling-overflow" cdkDragHandle>
+    <div class="request-details-title">Request Details</div>
+    <div class="request-details-close-button">
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="closePopup()"
+        class="baas-mat-close-button"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
   </div>
   <div
     fxFlex="100"
     fxFlexOffset=".3"
+    fxLayout="row wrap"
     *ngIf="!showSpinner"
-    style="border: 1px solid gray;  border-radius: 5px;"
+    class="request-details-summary-info"
   >
-    <div fxLayout="column" fxFlex="25">
+    <div fxLayout="column" fxFlex="25" class="image-status-overview">
       <div class="pic-frame pic-frame--quick-zoom">
         <img
           class="resize-keep-aspect"
@@ -51,28 +61,29 @@
         <div fxFlex="10"></div>
         <div fxFlex="10" class="modality-flag">{{ request.Modality }}</div>
       </div>
-      <div fxLayout="row" fxFlexOffset="2">
+      <div
+        fxLayout="row wrap"
+        fxFlexOffset="1"
+        class="request-detail-line-item"
+      >
         <div fxFlex="15" class="request-detail-label">Request:</div>
-        <div fxFlex="65" class="digit-bar">
+        <div fxFlex="nogrow" class="digit-bar">
           {{ request.Id }}
         </div>
 
         <div fxFlex="20">
-          <i
-            class="material-icons"
-            style="color:#616A6B; cursor: pointer;  "
-            title="Copy to Clip-board"
+          <i class="material-icons baas-copy-icon" title="Copy to Clip-board"
             >content_copy</i
           >&nbsp;
         </div>
       </div>
-      <div fxLayout="row" fxFlexOffset="1">
+      <div fxLayout="row" fxFlexOffset="1" class="request-detail-line-item">
         <div fxFlex="15" class="request-detail-label">File:</div>
         <div fxFlex="85" class="request-detail-text">
           {{ requestDetails?.Filename }}
         </div>
       </div>
-      <div fxLayout="row" fxFlexOffset="1">
+      <div fxLayout="row" fxFlexOffset="1" class="request-detail-line-item">
         <div fxFlex="15" class="request-detail-label">Submitted:</div>
         <div fxFlex="85" class="request-detail-text">
           {{ request.StatusTimestamp | date: 'medium' }}
@@ -80,8 +91,13 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="!showSpinner" fxLayout="row" [fxFlex]="100" fxFlexOffset="1">
+  <div
+    *ngIf="!showSpinner"
+    fxLayout="row"
+    [fxFlex]="100"
+    fxFlexOffset="1"
+    class="no-scrolling-overflow"
+  >
     <div [fxFlex]="pageSettings.FlexLeft" class="details-H2">
       VETTING SYSTEM RESPONSES
     </div>
@@ -227,6 +243,7 @@
     *ngIf="showSpinner"
     fxFlexOffset="20"
     fxLayoutAlign="center center"
+    class="no-scrolling-overflow"
   >
     <mat-spinner
       matTooltip="Loading data"
