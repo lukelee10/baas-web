@@ -1,37 +1,97 @@
+$requestDetailsZIndex: 1;
+$longestRequestStatusChar: 18ch;
+$lengthOfStandardRequestId: 36ch;
+
 .reqdetails-title-bar {
   background-color: rgba(#3f51b5, 0.85);
   color: white !important;
-  padding: 5px 0px 0px 5px;
+  padding: 0;
   text-align: left;
   border: 2px solid #3f51b5;
   border-radius: 5px;
+  // Not all WebBrowsers support the grab cursor, so move is assinged as a
+  // fallback value.
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  &:active {
+    cursor: grabbing;
+    cursor: grab;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
+
+  & > * {
+    align-self: center;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .request-details-title {
+    padding-left: 1ch;
+  }
+
+  .request-details-close-button {
+    float: right;
+    cursor: pointer !important;
+  }
+}
+
+.image-status-overview {
+  min-width: calc(#{$longestRequestStatusChar} + 1ch);
+  min-height: 170px;
+  padding: 0;
+  box-sizing: border-box;
+  // Set baseline font-size that will be used for calculating sizes of children
+  font-size: 16px;
+}
+
+.pic-frame {
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #e5e8e8;
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  width: 100%;
+  vertical-align: middle;
 }
 
 .resize-keep-aspect {
   display: block;
-  max-width: 130px;
+  max-width: 100%;
   max-height: 170px;
   width: auto;
   height: auto;
 }
 
-.pic-frame {
-  width: 130px;
-  height: 170px;
-  background-color: #e5e8e8;
-  padding: 4px;
-  //  overflow: hidden;
-}
-.pic-frame--quick-zoom img {
-  transform-origin: 0 0;
-  transition: transform 0.25s, visibility 0.25s ease-in;
-}
+.pic-frame--quick-zoom {
+  text-align: center;
+  img {
+    transform-origin: 0 0;
+    transition: transform 0.25s, visibility 0.25s ease-in;
+    display: inline-block;
+  }
+  // Transformation to zoom-in on image
+  &:hover {
+    // Set explicit sizing prior to zoom transformation, otherwise the image
+    // will fill the Right and Bottom of the page.
+    max-width: calc(#{$longestRequestStatusChar} + 1ch);
+    max-height: 170px;
 
-/* The Transformation */
-.pic-frame--quick-zoom:hover img {
-  transform: scale(3);
-  border: 2px solid lightgray;
-  z-index: 2;
+    text-align: left;
+
+    position: fixed;
+    z-index: calc(#{$requestDetailsZIndex} + 1);
+
+    img {
+      transform: scale(3);
+      box-shadow: 0px 0px 1px 1px lightgray;
+      overflow: visible;
+    }
+  }
 }
 
 .modality-flag {
@@ -39,14 +99,27 @@
   padding: 2px;
   background-color: #e5e8e8;
   font-weight: bold;
+  // Specify height using most-likely supported unit ascending to least-likely
+  // supported units.
   height: 30px;
+  height: 4ex;
+  line-height: 4ex;
   min-width: 130px;
+  display: inline-block;
 }
+
 .head-alert {
   height: 30px;
   padding: 5px;
   background-color: #e5e8e8;
 }
+
+// When the "Alert.Level" field on a response is an empty string, this becomes
+// rule is activated, since class is populated as: "head-alert--" + ""
+.head-alert-- {
+  visibility: hidden;
+}
+
 .head-alert--warning {
   color: white;
   display: inline !important;
@@ -105,9 +178,13 @@
 }
 
 .status-flag {
-  width: 130px !important;
-  font-size: smaller;
+  padding: 2px 4px;
+  box-sizing: border-box;
+  text-align: center;
+  width: 100%;
+  font-size: small;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .status-grid-left {
@@ -116,10 +193,6 @@
   padding: 4px;
 }
 
-.status-flag {
-  padding: 4px;
-  font-size: small;
-}
 .status-PND {
   background-color: rgba(gray, 0.6);
   color: black;
@@ -146,8 +219,9 @@
 .response-details-log {
   height: 360px;
   background-color: #e5e7e9;
-  overflow-y: scroll;
+  overflow: auto;
   border-bottom: 3px solid #cacfd2;
+  scrollbar-width: thin;
   scrollbar-color: #90a4ae #cfd8dc;
   &::-webkit-scrollbar {
     width: 0.8em;
@@ -189,18 +263,33 @@
   font-size: small;
   font-weight: bold;
   color: #616a6b;
-  padding: 2px;
+  padding: 0 0.5ch;
+  height: 3ex;
+  line-height: 3ex;
+  width: calc(#{$lengthOfStandardRequestId} + 2ch);
+  min-width: calc(#{$lengthOfStandardRequestId} + 2ch);
 }
 
-.request-detail-label {
-  font-size: small;
-  color: rgb(93, 109, 126);
-  font-weight: bold;
+.request-details-summary-info {
+  border: 1px solid gray;
+  border-radius: 5px;
+  // The following line can be enabled to disable wrapping on the flex
+  // containers:
+  // min-width: 688px;
 }
 
-.request-detail-text {
+.request-detail-line-item {
   font-size: small;
   color: rgb(93, 109, 126);
+  .request-detail-label {
+    font-weight: bold;
+    min-width: 10ch;
+  }
+}
+
+.baas-copy-icon {
+  color: #616a6b;
+  cursor: pointer;
 }
 
 .toggle-icon {
@@ -220,6 +309,11 @@
   color: #5d6d7e;
   font-weight: bold;
   width: 315px;
+}
+
+.baas-mat-close-button {
+  color: white;
+  font-size: small;
 }
 
 .baas-mat-expansion-panel {
@@ -258,4 +352,31 @@
 .details-remarks {
   font-family: 'Courier New', Courier, monospace;
   font-size: small;
+}
+
+.draggable-request-details {
+  z-index: $requestDetailsZIndex;
+  position: relative;
+  transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
+  display: flex;
+  min-width: 10vw;
+  min-height: 5vh;
+
+  > *:not(.no-scrolling-overflow) {
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #90a4ae #cfd8dc;
+    &::-webkit-scrollbar {
+      width: 0.8em;
+      height: 0.5em;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(gray, 0.1);
+      border-radius: 3px;
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
 }

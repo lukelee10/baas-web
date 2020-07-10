@@ -28,6 +28,7 @@ export class RequestDetailsComponent implements OnInit {
   requestDetails: RequestDetails;
   showSpinner = true;
   pageSettings = this.getPageSettings(false);
+
   constructor(
     public dialogRef: MatDialogRef<RequestDetailsComponent>,
     private requestDetailService: RequestDetailService,
