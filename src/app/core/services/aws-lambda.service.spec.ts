@@ -140,7 +140,7 @@ export const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
       email,
       action
     };
-    // console.debug('wrote to audit log:', body);
+    console.log('wrote to audit log:', body);
   }
 };
 

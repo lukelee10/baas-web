@@ -1,3 +1,5 @@
+import 'hammerjs';
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -8,12 +10,11 @@ import { UserService } from 'src/app/core/services/user.service';
 
 import { LogOutComponent } from './log-out.component';
 
-class MockAuthenticationSerivce extends AuthenticationService {
-  LoggedUser: any = 'Hello';
-  Logout() {
+const MockAuthenticationSerivce: Partial<AuthenticationService> = {
+  Logout: () => {
     // do nothing for now, since it's supposed to have set this state to be logged out.
   }
-}
+};
 class MockUserService extends UserService {
   get IsAdmin(): boolean {
     return true;
@@ -25,6 +26,7 @@ class MockUserService extends UserService {
 describe('LogOutComponent', () => {
   let component: LogOutComponent;
   let fixture: ComponentFixture<LogOutComponent>;
+  let auth: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,23 +37,22 @@ describe('LogOutComponent', () => {
       ],
       declarations: [LogOutComponent],
       providers: [
-        { provide: AuthenticationService, useClass: MockAuthenticationSerivce },
+        { provide: AuthenticationService, useValue: MockAuthenticationSerivce },
         { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
         { provide: UserService, useClass: MockUserService }
       ]
     }).compileComponents();
-  }));
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(LogOutComponent);
     component = fixture.componentInstance;
+    const authService = fixture.debugElement.injector.get(
+      AuthenticationService
+    );
+    auth = spyOn(authService, 'Logout').and.returnValue();
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-  it('should logout correctly', () => {
-    expect(true).toBeTruthy();
+    expect(auth).toHaveBeenCalled();
   });
 });
