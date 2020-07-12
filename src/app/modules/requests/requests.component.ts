@@ -45,7 +45,6 @@ export class RequestsComponent implements OnInit {
 export class RequestAuthenticationGuard
   implements CanDeactivate<RequestsComponent> {
   canDeactivate(component: RequestsComponent) {
-      debugger;
     if (component.isDirty()) {
       return confirm('Are you sure you want to navigate away from this page?');
     } else {
