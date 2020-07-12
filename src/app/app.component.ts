@@ -53,6 +53,7 @@ export class AppComponent implements OnInit {
         this.appMessagesService.getMessage(AppMessage.SessionTimeOut),
         this.appMessagesService.getTitle(AppMessage.SessionTimeOut)
       );
+      this.authenticationService.Logout();
       this.router.navigate(['/login']);
     });
 
