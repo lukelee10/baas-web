@@ -73,6 +73,10 @@ export class ProviderCheckboxesComponent implements OnInit {
     });
   }
 
+  reset() {
+    this.formProviders.get('providerControls').reset();
+  }
+
   private getViewModelProviders(providers: any): void {
     for (const item of providers.Items) {
       this.providersViewModel.push({

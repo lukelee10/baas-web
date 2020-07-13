@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-log-out',
@@ -6,7 +9,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./log-out.component.scss']
 })
 export class LogOutComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private awsLambdaService: AwsLambdaService,
+    public authenticationService: AuthenticationService,
+    private userService: UserService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.awsLambdaService.auditLog(
+      this.authenticationService.LoggedUser,
+      'LogOut'
+    );
+    this.authenticationService.Logout();
+    this.userService.GetLatestMenuContext(false);
+  }
 }

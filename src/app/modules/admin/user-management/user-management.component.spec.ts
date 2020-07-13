@@ -264,13 +264,6 @@ describe('UserManagementComponent', () => {
       role: 'Lead',
       isDisabled: false
     };
-
-    const tally = [
-      ...fixture.debugElement.nativeNode.parentElement.querySelectorAll(
-        'mat-dialog-container'
-      )
-    ].filter(node => !node.innerText.includes('BaaS Notification')).length;
-    expect(tally).toEqual(0);
     component.openDialog(user);
     component.detailsPopup.close({
       disabled: true,

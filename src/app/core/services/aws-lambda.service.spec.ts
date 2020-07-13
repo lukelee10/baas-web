@@ -137,6 +137,13 @@ export const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
   },
   updateOrg(org: any): Observable<any> {
     return of({ status: 'ok', org });
+  },
+  auditLog(email: string, action: string) {
+    const body = {
+      email,
+      action
+    };
+    console.log('wrote to audit log:', body);
   }
 };
 
