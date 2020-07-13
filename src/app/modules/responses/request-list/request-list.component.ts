@@ -115,25 +115,18 @@ export class RequestListComponent implements OnInit, OnChanges {
       pkgRequests.push(pkgRquest);
     });
 
-    const pkgRequestsSorted = pkgRequests.sort((n1: Request, n2: Request) => {
-      if (n1.StatusPrecedence > n2.StatusPrecedence) {
-        return 1;
-      }
-
-      if (n1.StatusPrecedence < n2.StatusPrecedence) {
-        return -1;
-      }
-
-      return 0;
-    });
-
-    return pkgRequestsSorted;
+    return pkgRequests.sort(
+      (n1: Request, n2: Request) => n1.StatusPrecedence - n2.StatusPrecedence
+    );
   }
 
   openDialog(request: Request): void {
     this.detailsPopup = this.dialog.open(RequestDetailsComponent, {
-      width: '800px',
-      height: '700px',
+      maxWidth: '95%',
+      maxHeight: '90%',
+      minHeight: '10%',
+      minWidth: '36%',
+      panelClass: ['cdk-overlay-pane', 'baas-request-details-dialog-container'],
       data: request
     });
   }
