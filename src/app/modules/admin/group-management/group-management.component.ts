@@ -63,6 +63,7 @@ const digOffspring = (groupMap, fqn) => {
   styleUrls: ['./group-management.component.scss']
 })
 export class GroupManagementComponent implements OnInit {
+  // TODO Consider renaming addActionOn; it is used for "Disable" & "Rename" too
   @Input() addActionOn = false;
   @Output() selectGroup = new EventEmitter();
   changeWatcher = new BehaviorSubject<GroupNode[]>([]);
