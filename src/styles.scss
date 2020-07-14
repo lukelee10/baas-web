@@ -34,6 +34,9 @@ body {
   background-color: navy;
 }
 
+.baas-packages-mat-drawer-outer > div {
+  overflow: hidden !important;
+}
 /*
  * Unfortunately, there is no way to customize a mat-dialog-container
  * class without touching the global styles.scss file.
