@@ -25,11 +25,14 @@
       <mat-icon>add</mat-icon>
     </button>
     <!-- EditGroupName -->
-    <button 
+    <button
+      *ngIf="addActionOn"
       mat-icon-button
       (click)="askGroupNameAndRenameNode(solicitEditedGroupName, node)"
     >
-    <mat-icon matTooltip="Edit Group Name" style="font-size: 15px">edit</mat-icon>
+      <mat-icon matTooltip="Edit Group Name" style="font-size: 15px"
+        >edit</mat-icon
+      >
     </button>
 
     <mat-slide-toggle
@@ -57,16 +60,19 @@
       *ngIf="addActionOn"
       mat-icon-button
       (click)="askGroupNameAndAddToNode(solicitGroupName, node)"
-    >    
+    >
       <mat-icon>add</mat-icon>
     </button>
 
     <!-- EditGroupName -->
-    <button 
+    <button
+      *ngIf="addActionOn"
       mat-icon-button
       (click)="askGroupNameAndRenameNode(solicitEditedGroupName, node)"
     >
-      <mat-icon matTooltip="Edit Group Name" style="font-size: 15px">edit</mat-icon>
+      <mat-icon matTooltip="Edit Group Name" style="font-size: 15px"
+        >edit</mat-icon
+      >
     </button>
 
     <mat-slide-toggle
@@ -124,7 +130,13 @@
       <mat-label
         >Rename your {{ isDialogOrg ? 'organization' : 'group' }}</mat-label
       >
-      <input matInput pattern="[^/]+" title="Cannot contain forward slash" onkeypress="return '/'.charCodeAt(0) !== event.charCode" [(ngModel)]="dialogValue" />
+      <input
+        matInput
+        pattern="[^/]+"
+        title="Cannot contain forward slash"
+        onkeypress="return '/'.charCodeAt(0) !== event.charCode"
+        [(ngModel)]="dialogValue"
+      />
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">

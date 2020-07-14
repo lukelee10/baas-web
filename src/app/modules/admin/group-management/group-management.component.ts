@@ -110,12 +110,12 @@ export class GroupManagementComponent implements OnInit {
 
   ngOnInit() {
     this.isAddOrgOn = this.userService.IsAdmin && this.addActionOn;
-    this.getOrgs();    
-  } 
+    this.getOrgs();
+  }
 
-  getOrgs() : Promise<any> {
-    const getOrgs = this.awsLambdaService.getOrgs().toPromise();
-      return getOrgs.then(orgs => {
+  getOrgs(): Observable<any> {
+    const getOrgs = this.awsLambdaService.getOrgs();
+    getOrgs.subscribe(orgs => {
       if (orgs.Items) {
         // orgMap  maps of root org names -> org (name, [children])
         const orgMap = new Map();
@@ -182,7 +182,8 @@ export class GroupManagementComponent implements OnInit {
         ];
         this.changeWatcher.next(list);
       }
-    }); 
+    });
+    return getOrgs;
   }
 
   getLevel = (node: GroupFlatNode) => node.level;
@@ -253,36 +254,38 @@ export class GroupManagementComponent implements OnInit {
   renameNode(flatNode: GroupFlatNode, name: string) {
     this.showSpinner = true;
 
-    const oldFqn = (flatNode.fqn || '');
+    const oldFqn = flatNode.fqn || '';
     // const renamedFqn = oldFqn.replace(oldFqn.substring(oldFqn.lastIndexOf('/')),'/' + name);
     const fqnTokens = oldFqn.split('/');
-   
+
     // Remove old name & insert new name
     fqnTokens.pop();
     fqnTokens.push(name);
     const renamedFqn = fqnTokens.join('/');
     const renamedOrg = {
-      oldName: flatNode.fqn, name: renamedFqn
+      oldName: flatNode.fqn,
+      name: renamedFqn
     };
-    let userMessage = 'Successfully Updated the Group Name';  
+    let userMessage = 'Successfully Updated the Group Name';
 
     this.awsLambdaService.updateOrg(renamedOrg).subscribe(
       (data: any) => {
         this.notificationService.successful(userMessage);
         // this.ngOnInit();
-        this.getOrgs().then(() => {
+        this.getOrgs().subscribe(() => {
           const temp = this.changeWatcher.value;
           this.changeWatcher.next([]);
           this.changeWatcher.next(temp);
           for (const key of this.flatNodeMap.keys()) {
-              if (renamedFqn.includes(key.fqn)) {
-                this.treeControl.expand(key)
-              }
+            if (renamedFqn.includes(key.fqn)) {
+              this.treeControl.expand(key);
             }
-          })
+          }
+        });
       },
       error => {
-        userMessage = 'An error occured while Updating the Group Name. Please try again.';
+        userMessage =
+          'An error occured while Updating the Group Name. Please try again.';
         this.notificationService.error(userMessage);
         this.showSpinner = false;
       },
@@ -329,7 +332,7 @@ export class GroupManagementComponent implements OnInit {
     templateRef: TemplateRef<any>,
     flatNode: GroupFlatNode
   ) {
-    this.isDialogOrg = false;    
+    this.isDialogOrg = false;
     this.dialogRef = this.dialog.open(templateRef);
     this.entity.markAsPristine();
     this.entity.clearValidators();
@@ -344,8 +347,8 @@ export class GroupManagementComponent implements OnInit {
     templateRef: TemplateRef<any>,
     flatNode: GroupFlatNode
   ) {
-    this.isDialogOrg = false;   
-    this.dialogValue = flatNode.item; 
+    this.isDialogOrg = false;
+    this.dialogValue = flatNode.item;
     this.dialogRef = this.dialog.open(templateRef);
     this.dialogRef.afterClosed().subscribe(newName => {
       if (newName) {
