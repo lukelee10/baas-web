@@ -1,3 +1,10 @@
+<mat-toolbar color="primary" *ngIf="addActionOn">
+  <span>Org/Groups Management</span>
+  <span class="spacer"></span>
+  <span style="font-size: small;">(You are in group: {{ myGroup }})</span>
+  <span class="spacer"></span>
+</mat-toolbar>
+
 <button
   *ngIf="isAddOrgOn"
   matTooltip="Add organization"
@@ -15,8 +22,13 @@
     matTreeNodeToggle
     matTreeNodePadding
   >
-    <button mat-icon-button disabled></button>
+    <button mat-icon-button disabled>
+      <mat-icon style="transform: scale(0.8);">
+        fiber_manual_record
+      </mat-icon>
+    </button>
     <div (click)="selectNode(node)">{{ node.item }}</div>
+    <span class="spacer"></span>
     <button
       *ngIf="addActionOn"
       mat-icon-button
@@ -34,7 +46,6 @@
         >edit</mat-icon
       >
     </button>
-
     <mat-slide-toggle
       *ngIf="addActionOn"
       [checked]="node.disabled"
@@ -56,6 +67,7 @@
       </mat-icon>
     </button>
     <div (click)="selectNode(node)">{{ node.item }}</div>
+    <span class="spacer"></span>
     <button
       *ngIf="addActionOn"
       mat-icon-button
@@ -74,7 +86,6 @@
         >edit</mat-icon
       >
     </button>
-
     <mat-slide-toggle
       *ngIf="addActionOn"
       [checked]="node.disabled"

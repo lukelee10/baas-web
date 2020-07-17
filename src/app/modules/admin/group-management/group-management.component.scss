@@ -9,7 +9,9 @@ mat-tree-node:hover {
 mat-icon {
   transform: scale(1.5);
 }
-
 mat-slide-toggle {
-  padding-left: 100px;
+  margin-right: 2rem;
+}
+.spacer {
+  flex: 1 1 auto;
 }
