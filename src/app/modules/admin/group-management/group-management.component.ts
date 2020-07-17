@@ -1,26 +1,13 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  TemplateRef
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MatSlideToggleChange
-} from '@angular/material';
-import {
-  MatTreeFlatDataSource,
-  MatTreeFlattener
-} from '@angular/material/tree';
+import { MatDialog, MatDialogRef, MatSlideToggleChange } from '@angular/material';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { BaaSGroup } from 'src/app/shared/models/user';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 
 /**
@@ -41,18 +28,6 @@ export class GroupFlatNode {
   fqn: string;
   disabled: boolean;
 }
-
-const digOffspring = (groupMap, fqn) => {
-  const parentName = fqn.split('/').slice(-1)[0];
-  const children = groupMap.get(parentName);
-  if (children) {
-    children.forEach(childNode => {
-      childNode.fqn = `${fqn}/${childNode.item}`;
-      childNode.children = digOffspring(groupMap, childNode.fqn);
-    });
-  }
-  return children;
-};
 
 /**
  * @title Tree with insert and save
@@ -116,73 +91,25 @@ export class GroupManagementComponent implements OnInit {
 
   getOrgs(): Observable<any> {
     const getOrgs = this.awsLambdaService.getOrgs();
-    getOrgs.subscribe(orgs => {
-      if (orgs.Items) {
-        // orgMap  maps of root org names -> org (name, [children])
-        const orgMap = new Map();
-        // groupMap maps the name of the group -> org (name, [children], parent(optional))
-        const groupMap = new Map();
-
-        // array of root orgs with groups to be inside children
-        const orgList = [];
-
-        // loop through the subscribed orgs array, creating orgMap and groupMap
-        for (const item of orgs.Items) {
-          if (!item.Parent) {
-            const orgNode = {
-              item: item.OrgId,
-              type: 'org',
-              children: null,
-              disabled: item.Disabled || false
-            };
-            orgMap.set(item.OrgId, orgNode);
-          } else {
-            const parentName = item.Parent;
-            const groupNode = {
-              item: item.OrgId,
-              type: 'group',
-              parent: parentName,
-              disabled: item.Disabled || false
-            };
-
-            if (!groupMap.has(parentName)) {
-              groupMap.set(parentName, []);
-            }
-            groupMap.get(parentName).push(groupNode);
-          }
-        }
-
-        // given the orgMap of roots, and groupMap of nodes, I would sew the children to their parents
-        for (const orgName of orgMap.keys()) {
-          const node = orgMap.get(orgName);
-          node.fqn = orgName;
-          node.children = digOffspring(groupMap, orgName);
-        }
-
-        // sort the org names map
-        const orgMapSorted = new Map([...orgMap.entries()].sort());
-        for (const orgName of orgMapSorted.keys()) {
-          orgList.push(orgMapSorted.get(orgName));
-        }
-        this.changeWatcher.next(orgList);
-      } else {
-        const digKids = (groups = [], pFQN) =>
-          groups.map(grp => {
-            const FQN = `${pFQN}/${grp.group}`;
-            return {
-              item: grp.group,
-              children: digKids(grp.subgroups, FQN),
-              fqn: FQN,
-              disabled: grp.disabled
-            };
-          });
-        const fqn = this.userService.Group;
-        const kids = digKids(orgs, fqn);
-        const list = [
-          { item: orgs[0].parent, children: kids, fqn, disabled: false }
-        ];
-        this.changeWatcher.next(list);
-      }
+    getOrgs.subscribe((orgs: BaaSGroup[]) => {
+      const digKids = (groups = [], pFQN) =>
+        groups.map(grp => {
+          const FQN = `${pFQN}/${grp.group}`;
+          return {
+            item: grp.group,
+            children: digKids(grp.subgroups, FQN),
+            fqn: FQN,
+            disabled: grp.disabled
+          };
+        });
+      // const fqn = this.userService.Group;
+      const list = orgs.map(org => ({
+        item: org.group,
+        children: digKids(org.subgroups, this.userService.Group),
+        fqn: this.userService.Group,
+        disabled: org.disabled
+      }))
+      this.changeWatcher.next(list);
     });
     return getOrgs;
   }
