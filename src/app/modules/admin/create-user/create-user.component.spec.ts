@@ -82,27 +82,46 @@ const AwsLambdaServiceMock: any = {
       : of({ status: 'ok' });
   },
   getOrgs(): Observable<any> {
-    return of({
-      Items: [
-        { OrgId: 'Europe', Parent: 'DOS' },
-        { OrgId: 'France Embassy', Parent: 'Europe' },
-        { OrgId: 'Chili Embassy', Parent: 'South America' },
-        { OrgId: 'GB', Parent: 'Europe' },
-        { OrgId: 'Brazil Embassy', Parent: 'South America' },
-        { OrgId: 'Glasgow', Parent: 'GB' },
-        { OrgId: 'Gang' },
-        { OrgId: 'London', Parent: 'GB' },
-        { OrgId: 'South America', Parent: 'DOS' },
-        { OrgId: 'NCIS' },
-        { OrgId: 'Springfield, VA', Parent: 'NCIS' },
-        { OrgId: 'Berlin office', Parent: 'German Embassy' },
-        { OrgId: 'DOS' },
-        { OrgId: 'German Embassy', Parent: 'Europe' }
-      ],
-      Count: 14,
-      ScannedCount: 14,
-      ConsumedCapacity: { TableName: 'SomeOrganization', CapacityUnits: 2 }
-    });
+    return of([
+      {
+        subgroups: [
+          {
+            subgroups: [
+              {
+                subgroups: [],
+                disabled: false,
+                group: 'France Embassy',
+                parent: 'Europe'
+              }
+            ],
+            disabled: false,
+            group: 'Europe',
+            parent: 'DOS'
+          },
+          {
+            subgroups: [
+              {
+                subgroups: [],
+                disabled: true,
+                group: 'Chili Embassy',
+                parent: 'South America'
+              },
+              {
+                subgroups: [],
+                disabled: true,
+                group: 'Brazil Embassy',
+                parent: 'South America'
+              }
+            ],
+            disabled: true,
+            group: 'South America',
+            parent: 'DOS'
+          }
+        ],
+        disabled: false,
+        group: 'DOS'
+      }
+    ]);
   }
 };
 
@@ -191,9 +210,9 @@ function testCase(userRole: string) {
       component.form.get('role').setValue(userRole);
       component.form.get('disabled').setValue('true');
       fixture.detectChanges();
-      const button = fixture.debugElement.nativeElement.querySelectorAll(
-        'button'
-      )[4];
+      const button = fixture.debugElement.nativeElement.querySelector(
+        'button[type="submit"]'
+      );
       button.click();
       fixture.whenStable().then(() => {
         userRole === UserRoles.Admin

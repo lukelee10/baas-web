@@ -9,3 +9,9 @@ export interface BaaSUser {
   isDisabled: boolean;
   GUID?: string;
 }
+export interface BaaSGroup {
+  group: string;
+  disabled?: boolean;
+  subgroups: BaaSGroup[];
+  parent: string; // parent name
+}
