@@ -1,8 +1,22 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MatSlideToggleChange } from '@angular/material';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatSlideToggleChange
+} from '@angular/material';
+import {
+  MatTreeFlatDataSource,
+  MatTreeFlattener
+} from '@angular/material/tree';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -44,6 +58,7 @@ export class GroupManagementComponent implements OnInit {
   changeWatcher = new BehaviorSubject<GroupNode[]>([]);
   showSpinner = false;
   entity = new FormControl('');
+  myGroup: string;
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<GroupFlatNode, GroupNode>();
@@ -82,6 +97,7 @@ export class GroupManagementComponent implements OnInit {
     this.changeWatcher.subscribe(data => {
       this.dataSource.data = data;
     });
+    this.myGroup = this.userService.Group;
   }
 
   ngOnInit() {
@@ -108,7 +124,7 @@ export class GroupManagementComponent implements OnInit {
         children: digKids(org.subgroups, this.userService.Group),
         fqn: this.userService.Group,
         disabled: org.disabled
-      }))
+      }));
       this.changeWatcher.next(list);
     });
     return getOrgs;
