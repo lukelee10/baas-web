@@ -17,7 +17,8 @@ import {
   MatTreeFlatDataSource,
   MatTreeFlattener
 } from '@angular/material/tree';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, finalize, map } from 'rxjs/operators';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -364,6 +365,13 @@ export class GroupManagementComponent implements OnInit {
   toggleDisable(event: MatSlideToggleChange, group: any): void {
     console.log('toggleDisable ', event);
     const disabledFlag: boolean = event.checked;
+    const handler = result => {
+      if (!result) {
+        event.source.checked = !disabledFlag;
+        group.disabled = !disabledFlag;
+        this.flatNodeMap.get(group).disabled = !disabledFlag;
+      }
+    };
     if (disabledFlag) {
       // User is disabling the given Group
       // Get user confirmation of this important action
@@ -376,22 +384,22 @@ export class GroupManagementComponent implements OnInit {
       dialogRef.afterClosed().subscribe(confirmResult => {
         if (confirmResult) {
           // User Confirmed
-          this.invokeDisableLambda(group, disabledFlag);
-          group.disabled = true;
+          this.invokeDisableLambda(group, disabledFlag).subscribe(handler);
         } else {
           // User Not Confirmed
-          event.source.checked = false;
-          group.disabled = false;
+          handler(false);
         }
       });
     } else {
       // disabledFlag: false, User is enabling the given Group
-      this.invokeDisableLambda(group, disabledFlag);
-      group.disabled = false;
+      this.invokeDisableLambda(group, disabledFlag).subscribe(handler);
     }
   }
 
-  private invokeDisableLambda(group: any, disableFlag: boolean) {
+  private invokeDisableLambda(
+    group: any,
+    disableFlag: boolean
+  ): Observable<boolean> {
     this.showSpinner = true;
     const groupToDisable = {
       oldName: group.fqn,
@@ -402,18 +410,23 @@ export class GroupManagementComponent implements OnInit {
       disableFlag ? 'disabled' : 'enabled'
     } the Group: ${groupName}`;
 
-    this.awsLambdaService.disableOrg(groupToDisable).subscribe(
-      (data: any) => {
+    // https://blog.angular-university.io/rxjs-error-handling/
+    return this.awsLambdaService.disableOrg(groupToDisable).pipe(
+      map(() => {
         this.notificationService.successful(userMessage);
-      },
-      error => {
+        group.disabled = disableFlag;
+        this.flatNodeMap.get(group).disabled = disableFlag;
+        return true;
+      }),
+      catchError(() => {
         userMessage = `An error occured while ${
           disableFlag ? 'disabling' : 'enabling'
         } the Group: ${groupName}. Please try again.   `;
         this.notificationService.error(userMessage);
         this.showSpinner = false;
-      },
-      () => (this.showSpinner = false)
+        return of(false);
+      }),
+      finalize(() => (this.showSpinner = false))
     );
   }
 
