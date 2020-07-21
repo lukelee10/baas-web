@@ -273,9 +273,15 @@ $lengthOfStandardRequestId: 36ch;
 .response-match-id {
   font-family: 'Courier New', Courier, monospace;
   font-size: smaller;
-  word-wrap: break-word;
-  list-style-position: inside;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  list-style-position: outside;
   padding: 0;
+  
+  & > li {
+    padding-left: 1ch;
+    text-indent: -1ch;
+  }
 }
 
 .request-details-summary-info {
