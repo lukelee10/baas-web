@@ -1,3 +1,4 @@
+// TODO this file will need to be renamed after consensus.
 export interface BaaSUser {
   username: string;
   fullname: string;
