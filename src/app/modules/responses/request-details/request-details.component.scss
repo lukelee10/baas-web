@@ -275,9 +275,9 @@ $lengthOfStandardRequestId: 36ch;
   font-size: smaller;
   overflow-wrap: anywhere;
   word-break: normal;
-  list-style-position: outside;
+  list-style-position: inside;
   padding: 0;
-  
+
   & > li {
     padding-left: 1ch;
     text-indent: -1ch;
