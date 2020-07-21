@@ -50,6 +50,7 @@
       *ngIf="addActionOn"
       [checked]="node.disabled"
       (change)="toggleDisable($event, node)"
+      class="fixed-width-content"
     >
       {{ node.disabled ? 'Disabled' : 'Disable' }}
     </mat-slide-toggle>
@@ -90,6 +91,7 @@
       *ngIf="addActionOn"
       [checked]="node.disabled"
       (change)="toggleDisable($event, node)"
+      class="fixed-width-content"
     >
       {{ node.disabled ? 'Disabled' : 'Disable' }}
     </mat-slide-toggle>
