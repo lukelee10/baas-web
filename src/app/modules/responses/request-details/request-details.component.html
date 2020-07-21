@@ -161,12 +161,15 @@
             <div fxLayout="column">
               <div fxLayout="row" fxFlex="100">
                 <div fxFlex="20">{{ vettingSystem.IdFieldName }}:</div>
-                <div fxFlex="80">
-                  <span
-                    [ngClass]="{ 'digit-bar': vettingSystem.Ids.toString() }"
-                    >{{ vettingSystem.Ids.toString() }}
-                  </span>
-                </div>
+                <ul
+                  [ngClass]="{
+                    'response-match-id': vettingSystem.Ids.toString()
+                  }"
+                >
+                  <li *ngFor="let Id of vettingSystem.Ids">
+                    {{ Id }}
+                  </li>
+                </ul>
               </div>
 
               <div fxFlex="100" class="details-H3">

@@ -270,6 +270,20 @@ $lengthOfStandardRequestId: 36ch;
   min-width: calc(#{$lengthOfStandardRequestId} + 2ch);
 }
 
+.response-match-id {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: smaller;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  list-style-position: inside;
+  padding: 0;
+
+  & > li {
+    padding-left: 1ch;
+    text-indent: -1ch;
+  }
+}
+
 .request-details-summary-info {
   border: 1px solid gray;
   border-radius: 5px;
