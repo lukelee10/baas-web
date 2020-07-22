@@ -1,100 +1,113 @@
 <form [formGroup]="fileUploadFormGroup">
-  <div
-    fxLayout="row"
-    [style.margin-top]="'12px'"
-    [style.margin-left]="'-150px'"
-    style="width:1165px"
-  >
-    <mat-card fxFlex="162px" style="text-align: center;">
-      <div *ngIf="!IsFileValidSize() || !IsFileValidType()">
-        <span style="background-color: lightblue; padding:10px"
-          ><b>ERROR</b></span
+  <div fxFlex="100" style="background-color: #f1f1f1; border-radius: 7px; ">
+    <div
+      fxLayout="row"
+      style="border: 10px solid #f1f1f1 ;  background-color: white; padding-top: 10px; min-width: 1000px;border-radius: 7px; "
+    >
+      <!--Preview-->
+      <div fxFlex="10" style="text-align: left;">
+        <div *ngIf="!IsFileValidSize() || !IsFileValidType()">
+          <span style="background-color: lightblue; padding:10px"
+            ><b>ERROR</b></span
+          >
+        </div>
+        <div
+          *ngIf="IsFileValidSize() && IsFileValidType() && File.binaryMimetype"
         >
+          <b>Preview Unavailable</b>
+        </div>
+        <img
+          *ngIf="IsFileValidSize() && IsFileValidType() && !File.binaryMimetype"
+          src="{{ File.preview }}"
+          width="100px"
+          height="100px"
+          alt="{{ File.name }}"
+        />
       </div>
+      <!--Filename-->
+      <div fxFlex="15" style="text-align: left; word-wrap: break-word;">
+        {{ File.name }}
+      </div>
+      <!--File Size (KB)-->
+      <div fxFlex="8" style="text-align: right;">
+        {{ File.size / 1000 }}
+        <mat-error *ngIf="!IsFileValidSize()">{{
+          invalidFileSizeMsg
+        }}</mat-error>
+      </div>
+      <!--File Type-->
       <div
-        *ngIf="IsFileValidSize() && IsFileValidType() && File.binaryMimetype"
+        *ngIf="File.type && !File.binaryMimetype"
+        fxFlex="10"
+        fxFlexOffset="2"
+        style="text-align: left;"
       >
-        <b>Preview Unavailable</b>
+        {{ File.type }}
+        <mat-error *ngIf="!IsFileValidType()">{{
+          invalidFileTypeMsg
+        }}</mat-error>
       </div>
-      <img
-        *ngIf="IsFileValidSize() && IsFileValidType() && !File.binaryMimetype"
-        src="{{ File.preview }}"
-        width="100px"
-        height="100px"
-        alt="{{ File.name }}"
-      />
-    </mat-card>
-    <mat-card fxFlex="117px" style="text-align: center; word-wrap: break-word;">
-      {{ File.name }}
-    </mat-card>
-    <mat-card fxFlex="99px" style="text-align: center;">
-      {{ File.size / 1000 }}
-      <mat-error *ngIf="!IsFileValidSize()">{{ invalidFileSizeMsg }}</mat-error>
-    </mat-card>
-    <mat-card
-      *ngIf="File.type && !File.binaryMimetype"
-      fxFlex="112px"
-      style="text-align: center;"
-    >
-      {{ File.type }}
-      <mat-error *ngIf="!IsFileValidType()">{{ invalidFileTypeMsg }}</mat-error>
-    </mat-card>
-    <mat-card
-      *ngIf="!File.type && File.binaryMimetype"
-      fxFlex="112px"
-      style="text-align: center;"
-    >
-      {{ File.binaryMimetype }}
-      <mat-error *ngIf="!IsFileValidType()">{{ invalidFileTypeMsg }}</mat-error>
-    </mat-card>
-    <mat-card fxFlex="244px" style="text-align: center;">
-      <mat-hint>Please choose a modality</mat-hint>
-      <mat-form-field>
-        <mat-select formControlName="modality">
-          <mat-option
-            *ngFor="let modality of lookupStaticDataService.modalityTypesData"
-            [value]="modality.value"
-            [matTooltip]="modality.tooltip"
+
+      <div
+        *ngIf="!File.type && File.binaryMimetype"
+        fxFlex="15"
+        style="text-align: left;"
+      >
+        {{ File.binaryMimetype }}
+        <mat-error *ngIf="!IsFileValidType()">{{
+          invalidFileTypeMsg
+        }}</mat-error>
+      </div>
+      <!--Modality-->
+      <div fxFlex="20" style="text-align: left;">
+        <mat-hint>Please choose a modality</mat-hint>
+        <mat-form-field>
+          <mat-select formControlName="modality">
+            <mat-option
+              *ngFor="let modality of lookupStaticDataService.modalityTypesData"
+              [value]="modality.value"
+              [matTooltip]="modality.tooltip"
+            >
+              {{ modality.label }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="fileUploadFormGroup.controls.modality.hasError('required')"
           >
-            {{ modality.label }}
-          </mat-option>
-        </mat-select>
-        <mat-error
-          *ngIf="fileUploadFormGroup.controls.modality.hasError('required')"
-        >
-          Required
-        </mat-error>
-      </mat-form-field>
-    </mat-card>
-    <mat-card
-      *ngIf="!userService.IsFSPUser"
-      fxFlex="131px"
-      style="text-align: center;"
-    >
-      <mat-checkbox formControlName="isNotUSPerson">NO USPER</mat-checkbox>
-    </mat-card>
-    <mat-card
-      *ngIf="!userService.IsFSPUser"
-      fxFlex="240px"
-      style="text-align: center;"
-    >
-      <mat-hint>Please choose a classification</mat-hint>
-      <mat-form-field>
-        <mat-select formControlName="imageClassification">
-          <mat-option
-            *ngFor="
-              let classification of lookupStaticDataService.classificationTypesData
-            "
-            [value]="classification.value"
-            [matTooltip]="classification.tooltip"
-          >
-            {{ classification.label }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-card>
-    <mat-card style="text-align: center;">
-      <mat-icon class="action" (click)="remove()">delete</mat-icon>
-    </mat-card>
+            Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <!--USPER-->
+      <div *ngIf="!userService.IsFSPUser" style="text-align: left;">
+        <mat-checkbox formControlName="isNotUSPerson">NO USPER</mat-checkbox>
+      </div>
+      <!--Classification-->
+      <div
+        *ngIf="!userService.IsFSPUser"
+        fxFlexOffset="2"
+        fxFlex="20"
+        style="text-align: left;"
+      >
+        <mat-hint>Please choose a classification</mat-hint>
+        <mat-form-field>
+          <mat-select formControlName="imageClassification">
+            <mat-option
+              *ngFor="
+                let classification of lookupStaticDataService.classificationTypesData
+              "
+              [value]="classification.value"
+              [matTooltip]="classification.tooltip"
+            >
+              {{ classification.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!--delete-->
+      <div fxFlex="5" style="text-align: center;">
+        <mat-icon class="action" (click)="remove()">delete</mat-icon>
+      </div>
+    </div>
   </div>
 </form>

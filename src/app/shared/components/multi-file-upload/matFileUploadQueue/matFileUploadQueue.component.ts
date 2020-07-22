@@ -10,8 +10,9 @@ import {
 import { merge, Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
-import { MatFileUploadComponent } from './../matFileUpload/matFileUpload.component';
 import { UserService } from './../../../../core/services/user.service';
+import { LookupStaticDataService } from './../../../services/lookup-static-data.service';
+import { MatFileUploadComponent } from './../matFileUpload/matFileUpload.component';
 
 /**
  * A material design file upload queue component.
@@ -38,7 +39,10 @@ export class MatFileUploadQueueComponent implements AfterViewInit {
 
   @Output() eventOnUploadFilesListChanged = new EventEmitter();
 
-  constructor(public userService: UserService) {}
+  constructor(
+    public userService: UserService,
+    public lookupStaticDataService: LookupStaticDataService
+  ) {}
 
   public files: Array<any> = [];
 
