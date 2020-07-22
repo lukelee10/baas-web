@@ -5,11 +5,21 @@ mat-tree-node {
 mat-tree-node:hover {
   background-color: lightgoldenrodyellow;
 }
-
+mat-toolbar {
+  margin-bottom: 5px;
+}
 mat-icon {
   transform: scale(1.5);
 }
-
 mat-slide-toggle {
-  padding-left: 100px;
+  margin-right: 2rem;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+// TODO: FYI, '::ng-deep' is deprecated, but no replacement is available yet
+mat-slide-toggle.fixed-width-content::ng-deep {
+  & span.mat-slide-toggle-content {
+    min-width: 8ch;
+  }
 }

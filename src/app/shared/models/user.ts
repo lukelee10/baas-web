@@ -1,3 +1,4 @@
+// TODO this file will need to be renamed after consensus.
 export interface BaaSUser {
   username: string;
   fullname: string;
@@ -8,4 +9,10 @@ export interface BaaSUser {
   role: string;
   isDisabled: boolean;
   GUID?: string;
+}
+export interface BaaSGroup {
+  group: string;
+  disabled?: boolean;
+  subgroups: BaaSGroup[];
+  parent: string; // parent name
 }

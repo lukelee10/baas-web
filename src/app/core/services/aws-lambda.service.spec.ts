@@ -87,35 +87,45 @@ export const AwsLambdaServiceMock: Partial<AwsLambdaService> = {
     ]);
   },
   getOrgs(): Observable<any> {
-    return of({
-      Items: [
-        { OrgId: 'Europe', Parent: 'DOS' },
-        { OrgId: 'France Embassy', Parent: 'Europe' },
-        { OrgId: 'Chili Embassy', Parent: 'South America' },
-        { OrgId: 'GB', Parent: 'Europe' },
-        { OrgId: 'Brazil Embassy', Parent: 'South America' },
-        { OrgId: 'Glasgow', Parent: 'GB' },
-        { OrgId: 'Gang', CreatedAt: '2020-02-29T00:09:00.290Z' },
-        { OrgId: 'London', Parent: 'GB' },
-        { OrgId: 'South America', Parent: 'DOS' },
-        { OrgId: 'NCIS' },
-        { OrgId: 'Springfield, VA', Parent: 'NCIS' },
-        {
-          OrgId: 'Berlin office',
-          Parent: 'German Embassy',
-          CreatedAt: '2020-02-29T00:08:41.031Z'
-        },
-        { OrgId: 'DOS' },
-        {
-          OrgId: 'German Embassy',
-          Parent: 'Europe',
-          CreatedAt: '2020-02-29T00:01:56.790Z'
-        }
-      ],
-      Count: 14,
-      ScannedCount: 14,
-      ConsumedCapacity: { TableName: 'SomeOrganization', CapacityUnits: 2 }
-    });
+    return of([
+      {
+        subgroups: [
+          {
+            subgroups: [
+              {
+                subgroups: [],
+                disabled: false,
+                group: 'France Embassy',
+                parent: 'Europe'
+              }
+            ],
+            disabled: false,
+            group: 'Europe',
+            parent: 'DOS'
+          },
+          {
+            subgroups: [
+              {
+                subgroups: [],
+                disabled: true,
+                group: 'Chili Embassy',
+                parent: 'South America'
+              },
+              {
+                disabled: true,
+                group: 'Brazil Embassy',
+                parent: 'South America'
+              }
+            ],
+            disabled: true,
+            group: 'South America',
+            parent: 'DOS'
+          }
+        ],
+        disabled: false,
+        group: 'DOS'
+      }
+    ]);
   },
   createOrg(newOrg): Observable<any> {
     console.log('--------------------', newOrg.org);

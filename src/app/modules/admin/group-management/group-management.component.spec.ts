@@ -98,16 +98,19 @@ describe('GroupManagementComponent', () => {
       done();
     });
 
-    it('should rename an org correctly using askGroupNameAndRenameNode', done => {
+    it('should not add an org using askGroupNameAndAddRoot when user did not enter name', done => {
+      const dialogRefMock = TestBed.get(MatDialog);
+      const returnedVal = { afterClosed: () => of(null) };
+      spyOn(dialogRefMock, 'open').and.returnValue(returnedVal);
       const de: TemplateRef<any> = (groupFixture.debugElement.query(
-        By.css('#solicitEditedGroupName')
+        By.css('#solicitGroupName')
       ) as unknown) as TemplateRef<any>;
       groupComponent.askGroupNameAndRenameNode(de, testNode);
       expect(groupComponent).toBeTruthy();
       done();
     });
 
-    it('should show error when createOrg fails on add an org', done => {
+    it('should show error using askGroupNameAndAddRoot when createOrg fails on add an org', done => {
       const mockAwsLambdaService = groupFixture.debugElement.injector.get(
         AwsLambdaService
       );
@@ -171,20 +174,6 @@ describe('GroupManagementComponent', () => {
       done();
     });
 
-    it('should add a group correctly using askGroupNameAndAddToNode', done => {
-      const de: TemplateRef<any> = (groupFixture.debugElement.query(
-        By.css('#solicitGroupName')
-      ) as unknown) as TemplateRef<any>;
-      const mockNotificationService = groupFixture.debugElement.injector.get(
-        NotificationService
-      );
-      const spyService = spyOn(mockNotificationService, 'successful');
-      groupComponent.askGroupNameAndAddToNode(de, testNode);
-      expect(groupComponent).toBeTruthy();
-      expect(spyService.calls.any()).toBeTruthy();
-      done();
-    });
-
     it('should rename a group correctly using askGroupNameAndRenameNode', done => {
       const de: TemplateRef<any> = (groupFixture.debugElement.query(
         By.css('#solicitEditedGroupName')
@@ -194,6 +183,20 @@ describe('GroupManagementComponent', () => {
       );
       const spyService = spyOn(mockNotificationService, 'successful');
       groupComponent.askGroupNameAndRenameNode(de, testNode);
+      expect(groupComponent).toBeTruthy();
+      expect(spyService.calls.any()).toBeTruthy();
+      done();
+    });
+
+    it('should add a group correctly using askGroupNameAndAddToNode', done => {
+      const de: TemplateRef<any> = (groupFixture.debugElement.query(
+        By.css('#solicitGroupName')
+      ) as unknown) as TemplateRef<any>;
+      const mockNotificationService = groupFixture.debugElement.injector.get(
+        NotificationService
+      );
+      const spyService = spyOn(mockNotificationService, 'successful');
+      groupComponent.askGroupNameAndAddToNode(de, testNode);
       expect(groupComponent).toBeTruthy();
       expect(spyService.calls.any()).toBeTruthy();
       done();
@@ -240,9 +243,7 @@ describe('GroupManagementComponent', () => {
       );
 
       const dialogRefMock = TestBed.get(MatDialog);
-      const returnedVal = {
-        afterClosed: () => of(null)
-      };
+      const returnedVal = { afterClosed: () => of(null) };
 
       spyOn(dialogRefMock, 'open').and.returnValue(returnedVal);
       const de: TemplateRef<any> = (groupFixture.debugElement.query(
@@ -253,7 +254,6 @@ describe('GroupManagementComponent', () => {
       );
       const spyService = spyOn(mockNotificationService, 'error');
       groupComponent.askGroupNameAndAddToNode(de, testNode);
-      expect(groupComponent).toBeTruthy();
       expect(mockAwsLambdaServiceCall).not.toHaveBeenCalled();
       expect(spyService.calls.any()).toBeFalsy();
       done();
