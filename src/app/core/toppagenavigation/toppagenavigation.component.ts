@@ -54,7 +54,7 @@ export class TopPageNavigationComponent implements OnInit {
           if (this.userService.IsAdmin || this.userService.IsLead) {
             this.navItems.push({
               link: '/admin',
-              title: 'Admin',
+              title: 'Administration',
               icon: 'supervisor_account'
             });
           }
