@@ -14,15 +14,13 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-
 import { Observable } from 'rxjs';
 
 import { environment } from './../../../../../environments/environment';
 import { UserService } from './../../../../core/services/user.service';
+import { PackageFileModel } from './../../../../modules/models/package-file-model';
 import { LookupStaticDataService } from './../../../services/lookup-static-data.service';
 import { MatFileUploadQueueComponent } from './../matFileUploadQueue/matFileUploadQueue.component';
-
-import { PackageFileModel } from './../../../../modules/models/package-file-model';
 
 @Component({
   selector: 'app-mat-file-upload',
@@ -36,6 +34,8 @@ export class MatFileUploadComponent implements OnInit {
   /** Output  */
   @Output() removeEvent = new EventEmitter<MatFileUploadComponent>();
   @Output() handleUpload = new EventEmitter();
+  @Input() applyAllClassification: string;
+  @Input() applyAllModality: string;
 
   private file: any;
   private id: number;

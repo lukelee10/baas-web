@@ -30,18 +30,19 @@
   </div>
   <div
     fxLayout="row"
-    style="background-color: rgba(63, 81, 181, 0.45);padding:5px;;"
+    style="min-width: 1000px;background-color: rgba(63, 81, 181, 0.45);padding:5px;;"
   >
     <div
       fxFlex="45"
       style="font-size: smaller;font-weight:bold; text-align: center"
     >
-      Apply All
+      &nbsp;
     </div>
-    <div fxFlex="20" style="background-color: #f1f1f1">
+    <div fxFlex="20" fxLayout="row">
       <mat-select
-        formControlName="modality"
-        style="font-size: smaller;font-weight:bold;padding: 2px; "
+        (selectionChange)="onModalityChange($event)"
+        placeholder="Apply All Modality"
+        style="font-size: smaller;font-weight:bold;padding: 4px; width: 180px; background-color: #f1f1f1 "
       >
         <mat-option
           *ngFor="let modality of lookupStaticDataService.modalityTypesData"
@@ -51,12 +52,20 @@
           {{ modality.label }}
         </mat-option>
       </mat-select>
+      <mat-spinner
+        *ngIf="showModalitySpinner"
+        matTooltip="Processing..."
+        style="text-align: center"
+        diameter="20"
+      >
+      </mat-spinner>
     </div>
     <div fxFlex="10">&nbsp;</div>
-    <div fxFlex="20" style="background-color: #f1f1f1">
+    <div fxFlex="20" fxLayout="row">
       <mat-select
-        formControlName="imageClassification"
-        style="font-size: smaller;font-weight:bold;padding: 2px; "
+        (selectionChange)="onClassificationChange($event)"
+        placeholder="Apply All Classification"
+        style="font-size: smaller;font-weight:bold;padding: 4px; width: 200px; background-color: #f1f1f1 "
       >
         <mat-option
           *ngFor="
@@ -68,6 +77,13 @@
           {{ classification.label }}
         </mat-option>
       </mat-select>
+      <mat-spinner
+        *ngIf="showClassificationSpinner"
+        matTooltip="Processing..."
+        style="text-align: center"
+        diameter="20"
+      >
+      </mat-spinner>
     </div>
     <div fxFlex="5">&nbsp;</div>
   </div>

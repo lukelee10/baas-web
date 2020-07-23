@@ -4,11 +4,13 @@ import {
   ContentChildren,
   EventEmitter,
   forwardRef,
+  OnInit,
   Output,
   QueryList
 } from '@angular/core';
 import { merge, Observable, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 
 import { UserService } from './../../../../core/services/user.service';
 import { LookupStaticDataService } from './../../../services/lookup-static-data.service';
@@ -22,9 +24,11 @@ import { MatFileUploadComponent } from './../matFileUpload/matFileUpload.compone
   templateUrl: 'matFileUploadQueue.component.html',
   exportAs: 'matFileUploadQueue'
 })
-export class MatFileUploadQueueComponent implements AfterViewInit {
+export class MatFileUploadQueueComponent implements AfterViewInit, OnInit {
   @ContentChildren(forwardRef(() => MatFileUploadComponent))
   fileUploads: QueryList<MatFileUploadComponent>;
+  showClassificationSpinner = false;
+  showModalitySpinner = false;
 
   /** Subscription to remove changes in files. */
   private fileRemoveSubscription: Subscription | null;
@@ -38,13 +42,15 @@ export class MatFileUploadQueueComponent implements AfterViewInit {
   }
 
   @Output() eventOnUploadFilesListChanged = new EventEmitter();
+  public files: Array<any> = [];
 
   constructor(
     public userService: UserService,
-    public lookupStaticDataService: LookupStaticDataService
+    public lookupStaticDataService: LookupStaticDataService,
+    private notificationService: NotificationService
   ) {}
 
-  public files: Array<any> = [];
+  ngOnInit() {}
 
   public ngAfterViewInit() {
     // When the list changes, re-subscribe
@@ -77,5 +83,44 @@ export class MatFileUploadQueueComponent implements AfterViewInit {
 
   getQueueData(): QueryList<MatFileUploadComponent> {
     return this.fileUploads;
+  }
+
+  onClassificationChange(event) {
+    const selectedClassification = event.value;
+    const selectedClassificationType = this.lookupStaticDataService.classificationTypesData.find(
+      element => element.value === selectedClassification
+    );
+    this.fileUploads.forEach(fileUpload => {
+      fileUpload.applyAllClassification = selectedClassification;
+    });
+    this.showClassificationSpinner = true;
+    setTimeout(() => {
+      event.source.value = '';
+      this.showClassificationSpinner = false;
+      this.notificationService.notify(
+        selectedClassificationType.label + ' is apllied to all',
+        'OK',
+        2
+      );
+    }, 500);
+  }
+  onModalityChange(event) {
+    const selectedModality = event.value;
+    const selectedModalityType = this.lookupStaticDataService.modalityTypesData.find(
+      element => element.value === selectedModality
+    );
+    this.fileUploads.forEach(fileUpload => {
+      fileUpload.applyAllModality = selectedModality;
+    });
+    this.showModalitySpinner = true;
+    setTimeout(() => {
+      event.source.value = '';
+      this.showModalitySpinner = false;
+      this.notificationService.notify(
+        'Modality: ' + selectedModalityType.label + ' is apllied to all',
+        'OK',
+        2
+      );
+    }, 500);
   }
 }
