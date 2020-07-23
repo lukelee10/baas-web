@@ -1,7 +1,7 @@
 <div fxFlex="100">
   <div
     fxLayout="row"
-    style=" min-width: 1000px;background-color: rgba(63, 81, 181, 0.85); font-weight: bold; color: white; padding: 10px;border-radius: 7px; "
+    style=" min-width: 1000px;background-color: rgba(63, 81, 181, 0.85); font-weight: bold; color: white; padding: 10px;border-radius:10px 10px 0 0; "
   >
     <div fxFlex="10" style="text-align: left;">
       Preview
@@ -9,57 +9,67 @@
     <div fxFlex="15" style="text-align: left;">
       Filename
     </div>
-    <div fxFlex="8" fxLayout="column" style="text-align: right;">
-      <div>File Size</div>
-      <div style=" font-size: smaller;">(KB)</div>
+    <div fxFlex="8" style="text-align: right;">
+      File Size <span style=" font-size: smaller;">(KB)</span>
     </div>
     <div fxFlex="10" fxFlexOffset="2" style="text-align: left;">
       File Type
     </div>
-    <div fxFlex="20" fxLayout="column" style="text-align: left;">
-      <div>Modality</div>
-      <div style=" font-size: smaller;margin-top: 20px; b">
-        <mat-select formControlName="modality">
-          <mat-option
-            *ngFor="let modality of lookupStaticDataService.modalityTypesData"
-            [value]="modality.value"
-            [matTooltip]="modality.tooltip"
-          >
-            {{ modality.label }}
-          </mat-option>
-        </mat-select>
-      </div>
+    <div fxFlex="20" style="text-align: left;">
+      Modality
     </div>
-    <div *ngIf="!userService.IsFSPUser" style="text-align: left;">
-      USPER 222
+    <div *ngIf="!userService.IsFSPUser" fxFlex="10" style="text-align: left;">
+      USPER
     </div>
-    <div
-      *ngIf="!userService.IsFSPUser"
-      fxFlexOffset="3"
-      fxLayout="column"
-      fxFlex="20"
-      style="text-align: left;"
-    >
-      <div>Classification</div>
-      <div
-        style=" font-size: smaller;margin-top: 20px;background-color: rgba(63, 81, 181, 0.15);"
-      >
-        <mat-select formControlName="imageClassification">
-          <mat-option
-            *ngFor="
-              let classification of lookupStaticDataService.classificationTypesData
-            "
-            [value]="classification.value"
-            [matTooltip]="classification.tooltip"
-          >
-            {{ classification.label }}
-          </mat-option>
-        </mat-select>
-      </div>
+    <div *ngIf="!userService.IsFSPUser" fxFlex="20" style="text-align: left;">
+      Classification
     </div>
     <div fxFlex="5" style="text-align: center;">
       <mat-icon>delete</mat-icon>
     </div>
+  </div>
+  <div
+    fxLayout="row"
+    style="background-color: rgba(63, 81, 181, 0.45);padding:5px;;"
+  >
+    <div
+      fxFlex="45"
+      style="font-size: smaller;font-weight:bold; text-align: center"
+    >
+      Apply All
+    </div>
+    <div fxFlex="20" style="background-color: #f1f1f1">
+      <mat-select
+        formControlName="modality"
+        style="font-size: smaller;font-weight:bold;padding: 2px; "
+      >
+        <mat-option
+          *ngFor="let modality of lookupStaticDataService.modalityTypesData"
+          [value]="modality.value"
+          [matTooltip]="modality.tooltip"
+        >
+          {{ modality.label }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div fxFlex="10">&nbsp;</div>
+    <div fxFlex="20" style="background-color: #f1f1f1">
+      <mat-select
+        formControlName="imageClassification"
+        style="font-size: smaller;font-weight:bold;padding: 2px; "
+      >
+        <mat-option
+          *ngFor="
+            let classification of lookupStaticDataService.classificationTypesData
+          "
+          [value]="classification.value"
+          [matTooltip]="classification.tooltip"
+        >
+          {{ classification.label }}
+        </mat-option>
+      </mat-select>
+    </div>
+    <div fxFlex="5">&nbsp;</div>
   </div>
   <ng-content></ng-content>
 </div>
