@@ -31,7 +31,7 @@
       Classification
     </div>
     <div fxFlex="5" style="text-align: center;">
-      <mat-icon>delete</mat-icon>
+      &nbsp;
     </div>
   </div>
   <div
@@ -49,6 +49,7 @@
         (selectionChange)="onModalityChange($event)"
         placeholder="Apply All Modality"
         style="font-size: smaller;font-weight:bold;padding: 4px; width: 180px; background-color: #f1f1f1 "
+        class="modalityApplyAll"
       >
         <mat-option
           *ngFor="let modality of lookupStaticDataService.modalityTypesData"
@@ -72,6 +73,7 @@
         (selectionChange)="onClassificationChange($event)"
         placeholder="Apply All Classification"
         style="font-size: smaller;font-weight:bold;padding: 4px; width: 200px; background-color: #f1f1f1 "
+        class="classificationApplyAll"
       >
         <mat-option
           *ngFor="
@@ -93,5 +95,9 @@
     </div>
     <div fxFlex="5">&nbsp;</div>
   </div>
-  <ng-content></ng-content>
+  <div
+    style="background-color: #f1f1f1; border-radius: 7px;  min-height: 200px;"
+  >
+    <ng-content></ng-content>
+  </div>
 </div>

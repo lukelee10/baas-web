@@ -4,12 +4,15 @@ import {
   MatButtonModule,
   MatCardModule,
   MatIconModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatSelect
 } from '@angular/material';
+import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { UserService } from 'src/app/core/services/user.service';
 import { UserRoles } from 'src/app/core/app-global-constants';
+import { UserService } from 'src/app/core/services/user.service';
+import { SharedModule } from 'src/app/shared/shared.module';
+
 import { MatFileUploadQueueComponent } from './matFileUploadQueue.component';
 
 class MockUserService extends UserService {
@@ -79,5 +82,29 @@ describe('MatFileUploadQueueComponent', () => {
   it('Test add file ', () => {
     component.add(testImage);
     expect(component.files.length > 0).toBeTruthy();
+  });
+  it('Test Classification Apply All ', () => {
+    const spy = spyOn(component, 'onClassificationChange').and.callThrough();
+    expect(spy).not.toHaveBeenCalled();
+    fixture.debugElement
+      .query(By.css('.classificationApplyAll'))
+      .triggerEventHandler('selectionChange', {
+        source: MatSelect,
+        value: 'U'
+      });
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+  it('Test Modality Apply All ', () => {
+    const spy = spyOn(component, 'onModalityChange').and.callThrough();
+    expect(spy).not.toHaveBeenCalled();
+    fixture.debugElement
+      .query(By.css('.modalityApplyAll'))
+      .triggerEventHandler('selectionChange', {
+        source: MatSelect,
+        value: 'Face'
+      });
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });
