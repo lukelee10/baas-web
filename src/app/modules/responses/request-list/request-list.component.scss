@@ -29,7 +29,7 @@
 
 .requestContainer {
   height: 690px;
-  overflow-x: hidden;
+  overflow-x: auto !important;
   background-color: rgba(gray, 0.1);
   scrollbar-width: thin;
   scrollbar-color: #90a4ae #cfd8dc;

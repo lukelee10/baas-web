@@ -1,4 +1,4 @@
-<div fxLayout="column">
+<div fxLayout="column" style="overflow-x: hidden;">
   <mat-card class="response-head primary" style="padding: 9px;">
     Images:
     {{ packageObj.Name.charAt(0).toUpperCase() + packageObj.Name.slice(1) }}
@@ -25,7 +25,7 @@
     <div
       fxLayout="row wrap"
       *ngIf="!showSpinner"
-      fxLayoutAlign="space-around left"
+      fxLayoutAlign="space-between left"
       fxLayout.xs="column"
       class="requestContainer"
     >
