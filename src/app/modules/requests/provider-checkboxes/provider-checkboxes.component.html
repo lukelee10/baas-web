@@ -9,7 +9,13 @@
       "
       class="flex-container  align-center multi-checkbox"
     >
-      <mat-checkbox color="primary" [formControl]="provider" fxFlex>
+      <mat-checkbox
+        color="primary"
+        [formControl]="provider"
+        fxFlex
+        class="mat-checkbox"
+        matTooltip="{{ providersViewModel[i].Description }}"
+      >
         {{ providersViewModel[i].ProviderId }}</mat-checkbox
       >
     </div>
