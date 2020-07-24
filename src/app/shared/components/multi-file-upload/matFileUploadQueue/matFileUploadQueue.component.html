@@ -3,10 +3,16 @@
     fxLayout="row"
     style=" min-width: 1000px;background-color: rgba(63, 81, 181, 0.85); font-weight: bold; color: white; padding: 10px;border-radius:10px 10px 0 0; "
   >
-    <div fxFlex="10" style="text-align: left;">
+    <div
+      fxFlex="{{ !userService.IsFSPUser ? 10 : 20 }}"
+      style="text-align: left;"
+    >
       Preview
     </div>
-    <div fxFlex="15" style="text-align: left;">
+    <div
+      fxFlex="{{ !userService.IsFSPUser ? 15 : 35 }}"
+      style="text-align: left;"
+    >
       Filename
     </div>
     <div fxFlex="8" style="text-align: right;">
@@ -33,7 +39,7 @@
     style="min-width: 1000px;background-color: rgba(63, 81, 181, 0.45);padding:5px;;"
   >
     <div
-      fxFlex="45"
+      fxFlex="{{ !userService.IsFSPUser ? 45 : 95 }}"
       style="font-size: smaller;font-weight:bold; text-align: center"
     >
       &nbsp;
@@ -60,8 +66,8 @@
       >
       </mat-spinner>
     </div>
-    <div fxFlex="10">&nbsp;</div>
-    <div fxFlex="20" fxLayout="row">
+    <div fxFlex="10" *ngIf="!userService.IsFSPUser">&nbsp;</div>
+    <div fxFlex="20" *ngIf="!userService.IsFSPUser" fxLayout="row">
       <mat-select
         (selectionChange)="onClassificationChange($event)"
         placeholder="Apply All Classification"

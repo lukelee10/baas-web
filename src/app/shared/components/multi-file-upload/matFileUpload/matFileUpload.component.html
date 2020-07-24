@@ -5,7 +5,10 @@
       style="border: 10px solid #f1f1f1 ;  background-color: white; padding-top: 10px; min-width: 1000px;border-radius: 0 0 10px 10px; "
     >
       <!--Preview-->
-      <div fxFlex="10" style="text-align: left;">
+      <div
+        fxFlex="{{ !userService.IsFSPUser ? 10 : 20 }}"
+        style="text-align: left;"
+      >
         <div *ngIf="!IsFileValidSize() || !IsFileValidType()">
           <span style="background-color: lightblue; padding:10px"
             ><b>ERROR</b></span
@@ -25,7 +28,10 @@
         />
       </div>
       <!--Filename-->
-      <div fxFlex="15" style="text-align: left; word-wrap: break-word;">
+      <div
+        fxFlex="{{ !userService.IsFSPUser ? 15 : 35 }}"
+        style="text-align: left; word-wrap: break-word;"
+      >
         {{ File.name }}
       </div>
       <!--File Size (KB)-->

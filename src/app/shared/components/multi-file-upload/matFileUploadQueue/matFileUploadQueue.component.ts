@@ -106,6 +106,10 @@ export class MatFileUploadQueueComponent implements AfterViewInit, OnInit {
   }
   onModalityChange(event) {
     const selectedModality = event.value;
+    console.log('==TEMP CODE==Start=================>>>>>>>>>>=========');
+    console.log(selectedModality);
+    console.log('==============END=================<<<<<<<<<<=========');
+
     const selectedModalityType = this.lookupStaticDataService.modalityTypesData.find(
       element => element.value === selectedModality
     );
