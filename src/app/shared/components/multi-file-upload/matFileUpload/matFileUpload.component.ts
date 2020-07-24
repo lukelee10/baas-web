@@ -148,4 +148,9 @@ export class MatFileUploadComponent implements OnInit {
   public remove(): void {
     this.removeEvent.emit(this);
   }
+
+  public clearValidators() {
+    this.fileUploadFormGroup.controls.modality.clearValidators();
+    this.fileUploadFormGroup.controls.modality.updateValueAndValidity();
+  }
 }
