@@ -15,4 +15,5 @@ export interface BaaSGroup {
   disabled?: boolean;
   subgroups: BaaSGroup[];
   parent: string; // parent name
+  _GUID: string; // FQN
 }
