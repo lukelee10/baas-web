@@ -4,13 +4,13 @@
     {{ packageObj.Name.charAt(0).toUpperCase() + packageObj.Name.slice(1) }}
   </mat-card>
   <div fxLayout="row" class="infoBar">
-    <span fxFlex="100%">
+    <span fxFlex="40">
       <span class="infoBar-Head">ID#</span> {{ packageObj.PackageId }}
     </span>
-    <span fxFlex="100%">
+    <span fxFlex="30">
       <span class="infoBar-Head">User:</span> {{ packageObj.User }}
     </span>
-    <span fxFlex="100%">
+    <span fxFlex="30">
       <span class="infoBar-Head">Group:</span> {{ packageObj.Group }}
     </span>
   </div>
@@ -38,8 +38,7 @@
                   class="resize-keep-aspect"
                   src="{{ request.ImageUrl }}"
                   alt="Preview Unavailable"
-                  style="font-weight: bold;text-align: center;white-space: pre-wrap;
-                  "
+                  style="font-weight: bold;text-align: center;"
                 />
               </div>
               <div
