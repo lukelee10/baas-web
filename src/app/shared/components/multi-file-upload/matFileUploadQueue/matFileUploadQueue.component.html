@@ -1,43 +1,31 @@
 <div fxFlex="100">
-  <div
-    fxLayout="row"
-    style="   min-width: 1000px;background-color: rgba(63, 81, 181, 0.85); font-weight: bold; color: white; padding: 10px;border-radius:10px 10px 0 0; "
-  >
-    <div
-      fxFlex="{{ !userService.IsFSPUser ? 10 : 20 }}"
-      style="text-align: left;"
-    >
+  <div fxLayout="row" class="file-upload-header">
+    <div fxFlex="{{ !userService.IsFSPUser ? 10 : 20 }}">
       Preview
     </div>
-    <div
-      fxFlex="{{ !userService.IsFSPUser ? 15 : 35 }}"
-      style="text-align: left;"
-    >
+    <div fxFlex="{{ !userService.IsFSPUser ? 15 : 35 }}">
       Filename
     </div>
     <div fxFlex="8" style="text-align: right;">
       File Size <span style=" font-size: smaller;">(KB)</span>
     </div>
-    <div fxFlex="10" fxFlexOffset="2" style="text-align: left;">
+    <div fxFlex="10" fxFlexOffset="2">
       File Type
     </div>
-    <div fxFlex="20" style="text-align: left;">
+    <div fxFlex="20">
       Modality
     </div>
-    <div *ngIf="!userService.IsFSPUser" fxFlex="10" style="text-align: left;">
+    <div *ngIf="!userService.IsFSPUser" fxFlex="10">
       USPER
     </div>
-    <div *ngIf="!userService.IsFSPUser" fxFlex="20" style="text-align: left;">
+    <div *ngIf="!userService.IsFSPUser" fxFlex="20">
       Classification
     </div>
-    <div fxFlex="5" style="text-align: center;">
+    <div fxFlex="5">
       &nbsp;
     </div>
   </div>
-  <div
-    fxLayout="row"
-    style="min-width: 1000px;background-color: rgba(63, 81, 181, 0.45);padding:5px;;"
-  >
+  <div fxLayout="row" class="file-upload-sub-header">
     <div
       fxFlex="{{ !userService.IsFSPUser ? 45 : 95 }}"
       style="font-size: smaller;font-weight:bold; text-align: center"
@@ -48,7 +36,6 @@
       <mat-select
         (selectionChange)="onModalityChange($event)"
         placeholder="Apply All Modality"
-        style="font-size: smaller;font-weight:bold;padding: 4px; width: 180px; background-color: #f1f1f1 "
         class="modalityApplyAll"
       >
         <mat-option
@@ -72,7 +59,6 @@
       <mat-select
         (selectionChange)="onClassificationChange($event)"
         placeholder="Apply All Classification"
-        style="font-size: smaller;font-weight:bold;padding: 4px; width: 200px; background-color: #f1f1f1 "
         class="classificationApplyAll"
       >
         <mat-option
@@ -95,9 +81,7 @@
     </div>
     <div fxFlex="5">&nbsp;</div>
   </div>
-  <div
-    style="background-color: #f1f1f1; border-radius: 7px;  min-height: 200px;"
-  >
+  <div class="file-upload-content-body">
     <ng-content></ng-content>
   </div>
 </div>

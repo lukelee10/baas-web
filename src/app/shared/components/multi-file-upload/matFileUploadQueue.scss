@@ -58,3 +58,44 @@ a.disabled {
 .fileRows {
   background-color: brown;
 }
+
+.file-upload-header {
+  min-width: 1000px;
+  background-color: rgba(63, 81, 181, 0.85);
+  font-weight: bold;
+  color: white;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+}
+.file-upload-sub-header {
+  min-width: 1000px;
+  background-color: rgba(63, 81, 181, 0.45);
+  padding: 5px;
+}
+.file-upload-content-body {
+  background-color: #f1f1f1;
+  border-radius: 7px;
+  min-height: 200px;
+  min-width: 1000px;
+}
+.file-upload-content-row {
+  border: 10px solid #f1f1f1;
+  background-color: white;
+  padding-top: 10px;
+  min-width: 1000px;
+  border-radius: 0 0 10px 10px;
+}
+.modalityApplyAll {
+  font-size: smaller;
+  font-weight: bold;
+  padding: 4px;
+  width: 180px;
+  background-color: #f1f1f1;
+}
+.classificationApplyAll {
+  font-size: smaller;
+  font-weight: bold;
+  padding: 4px;
+  width: 200px;
+  background-color: #f1f1f1;
+}

@@ -22,7 +22,8 @@ import { MatFileUploadComponent } from './../matFileUpload/matFileUpload.compone
 @Component({
   selector: 'app-mat-file-upload-queue',
   templateUrl: 'matFileUploadQueue.component.html',
-  exportAs: 'matFileUploadQueue'
+  exportAs: 'matFileUploadQueue',
+  styleUrls: ['./../matFileUploadQueue.scss']
 })
 export class MatFileUploadQueueComponent implements AfterViewInit, OnInit {
   @ContentChildren(forwardRef(() => MatFileUploadComponent))
