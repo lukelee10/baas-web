@@ -109,21 +109,18 @@ export class GroupManagementComponent implements OnInit {
   getOrgs(): Observable<any> {
     const getOrgs = this.awsLambdaService.getOrgs();
     getOrgs.subscribe((orgs: BaaSGroup[]) => {
-      const digKids = (groups = [], pFQN) =>
-        groups.map(grp => {
-          const FQN = `${pFQN}/${grp.group}`;
-          return {
-            item: grp.group,
-            children: digKids(grp.subgroups, FQN),
-            fqn: FQN,
-            disabled: grp.disabled
-          };
-        });
+      const digKids = (groups = []) =>
+        groups.map(({ group, subgroups, _GUID, disabled }) => ({
+          item: group,
+          children: digKids(subgroups),
+          fqn: _GUID,
+          disabled
+        }));
       // const fqn = this.userService.Group;
       const list = orgs.map(org => ({
         item: org.group,
-        children: digKids(org.subgroups, this.userService.Group),
-        fqn: this.userService.Group,
+        children: digKids(org.subgroups),
+        fqn: org._GUID,
         disabled: org.disabled
       }));
       this.changeWatcher.next(list);
@@ -327,7 +324,7 @@ export class GroupManagementComponent implements OnInit {
       dialogRef.afterClosed().subscribe(confirmResult => {
         if (confirmResult) {
           // User Confirmed
-          this.invokeDisableLambda(group, disabledFlag).subscribe(handler);
+          this.disableLambda(group, disabledFlag).subscribe(handler);
         } else {
           // User Not Confirmed
           handler(false);
@@ -335,14 +332,11 @@ export class GroupManagementComponent implements OnInit {
       });
     } else {
       // disabledFlag: false, User is enabling the given Group
-      this.invokeDisableLambda(group, disabledFlag).subscribe(handler);
+      this.disableLambda(group, disabledFlag).subscribe(handler);
     }
   }
 
-  private invokeDisableLambda(
-    group: any,
-    disableFlag: boolean
-  ): Observable<boolean> {
+  private disableLambda(group: any, disableFlag: boolean): Observable<boolean> {
     this.showSpinner = true;
     const groupToDisable = {
       oldName: group.fqn,
