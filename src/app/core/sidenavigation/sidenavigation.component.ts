@@ -59,7 +59,7 @@ export class SideNavigationComponent implements OnInit {
           if (this.userService.IsAdmin && !this.userService.IsFSPUser) {
             this.sideNavItems.push({
               link: '/admin',
-              title: 'Admin',
+              title: 'Administration',
               icon: 'supervisor_account'
             });
           }

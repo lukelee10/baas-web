@@ -31,7 +31,9 @@
         matTooltip="{{ item.title }}"
         [routerLink]="[item.link]"
         routerLinkActive="active-link"
-        [ngStyle]="{ color: item.title === 'Admin' ? 'orange' : 'default' }"
+        [ngStyle]="{
+          color: item.title === 'Administration' ? 'orange' : 'default'
+        }"
       >
         <mat-icon>{{ item.icon }}</mat-icon>
         {{ item.title }}
