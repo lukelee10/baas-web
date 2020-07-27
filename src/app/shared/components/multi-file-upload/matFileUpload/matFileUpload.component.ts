@@ -34,12 +34,13 @@ export class MatFileUploadComponent implements OnInit {
   /** Output  */
   @Output() removeEvent = new EventEmitter<MatFileUploadComponent>();
   @Output() handleUpload = new EventEmitter();
-  @Input() applyAllClassification: string;
-  @Input() applyAllModality: string;
 
   private file: any;
   private id: number;
   private fileUploadUrl: any;
+  private applyAllModality: string;
+  private applyAllClassification: string;
+
   invalidFileSizeMsg: string;
   invalidFileTypeMsg: string;
 
@@ -61,6 +62,19 @@ export class MatFileUploadComponent implements OnInit {
 
   set FileUploadUrl(fileUploadUrl: any) {
     this.fileUploadUrl = fileUploadUrl;
+  }
+
+  @Input()
+  set ApplyAllModality(applyAllModalityStr: string) {
+    this.fileUploadFormGroup.controls.modality.setValue(applyAllModalityStr);
+    this.applyAllModality = applyAllModalityStr;
+  }
+  @Input()
+  set ApplyAllClassification(applyAllClassificationStr: string) {
+    this.fileUploadFormGroup.controls.imageClassification.setValue(
+      applyAllClassificationStr
+    );
+    this.applyAllClassification = applyAllClassificationStr;
   }
 
   constructor(

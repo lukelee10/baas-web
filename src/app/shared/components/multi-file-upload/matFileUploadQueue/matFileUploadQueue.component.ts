@@ -4,7 +4,6 @@ import {
   ContentChildren,
   EventEmitter,
   forwardRef,
-  OnInit,
   Output,
   QueryList
 } from '@angular/core';
@@ -25,7 +24,7 @@ import { MatFileUploadComponent } from './../matFileUpload/matFileUpload.compone
   exportAs: 'matFileUploadQueue',
   styleUrls: ['./../matFileUploadQueue.scss']
 })
-export class MatFileUploadQueueComponent implements AfterViewInit, OnInit {
+export class MatFileUploadQueueComponent implements AfterViewInit {
   @ContentChildren(forwardRef(() => MatFileUploadComponent))
   fileUploads: QueryList<MatFileUploadComponent>;
   showClassificationSpinner = false;
@@ -50,8 +49,6 @@ export class MatFileUploadQueueComponent implements AfterViewInit, OnInit {
     public lookupStaticDataService: LookupStaticDataService,
     private notificationService: NotificationService
   ) {}
-
-  ngOnInit() {}
 
   public ngAfterViewInit() {
     // When the list changes, re-subscribe
@@ -92,7 +89,7 @@ export class MatFileUploadQueueComponent implements AfterViewInit, OnInit {
       element => element.value === selectedClassification
     );
     this.fileUploads.forEach(fileUpload => {
-      fileUpload.applyAllClassification = selectedClassification;
+      fileUpload.ApplyAllClassification = selectedClassification;
     });
     this.showClassificationSpinner = true;
     setTimeout(() => {
@@ -111,7 +108,7 @@ export class MatFileUploadQueueComponent implements AfterViewInit, OnInit {
       element => element.value === selectedModality
     );
     this.fileUploads.forEach(fileUpload => {
-      fileUpload.applyAllModality = selectedModality;
+      fileUpload.ApplyAllModality = selectedModality;
       fileUpload.clearValidators();
     });
     this.showModalitySpinner = true;

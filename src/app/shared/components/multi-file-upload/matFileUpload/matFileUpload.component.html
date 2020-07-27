@@ -57,7 +57,7 @@
       <div fxFlex="20">
         <mat-hint>Please choose a modality</mat-hint>
         <mat-form-field>
-          <mat-select [(value)]="applyAllModality" formControlName="modality">
+          <mat-select formControlName="modality">
             <mat-option
               *ngFor="let modality of lookupStaticDataService.modalityTypesData"
               [value]="modality.value"
@@ -80,10 +80,7 @@
       <!--Classification-->
       <div *ngIf="!userService.IsFSPUser" fxFlex="20">
         <mat-form-field>
-          <mat-select
-            [(value)]="applyAllClassification"
-            formControlName="imageClassification"
-          >
+          <mat-select formControlName="imageClassification">
             <mat-option
               *ngFor="
                 let classification of lookupStaticDataService.classificationTypesData
