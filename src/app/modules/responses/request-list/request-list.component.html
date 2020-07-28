@@ -3,16 +3,19 @@
     Images:
     {{ packageObj.Name.charAt(0).toUpperCase() + packageObj.Name.slice(1) }}
   </mat-card>
-  <div fxLayout="row" class="infoBar">
-    <span fxFlex="40">
-      <span class="infoBar-Head">ID#</span> {{ packageObj.PackageId }}
-    </span>
-    <span fxFlex="30">
-      <span class="infoBar-Head">User:</span> {{ packageObj.User }}
-    </span>
-    <span fxFlex="30">
-      <span class="infoBar-Head">Group:</span> {{ packageObj.Group }}
-    </span>
+  <div class="infoBar flex-container" fxLayout="row" fxLayout.xs="column">
+    <div fxFlex="40" fxLayout="row">
+      <span class="infoBar-Head">ID#</span>
+      <span class="infoBar">{{ packageObj.PackageId }}</span>
+    </div>
+    <div fxFlex="30" fxLayout="row">
+      <span class="infoBar-Head">User:</span>
+      <span class="infoBar">{{ packageObj.User }}</span>
+    </div>
+    <div fxFlex="30" fxLayout="row">
+      <span class="infoBar-Head">Group:</span>
+      <span class="infoBar">{{ packageObj.Group }}</span>
+    </div>
   </div>
   <div class="viewImagesDiv" fxFlexOffset=".3">
     <div fxLayout="column" *ngIf="showSpinner" fxLayoutAlign="center center">
