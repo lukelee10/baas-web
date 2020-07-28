@@ -4,7 +4,7 @@ export enum AppMessage {
   // *** MESSAGE CODES 1-999: Application Errors
   SessionTimeOut = 1,
   ViewResponseAPIError = 2,
-  ViewReponseRequestsAPIError = 3,
+  ViewResponseRequestsAPIError = 3,
   RequestDetailsError = 4,
   ServerOperationError = 5,
   // *** MESSAGE CODES 1000-1999: Application INFO Messages

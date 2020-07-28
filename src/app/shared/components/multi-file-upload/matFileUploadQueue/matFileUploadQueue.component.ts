@@ -96,7 +96,7 @@ export class MatFileUploadQueueComponent implements AfterViewInit {
       event.source.value = '';
       this.showClassificationSpinner = false;
       this.notificationService.notify(
-        selectedClassificationType.label + ' is apllied to all',
+        selectedClassificationType.label + ' is applied to all',
         'OK',
         2
       );
@@ -116,7 +116,7 @@ export class MatFileUploadQueueComponent implements AfterViewInit {
       event.source.value = '';
       this.showModalitySpinner = false;
       this.notificationService.notify(
-        'Modality: ' + selectedModalityType.label + ' is apllied to all',
+        'Modality: ' + selectedModalityType.label + ' is applied to all',
         'OK',
         2
       );

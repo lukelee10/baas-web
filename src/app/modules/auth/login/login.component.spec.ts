@@ -14,7 +14,7 @@ import { SharedModule } from './../../../shared/shared.module';
 import { ForgotPasswordComponent } from './../forgotpassword/forgotpassword.component';
 import { LoginComponent } from './login.component';
 
-class MockAuthenticationSerivce extends AuthenticationService {
+class MockAuthenticationService extends AuthenticationService {
   AuthenticateUser(userName: string, password: string, callback: any) {
     if (password === 'good') {
       const goodResult = {
@@ -54,7 +54,7 @@ describe('LoginComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
-        { provide: AuthenticationService, useClass: MockAuthenticationSerivce }
+        { provide: AuthenticationService, useClass: MockAuthenticationService }
       ]
     }).compileComponents();
     fixture = TestBed.createComponent(LoginComponent);

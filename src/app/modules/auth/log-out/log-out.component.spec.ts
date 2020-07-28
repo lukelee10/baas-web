@@ -10,7 +10,7 @@ import { UserService } from 'src/app/core/services/user.service';
 
 import { LogOutComponent } from './log-out.component';
 
-const MockAuthenticationSerivce: Partial<AuthenticationService> = {
+const MockAuthenticationService: Partial<AuthenticationService> = {
   Logout: () => {
     // do nothing for now, since it's supposed to have set this state to be logged out.
   }
@@ -37,7 +37,7 @@ describe('LogOutComponent', () => {
       ],
       declarations: [LogOutComponent],
       providers: [
-        { provide: AuthenticationService, useValue: MockAuthenticationSerivce },
+        { provide: AuthenticationService, useValue: MockAuthenticationService },
         { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
         { provide: UserService, useClass: MockUserService }
       ]

@@ -82,7 +82,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               httpErrorResponseCode ===
                 AppGlobalConstants.HttpErrorResponseCode.InvalidHttpRequest ||
               httpErrorResponseCode ===
-                AppGlobalConstants.HttpErrorResponseCode.UnathorizedAccess
+                AppGlobalConstants.HttpErrorResponseCode.UnauthorizedAccess
             ) {
               errorMessage = `Error: ${errorMessage}`;
             } else {

@@ -52,8 +52,8 @@ export class PackageListComponent implements OnInit, OnChanges {
     }
   }
 
-  packageClick(pacakageObj: UserPackage) {
-    this.eventOnPackageClick.emit(pacakageObj);
+  packageClick(packageObj: UserPackage) {
+    this.eventOnPackageClick.emit(packageObj);
   }
 
   private invokePackageService() {
@@ -70,7 +70,7 @@ export class PackageListComponent implements OnInit, OnChanges {
         this.currentLastItem = userPackageResponse.lastItem;
         this.notificationService.debugLogging(userPackageResponse);
         this.notificationService.debugLogging(
-          'User Package Respose Last Item: ' + userPackageResponse.lastItem
+          'User Package Response Last Item: ' + userPackageResponse.lastItem
         );
         this.notificationService.debugLogging(
           'User Package Response Total Package Count:' +
