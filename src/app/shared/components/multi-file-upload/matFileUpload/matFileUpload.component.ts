@@ -14,15 +14,13 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-
 import { Observable } from 'rxjs';
 
 import { environment } from './../../../../../environments/environment';
 import { UserService } from './../../../../core/services/user.service';
+import { PackageFileModel } from './../../../../modules/models/package-file-model';
 import { LookupStaticDataService } from './../../../services/lookup-static-data.service';
 import { MatFileUploadQueueComponent } from './../matFileUploadQueue/matFileUploadQueue.component';
-
-import { PackageFileModel } from './../../../../modules/models/package-file-model';
 
 @Component({
   selector: 'app-mat-file-upload',
@@ -40,6 +38,9 @@ export class MatFileUploadComponent implements OnInit {
   private file: any;
   private id: number;
   private fileUploadUrl: any;
+  private applyAllModality: string;
+  private applyAllClassification: string;
+
   invalidFileSizeMsg: string;
   invalidFileTypeMsg: string;
 
@@ -61,6 +62,19 @@ export class MatFileUploadComponent implements OnInit {
 
   set FileUploadUrl(fileUploadUrl: any) {
     this.fileUploadUrl = fileUploadUrl;
+  }
+
+  @Input()
+  set ApplyAllModality(applyAllModalityStr: string) {
+    this.fileUploadFormGroup.controls.modality.setValue(applyAllModalityStr);
+    this.applyAllModality = applyAllModalityStr;
+  }
+  @Input()
+  set ApplyAllClassification(applyAllClassificationStr: string) {
+    this.fileUploadFormGroup.controls.imageClassification.setValue(
+      applyAllClassificationStr
+    );
+    this.applyAllClassification = applyAllClassificationStr;
   }
 
   constructor(
@@ -147,5 +161,10 @@ export class MatFileUploadComponent implements OnInit {
 
   public remove(): void {
     this.removeEvent.emit(this);
+  }
+
+  public clearValidators() {
+    this.fileUploadFormGroup.controls.modality.clearValidators();
+    this.fileUploadFormGroup.controls.modality.updateValueAndValidity();
   }
 }
