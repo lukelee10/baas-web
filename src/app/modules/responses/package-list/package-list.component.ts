@@ -57,8 +57,14 @@ export class PackageListComponent implements OnInit, OnChanges {
     }
   }
 
-  packageClick(packageObj: UserPackage) {
+  packageClick(selectedIndex: number, packageObj: UserPackage) {
     this.eventOnPackageClick.emit(packageObj);
+    const matDivs = this.matDivs.toArray();
+    matDivs[this.previousSelectedPackageIndex].nativeElement.classList.remove(
+      'matdiv-selected'
+    );
+    matDivs[selectedIndex].nativeElement.classList.add('matdiv-selected');
+    this.previousSelectedPackageIndex = selectedIndex;
   }
 
   private invokePackageService() {
