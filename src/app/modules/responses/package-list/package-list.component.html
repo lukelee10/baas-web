@@ -1,7 +1,7 @@
 <div
   #matDiv
   fxLayout="column"
-  class="matdiv"
+  class="{{ iCounter > 0 ? 'matdiv' : 'matdiv matdiv-selected' }}"
   *ngFor="let package of userPackages; let iCounter = index"
 >
   <mat-card
