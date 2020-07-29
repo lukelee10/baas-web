@@ -108,7 +108,7 @@ describe('PackageListComponent', () => {
       Group: undefined
     };
 
-    component.packageClick(userPackage);
+    component.packageClick(0, userPackage);
     expect(component.eventOnPackageClick.emit).toHaveBeenCalled();
     expect(component.eventOnPackageClick.emit).toHaveBeenCalledWith(
       userPackage

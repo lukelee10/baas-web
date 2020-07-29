@@ -1,12 +1,14 @@
 <div
+  #matDiv
   fxLayout="column"
+  class="matdiv"
   *ngFor="let package of userPackages; let iCounter = index"
 >
   <mat-card
     fxFlex="100"
     fxFlexOffset="1"
-    (click)="packageClick(package)"
-    class="matdiv"
+    (click)="packageClick(iCounter, package)"
+    class="matdiv-card"
     fxLayout="column"
     style="height: 170px; "
   >

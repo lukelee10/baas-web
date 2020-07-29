@@ -4,7 +4,8 @@ import {
   Input,
   OnChanges,
   OnInit,
-  Output
+  Output,
+  ViewChildren
 } from '@angular/core';
 import { UserPackageService } from 'src/app/core/services/user-package.service';
 import { UserPackage } from 'src/app/shared/models/user-package';
@@ -24,6 +25,10 @@ export class PackageListComponent implements OnInit, OnChanges {
   userPackages = new Array<UserPackage>();
   showSpinner = false;
   currentLastItem = '';
+  previousSelectedPackageIndex = 0;
+
+  @ViewChildren('matDiv') matDivs;
+
   initLoad = false;
   @Input()
   sortOrder = 'desc';
@@ -52,8 +57,14 @@ export class PackageListComponent implements OnInit, OnChanges {
     }
   }
 
-  packageClick(pacakageObj: UserPackage) {
-    this.eventOnPackageClick.emit(pacakageObj);
+  packageClick(selectedIndex: number, packageObj: UserPackage) {
+    this.eventOnPackageClick.emit(packageObj);
+    const matDivs = this.matDivs.toArray();
+    matDivs[this.previousSelectedPackageIndex].nativeElement.classList.remove(
+      'matdiv-selected'
+    );
+    matDivs[selectedIndex].nativeElement.classList.add('matdiv-selected');
+    this.previousSelectedPackageIndex = selectedIndex;
   }
 
   private invokePackageService() {

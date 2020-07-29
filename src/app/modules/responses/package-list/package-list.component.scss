@@ -8,6 +8,15 @@
   color: rgba(orangered, 0.75);
   cursor: pointer;
 }
+.matdiv-selected {
+  background-color: #eaf2f8;
+  border: 1ps solid #eaf2f8;
+  color: rgba(orangered, 0.75);
+}
+
+.matdiv-card {
+  background-color: rgba(white, 0.1);
+}
 .numberedCircle {
   padding: 1px 3px;
   border-radius: 50%;
