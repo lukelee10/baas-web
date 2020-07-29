@@ -134,7 +134,7 @@ describe('Http Error Interceptor', () => {
     let response: any;
     let errResponse: any;
     const mockErrorResponse = {
-      status: AppGlobalConstants.HttpErrorResponseCode.UnathorizedAccess,
+      status: AppGlobalConstants.HttpErrorResponseCode.UnauthorizedAccess,
       statusText: 'Unauthorized Http Request'
     };
     const errorMessage =
@@ -159,10 +159,10 @@ describe('Http Error Interceptor', () => {
     let errResponse: any;
     const mockErrorResponse = {
       status: AppGlobalConstants.HttpErrorResponseCode.TimeOutErrorCode,
-      statusText: 'Http Request Session Timedout'
+      statusText: 'Http Request Session Timeout'
     };
     const errorMessage =
-      'Error: Http failure response for /fakecall: 401 Http Request Session Timedout';
+      'Error: Http failure response for /fakecall: 401 Http Request Session Timeout';
 
     it('client return undefined error response', inject(
       [HttpClient, HttpTestingController],

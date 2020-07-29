@@ -5,7 +5,7 @@
 const httpErrorResponseCode = {
   InvalidHttpRequest: 400,
   TimeOutErrorCode: 401,
-  UnathorizedAccess: 403,
+  UnauthorizedAccess: 403,
   REQUEST_SEMANTIC_ERROR: 422,
   InternalServerError: 500
 };

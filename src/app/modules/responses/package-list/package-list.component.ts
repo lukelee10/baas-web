@@ -57,14 +57,8 @@ export class PackageListComponent implements OnInit, OnChanges {
     }
   }
 
-  packageClick(selectedIndex: number, packageObj: UserPackage) {
+  packageClick(packageObj: UserPackage) {
     this.eventOnPackageClick.emit(packageObj);
-    const matDivs = this.matDivs.toArray();
-    matDivs[this.previousSelectedPackageIndex].nativeElement.classList.remove(
-      'matdiv-selected'
-    );
-    matDivs[selectedIndex].nativeElement.classList.add('matdiv-selected');
-    this.previousSelectedPackageIndex = selectedIndex;
   }
 
   private invokePackageService() {
@@ -81,7 +75,7 @@ export class PackageListComponent implements OnInit, OnChanges {
         this.currentLastItem = userPackageResponse.lastItem;
         this.notificationService.debugLogging(userPackageResponse);
         this.notificationService.debugLogging(
-          'User Package Respose Last Item: ' + userPackageResponse.lastItem
+          'User Package Response Last Item: ' + userPackageResponse.lastItem
         );
         this.notificationService.debugLogging(
           'User Package Response Total Package Count:' +

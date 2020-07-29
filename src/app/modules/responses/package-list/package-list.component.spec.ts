@@ -76,12 +76,12 @@ describe('PackageListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Verify the service invocation and proper databinding', () => {
+  it('Verify the service invocation and proper data binding', () => {
     fixture.detectChanges();
     expect(component.userPackages.length === 2).toBeTruthy();
   });
 
-  it('Verify the sorting triggers new data binding occures again', () => {
+  it('Verify the sorting triggers new data binding occurs again', () => {
     fixture.detectChanges();
     const arrSortOrderChange = {
       sortOrder: {
@@ -92,7 +92,7 @@ describe('PackageListComponent', () => {
     const spyPrivateFunction = spyOn<any>(component, 'invokePackageService');
     component.ngOnChanges(arrSortOrderChange);
     // verify that invokePackageService is called when sort order changes
-    // invokePackageService will get the databack from lambda for given sort order
+    // invokePackageService will get the data back from lambda for given sort order
     expect(spyPrivateFunction.calls.any()).toBeTruthy();
   });
 
