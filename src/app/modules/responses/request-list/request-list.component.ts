@@ -77,10 +77,10 @@ export class RequestListComponent implements OnInit, OnChanges {
       error => {
         this.notificationService.error(
           this.appMessagesService.getMessage(
-            AppMessage.ViewReponseRequestsAPIError
+            AppMessage.ViewResponseRequestsAPIError
           ),
           this.appMessagesService.getTitle(
-            AppMessage.ViewReponseRequestsAPIError
+            AppMessage.ViewResponseRequestsAPIError
           )
         );
         this.showSpinner = false;
@@ -94,25 +94,27 @@ export class RequestListComponent implements OnInit, OnChanges {
 
   private getRequestsProcessedData(): Array<Request> {
     const pkgRequests = new Array<Request>();
-    this.packageRequestRaw.forEach(pkgRquest => {
-      const status = new VettingStatusShortenPipe().transform(pkgRquest.Status);
+    this.packageRequestRaw.forEach(pkgRequest => {
+      const status = new VettingStatusShortenPipe().transform(
+        pkgRequest.Status
+      );
       switch (status) {
         case RequestStatusFlags.InvestigativeLead:
-          pkgRquest.StatusPrecedence = 1;
+          pkgRequest.StatusPrecedence = 1;
           break;
         case RequestStatusFlags.Error:
-          pkgRquest.StatusPrecedence = 2;
+          pkgRequest.StatusPrecedence = 2;
           break;
         case RequestStatusFlags.Pending:
-          pkgRquest.StatusPrecedence = 3;
+          pkgRequest.StatusPrecedence = 3;
           break;
         case RequestStatusFlags.NoLead:
-          pkgRquest.StatusPrecedence = 4;
+          pkgRequest.StatusPrecedence = 4;
           break;
         default:
-          pkgRquest.StatusPrecedence = 2;
+          pkgRequest.StatusPrecedence = 2;
       }
-      pkgRequests.push(pkgRquest);
+      pkgRequests.push(pkgRequest);
     });
 
     return pkgRequests.sort(

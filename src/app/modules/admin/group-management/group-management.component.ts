@@ -156,7 +156,7 @@ export class GroupManagementComponent implements OnInit {
   };
 
   /**
-   * Save to API, if succssful, fish up the nestedNode from map and add a new node.
+   * Save to API, if successful, fish up the nestedNode from map and add a new node.
    * Also do house cleaning so the node would expand correctly
    * @param name is the name of the new group
    * @param flatNode is the parent node
@@ -227,7 +227,7 @@ export class GroupManagementComponent implements OnInit {
       },
       error => {
         userMessage =
-          'An error occured while Updating the Group Name. Please try again.';
+          'An error occurred while Updating the Group Name. Please try again.';
         this.notificationService.error(userMessage);
         this.showSpinner = false;
       },
@@ -356,7 +356,7 @@ export class GroupManagementComponent implements OnInit {
         return true;
       }),
       catchError(() => {
-        userMessage = `An error occured while ${
+        userMessage = `An error occurred while ${
           disableFlag ? 'disabling' : 'enabling'
         } the Group: ${groupName}. Please try again.   `;
         this.notificationService.error(userMessage);

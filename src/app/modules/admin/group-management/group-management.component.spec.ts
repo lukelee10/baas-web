@@ -331,7 +331,7 @@ describe('GroupManagementComponent', () => {
       expect(spyNotificationService.calls.any()).toBeFalsy();
       done();
     });
-    it('should not have called labdaservice.disableOrg as user does not confirm', () => {
+    it('should not have called lambdaservice.disableOrg as user does not confirm', () => {
       const dialogRefMock = TestBed.get(MatDialog);
       const returnedVal = { afterClosed: () => of(null) };
       spyOn(dialogRefMock, 'open').and.returnValue(returnedVal);
@@ -346,7 +346,7 @@ describe('GroupManagementComponent', () => {
       expect(spyNotificationService.calls.any()).toBeFalsy();
     });
   });
-  // test toggleDisable when Lambda Service disableOrg failes
+  // test toggleDisable when Lambda Service disableOrg fails
   describe('When Service Lambda - disableOrg functions fails', () => {
     let mockAwsLambdaService;
     let mockAwsLambdaServiceCall;

@@ -170,7 +170,7 @@ describe('AwsLambdaService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should invoke the correct API-Gateway URL with correct paramters', () => {
+  it('should invoke the correct API-Gateway URL with correct parameters', () => {
     const service: AwsLambdaService = TestBed.get(AwsLambdaService);
     const result = service.getUsers();
     result.subscribe(data => expect(data.length).toBeTruthy());

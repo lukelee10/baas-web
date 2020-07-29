@@ -35,7 +35,7 @@ class MockExpiry extends IdleExpiry {
     return this.mockNow || new Date();
   }
 }
-class MockAuthenticationSerivce extends AuthenticationService {
+class MockAuthenticationService extends AuthenticationService {
   LoggedUser: any = 'Hello';
   Logout() {
     // do nothing for now, since it's supposed to have set this state to be logged out.
@@ -71,7 +71,7 @@ describe('AppComponent', () => {
       ],
       providers: [
         { provide: NotificationService, useValue: notificationServiceStub },
-        { provide: AuthenticationService, useClass: MockAuthenticationSerivce },
+        { provide: AuthenticationService, useClass: MockAuthenticationService },
         { provide: Idle, useClass: Idle },
         { provide: IdleExpiry, useClass: MockExpiry },
         Keepalive
