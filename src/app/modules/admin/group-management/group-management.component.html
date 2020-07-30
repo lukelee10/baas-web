@@ -69,7 +69,9 @@
         {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
       </mat-icon>
     </button>
-    <div (click)="selectNode(node)">{{ node.item }}</div>
+    <div class="group-wrap-hover" (click)="selectNode(node)">
+      {{ node.item }}
+    </div>
     <span class="spacer"></span>
     <button
       *ngIf="addActionOn"
