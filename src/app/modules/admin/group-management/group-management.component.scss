@@ -17,6 +17,17 @@ mat-slide-toggle {
 .spacer {
   flex: 1 1 auto;
 }
+.group-wrap-hover {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &:hover {
+    text-overflow: clip;
+    white-space: normal;
+    word-break: break-all;
+  }
+}
+
 // TODO: FYI, '::ng-deep' is deprecated, but no replacement is available yet
 mat-slide-toggle.fixed-width-content::ng-deep {
   & span.mat-slide-toggle-content {
