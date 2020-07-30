@@ -59,7 +59,6 @@ export class GroupManagementComponent implements OnInit {
   changeWatcher = new BehaviorSubject<GroupNode[]>([]);
   showSpinner = false;
   entity = new FormControl('');
-  myGroup: string;
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<GroupFlatNode, GroupNode>();
@@ -72,6 +71,9 @@ export class GroupManagementComponent implements OnInit {
   dialogValue = '';
   dialogRef: MatDialogRef<any, any>;
   isDialogOrg = true;
+
+  // TODO We don't need isAddOrgOn; we can directly use the addActionOn ie.,
+  // Input param for this component; clean all the references for isAddOrgOn
   isAddOrgOn = false;
 
   constructor(
@@ -98,7 +100,6 @@ export class GroupManagementComponent implements OnInit {
     this.changeWatcher.subscribe(data => {
       this.dataSource.data = data;
     });
-    this.myGroup = this.userService.Group;
   }
 
   ngOnInit() {
