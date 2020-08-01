@@ -1,6 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
+  MatCheckboxChange,
   MatDialog,
   MatDialogRef,
   MatSlideToggleChange
@@ -18,6 +19,14 @@ import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
 import { UserDetailsComponent } from './user-details/user-details.component';
 
+function getInPageRows(dataSource: MatTableDataSource<BaaSUser>): BaaSUser[] {
+  const { sortData, filteredData, sort, paginator } = dataSource;
+  const { pageIndex, pageSize } = paginator;
+  return sortData(filteredData, sort).slice(
+    pageSize * pageIndex,
+    pageSize * (pageIndex + 1)
+  );
+}
 @Component({
   selector: 'app-user-management',
   templateUrl: './user-management.component.html',
@@ -100,39 +109,62 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
-  applyFilter(filterValue: string) {
-    if (filterValue !== null) {
-      filterValue = filterValue.trim().toLowerCase();
-    }
-
-    this.dataSource.filter = filterValue;
+  applyFilter(val: string) {
+    this.dataSource.filter = val !== null ? val.trim().toLowerCase() : val;
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    let numRows = 0;
-    if (this.dataSource) {
-      numRows = this.dataSource.data.length;
+  /**  find any unselected in page. */
+  isAllSelectedInPage(): boolean {
+    if (!this.selection.hasValue() || !this.dataSource) {
+      return false;
     }
-    return numSelected === numRows;
+    return (
+      getInPageRows(this.dataSource).find(
+        row => !this.selection.isSelected(row)
+      ) === undefined
+    );
+  }
+  isOnlySomeSelectedInPage(): boolean {
+    if (!this.selection.hasValue() || !this.dataSource) {
+      return false;
+    }
+    const sett = getInPageRows(this.dataSource);
+    return (
+      sett.find(row => this.selection.isSelected(row)) !== undefined &&
+      sett.find(row => !this.selection.isSelected(row)) !== undefined
+    );
+  }
+  isAnySelectedInPage(): boolean {
+    if (!this.selection.hasValue() || !this.dataSource) {
+      return false;
+    }
+    const sett = getInPageRows(this.dataSource);
+    return sett.find(row => this.selection.isSelected(row)) !== undefined;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.dataSource.data.forEach(row => this.selection.select(row));
+  /** Selects all visible rows if they are all non-selected;
+   * otherwise clear all visible selection.
+   */
+  masterToggle(e: MatCheckboxChange) {
+    if (e.source.indeterminate) {
+      this.selection.clear();
+      e.source.checked = false;
+    } else if (!e.checked) {
+      this.selection.clear();
+    } else {
+      const sett = getInPageRows(this.dataSource);
+      sett.forEach(row => this.selection.select(row));
+    }
   }
 
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: BaaSUser): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+      return `${this.isAnySelectedInPage() ? 'select' : 'deselect'} all`;
     }
     return `${
       this.selection.isSelected(row) ? 'deselect' : 'select'
