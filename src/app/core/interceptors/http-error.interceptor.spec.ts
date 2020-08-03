@@ -1,20 +1,21 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
+import { inject, TestBed } from '@angular/core/testing';
+import { MatSnackBarRef } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { MatSnackBarRef } from '@angular/material/snack-bar';
-
-import { HttpTokenInterceptor } from './http-token.interceptor';
-import { HttpErrorInterceptor } from './http-error.interceptor';
-import { AuthenticationService } from './../services/authentication.service';
 import { NotificationService } from './../../shared/services/notification.service';
-import { AppMessage } from './../services/app-messages.service';
-import { AppMessagesService } from './../services/app-messages.service';
 import { AppGlobalConstants } from './../app-global-constants';
+import {
+  AppMessage,
+  AppMessagesService
+} from './../services/app-messages.service';
+import { AuthenticationService } from './../services/authentication.service';
+import { HttpErrorInterceptor } from './http-error.interceptor';
+import { HttpTokenInterceptor } from './http-token.interceptor';
 
 describe('Http Error Interceptor', () => {
   let notificationSuccess = 0;
@@ -88,8 +89,8 @@ describe('Http Error Interceptor', () => {
     }
   ));
 
-  describe('making http call should add proper authorization token', () => {
-    it('adds Authorization header', inject(
+  describe('when a HTTP call made', () => {
+    it('should add proper authorization token', inject(
       [HttpClient, HttpTestingController],
       (http: HttpClient, httpMock: HttpTestingController) => {
         http
@@ -106,17 +107,17 @@ describe('Http Error Interceptor', () => {
     ));
   });
 
-  describe('making http call then server returns Invalid Http Request response code', () => {
+  describe('When a Lambda call returns an Invalid Request HTTP Response code', () => {
     let response: any;
     let errResponse: any;
-    const mockErrorResponse = {
+    const httpResponseHeaders = {
       status: AppGlobalConstants.HttpErrorResponseCode.InvalidHttpRequest,
       statusText: 'Invalid Http Request'
     };
-    const errorMessage =
+    const httpResponseBody =
       'Error: Http failure response for /fakecall: 400 Invalid Http Request';
 
-    it('client return 400 Invalid Http Request', inject(
+    it('should return Invalid Response message', inject(
       [HttpClient, HttpTestingController],
       (http: HttpClient, httpMock: HttpTestingController) => {
         http.get('/fakecall').subscribe(
@@ -124,23 +125,25 @@ describe('Http Error Interceptor', () => {
           err => (errResponse = err)
         );
 
-        httpMock.expectOne('/fakecall').flush(errorMessage, mockErrorResponse);
-        expect(errResponse).toBe(errorMessage);
+        httpMock
+          .expectOne('/fakecall')
+          .flush(httpResponseBody, httpResponseHeaders);
+        expect(errResponse).toBe(httpResponseBody);
       }
     ));
   });
 
-  describe('making http call then server returns Unauthorized response code', () => {
+  describe('When a Lambda call returns an Unauthorized Error HTTP Response code', () => {
     let response: any;
     let errResponse: any;
-    const mockErrorResponse = {
+    const httpResponseHeaders = {
       status: AppGlobalConstants.HttpErrorResponseCode.UnauthorizedAccess,
       statusText: 'Unauthorized Http Request'
     };
-    const errorMessage =
+    const httpResponseBody =
       'Error: Http failure response for /fakecall: 403 Unauthorized Http Request';
 
-    it('client return 403 Unauthorized Http Request', inject(
+    it('should return Unauthorized Response message', inject(
       [HttpClient, HttpTestingController],
       (http: HttpClient, httpMock: HttpTestingController) => {
         http.get('/fakecall').subscribe(
@@ -148,23 +151,25 @@ describe('Http Error Interceptor', () => {
           err => (errResponse = err)
         );
 
-        httpMock.expectOne('/fakecall').flush(errorMessage, mockErrorResponse);
-        expect(errResponse).toBe(errorMessage);
+        httpMock
+          .expectOne('/fakecall')
+          .flush(httpResponseBody, httpResponseHeaders);
+        expect(errResponse).toBe(httpResponseBody);
       }
     ));
   });
 
-  describe('making http call then server returns TimeOut Error response code', () => {
+  describe('When a Lambda call returns an Timeout Error HTTP Response code', () => {
     let response: any;
     let errResponse: any;
-    const mockErrorResponse = {
+    const httpResponseHeaders = {
       status: AppGlobalConstants.HttpErrorResponseCode.TimeOutErrorCode,
       statusText: 'Http Request Session Timeout'
     };
-    const errorMessage =
+    const httpResponseBody =
       'Error: Http failure response for /fakecall: 401 Http Request Session Timeout';
 
-    it('client return undefined error response', inject(
+    it('should return Timeout  Response message', inject(
       [HttpClient, HttpTestingController],
       (http: HttpClient, httpMock: HttpTestingController) => {
         http.get('/fakecall').subscribe(
@@ -172,24 +177,26 @@ describe('Http Error Interceptor', () => {
           err => (errResponse = err)
         );
 
-        httpMock.expectOne('/fakecall').flush(errorMessage, mockErrorResponse);
+        httpMock
+          .expectOne('/fakecall')
+          .flush(httpResponseBody, httpResponseHeaders);
         expect(errResponse).toBeUndefined();
       }
     ));
   });
 
-  describe('making http call then server returns Internal Error response code', () => {
+  describe('When a Lambda call returns an Internal Error HTTP Response code', () => {
     let response: any;
     let errResponse: any;
-    const mockErrorResponse = {
+    const httpResponseHeaders = {
       status: AppGlobalConstants.HttpErrorResponseCode.InternalServerError,
       statusText: 'Failed due to Internal Error'
     };
-    const errorMessage = `Error: ${appMessagesServiceStub.getMessage(
+    const httpResponseBody = `Error: ${appMessagesServiceStub.getMessage(
       AppMessage.ServerOperationError
     )}`;
 
-    it('client return Internal Error Code', inject(
+    it('should return Internal Error Response message', inject(
       [HttpClient, HttpTestingController],
       (http: HttpClient, httpMock: HttpTestingController) => {
         http.get('/fakecall').subscribe(
@@ -197,26 +204,58 @@ describe('Http Error Interceptor', () => {
           err => (errResponse = err)
         );
 
-        httpMock.expectOne('/fakecall').flush(errorMessage, mockErrorResponse);
-        expect(errResponse).toBe(errorMessage);
+        httpMock
+          .expectOne('/fakecall')
+          .flush(httpResponseBody, httpResponseHeaders);
+        expect(errResponse).toBe(httpResponseBody);
       }
     ));
   });
 
-  describe('making http call then client throws client side error', () => {
+  describe('When a Lambda call returns an Error that supports standard error schema', () => {
     let response: any;
     let errResponse: any;
-
-    it('client return undefined error message', inject(
+    const httpResponseHeaders = {
+      status: AppGlobalConstants.HttpErrorResponseCode.REQUEST_SEMANTIC_ERROR,
+      statusText: 'Failed due to Semantic Error'
+    };
+    const data = { errorDetail: 'Standard Error' };
+    const httpResponseBody = JSON.stringify(data);
+    it('should return the Standard Error message that comes from Lambda', inject(
       [HttpClient, HttpTestingController],
       (http: HttpClient, httpMock: HttpTestingController) => {
         http.get('/fakecall').subscribe(
           res => (response = res),
           err => (errResponse = err)
         );
+        httpMock
+          .expectOne('/fakecall')
+          .flush(httpResponseBody, httpResponseHeaders);
+        expect(errResponse).toContain('Standard Error');
+      }
+    ));
+  });
 
-        httpMock.expectOne('/fakecall').error(new ErrorEvent('Client error'));
-        expect(errResponse).toBeUndefined();
+  describe('When a Lambda call returns an Error that implements Custom Error', () => {
+    let response: any;
+    let errResponse: any;
+    const httpResponseHeaders = {
+      status: AppGlobalConstants.HttpErrorResponseCode.REQUEST_SEMANTIC_ERROR,
+      statusText: 'Failed due to Semantic Error'
+    };
+    const httpResponseBody = { body: { errorDetail: 'Custom Error' } };
+    it('should return  the Custom Error message that comes from Lambda', inject(
+      [HttpClient, HttpTestingController],
+      (http: HttpClient, httpMock: HttpTestingController) => {
+        http.get('/fakecall').subscribe(
+          res => (response = res),
+          err => (errResponse = err)
+        );
+        httpMock
+          .expectOne('/fakecall')
+          .flush(httpResponseBody, httpResponseHeaders);
+        console.log(errResponse);
+        expect(errResponse).toContain('Custom Error');
       }
     ));
   });
