@@ -56,6 +56,13 @@
       <mat-icon>lock_open</mat-icon>
       Enable User(s)
     </button>
+    <div fxLayout="column" *ngIf="showSpinner" fxLayoutAlign="center center">
+      <mat-spinner
+        matTooltip="Processing request"
+        style="text-align: center"
+        diameter="40"
+      ></mat-spinner>
+    </div>
   </div>
 
   <mat-table [dataSource]="dataSource" matSort class="mat-cell">
