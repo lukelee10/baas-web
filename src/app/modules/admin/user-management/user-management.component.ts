@@ -34,6 +34,7 @@ function getInPageRows(dataSource: MatTableDataSource<BaaSUser>): BaaSUser[] {
   styleUrls: ['./user-management.component.scss']
 })
 export class UserManagementComponent implements OnInit {
+  showSpinner = false;
   pageTitle = 'List Users';
   dataSource: MatTableDataSource<BaaSUser>;
   selection = new SelectionModel<BaaSUser>(true, []);
@@ -219,8 +220,15 @@ export class UserManagementComponent implements OnInit {
     );
   }
   disableSelectedUsers(orDisable: boolean = true) {
+    this.showSpinner = true;
     // https://medium.com/better-programming/rxjs-error-handling-with-forkjoin-3d4027df70fc
     const action = orDisable ? 'disable' : 'enable';
+    const confirmAns =
+      !orDisable ||
+      confirm('Are you certain you want to disable the selected users?');
+    if (!confirmAns) {
+      return;
+    }
     forkJoin(
       this.selection.selected.map(user => {
         const userChanges = { email: user.username, disabled: orDisable };
@@ -235,6 +243,7 @@ export class UserManagementComponent implements OnInit {
       })
     ).subscribe(
       values => {
+        this.showSpinner = false;
         console.log('result of forkJoing', values);
         const numOfError = values.filter(v => v.isError).length;
         if (numOfError === values.length) {
@@ -248,6 +257,7 @@ export class UserManagementComponent implements OnInit {
         }
       },
       error => {
+        this.showSpinner = false;
         console.error(`${action} all failed: %j`, error);
         const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
         this.notificationService.error(`${action} all failed.`);
