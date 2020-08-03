@@ -9,7 +9,8 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { first } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, first, map } from 'rxjs/operators';
 import { LookupStaticDataService } from 'src/app/shared/services/lookup-static-data.service';
 
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
@@ -214,6 +215,42 @@ export class UserManagementComponent implements OnInit {
             event.checked ? 'Disabling' : 'Enabling'
           } user failed. ${error} ${detail}`
         );
+      }
+    );
+  }
+  disableSelectedUsers(orDisable: boolean = true) {
+    // https://medium.com/better-programming/rxjs-error-handling-with-forkjoin-3d4027df70fc
+    const action = orDisable ? 'disable' : 'enable';
+    forkJoin(
+      this.selection.selected.map(user => {
+        const userChanges = { email: user.username, disabled: orDisable };
+        return this.awsLambdaService.updateUser(userChanges).pipe(
+          map(value => {
+            console.log('inside map', user, value);
+            user.isDisabled = orDisable;
+            return { isError: false, user };
+          }),
+          catchError(error => of({ isError: true, error, user }))
+        );
+      })
+    ).subscribe(
+      values => {
+        console.log('result of forkJoing', values);
+        const numOfError = values.filter(v => v.isError).length;
+        if (numOfError === values.length) {
+          this.notificationService.error(`All user ${action} failed`);
+        } else if (numOfError > 0) {
+          this.notificationService.successful(
+            `Only some of the users have been ${action}d`
+          );
+        } else {
+          this.notificationService.successful(`All users have been ${action}d`);
+        }
+      },
+      error => {
+        console.error(`${action} all failed: %j`, error);
+        const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
+        this.notificationService.error(`${action} all failed.`);
       }
     );
   }

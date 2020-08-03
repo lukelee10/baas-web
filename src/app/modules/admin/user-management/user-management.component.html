@@ -40,9 +40,21 @@
       matTooltip="Disable selected users"
       aria-hidden="false"
       aria-label="Disable selected users"
+      (click)="disableSelectedUsers()"
     >
-      <mat-icon>delete_sweep</mat-icon>
+      <mat-icon>lock</mat-icon>
       Disable User(s)
+    </button>
+    <button
+      color="warn"
+      mat-button
+      matTooltip="Enable selected users"
+      aria-hidden="false"
+      aria-label="Enable selected users"
+      (click)="disableSelectedUsers(false)"
+    >
+      <mat-icon>lock_open</mat-icon>
+      Enable User(s)
     </button>
   </div>
 
