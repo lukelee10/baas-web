@@ -1,13 +1,16 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSlideToggle, MatSlideToggleChange } from '@angular/material';
+import {
+  MatCheckboxChange,
+  MatSlideToggle,
+  MatSlideToggleChange
+} from '@angular/material';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { UserRoles } from 'src/app/core/app-global-constants';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
-import { AwsLambdaServiceMock } from 'src/app/core/services/aws-lambda.service.spec';
 import { UserService } from 'src/app/core/services/user.service';
 import { BaaSUser } from 'src/app/shared/models/user';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -36,6 +39,56 @@ class MockUserService extends UserService {
     return 'DEFAULT';
   }
 }
+let okOrNotArr: boolean[] = [];
+const AwsLambdaServiceMock: any = {
+  getUsers(): Observable<any> {
+    return of([
+      {
+        username: 'test1.admin@leidos.com',
+        role: 'Admin',
+        group: 'DOS',
+        firstname: 'Test',
+        lastname: 'Admin'
+      },
+      {
+        username: 'test2.lead@leidos.com',
+        role: 'Lead',
+        group: 'DOS',
+        isAdmin: false,
+        firstname: 'Test',
+        lastname: 'Lead'
+      },
+      {
+        username: 'user1@leidos.com',
+        role: 'Fsp',
+        group: 'DOS',
+        lastname: 'Lead'
+      },
+      {
+        username: 'user2.lead@leidos.com',
+        role: 'Lead',
+        group: 'DOS',
+        firstname: 'Test',
+        isDisabled: true
+      },
+      {
+        username: 'no.name@leidos.com',
+        role: 'Lead',
+        group: 'DOS',
+        isDisabled: true
+      }
+    ]);
+  },
+  updateUser(user: BaaSUser): Observable<any> {
+    return okOrNotArr.shift() === false
+      ? throwError({ status: 404 })
+      : of({ status: 'ok', user });
+  },
+
+  _setUpdateUserRes(okOrNotArray: boolean[]) {
+    okOrNotArr = okOrNotArray;
+  }
+};
 
 describe('UserManagementComponent', () => {
   let component: UserManagementComponent;
@@ -65,35 +118,80 @@ describe('UserManagementComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+  beforeAll(() => {
+    spyOn(window, 'confirm').and.returnValues(false, true); // esp for disable users
+  });
 
-  it('should getUsers correctly as Admin user', () => {
-    component.getUsers();
-    expect(component.usersViewModel.length).toBeGreaterThan(0);
-  });
-  it('should filter correctly as Admin user', () => {
-    component.applyFilter('test1');
-    expect(component.dataSource.filter).toEqual('test1');
-    component.applyFilter(null);
-    expect(component.dataSource.filter).toBeFalsy();
-  });
-  it('should clear fitler correctly as Admin user', () => {
-    component.ClearFilter();
-    fixture.detectChanges();
-    expect(component.dataSource.filter).toEqual('');
-  });
-  it('should toggle user selection correctly', () => {
+  it('should toggle user selection correctly', done => {
+    const box = fixture.debugElement.nativeElement.querySelector(
+      'mat-checkbox'
+    );
+    const evnt = new MatCheckboxChange();
+    evnt.source = box;
+    evnt.checked = true;
     component.masterToggle();
+    component.masterToggle(evnt);
+    fixture.whenStable().then(() => {
+      const users = component.selection.selected;
+      console.log('users are:', users);
+      expect(users.length).toBeGreaterThan(0);
+      evnt.checked = false;
+      component.masterToggle(evnt);
+      fixture.detectChanges();
+      expect(component.selection.selected.length === 0).toBeTruthy();
+      done();
+    });
+  });
+  it('should disable selected users correctly', done => {
+    let disabledUsers = [];
+    AwsLambdaServiceMock.getUsers().subscribe(users => {
+      disabledUsers = users.filter(user => user.isDisabled);
+    });
+    const box = fixture.debugElement.nativeElement.querySelector(
+      'mat-checkbox'
+    );
+    const evnt = new MatCheckboxChange();
+    evnt.source = box;
+    evnt.checked = true;
+    component.masterToggle(evnt);
+    fixture.whenStable().then(() => {
+      expect(
+        component.selection.selected.filter(user => user.isDisabled).length
+      ).toEqual(disabledUsers.length);
+      component.disableSelectedUsers(); // user spy to cancel
+      fixture.detectChanges();
+      component.disableSelectedUsers(); // iuser spy to accept
+      fixture.detectChanges();
+      expect(
+        component.selection.selected.filter(user => !user.isDisabled).length
+      ).toEqual(0);
+      done();
+    });
+  });
+  it('should disable selected users but two selected users were not allowed to enabled', done => {
+    AwsLambdaServiceMock._setUpdateUserRes([false, false]); // two of the updates will fail
+    const box = fixture.debugElement.nativeElement.querySelector(
+      'mat-checkbox'
+    );
+    const evnt = new MatCheckboxChange();
+    evnt.source = box;
+    evnt.checked = true;
+    component.masterToggle(evnt);
     fixture.detectChanges();
-    expect(component.selection.selected.length).toBeGreaterThan(0);
-    component.masterToggle();
+    component.disableSelectedUsers(false);
     fixture.detectChanges();
-    expect(component.selection.selected.length === 0).toBeTruthy();
+    // there are 5 users and minus the 2 fails then we should expect 3 user that are enabled
+    expect(
+      component.selection.selected.filter(user => user.isDisabled === false)
+        .length
+    ).toEqual(3);
+    done();
   });
   describe('when updateUser lambda works correctly', () => {
     beforeEach(() => {
       spyOn(AwsLambdaServiceMock, 'updateUser').and.callThrough();
     });
-    it('should disable user correctly', () => {
+    it('should disable an individual user correctly', () => {
       const componentDebug = fixture.debugElement;
       const slider = componentDebug.query(By.directive(MatSlideToggle));
 
@@ -112,7 +210,7 @@ describe('UserManagementComponent', () => {
         throwError({ status: 404, errorDetail: 'kaput' })
       );
     });
-    it('should not disable user ', () => {
+    it('should not disable the individual user ', () => {
       const componentDebug = fixture.debugElement;
       const slider = componentDebug.query(By.directive(MatSlideToggle));
 
@@ -130,7 +228,7 @@ describe('UserManagementComponent', () => {
       const lambda = fixture.debugElement.injector.get(AwsLambdaService);
       updateUserSpy = spyOn(lambda, 'updateUser').and.callThrough();
     });
-    it('should enable user correctly', done => {
+    it('should enable an individual user correctly', done => {
       const componentDebug = fixture.debugElement;
       const slider = componentDebug.query(By.directive(MatSlideToggle));
 
@@ -151,7 +249,7 @@ describe('UserManagementComponent', () => {
         throwError({ status: 404, errorDetail: 'kaput' })
       );
     });
-    it('should not enable user ', async(() => {
+    it('should not enable individual user ', async(() => {
       // TODO this works correctly in the chrome debugger but failed in batch testing.
       // const componentDebug = fixture.debugElement;
       // const slider = componentDebug.queryAll(By.directive(MatSlideToggle))[3];
@@ -183,7 +281,7 @@ describe('UserManagementComponent', () => {
         throwError({ status: 404, message: 'kaput' })
       );
     });
-    it('should not enable user ', async(() => {
+    it('should not enable individual user ', async(() => {
       const event = new MatSlideToggleChange(undefined, false);
       component.toggleDisable(event, {
         username: 'user2.lead@leidos.com',
@@ -209,7 +307,7 @@ describe('UserManagementComponent', () => {
         throwError({ status: 404, message: 'kaput' })
       );
     });
-    it('should not enable user ', async(() => {
+    it('should not enable individual user ', async(() => {
       const event = new MatSlideToggleChange(undefined, true);
       component.toggleDisable(event, {
         username: 'user2.lead@leidos.com',
@@ -227,7 +325,7 @@ describe('UserManagementComponent', () => {
       });
     }));
   });
-  it('should open edit dialog on user correctly', () => {
+  it('should open edit dialog on indivdual user correctly', () => {
     const user: BaaSUser = {
       username: 'test@test.gov',
       fullname: 'Test Lead',
@@ -254,7 +352,7 @@ describe('UserManagementComponent', () => {
       expect(afterTally).toEqual(1);
     });
   });
-  it('should close edit dialog on user correctly', async(() => {
+  it('should close edit dialog on individual user correctly', async(() => {
     const user: BaaSUser = {
       username: 'test@test.gov',
       fullname: 'Test Lead',
@@ -310,5 +408,18 @@ describe('UserManagementComponent', () => {
       component.getUsers();
       expect(component.usersViewModel.length).toEqual(5);
     }));
+  });
+  it('should enter filter info and clear them correctly', done => {
+    component.applyFilter('test');
+    fixture.detectChanges();
+    let rows = fixture.debugElement.nativeElement.querySelectorAll(
+      'mat-checkbox'
+    );
+    expect(rows.length).toEqual(4); // 5 users and 2 has username with 'test' and header
+    component.clearFilter();
+    fixture.detectChanges();
+    rows = fixture.debugElement.nativeElement.querySelectorAll('mat-checkbox');
+    expect(rows.length).toEqual(6);
+    done();
   });
 });
