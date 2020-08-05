@@ -21,7 +21,7 @@ export class AdminComponent implements OnInit {
   tabClick(tab) {
     if (tab.index === 0) {
       // refresh the user list
-      this.userManagementComponent.reloadControl();
+      this.userManagementComponent.getUsers();
     } else {
       // refresh the org list
       this.groupManagementComponent.getOrgs();
