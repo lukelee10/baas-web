@@ -18,7 +18,7 @@
       matTooltip="Clear the filter"
       aria-hidden="false"
       aria-label="Clear the filter"
-      (click)="ClearFilter()"
+      (click)="clearFilter()"
     >
       <mat-icon>clear</mat-icon>
       Clear Filter
@@ -70,7 +70,7 @@
     <ng-container matColumnDef="select">
       <mat-header-cell *matHeaderCellDef>
         <mat-checkbox
-          (change)="$event ? masterToggle($event) : null"
+          (change)="masterToggle($event)"
           [checked]="isAllSelectedInPage()"
           [indeterminate]="isOnlySomeSelectedInPage()"
           aria-hidden="false"

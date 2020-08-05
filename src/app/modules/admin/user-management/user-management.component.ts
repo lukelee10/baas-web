@@ -20,14 +20,6 @@ import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
 import { UserDetailsComponent } from './user-details/user-details.component';
 
-function getInPageRows(dataSource: MatTableDataSource<BaaSUser>): BaaSUser[] {
-  const { sortData, filteredData, sort, paginator } = dataSource;
-  const { pageIndex, pageSize } = paginator;
-  return sortData(filteredData, sort).slice(
-    pageSize * pageIndex,
-    pageSize * (pageIndex + 1)
-  );
-}
 @Component({
   selector: 'app-user-management',
   templateUrl: './user-management.component.html',
@@ -113,28 +105,38 @@ export class UserManagementComponent implements OnInit {
 
   applyFilter(val: string) {
     this.dataSource.filter = val !== null ? val.trim().toLowerCase() : val;
-
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
+  clearFilter() {
+    this.filter.nativeElement.value = '';
+    this.applyFilter('');
+  }
 
+  private getInPageRows(): BaaSUser[] {
+    const { sortData, filteredData, sort, paginator } = this.dataSource;
+    const { pageIndex, pageSize } = paginator;
+    return sortData(filteredData, sort).slice(
+      pageSize * pageIndex,
+      pageSize * (pageIndex + 1)
+    );
+  }
   /**  find any unselected in page. */
   isAllSelectedInPage(): boolean {
     if (!this.selection.hasValue() || !this.dataSource) {
       return false;
     }
     return (
-      getInPageRows(this.dataSource).find(
-        row => !this.selection.isSelected(row)
-      ) === undefined
+      this.getInPageRows().find(row => !this.selection.isSelected(row)) ===
+      undefined
     );
   }
   isOnlySomeSelectedInPage(): boolean {
     if (!this.selection.hasValue() || !this.dataSource) {
       return false;
     }
-    const sett = getInPageRows(this.dataSource);
+    const sett = this.getInPageRows();
     return (
       sett.find(row => this.selection.isSelected(row)) !== undefined &&
       sett.find(row => !this.selection.isSelected(row)) !== undefined
@@ -144,21 +146,22 @@ export class UserManagementComponent implements OnInit {
     if (!this.selection.hasValue() || !this.dataSource) {
       return false;
     }
-    const sett = getInPageRows(this.dataSource);
+    const sett = this.getInPageRows();
     return sett.find(row => this.selection.isSelected(row)) !== undefined;
   }
 
-  /** Selects all visible rows if they are all non-selected;
-   * otherwise clear all visible selection.
-   */
-  masterToggle(e: MatCheckboxChange) {
+  masterToggle(e?: MatCheckboxChange) {
+    if (!e) {
+      return;
+    }
+    console.log('inside masterToggle', e);
     if (e.source.indeterminate) {
       this.selection.clear();
       e.source.checked = false;
     } else if (!e.checked) {
       this.selection.clear();
     } else {
-      const sett = getInPageRows(this.dataSource);
+      const sett = this.getInPageRows();
       sett.forEach(row => this.selection.select(row));
     }
   }
@@ -171,11 +174,6 @@ export class UserManagementComponent implements OnInit {
     return `${
       this.selection.isSelected(row) ? 'deselect' : 'select'
     } row ${row.username + 1}`;
-  }
-
-  ClearFilter() {
-    this.filter.nativeElement.value = '';
-    this.applyFilter('');
   }
 
   private getName(firstName: string, lastName: string): string {
@@ -249,7 +247,7 @@ export class UserManagementComponent implements OnInit {
         if (numOfError === values.length) {
           this.notificationService.error(`All user ${action} failed`);
         } else if (numOfError > 0) {
-          this.notificationService.successful(
+          this.notificationService.warning(
             `Only some of the users have been ${action}d`
           );
         } else {
@@ -297,9 +295,5 @@ export class UserManagementComponent implements OnInit {
         request.fullname = this.getName(firstname, lastname);
       }
     });
-  }
-
-  reloadControl(): void {
-    window.location.reload();
   }
 }
