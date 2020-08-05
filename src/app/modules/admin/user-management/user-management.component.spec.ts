@@ -198,7 +198,7 @@ describe('UserManagementComponent', () => {
       slider.triggerEventHandler('change', { checked: true }); // triggerEventHandler
       fixture.whenStable().then(() => {
         expect(AwsLambdaServiceMock.updateUser).toHaveBeenCalled();
-        expect(component.usersViewModel[0].isDisabled).toBeTruthy(); // event has been called
+        expect(component.dataSource.data[0].isDisabled).toBeTruthy(); // event has been called
       });
     });
   });
@@ -218,7 +218,7 @@ describe('UserManagementComponent', () => {
       // fixture.detectChanges();
       fixture.whenStable().then(() => {
         expect(deleteUserSpy).toHaveBeenCalled();
-        expect(component.usersViewModel[0].isDisabled).toBeFalsy(); // event has been called
+        expect(component.dataSource.data[0].isDisabled).toBeFalsy(); // event has been called
       });
     });
   });
@@ -235,7 +235,7 @@ describe('UserManagementComponent', () => {
       slider.triggerEventHandler('change', { checked: false }); // triggerEventHandler
       fixture.whenStable().then(() => {
         expect(updateUserSpy).toHaveBeenCalled();
-        expect(component.usersViewModel[0].isDisabled).toBeFalsy(); // event has been called
+        expect(component.dataSource.data[0].isDisabled).toBeFalsy(); // event has been called
         done();
       });
     });
@@ -269,7 +269,7 @@ describe('UserManagementComponent', () => {
       fixture.whenStable().then(() => {
         expect(updateUserSpy).toHaveBeenCalled();
         // TODO  the UI side refused to comply.
-        // expect(component.usersViewModel[3].Disabled).toBeTruthy(); // event has been called
+        // expect(component.dataSource.data[3].Disabled).toBeTruthy(); // event has been called
       });
     }));
   });
@@ -384,14 +384,14 @@ describe('UserManagementComponent', () => {
     const userService = TestBed.get(UserService);
     userService.InitializeUserSession('lead');
     component.getUsers();
-    expect(component.usersViewModel.length).toBeGreaterThan(0);
+    expect(component.dataSource.data.length).toBeGreaterThan(0);
   });
   it('should not getUsers correctly as FSP user', () => {
     const userService = TestBed.get(UserService);
-    component.usersViewModel.splice(0, component.usersViewModel.length);
+    component.dataSource.data.splice(0, component.dataSource.data.length);
     userService.InitializeUserSession('fsp');
     component.getUsers();
-    expect(component.usersViewModel.length).toEqual(0);
+    expect(component.dataSource.data.length).toEqual(0);
   });
 
   describe('when getUsers lambda failed without errorDetail', () => {
@@ -406,7 +406,7 @@ describe('UserManagementComponent', () => {
     });
     it('should not get-users ', async(() => {
       component.getUsers();
-      expect(component.usersViewModel.length).toEqual(5);
+      expect(component.dataSource.data.length).toEqual(5);
     }));
   });
   it('should enter filter info and clear them correctly', done => {
