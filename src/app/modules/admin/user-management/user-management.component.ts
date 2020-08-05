@@ -49,8 +49,6 @@ export class UserManagementComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('filter', { static: true }) filter: ElementRef;
 
-  usersViewModel: BaaSUser[] = [];
-
   constructor(
     private awsLambdaService: AwsLambdaService,
     private userService: UserService,
@@ -79,9 +77,8 @@ export class UserManagementComponent implements OnInit {
     if (sub) {
       sub.pipe(first()).subscribe(
         users => {
-          this.getViewModelUsers(users);
           this.dataSource = new MatTableDataSource<BaaSUser>(
-            this.usersViewModel
+            this.getViewModelUsers(users)
           );
           this.dataSource.paginator = this.paginator;
           this.sort.start = 'asc';
@@ -95,12 +92,12 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
-  private getViewModelUsers(users: BaaSUser[]): void {
-    for (const item of users) {
+  private getViewModelUsers(users: BaaSUser[]): BaaSUser[] {
+    return users.map(item => {
       item.fullname = this.getName(item.firstname, item.lastname);
       item.group = item.group._GUID;
-      this.usersViewModel.push(item);
-    }
+      return item;
+    });
   }
 
   applyFilter(val: string) {
