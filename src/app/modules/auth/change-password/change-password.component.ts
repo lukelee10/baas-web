@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/core/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -37,7 +38,8 @@ export class ChangePasswordComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private awsLambdaService: AwsLambdaService,
     private loaderService: LoaderService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -46,6 +48,7 @@ export class ChangePasswordComponent implements OnInit {
       Validators.required,
       Validators.minLength(AppGlobalConstants.MinPasswordLength),
       PasswordValidators.buildForbiddenUserIdValidator(this.LoggedUser),
+      PasswordValidators.validateNoFirstName(this.userService.Firstname),
       ...PasswordValidators.CharClassValidators
     ];
 

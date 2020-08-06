@@ -70,6 +70,16 @@ export class UserService {
     return currentUser.Fullname;
   }
 
+  get Firstname(): string {
+    const currentUser = JSON.parse(sessionStorage.getItem('CurrentUser'));
+    return currentUser.Firstname;
+  }
+
+  get Lastname(): string {
+    const currentUser = JSON.parse(sessionStorage.getItem('CurrentUser'));
+    return currentUser.Lastname;
+  }
+
   get GUID(): string {
     const currentUser = JSON.parse(sessionStorage.getItem('CurrentUser'));
     return currentUser.GUID;

@@ -125,5 +125,30 @@ export const PasswordValidators = {
       const sValToTest = requireNonNullOrElse(control.value);
       return forbiddenPattern.test(sValToTest) ? oFailureResult : null;
     };
+  },
+  // validateNoFullName: (fullName: string): ValidatorFn => {
+  //   const sRegExEscapedFullName = escapeRegExp(fullName);
+  //   const oFailureResult = {
+  //     forbiddenName: 'Cannot contain name'
+  //   };
+  //   return (control: AbstractControl) => {
+  //     const forbiddenPattern = new RegExp(`^.*${sRegExEscapedFullName}.*$`, 'gi');
+  //     const sValToTest = requireNonNullOrElse(control.value);
+  //     return forbiddenPattern.test(sValToTest) ? oFailureResult : null;
+  //   };
+  // }
+  validateNoFirstName: (firstName: string): ValidatorFn => {
+    const sRegExEscapedFirstName = escapeRegExp(firstName);
+    const oFailureResult = {
+      forbiddenUserId: 'Cannot contain first name'
+    };
+    return (control: AbstractControl) => {
+      const forbiddenPattern = new RegExp(
+        `^.*${sRegExEscapedFirstName}.*$`,
+        'gi'
+      );
+      const sValToTest = requireNonNullOrElse(control.value);
+      return forbiddenPattern.test(sValToTest) ? oFailureResult : null;
+    };
   }
 };
