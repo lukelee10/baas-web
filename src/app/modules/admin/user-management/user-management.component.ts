@@ -15,6 +15,7 @@ import { LookupStaticDataService } from 'src/app/shared/services/lookup-static-d
 
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { UserService } from './../../../core/services/user.service';
+import { ConfirmationDialogComponent } from './../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { BaaSUser } from './../../../shared/models/user';
 import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
@@ -31,7 +32,10 @@ export class UserManagementComponent implements OnInit {
   dataSource: MatTableDataSource<BaaSUser>;
   selection = new SelectionModel<BaaSUser>(true, []);
 
-  detailsPopup: MatDialogRef<UserDetailsComponent, any>;
+  detailsPopup: MatDialogRef<
+    UserDetailsComponent | ConfirmationDialogComponent,
+    any
+  >;
 
   displayedColumns: string[] = [
     'select',
@@ -215,49 +219,65 @@ export class UserManagementComponent implements OnInit {
     );
   }
   disableSelectedUsers(orDisable: boolean = true) {
-    this.showSpinner = true;
-    // https://medium.com/better-programming/rxjs-error-handling-with-forkjoin-3d4027df70fc
-    const action = orDisable ? 'disable' : 'enable';
-    const confirmAns =
-      !orDisable ||
-      confirm('Are you certain you want to disable the selected users?');
-    if (!confirmAns) {
-      return;
-    }
-    forkJoin(
-      this.selection.selected.map(user => {
-        const userChanges = { email: user.username, disabled: orDisable };
-        return this.awsLambdaService.updateUser(userChanges).pipe(
-          map(value => {
-            console.log('inside map', user, value);
-            user.isDisabled = orDisable;
-            return { isError: false, user };
-          }),
-          catchError(error => of({ isError: true, error, user }))
-        );
-      })
-    ).subscribe(
-      values => {
-        this.showSpinner = false;
-        console.log('result of forkJoing', values);
-        const numOfError = values.filter(v => v.isError).length;
-        if (numOfError === values.length) {
-          this.notificationService.error(`All user ${action} failed`);
-        } else if (numOfError > 0) {
-          this.notificationService.warning(
-            `Only some of the users have been ${action}d`
-          );
-        } else {
-          this.notificationService.successful(`All users have been ${action}d`);
-        }
-      },
-      error => {
-        this.showSpinner = false;
-        console.error(`${action} all failed: %j`, error);
-        const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
-        this.notificationService.error(`${action} all failed.`);
+    const updateUsers = (action: string) => {
+      if (this.selection.selected.length === 0) {
+        return;
       }
-    );
+      this.showSpinner = true;
+      // https://medium.com/better-programming/rxjs-error-handling-with-forkjoin-3d4027df70fc
+      forkJoin(
+        this.selection.selected.map(user => {
+          const userChanges = { email: user.username, disabled: orDisable };
+          return this.awsLambdaService.updateUser(userChanges).pipe(
+            map(value => {
+              console.log('inside map', user, value);
+              user.isDisabled = orDisable;
+              return { isError: false, user };
+            }),
+            catchError(error => of({ isError: true, error, user }))
+          );
+        })
+      ).subscribe(
+        values => {
+          this.showSpinner = false;
+          console.log('result of forkJoing', values);
+          const numOfError = values.filter(v => v.isError).length;
+          if (numOfError === values.length) {
+            this.notificationService.error(`All user ${action} failed`);
+          } else if (numOfError > 0) {
+            this.notificationService.warning(
+              `Only some of the users have been ${action}d`
+            );
+          } else {
+            this.notificationService.successful(
+              `All users have been ${action}d`
+            );
+          }
+        },
+        error => {
+          this.showSpinner = false;
+          console.error(`${action} all failed: %j`, error);
+          const detail = error.errorDetail ? `-- ${error.errorDetail}` : '';
+          this.notificationService.error(`${action} all failed.`);
+        }
+      );
+    };
+
+    if (orDisable) {
+      this.detailsPopup = this.dialog.open(ConfirmationDialogComponent, {
+        data: {
+          title: 'Confirm Disable',
+          message: 'Are you sure you want to disable the selected users?'
+        }
+      });
+      this.detailsPopup.afterClosed().subscribe(confirmResult => {
+        if (confirmResult) {
+          updateUsers('enable');
+        }
+      });
+    } else {
+      updateUsers('disable');
+    }
   }
 
   openDialog(request: BaaSUser): void {

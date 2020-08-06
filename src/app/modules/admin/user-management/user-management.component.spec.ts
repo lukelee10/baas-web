@@ -2,6 +2,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   MatCheckboxChange,
+  MatDialog,
+  MatDialogRef,
   MatSlideToggle,
   MatSlideToggleChange
 } from '@angular/material';
@@ -89,6 +91,15 @@ const AwsLambdaServiceMock: any = {
     okOrNotArr = okOrNotArray;
   }
 };
+let temp = false;
+const dgRef = {
+  afterClosed: () => {
+    const ans = temp;
+    temp = !temp;
+    return of(ans);
+  },
+  close: () => {}
+} as MatDialogRef<any>;
 
 describe('UserManagementComponent', () => {
   let component: UserManagementComponent;
@@ -118,9 +129,6 @@ describe('UserManagementComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-  beforeAll(() => {
-    spyOn(window, 'confirm').and.returnValues(false, true); // esp for disable users
-  });
 
   it('should toggle user selection correctly', done => {
     const box = fixture.debugElement.nativeElement.querySelector(
@@ -143,6 +151,8 @@ describe('UserManagementComponent', () => {
     });
   });
   it('should disable selected users correctly', done => {
+    const dialog = fixture.debugElement.injector.get(MatDialog);
+    spyOn(dialog, 'open').and.returnValue(dgRef);
     let disabledUsers = [];
     AwsLambdaServiceMock.getUsers().subscribe(users => {
       disabledUsers = users.filter(user => user.isDisabled);
@@ -160,7 +170,7 @@ describe('UserManagementComponent', () => {
       ).toEqual(disabledUsers.length);
       component.disableSelectedUsers(); // user spy to cancel
       fixture.detectChanges();
-      component.disableSelectedUsers(); // iuser spy to accept
+      component.disableSelectedUsers(); // user spy to accept
       fixture.detectChanges();
       expect(
         component.selection.selected.filter(user => !user.isDisabled).length
