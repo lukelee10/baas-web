@@ -140,11 +140,25 @@ export const PasswordValidators = {
   validateNoFirstName: (firstName: string): ValidatorFn => {
     const sRegExEscapedFirstName = escapeRegExp(firstName);
     const oFailureResult = {
-      forbiddenUserId: 'Cannot contain first name'
+      forbiddenFirstName: 'Cannot contain first name'
     };
     return (control: AbstractControl) => {
       const forbiddenPattern = new RegExp(
         `^.*${sRegExEscapedFirstName}.*$`,
+        'gi'
+      );
+      const sValToTest = requireNonNullOrElse(control.value);
+      return forbiddenPattern.test(sValToTest) ? oFailureResult : null;
+    };
+  },
+  validateNoLastName: (lastName: string): ValidatorFn => {
+    const sRegExEscapedLastName = escapeRegExp(lastName);
+    const oFailureResult = {
+      forbiddenLastName: 'Cannot contain last name'
+    };
+    return (control: AbstractControl) => {
+      const forbiddenPattern = new RegExp(
+        `^.*${sRegExEscapedLastName}.*$`,
         'gi'
       );
       const sValToTest = requireNonNullOrElse(control.value);

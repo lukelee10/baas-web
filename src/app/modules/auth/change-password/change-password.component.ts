@@ -49,6 +49,7 @@ export class ChangePasswordComponent implements OnInit {
       Validators.minLength(AppGlobalConstants.MinPasswordLength),
       PasswordValidators.buildForbiddenUserIdValidator(this.LoggedUser),
       PasswordValidators.validateNoFirstName(this.userService.Firstname),
+      PasswordValidators.validateNoLastName(this.userService.Lastname),
       ...PasswordValidators.CharClassValidators
     ];
 
