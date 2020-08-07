@@ -272,11 +272,11 @@ export class UserManagementComponent implements OnInit {
       });
       this.detailsPopup.afterClosed().subscribe(confirmResult => {
         if (confirmResult) {
-          updateUsers('enable');
+          updateUsers('disabled');
         }
       });
     } else {
-      updateUsers('disable');
+      updateUsers('enabled');
     }
   }
 
