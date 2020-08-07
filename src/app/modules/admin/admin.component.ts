@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material';
 
 import { GroupManagementComponent } from './group-management/group-management.component';
 import { UserManagementComponent } from './user-management/user-management.component';
@@ -18,7 +19,7 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {}
 
-  tabClick(tab) {
+  tabClick(tab: MatTabChangeEvent) {
     if (tab.index === 0) {
       // refresh the user list
       this.userManagementComponent.getUsers();

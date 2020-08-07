@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTabChangeEvent } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserRoles } from 'src/app/core/app-global-constants';
 import { UserService } from 'src/app/core/services/user.service';
@@ -44,7 +45,20 @@ describe('AdminComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should tab change correctly', done => {
+    const tabChange = new MatTabChangeEvent();
+    tabChange.index = 1;
+    component.tabClick(tabChange);
+    fixture.detectChanges();
+    const bar2 = fixture.debugElement.nativeElement.querySelector(
+      'mat-toolbar'
+    );
+    expect(bar2.textContent).toEqual('List Users');
+    tabChange.index = 0;
+    component.tabClick(tabChange);
+    fixture.detectChanges();
+    const bar = fixture.debugElement.nativeElement.querySelector('mat-toolbar');
+    expect(bar).toBeTruthy();
+    done();
   });
 });
