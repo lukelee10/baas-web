@@ -219,10 +219,10 @@ export class UserManagementComponent implements OnInit {
     );
   }
   disableSelectedUsers(orDisable: boolean = true) {
+    if (this.selection.selected.length === 0) {
+      return;
+    }
     const updateUsers = (action: string) => {
-      if (this.selection.selected.length === 0) {
-        return;
-      }
       this.showSpinner = true;
       // https://medium.com/better-programming/rxjs-error-handling-with-forkjoin-3d4027df70fc
       forkJoin(

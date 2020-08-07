@@ -40,6 +40,7 @@
       matTooltip="Disable selected users"
       aria-hidden="false"
       aria-label="Disable selected users"
+      [disabled]="selection.selected.length === 0"
       (click)="disableSelectedUsers()"
     >
       <mat-icon>lock</mat-icon>
@@ -50,6 +51,7 @@
       matTooltip="Enable selected users"
       aria-hidden="false"
       aria-label="Enable selected users"
+      [disabled]="selection.selected.length === 0"
       (click)="disableSelectedUsers(false)"
     >
       <mat-icon>lock_open</mat-icon>
