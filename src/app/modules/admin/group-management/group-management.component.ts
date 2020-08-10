@@ -144,7 +144,6 @@ export class GroupManagementComponent implements OnInit {
           fqn: _GUID,
           disabled
         }));
-      // const fqn = this.userService.Group;
       const list = orgs.map(org => ({
         item: org.group,
         children: digKids(org.subgroups),
@@ -231,7 +230,6 @@ export class GroupManagementComponent implements OnInit {
     name = cleanExtraSpaces(name);
 
     const oldFqn = flatNode.fqn || '';
-    // const renamedFqn = oldFqn.replace(oldFqn.substring(oldFqn.lastIndexOf('/')),'/' + name);
     const fqnTokens = oldFqn.split('/');
 
     // Remove old name & insert new name
@@ -247,7 +245,6 @@ export class GroupManagementComponent implements OnInit {
     this.awsLambdaService.updateOrg(renamedOrg).subscribe(
       (data: any) => {
         this.notificationService.successful(userMessage);
-        // this.ngOnInit();
         this.getOrgs().subscribe(() => {
           const temp = this.changeWatcher.value;
           this.changeWatcher.next([]);
