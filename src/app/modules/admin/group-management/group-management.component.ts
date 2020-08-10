@@ -7,7 +7,12 @@ import {
   Output,
   TemplateRef
 } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
@@ -19,11 +24,18 @@ import {
 } from '@angular/material/tree';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize, map } from 'rxjs/operators';
-import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
-import { UserService } from 'src/app/core/services/user.service';
+
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
-import { BaaSGroup } from 'src/app/shared/models/user';
+
+import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { UserService } from 'src/app/core/services/user.service';
+
+import { BaaSGroup } from 'src/app/shared/models/user';
+import {
+  cleanExtraSpaces,
+  forbiddenCharacterValidator
+} from 'src/app/core/app-global-utils';
 
 /**
  * Node for to-do item
@@ -58,7 +70,8 @@ export class GroupManagementComponent implements OnInit {
   @Output() selectGroup = new EventEmitter();
   changeWatcher = new BehaviorSubject<GroupNode[]>([]);
   showSpinner = false;
-  entity = new FormControl('');
+  newEntityFormGroup: FormGroup;
+  updateEntityFormGroup: FormGroup;
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<GroupFlatNode, GroupNode>();
@@ -68,7 +81,6 @@ export class GroupManagementComponent implements OnInit {
   treeControl: FlatTreeControl<GroupFlatNode>;
   treeFlattener: MatTreeFlattener<GroupNode, GroupFlatNode>;
   dataSource: MatTreeFlatDataSource<GroupNode, GroupFlatNode>;
-  dialogValue = '';
   dialogRef: MatDialogRef<any, any>;
   isDialogOrg = true;
 
@@ -77,6 +89,7 @@ export class GroupManagementComponent implements OnInit {
   isAddOrgOn = false;
 
   constructor(
+    private fb: FormBuilder,
     private awsLambdaService: AwsLambdaService,
     private notificationService: NotificationService,
     private userService: UserService,
@@ -105,6 +118,20 @@ export class GroupManagementComponent implements OnInit {
   ngOnInit() {
     this.isAddOrgOn = this.userService.IsAdmin && this.addActionOn;
     this.getOrgs();
+
+    this.newEntityFormGroup = this.fb.group({
+      newEntity: new FormControl('', [
+        Validators.required,
+        forbiddenCharacterValidator(/\//) // Forbid forward slash (/)
+      ])
+    });
+
+    this.updateEntityFormGroup = this.fb.group({
+      updateEntity: new FormControl('', [
+        Validators.required,
+        forbiddenCharacterValidator(/\//) // Forbid forward slash (/)
+      ])
+    });
   }
 
   getOrgs(): Observable<any> {
@@ -163,6 +190,9 @@ export class GroupManagementComponent implements OnInit {
    * @param flatNode is the parent node
    */
   addNewNodeUnder(flatNode: GroupFlatNode, name: string) {
+    this.showSpinner = true;
+    name = cleanExtraSpaces(name);
+
     const newOrg = {
       org: { parentName: flatNode.fqn, name }
     };
@@ -190,12 +220,15 @@ export class GroupManagementComponent implements OnInit {
       },
       error => {
         this.notificationService.error(`Saving group failed. ${error}`);
-      }
+        this.showSpinner = false;
+      },
+      () => (this.showSpinner = false)
     );
   }
 
   renameNode(flatNode: GroupFlatNode, name: string) {
     this.showSpinner = true;
+    name = cleanExtraSpaces(name);
 
     const oldFqn = flatNode.fqn || '';
     // const renamedFqn = oldFqn.replace(oldFqn.substring(oldFqn.lastIndexOf('/')),'/' + name);
@@ -241,6 +274,9 @@ export class GroupManagementComponent implements OnInit {
    * @param name is the given name of new org
    */
   addNewNode(name: string) {
+    this.showSpinner = true;
+    name = cleanExtraSpaces(name);
+
     const newOrg = {
       org: { parentName: null, name }
     };
@@ -254,20 +290,20 @@ export class GroupManagementComponent implements OnInit {
       },
       error => {
         this.notificationService.error(`Saving Organization failed. ${error}`);
-      }
+        this.showSpinner = false;
+      },
+      () => (this.showSpinner = false)
     );
   }
 
   askGroupNameAndAddRoot(templateRef: TemplateRef<any>) {
     this.isDialogOrg = true;
+    this.newEntityFormGroup.reset();
     this.dialogRef = this.dialog.open(templateRef);
-    this.entity.markAsPristine();
-    this.entity.clearValidators();
     this.dialogRef.afterClosed().subscribe(newName => {
       if (newName) {
         this.addNewNode(newName);
       }
-      this.dialogValue = '';
     });
   }
 
@@ -276,33 +312,34 @@ export class GroupManagementComponent implements OnInit {
     flatNode: GroupFlatNode
   ) {
     this.isDialogOrg = false;
+    this.newEntityFormGroup.reset();
     this.dialogRef = this.dialog.open(templateRef);
-    this.entity.markAsPristine();
-    this.entity.clearValidators();
     this.dialogRef.afterClosed().subscribe(newName => {
       if (newName) {
         this.addNewNodeUnder(flatNode, newName);
       }
-      this.dialogValue = '';
     });
   }
+
   askGroupNameAndRenameNode(
     templateRef: TemplateRef<any>,
     flatNode: GroupFlatNode
   ) {
     this.isDialogOrg = false;
-    this.dialogValue = flatNode.item;
+    this.updateEntityFormGroup.reset();
+    this.updateEntityFormGroup.controls.updateEntity.setValue(flatNode.item);
     this.dialogRef = this.dialog.open(templateRef);
     this.dialogRef.afterClosed().subscribe(newName => {
       if (newName) {
         this.renameNode(flatNode, newName);
       }
-      this.dialogValue = '';
     });
   }
+
   selectNode(flatNode) {
     this.selectGroup.emit(flatNode);
   }
+
   toggleDisable(event: MatSlideToggleChange, group: any): void {
     console.log('toggleDisable ', event);
     const disabledFlag: boolean = event.checked;
@@ -366,9 +403,5 @@ export class GroupManagementComponent implements OnInit {
       }),
       finalize(() => (this.showSpinner = false))
     );
-  }
-
-  attachEvents() {
-    this.entity.setValidators([Validators.required]);
   }
 }
