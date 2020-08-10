@@ -1,3 +1,4 @@
+import { UserService } from 'src/app/core/services/user.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -32,6 +33,19 @@ const mockAuthServiceInfo = {
   LoggedUser: MOCKED_USERNAME,
   JwtToken: 'fakeToken'
 };
+const mockUserService = {
+  LastLoginTime: '2020-08-07T15:13:53.420Z',
+  UserId: MOCKED_USERNAME,
+  Role: 'Admin',
+  GUID: '2323-232-32-23-232-323232',
+  Disabled: false,
+  LastPasswordUpdate: '2020-07-30T14:48:20.846Z',
+  Group: 'DEFAULT',
+  IsAdmin: true,
+  Firstname: 'Test',
+  LastActivityTime: '2020-08-07T15:13:55.642Z',
+  Lastname: 'User'
+};
 
 describe('ChangePasswordComponent When Server Call is Successful', () => {
   let component: ChangePasswordComponent;
@@ -59,6 +73,7 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
       providers: [
         { provide: AuthenticationService, useValue: mockAuthServiceInfo },
         { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
+        { provide: UserService, useValue: mockUserService },
         NotificationService,
         LoaderService
       ]
@@ -236,6 +251,53 @@ describe('ChangePasswordComponent When Server Call is Successful', () => {
     expect(submitEl.nativeElement.disabled).toBeTruthy();
   });
 
+  it('ChangePasswordComponent - New Password Contains First Name', () => {
+    // Build the password by toggling each character of the first name and
+    //   then embedding that result within a strong password.
+    const aToggleCasedFirstname = [...mockUserService.Firstname].map((c, i) =>
+      // Invoke 'toLowerCase' when i is even; else, 'toUpperCase'
+      c[['toLowerCase', 'toUpperCase'][i % 2]]()
+    );
+    const sPasswordWithFirstname =
+      '~1_' + aToggleCasedFirstname.join('') + '_3~';
+
+    component.changePasswordFormGroup.controls.currentPwd.setValue(
+      CURRENT_PASSWORD
+    );
+    component.changePasswordFormGroup.controls.newPwd.setValue(
+      sPasswordWithFirstname
+    );
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+
+  it('ChangePasswordComponent - New Password Contains Last Name', () => {
+    // Build the password by toggling each character of the last name and
+    //   then embedding that result within a strong password.
+    const aToggleCasedLastname = [...mockUserService.Lastname].map((c, i) =>
+      // Invoke 'toLowerCase' when i is even; else, 'toUpperCase'
+      c[['toLowerCase', 'toUpperCase'][i % 2]]()
+    );
+    const sPasswordWithLastname = '~1_' + aToggleCasedLastname.join('') + '_3~';
+
+    component.changePasswordFormGroup.controls.currentPwd.setValue(
+      CURRENT_PASSWORD
+    );
+    component.changePasswordFormGroup.controls.newPwd.setValue(
+      sPasswordWithLastname
+    );
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+
   it('ChangePasswordComponent - New Password Is Strong', () => {
     component.changePasswordFormGroup.controls.newPwd.setValue(STRONG_PASSWORD);
     expect(
@@ -376,6 +438,7 @@ describe('ChangePasswordComponent When Server Call is Failed', () => {
       providers: [
         { provide: AuthenticationService, useValue: mockAuthServiceInfo },
         { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
+        { provide: UserService, useValue: mockUserService },
         NotificationService,
         LoaderService
       ]
