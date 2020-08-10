@@ -18,7 +18,7 @@
       matTooltip="Clear the filter"
       aria-hidden="false"
       aria-label="Clear the filter"
-      (click)="ClearFilter()"
+      (click)="clearFilter()"
     >
       <mat-icon>clear</mat-icon>
       Clear Filter
@@ -40,10 +40,30 @@
       matTooltip="Disable selected users"
       aria-hidden="false"
       aria-label="Disable selected users"
+      [disabled]="selection.selected.length === 0"
+      (click)="disableSelectedUsers()"
     >
-      <mat-icon>delete_sweep</mat-icon>
+      <mat-icon>lock</mat-icon>
       Disable User(s)
     </button>
+    <button
+      mat-button
+      matTooltip="Enable selected users"
+      aria-hidden="false"
+      aria-label="Enable selected users"
+      [disabled]="selection.selected.length === 0"
+      (click)="disableSelectedUsers(false)"
+    >
+      <mat-icon>lock_open</mat-icon>
+      Enable User(s)
+    </button>
+    <div fxLayout="column" *ngIf="showSpinner" fxLayoutAlign="center center">
+      <mat-spinner
+        matTooltip="Processing request"
+        style="text-align: center"
+        diameter="40"
+      ></mat-spinner>
+    </div>
   </div>
 
   <mat-table [dataSource]="dataSource" matSort class="mat-cell">
@@ -51,11 +71,11 @@
     <ng-container matColumnDef="select">
       <mat-header-cell *matHeaderCellDef>
         <mat-checkbox
-          (change)="$event ? masterToggle() : null"
-          [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          (change)="masterToggle($event)"
+          [checked]="isAllSelectedInPage()"
+          [indeterminate]="isOnlySomeSelectedInPage()"
           aria-hidden="false"
-          [aria-label]="checkboxLabel()"
+          [aria-label]="isAnySelectedInPage() ? 'deselect all' : 'select all'"
         >
         </mat-checkbox>
       </mat-header-cell>

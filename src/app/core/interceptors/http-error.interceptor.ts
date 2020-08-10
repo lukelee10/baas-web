@@ -88,7 +88,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         errorType = InterceptError.CustomError;
       } else {
         // Standard Error that follows Error Schema
-        if (httpResponse.error && httpResponse.error.includes('errorDetail')) {
+        if (this.isStandardError(httpResponse)) {
           errorType = InterceptError.StandardError;
         } else {
           errorType = InterceptError.OtherError;
@@ -97,6 +97,22 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     }
 
     return errorType;
+  }
+
+  private isStandardError(httpResponse) {
+    let standardErrorFlag = false;
+    try {
+      if (typeof httpResponse.error === 'object') {
+        // JSON
+        standardErrorFlag = httpResponse.error.errorDetail !== undefined;
+      } else {
+        standardErrorFlag =
+          JSON.parse(httpResponse.error).errorDetail !== undefined;
+      }
+    } catch {
+      standardErrorFlag = false;
+    }
+    return standardErrorFlag;
   }
 
   handleSessionTimeOut(httpResponse: HttpErrorResponse) {
