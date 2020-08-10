@@ -1,4 +1,3 @@
-import { UserService } from 'src/app/core/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -18,6 +17,7 @@ import { AwsLambdaService } from '../../../core/services/aws-lambda.service';
 
 import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-change-password',

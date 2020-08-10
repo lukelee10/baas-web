@@ -1,4 +1,3 @@
-import { UserService } from 'src/app/core/services/user.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +12,7 @@ import { ChangePasswordComponent } from './change-password.component';
 import { AwsLambdaService } from '../../../core/services/aws-lambda.service';
 import { LoaderService } from '../../../shared/services/loader.service';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { UserService } from 'src/app/core/services/user.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 
 const MIN_PASSWORD_LENGTH = 12;
