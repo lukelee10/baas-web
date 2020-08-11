@@ -1,4 +1,11 @@
-import { AbstractControl, FormControl, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroupDirective,
+  NgForm,
+  ValidatorFn
+} from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 /** Helper function for generating arrays of integer ranges. */
 function getIntsInRange(startingInt: number, endingInt: number): Array<number> {
@@ -155,4 +162,14 @@ export function cleanExtraSpaces(text: string) {
   text = text.replace(/\s{2,}/g, ' ');
 
   return text;
+}
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
 }

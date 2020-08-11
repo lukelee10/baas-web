@@ -113,6 +113,7 @@
             isDialogOrg ? 'organization' : 'group'
           }}"
           required
+          [errorStateMatcher]="matcher"
           attr.aria-label="Enter {{ isDialogOrg ? 'organization' : 'group' }}"
         />
         <mat-error
@@ -159,6 +160,7 @@
             isDialogOrg ? 'organization' : 'group'
           }}"
           required
+          [errorStateMatcher]="matcher"
           attr.aria-label="Enter {{ isDialogOrg ? 'organization' : 'group' }}"
         />
         <mat-error

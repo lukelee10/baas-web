@@ -34,7 +34,8 @@ import { UserService } from 'src/app/core/services/user.service';
 import { BaaSGroup } from 'src/app/shared/models/user';
 import {
   cleanExtraSpaces,
-  forbiddenCharacterValidator
+  forbiddenCharacterValidator,
+  MyErrorStateMatcher
 } from 'src/app/core/app-global-utils';
 
 /**
@@ -87,6 +88,8 @@ export class GroupManagementComponent implements OnInit {
   // TODO We don't need isAddOrgOn; we can directly use the addActionOn ie.,
   // Input param for this component; clean all the references for isAddOrgOn
   isAddOrgOn = false;
+
+  matcher = new MyErrorStateMatcher();
 
   constructor(
     private fb: FormBuilder,
