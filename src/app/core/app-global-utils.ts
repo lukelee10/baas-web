@@ -137,7 +137,9 @@ export const PasswordValidators = {
         'gi'
       );
       const sValToTest = requireNonNullOrElse(control.value);
-      return forbiddenPattern.test(sValToTest) ? oFailureResult : null;
+      return sValToTest.length > 3 && forbiddenPattern.test(sValToTest)
+        ? oFailureResult
+        : null;
     };
   },
   validateNoLastName: (lastName: string): ValidatorFn => {
@@ -151,7 +153,9 @@ export const PasswordValidators = {
         'gi'
       );
       const sValToTest = requireNonNullOrElse(control.value);
-      return forbiddenPattern.test(sValToTest) ? oFailureResult : null;
+      return sValToTest.length > 3 && forbiddenPattern.test(sValToTest)
+        ? oFailureResult
+        : null;
     };
   }
 };
