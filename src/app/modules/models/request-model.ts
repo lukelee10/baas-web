@@ -1,20 +1,25 @@
+export interface PackageModel {
+  packageName: string;
+  systems?: string[];
+  titleClassification?: string;
+  requests: RequestModel[];
+}
+
 export interface RequestModel {
+  fileSize: number;
+  imageClassification?: string;
+  isUSPerson?: boolean;
+  mimeType: string;
+  modality: string;
   name: string;
-  username: any;
-  group: any;
-  id: string;
-  packageId: string;
-  mimeType: any;
-  fileSize: any;
-  originalFileName: any;
-  packageClassification?: any;
-  imageClassification?: any;
-  modality: any;
-  systems?: any[];
-  created: string;
+}
+
+export interface SavedPackageModel {
+  PackageId: string;
+  Requests: SavedRequestModel[];
 }
 
 export interface SavedRequestModel {
-  request: RequestModel;
-  uploadUrl: string;
+  RequestId: string;
+  UploadUrl: string;
 }

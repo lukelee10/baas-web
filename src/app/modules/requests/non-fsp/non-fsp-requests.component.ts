@@ -6,7 +6,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Guid } from 'guid-typescript';
 import * as moment_ from 'moment';
 import { from } from 'rxjs';
 import { concatMap, finalize } from 'rxjs/operators';
@@ -15,11 +14,15 @@ import { MatFileUploadQueueComponent } from 'src/app/shared/components/multi-fil
 import { ProviderCheckboxesComponent } from '../provider-checkboxes/provider-checkboxes.component';
 import { environment } from './../../../../environments/environment';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
-import { UserService } from './../../../core/services/user.service';
 import { LoaderService } from './../../../shared/services/loader.service';
 import { LookupStaticDataService } from './../../../shared/services/lookup-static-data.service';
 import { NotificationService } from './../../../shared/services/notification.service';
-import { RequestModel } from './../../models/request-model';
+import {
+  RequestModel,
+  PackageModel,
+  SavedPackageModel,
+  SavedRequestModel
+} from './../../models/request-model';
 
 const moment = moment_;
 
@@ -36,7 +39,7 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
   filesValidationError: boolean;
   allowedFileSize = `File cannot be more than ${environment.MaxFileSizeForPackage} MB size`;
   vettingSystems: string[] = [];
-  requests: Array<RequestModel> = [];
+  packageToSubmit: PackageModel;
   savedRequestIds: string[] = [];
 
   form = new FormGroup({
@@ -49,7 +52,6 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
   constructor(
     private changeDetector: ChangeDetectorRef,
     public lookupStaticDataService: LookupStaticDataService,
-    private userService: UserService,
     private awsLambdaService: AwsLambdaService,
     private loaderService: LoaderService,
     private notificationService: NotificationService
@@ -69,7 +71,6 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
     this.filesValidationMessage = 'At least one file needs to be selected';
 
     const numberOfFiles = files.toArray().length;
-    const test = environment.MaxFileCountForPackage;
 
     if (numberOfFiles > environment.MaxFileCountForPackage) {
       this.filesValidationError = true;
@@ -125,62 +126,43 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
 
   onSubmitRequest() {
     this.prepareThePackage();
-
     this.submitThePackage();
   }
 
   prepareThePackage() {
-    this.requests.splice(0, this.requests.length);
+    this.packageToSubmit = {
+      packageName: this.form.value.packageTitle,
+      titleClassification: this.form.value.packageClassification,
+      systems: this.vettingSystems,
+      requests: []
+    };
+
     const queueData = this.matFileUploadQueueComponent.getQueueData().toArray();
-
-    const packageId = Guid.create().toString();
-    const packageName = this.form.value.packageTitle;
-    const packageClassification = this.form.value.packageClassification;
-    const username = this.userService.UserId;
-    const group = this.userService.Group;
-
-    const hasMultipleFiles = queueData.length > 1;
-
     queueData.forEach(item => {
       const itemData = item.GetPackageFileModel();
 
       const newRequest: RequestModel = {
-        id: Guid.create().toString(),
-        name: hasMultipleFiles
-          ? `${packageName} : ${itemData.FileName}`
-          : packageName,
-        packageClassification,
-        systems: this.vettingSystems,
-        username,
-        group,
-        packageId,
-        imageClassification: itemData.ImageClassification,
+        name: itemData.FileName,
         mimeType: itemData.FileType
           ? itemData.FileType
           : itemData.BinaryMimetype,
         fileSize: itemData.FileSize,
-        originalFileName: itemData.FileName,
         modality: itemData.Modality,
-        created: moment.utc().format('YYYY-MM-DDTHH:mm:ss')
+        imageClassification: itemData.ImageClassification,
+        isUSPerson: !itemData.IsNotUSPerson
       };
-      this.requests.push(newRequest);
+      this.packageToSubmit.requests.push(newRequest);
     });
   }
 
   submitThePackage() {
     let submitThePackageFailed = false;
-
+    this.savedRequestIds.length = 0;
     this.loaderService.Show('Submitting package...');
-    this.savedRequestIds.splice(0, this.savedRequestIds.length);
 
-    // ConcatMap
-    // One of the strategies to handle until the first completes before subscribing to the next one.
-    // For more info on RxJS, please browse https://www.learnrxjs.io/learn-rxjs/operators/transformation/concatmap
-    // and https://rxjs-dev.firebaseapp.com/api/operators/concatMap
-    from(this.requests)
+    this.awsLambdaService
+      .createRequestPackage(this.packageToSubmit)
       .pipe(
-        concatMap(param => this.awsLambdaService.createRequestPackage(param)),
-
         finalize(() => {
           if (!submitThePackageFailed) {
             this.uploadFilesToS3();
@@ -191,24 +173,26 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
       )
       .subscribe(
         data => {
-          const copyResponse = JSON.parse(JSON.stringify(data));
-          const uploadUrl = copyResponse.uploadUrl;
-          const savedRequest = this.requests.shift();
-          this.savedRequestIds.push(savedRequest.id);
+          const copyResponse: SavedPackageModel = JSON.parse(
+            JSON.stringify(data)
+          );
+          const aAllReqs: SavedRequestModel[] = copyResponse.Requests;
+          this.savedRequestIds.push(...aAllReqs.map(req => req.RequestId));
 
           // Find the corresponding File Upload component
           const queueData = this.matFileUploadQueueComponent
             .getQueueData()
             .toArray();
-          const fileUploadComponent = queueData.find(
-            element =>
-              element.GetPackageFileModel().FileName ===
-              savedRequest.originalFileName
-          );
 
-          if (fileUploadComponent) {
-            fileUploadComponent.FileUploadUrl = uploadUrl;
-          }
+          // Sanity checking with a debug log
+          this.notificationService.debugLogging(
+            'QueueData.length: %d; Package.Requests.length: %d',
+            queueData.length,
+            aAllReqs
+          );
+          queueData.map((fileUpComponent, idx) => {
+            fileUpComponent.FileUploadUrl = aAllReqs[idx].UploadUrl;
+          });
         },
         error => {
           this.notificationService.error('Submitting package is failed.');
@@ -221,7 +205,6 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
   uploadFilesToS3() {
     let showNotification = false;
     this.loaderService.Show('Uploading files to S3...');
-    let failedUploadingFiles = 0;
 
     const queueData = this.matFileUploadQueueComponent.getQueueData().toArray();
 
@@ -249,8 +232,7 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
         error => {
           // some error happened
           showNotification = false;
-          failedUploadingFiles++;
-          this.notificationService.error('Uploading files to S3 is failed');
+          this.notificationService.error('Uploading Request image failed');
           this.handlePackageSubmissionError();
         }
       );

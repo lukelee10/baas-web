@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from './../../../environments/environment';
-import { RequestModel } from './../../modules/models/request-model';
+import { PackageModel } from './../../modules/models/request-model';
 import { BaaSUser } from './../../shared/models/user';
 
 const putHeaders = () =>
@@ -62,9 +62,9 @@ export class AwsLambdaService {
     return this.http.post(`${this.apiBase}/forgotpassword`, newCredential);
   }
 
-  createRequestPackage(requestModel: RequestModel) {
+  createRequestPackage(packageModel: PackageModel) {
     return this.http.post(this.apiBase + '/requests', {
-      package: requestModel
+      package: packageModel
     });
   }
 
