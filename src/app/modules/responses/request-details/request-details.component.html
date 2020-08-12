@@ -30,7 +30,7 @@
       <div class="pic-frame pic-frame--quick-zoom">
         <img
           class="resize-keep-aspect"
-          src="{{ request.ImageUrl }}"
+          src="{{ request.OriginalImageUrl || request.ImageUrl }}"
           alt="Preview Unavailable"
           style="font-weight: bold;text-align: center;"
         />
