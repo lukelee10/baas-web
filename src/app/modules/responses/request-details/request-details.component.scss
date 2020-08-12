@@ -287,6 +287,8 @@ $lengthOfStandardRequestId: 36ch;
 .request-details-summary-info {
   border: 1px solid gray;
   border-radius: 5px;
+  overflow-y: hidden !important;
+  min-height: 205px;
   // The following line can be enabled to disable wrapping on the flex
   // containers:
   // min-width: 688px;
@@ -375,6 +377,7 @@ $lengthOfStandardRequestId: 36ch;
   display: flex;
   min-width: 10vw;
   min-height: 5vh;
+  padding: 5px;
 
   > *:not(.no-scrolling-overflow) {
     overflow: auto;
