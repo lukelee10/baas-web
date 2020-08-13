@@ -65,7 +65,7 @@ describe('RequestsComponent::(*NON-FSP Version)', () => {
         PackageId: Guid.create().toString(),
         Requests: new Array(value.requests.length).fill(null).map(() => ({
           RequestId: Guid.create().toString(),
-          UploadUrl: ''
+          UploadUrl: undefined
         }))
       };
       return of(respData);

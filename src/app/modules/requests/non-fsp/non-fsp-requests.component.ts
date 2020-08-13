@@ -164,6 +164,11 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
       .createRequestPackage(this.packageToSubmit)
       .pipe(
         finalize(() => {
+          // TODO REMOVE LINE:
+          console.warn(
+            'REMOVE ME: Made it into the FINALIZE for non-fsp-requests.component::submitThePackage'
+          );
+
           if (!submitThePackageFailed) {
             this.uploadFilesToS3();
           } else {
@@ -208,6 +213,12 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
 
     const queueData = this.matFileUploadQueueComponent.getQueueData().toArray();
 
+    // TODO REMOVE LINE:
+    console.warn(
+      'REMOVE ME: About to upload to S3. Number of MatFileUploadComponents: ' +
+        queueData.length
+    );
+
     // ConcatMap
     // One of the strategies to handle until the first completes before subscribing to the next one.
     // For more info on RxJS, please browse https://www.learnrxjs.io/learn-rxjs/operators/transformation/concatmap
@@ -217,6 +228,9 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
         concatMap(param => param.upload()),
 
         finalize(() => {
+          // TODO REMOVE LINE:
+          console.warn('REMOVE ME: Made it to finalize!');
+
           this.loaderService.Hide();
 
           if (showNotification) {
