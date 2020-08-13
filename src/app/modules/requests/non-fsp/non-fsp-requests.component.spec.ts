@@ -41,7 +41,7 @@ class MockUserService extends UserService {
     return UserRoles.NonFSPUser;
   }
   get UserId(): string {
-    return 'admin@baas.devver1';
+    return 'standard@baas.devver1';
   }
   get Group(): string {
     return 'DEFAULT';

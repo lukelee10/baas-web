@@ -34,10 +34,10 @@ import { FspRequestsComponent } from './fsp-requests.component';
 // Mocking FSP User
 class MockUserService extends UserService {
   get Role(): string {
-    return UserRoles.NonFSPUser;
+    return UserRoles.FSPUser;
   }
   get UserId(): string {
-    return 'admin@baas.devver1';
+    return 'fsp@baas.devver1';
   }
   get Group(): string {
     return 'DEFAULT';
