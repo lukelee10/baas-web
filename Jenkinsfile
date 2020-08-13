@@ -12,8 +12,13 @@ pipeline {
             steps {
                 echo 'Initialize..'
                 sh '''
-                    wget -q https://nodejs.org/dist/v10.16.3/node-v10.16.3-linux-x64.tar.gz
-                    tar -xaf node-v10.16.3-linux-x64.tar.gz
+                    declare -r NODE_JS_FILENAME='node-v10.16.3-linux-x64.tar.gz'
+                    if [[ -s "${NODE_JS_FILENAME}" ]]; then
+                      echo 'Existing Node.js distribution archive will be used'
+                    else
+                      wget -q "https://nodejs.org/dist/v10.16.3/${NODE_JS_FILENAME}"
+                    fi
+                    tar -xaf "${NODE_JS_FILENAME}"
                     env
                 '''
             }
