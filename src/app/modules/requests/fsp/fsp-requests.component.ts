@@ -155,7 +155,7 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
           const aAllReqs: SavedRequestModel[] = copyResponse.Requests;
           this.savedRequestIds.push(...aAllReqs.map(req => req.RequestId));
 
-          // Find the corresponding File Upload component
+          // Update the corresponding File Upload component to include UploadURL
           const queueData = this.matFileUploadQueueComponent
             .getQueueData()
             .toArray();
