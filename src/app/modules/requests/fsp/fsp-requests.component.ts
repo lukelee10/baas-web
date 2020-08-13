@@ -164,7 +164,7 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
           this.notificationService.debugLogging(
             'QueueData.length: %d; Package.Requests.length: %d',
             queueData.length,
-            aAllReqs
+            aAllReqs.length
           );
           queueData.map((fileUpComponent, idx) => {
             fileUpComponent.FileUploadUrl = aAllReqs[idx].UploadUrl;
