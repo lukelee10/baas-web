@@ -11,6 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of, throwError } from 'rxjs';
+import { Guid } from 'guid-typescript';
 import { UserRoles } from 'src/app/core/app-global-constants';
 import { UserService } from 'src/app/core/services/user.service';
 import {
@@ -27,7 +28,11 @@ import { ProviderCheckboxesComponent } from '../provider-checkboxes/provider-che
 import { RequestsComponent } from '../requests.component';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { LookupStaticDataService } from './../../../shared/services/lookup-static-data.service';
-import { RequestModel } from './../../models/request-model';
+import {
+  PackageModel,
+  SavedPackageModel,
+  SavedRequestModel
+} from './../../models/request-model';
 import { NonFspRequestsComponent } from './non-fsp-requests.component';
 
 // Mock the SortService class, its method and return it with mock data
@@ -48,12 +53,22 @@ class MockUserService extends UserService {
 describe('RequestsComponent::(*NON-FSP Version)', () => {
   let requestFixture: ComponentFixture<RequestsComponent>;
   let requestComponentInstance: RequestsComponent;
+  const INVALID_PACKAGE_TITLE = 'InvalidPackage';
 
   const AwsLambdaServiceMock: any = {
-    createRequestPackage(value: RequestModel): Observable<any> {
-      return value.name === 'InvalidPackage'
-        ? throwError({ status: 404 })
-        : of({ data: true });
+    createRequestPackage(value: PackageModel): Observable<any> {
+      if (!value || value.packageName === INVALID_PACKAGE_TITLE) {
+        return throwError({ status: 404 });
+      }
+      // Else, we need to return something intelligent.
+      const respData: SavedPackageModel = {
+        PackageId: Guid.create().toString(),
+        Requests: new Array(value.requests.length).fill(null).map(() => ({
+          RequestId: Guid.create().toString(),
+          UploadUrl: ''
+        }))
+      };
+      return of(respData);
     },
 
     deleteRequestPackage(value: string): Observable<any> {
@@ -219,8 +234,8 @@ describe('RequestsComponent::(*NON-FSP Version)', () => {
   });
 
   it('Verify when the number of files attached exceed max allowed,  IsFileUploadFormValid must be false ', () => {
-    // add MaxFileCountForPackage + 2 files
-    for (let i = 0; i < environment.MaxFileCountForPackage + 2; i++) {
+    // add MaxFileCountForPackage + 1 files
+    for (let i = 0; i < environment.MaxFileCountForPackage + 1; i++) {
       matFileUploadQueueComponentInstance.add(testImage());
     }
     nonFSPComponentInstance.UploadFilesListChanged(
@@ -443,7 +458,7 @@ describe('RequestsComponent::(*NON-FSP Version)', () => {
 
   it('Pressing Submit with valid data make sure call the mock service to throw error', async(() => {
     nonFSPComponentInstance.form.setValue({
-      packageTitle: 'InvalidPackage',
+      packageTitle: INVALID_PACKAGE_TITLE,
       packageClassification: 'U'
     });
     nonFSPComponentInstance.vettingSystems.push('LOWBALL');

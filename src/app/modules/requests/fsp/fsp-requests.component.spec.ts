@@ -11,6 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable, of, throwError } from 'rxjs';
+import { Guid } from 'guid-typescript';
 import { UserRoles } from 'src/app/core/app-global-constants';
 import { UserService } from 'src/app/core/services/user.service';
 import {
@@ -26,7 +27,7 @@ import { NonFspRequestsComponent } from '../non-fsp/non-fsp-requests.component';
 import { ProviderCheckboxesComponent } from '../provider-checkboxes/provider-checkboxes.component';
 import { RequestsComponent } from '../requests.component';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
-import { RequestModel } from './../../models/request-model';
+import { PackageModel, SavedPackageModel } from './../../models/request-model';
 import { FspRequestsComponent } from './fsp-requests.component';
 
 // Mock the SortService class, its method and return it with mock data
@@ -50,10 +51,19 @@ describe('RequestsComponent::(*FSP Version):', () => {
   let requestComponentInstance: RequestsComponent;
 
   const AwsLambdaServiceMock: any = {
-    createRequestPackage(value: RequestModel): Observable<any> {
-      return value.name === 'InvalidPackage'
-        ? throwError({ status: 404 })
-        : of({ data: true });
+    createRequestPackage(value: PackageModel): Observable<any> {
+      if (!value || value.packageName === 'InvalidPackage') {
+        return throwError({ status: 404 });
+      }
+      // Else, we need to return something intelligent.
+      const respData: SavedPackageModel = {
+        PackageId: Guid.create().toString(),
+        Requests: new Array(value.requests.length).fill(null).map(() => ({
+          RequestId: Guid.create().toString(),
+          UploadUrl: ''
+        }))
+      };
+      return of(respData);
     },
 
     deleteRequestPackage(value: string): Observable<any> {
