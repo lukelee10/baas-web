@@ -171,7 +171,7 @@ export const PasswordValidators = {
     return (control: AbstractControl) => {
       let forbiddenName = '';
       const sValToTest = requireNonNullOrElse(control.value);
-      if (lastName.length <= 2 || firstName.length <= 2) {
+      if (lastName.length <= 2 && firstName.length <= 2) {
         const fullNameP1 = new RegExp(
           `^.*${lastnameScrub + '\\s*' + firstnameScrub}.*$`,
           'gi'
