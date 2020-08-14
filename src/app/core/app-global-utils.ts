@@ -137,7 +137,7 @@ export const PasswordValidators = {
         'gi'
       );
       const sValToTest = requireNonNullOrElse(control.value);
-      return sValToTest.length > 3 && forbiddenPattern.test(sValToTest)
+      return firstName.length > 1 && forbiddenPattern.test(sValToTest)
         ? oFailureResult
         : null;
     };
@@ -153,8 +153,34 @@ export const PasswordValidators = {
         'gi'
       );
       const sValToTest = requireNonNullOrElse(control.value);
-      return sValToTest.length > 3 && forbiddenPattern.test(sValToTest)
+      return lastName.length > 1 && forbiddenPattern.test(sValToTest)
         ? oFailureResult
+        : null;
+    };
+  },
+  validateNoFullName: (firstName: string, lastName: string) => {
+    const lastnameScrub = escapeRegExp(lastName);
+    const firstnameScrub = escapeRegExp(firstName);
+    return (control: AbstractControl) => {
+      const errorString = [];
+      const sValToTest = requireNonNullOrElse(control.value);
+      if (lastName.length <= 2 || firstName.length <= 2) {
+        const fullNameP1 = new RegExp(
+          `^.*${lastnameScrub + '\\s*' + firstnameScrub}.*$`,
+          'gi'
+        );
+        const fullNameP2 = new RegExp(
+          `^.*${firstnameScrub + '\\s*' + lastnameScrub}.*$`,
+          'gi'
+        );
+        if (fullNameP1.test(sValToTest) || fullNameP2.test(sValToTest)) {
+          errorString.push('full name');
+        }
+      }
+      return errorString.length > 0
+        ? {
+            forbiddenName: errorString.join(', ')
+          }
         : null;
     };
   }

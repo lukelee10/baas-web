@@ -50,6 +50,10 @@ export class ChangePasswordComponent implements OnInit {
       PasswordValidators.buildForbiddenUserIdValidator(this.LoggedUser),
       PasswordValidators.validateNoFirstName(this.userService.Firstname),
       PasswordValidators.validateNoLastName(this.userService.Lastname),
+      PasswordValidators.validateNoFullName(
+        this.userService.Firstname,
+        this.userService.Lastname
+      ),
       ...PasswordValidators.CharClassValidators
     ];
 

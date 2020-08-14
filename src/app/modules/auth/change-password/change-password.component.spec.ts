@@ -494,3 +494,85 @@ describe('ChangePasswordComponent When Server Call is Failed', () => {
     });
   }));
 });
+
+describe('ChangePasswordComponent When the user on record has a one character firstname', () => {
+  let component: ChangePasswordComponent;
+  let fixture: ComponentFixture<ChangePasswordComponent>;
+  let clearEl: DebugElement;
+  let submitEl: DebugElement;
+
+  const AwsLambdaServiceMock: any = {
+    changePassword(value: any): Observable<any> {
+      return value.CurrentPassword.includes(CURRENT_PASSWORD)
+        ? of({ data: true })
+        : throwError({ status: 422 });
+    }
+  };
+  const mockUserServiceOneCharFirstName = {
+    UserId: MOCKED_USERNAME,
+    Firstname: 'T',
+    Lastname: 'User'
+  };
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ChangePasswordComponent],
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        SharedModule
+      ],
+      providers: [
+        { provide: AuthenticationService, useValue: mockAuthServiceInfo },
+        { provide: AwsLambdaService, useValue: AwsLambdaServiceMock },
+        { provide: UserService, useValue: mockUserServiceOneCharFirstName },
+        NotificationService,
+        LoaderService
+      ]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ChangePasswordComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    clearEl = fixture.debugElement.query(By.css('button[type=reset]'));
+    submitEl = fixture.debugElement.query(By.css('button[type=submit]'));
+  });
+
+  it('should show error on no-full-name', () => {
+    const sPasswordWithFullName = 'T User%^';
+
+    component.changePasswordFormGroup.controls.currentPwd.setValue(
+      CURRENT_PASSWORD
+    );
+    component.changePasswordFormGroup.controls.newPwd.setValue(
+      sPasswordWithFullName
+    );
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+
+  it('should show error on no-full-name', () => {
+    const sPasswordWithFullName = '%^UserT ';
+
+    component.changePasswordFormGroup.controls.currentPwd.setValue(
+      CURRENT_PASSWORD
+    );
+    component.changePasswordFormGroup.controls.newPwd.setValue(
+      sPasswordWithFullName
+    );
+    expect(component.changePasswordFormGroup.controls.newPwd.valid).toBeFalsy();
+    expect(component.changePasswordFormGroup.valid).toBeFalsy();
+
+    fixture.detectChanges();
+    expect(clearEl.nativeElement.disabled).toBeFalsy();
+    expect(submitEl.nativeElement.disabled).toBeTruthy();
+  });
+});
