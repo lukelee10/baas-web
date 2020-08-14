@@ -184,7 +184,9 @@ export const PasswordValidators = {
           forbiddenName = 'full name';
         }
       }
-      return forbiddenName.length > 0 ? { forbiddenName } : null;
+    return forbiddenName.length > 0
+      ? { forbiddenFullName: forbiddenName }
+      : null;
     };
   }
 };
