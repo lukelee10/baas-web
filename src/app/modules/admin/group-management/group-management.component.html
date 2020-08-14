@@ -100,73 +100,98 @@
 </mat-tree>
 <!-- tempalte for soliciting group name -->
 <ng-template #solicitGroupName>
-  <h2 matDialogTitle>
-    Please enter {{ isDialogOrg ? 'organization' : 'group' }} name
-  </h2>
-  <mat-dialog-content>
-    <mat-form-field>
-      <mat-label
-        >Name of your {{ isDialogOrg ? 'organization' : 'group' }}</mat-label
+  <div [formGroup]="newEntityFormGroup">
+    <h2 matDialogTitle>
+      Please enter {{ isDialogOrg ? 'organization' : 'group' }} name
+    </h2>
+    <mat-dialog-content>
+      <mat-form-field style="width: 100%;">
+        <input
+          matInput
+          formControlName="newEntity"
+          placeholder="Name of your {{
+            isDialogOrg ? 'organization' : 'group'
+          }}"
+          required
+          [errorStateMatcher]="matcher"
+          attr.aria-label="Enter {{ isDialogOrg ? 'organization' : 'group' }}"
+        />
+        <mat-error
+          *ngIf="newEntityFormGroup.controls.newEntity.errors?.required"
+        >
+          You must enter {{ isDialogOrg ? 'organization' : 'group' }} name.
+        </mat-error>
+        <mat-error
+          *ngIf="newEntityFormGroup.controls.newEntity.errors?.forbiddenName"
+        >
+          {{ isDialogOrg ? 'Organization' : 'Group' }} cannot contain forward
+          slash.
+        </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button [matDialogClose]>
+        Cancel
+      </button>
+      <button
+        mat-button
+        color="primary"
+        [matDialogClose]="newEntityFormGroup.controls.newEntity.value"
+        [disabled]="newEntityFormGroup.invalid"
       >
-      <input
-        matInput
-        [(ngModel)]="dialogValue"
-        [formControl]="entity"
-        (keydown)="attachEvents()"
-      />
-      <mat-error *ngIf="entity.invalid"
-        >Enter value for {{ isDialogOrg ? 'Organization' : 'Group' }}</mat-error
-      >
-    </mat-form-field>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button mat-button [matDialogClose]>
-      Cancel
-    </button>
-    <button
-      mat-button
-      [matDialogClose]="dialogValue"
-      color="primary"
-      [disabled]="entity.invalid || entity.value.length === 0"
-    >
-      Save
-    </button>
-  </mat-dialog-actions>
+        Save
+      </button>
+    </mat-dialog-actions>
+  </div>
 </ng-template>
 
 <!-- tempalte for soliciting new group name -->
 <ng-template #solicitEditedGroupName>
-  <h2 matDialogTitle>
-    Please edit your {{ isDialogOrg ? 'organization' : 'group' }} name
-  </h2>
-  <mat-dialog-content>
-    <mat-form-field>
-      <mat-label
-        >Rename your {{ isDialogOrg ? 'organization' : 'group' }}</mat-label
+  <div [formGroup]="updateEntityFormGroup">
+    <h2 matDialogTitle>
+      Please edit your {{ isDialogOrg ? 'organization' : 'group' }} name
+    </h2>
+    <mat-dialog-content>
+      <mat-form-field style="width: 100%;">
+        <input
+          matInput
+          formControlName="updateEntity"
+          placeholder="Rename of your {{
+            isDialogOrg ? 'organization' : 'group'
+          }}"
+          required
+          [errorStateMatcher]="matcher"
+          attr.aria-label="Enter {{ isDialogOrg ? 'organization' : 'group' }}"
+        />
+        <mat-error
+          *ngIf="updateEntityFormGroup.controls.updateEntity.errors?.required"
+        >
+          You must enter {{ isDialogOrg ? 'organization' : 'group' }} name.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            updateEntityFormGroup.controls.updateEntity.errors?.forbiddenName
+          "
+        >
+          {{ isDialogOrg ? 'Organization' : 'Group' }} cannot contain forward
+          slash.
+        </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button [matDialogClose]>
+        Cancel
+      </button>
+      <button
+        mat-button
+        color="primary"
+        [matDialogClose]="updateEntityFormGroup.controls.updateEntity.value"
+        [disabled]="updateEntityFormGroup.invalid"
       >
-      <!--
-        TODO: Improve this input to show requirements/restrictions to user
-      -->
-      <input
-        matInput
-        pattern="[^/]+"
-        title="Cannot contain forward slash"
-        onkeypress="return '/'.charCodeAt(0) !== event.charCode"
-        [(ngModel)]="dialogValue"
-      />
-    </mat-form-field>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button mat-button [matDialogClose]>
-      Cancel
-    </button>
-    <!--
-      TODO: "Save" button should not be disabled when input is empty/invalid
-    -->
-    <button mat-button [matDialogClose]="dialogValue" color="primary">
-      Save
-    </button>
-  </mat-dialog-actions>
+        Save
+      </button>
+    </mat-dialog-actions>
+  </div>
 </ng-template>
 <div
   *ngIf="showSpinner"

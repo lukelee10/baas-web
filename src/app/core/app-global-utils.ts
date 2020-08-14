@@ -1,4 +1,11 @@
-import { AbstractControl, FormControl, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroupDirective,
+  NgForm,
+  ValidatorFn
+} from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 /** Helper function for generating arrays of integer ranges. */
 function getIntsInRange(startingInt: number, endingInt: number): Array<number> {
@@ -185,3 +192,42 @@ export const PasswordValidators = {
     };
   }
 };
+
+/**
+ * Reg Ex validator for forbidding the specified character/string in
+ * a control
+ * @method forbiddenCharacterValidator
+ * @param nameRe RegExp to look as a pattern
+ * @return validator object, null when no match
+ */
+export function forbiddenCharacterValidator(nameRe: RegExp): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const forbidden = nameRe.test(control.value);
+    return forbidden ? { forbiddenName: { value: control.value } } : null;
+  };
+}
+
+/**
+ * Trim Leading spaces
+ * Trim Trailing spaces
+ * remove all multple spaces in between and replace with a single space
+ * @method cleanExtraSpaces
+ * @param text string to be cleaned
+ * @return string as cleaned
+ */
+export function cleanExtraSpaces(text: string) {
+  text = text.trim();
+  text = text.replace(/\s{2,}/g, ' ');
+
+  return text;
+}
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+}
