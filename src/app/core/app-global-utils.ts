@@ -169,7 +169,7 @@ export const PasswordValidators = {
     const lastnameScrub = escapeRegExp(lastName);
     const firstnameScrub = escapeRegExp(firstName);
     return (control: AbstractControl) => {
-      const errorString = [];
+      let forbiddenName = '';
       const sValToTest = requireNonNullOrElse(control.value);
       if (lastName.length <= 2 || firstName.length <= 2) {
         const fullNameP1 = new RegExp(
@@ -181,14 +181,10 @@ export const PasswordValidators = {
           'gi'
         );
         if (fullNameP1.test(sValToTest) || fullNameP2.test(sValToTest)) {
-          errorString.push('full name');
+          forbiddenName = 'full name';
         }
       }
-      return errorString.length > 0
-        ? {
-            forbiddenName: errorString.join(', ')
-          }
-        : null;
+      return forbiddenName.length > 0 ? { forbiddenName } : null;
     };
   }
 };
