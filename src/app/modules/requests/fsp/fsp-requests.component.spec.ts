@@ -53,10 +53,11 @@ class MockUserService extends UserService {
 describe('RequestsComponent::(*FSP Version):', () => {
   let requestFixture: ComponentFixture<RequestsComponent>;
   let requestComponentInstance: RequestsComponent;
+  const INVALID_PACKAGE_TITLE = 'InvalidPackage';
 
   const AwsLambdaServiceMock: any = {
     createRequestPackage(value: PackageModel): Observable<any> {
-      if (!value || value.packageName === 'InvalidPackage') {
+      if (!value || value.packageName === INVALID_PACKAGE_TITLE) {
         return throwError({ status: 404 });
       }
       // Else, we need to return something intelligent.
@@ -390,7 +391,7 @@ describe('RequestsComponent::(*FSP Version):', () => {
   }));
 
   it('Pressing Submit with valid data make sure call the mock service to throw error', async(() => {
-    fspComponentInstance.form.setValue({ packageTitle: 'InvalidPackage' });
+    fspComponentInstance.form.setValue({ packageTitle: INVALID_PACKAGE_TITLE });
     matFileUploadQueueComponentInstance.add(testImage());
     fspFixture.detectChanges();
 
@@ -412,7 +413,7 @@ describe('RequestsComponent::(*FSP Version):', () => {
 
   it('Should be dirty after put in form values', async(() => {
     // not set the form, not set the files.
-    fspComponentInstance.form.setValue({ packageTitle: 'InvalidPackage' });
+    fspComponentInstance.form.setValue({ packageTitle: INVALID_PACKAGE_TITLE });
     matFileUploadQueueComponentInstance.add(testImage());
     fspFixture.detectChanges();
 
