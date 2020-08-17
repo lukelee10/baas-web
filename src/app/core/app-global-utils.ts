@@ -132,6 +132,62 @@ export const PasswordValidators = {
       const sValToTest = requireNonNullOrElse(control.value);
       return forbiddenPattern.test(sValToTest) ? oFailureResult : null;
     };
+  },
+  validateNoFirstName: (firstName: string): ValidatorFn => {
+    const sRegExEscapedFirstName = escapeRegExp(firstName);
+    const oFailureResult = {
+      forbiddenFirstName: 'Cannot contain first name'
+    };
+    return (control: AbstractControl) => {
+      const forbiddenPattern = new RegExp(
+        `^.*${sRegExEscapedFirstName}.*$`,
+        'gi'
+      );
+      const sValToTest = requireNonNullOrElse(control.value);
+      return firstName.length > 1 && forbiddenPattern.test(sValToTest)
+        ? oFailureResult
+        : null;
+    };
+  },
+  validateNoLastName: (lastName: string): ValidatorFn => {
+    const sRegExEscapedLastName = escapeRegExp(lastName);
+    const oFailureResult = {
+      forbiddenLastName: 'Cannot contain last name'
+    };
+    return (control: AbstractControl) => {
+      const forbiddenPattern = new RegExp(
+        `^.*${sRegExEscapedLastName}.*$`,
+        'gi'
+      );
+      const sValToTest = requireNonNullOrElse(control.value);
+      return lastName.length > 1 && forbiddenPattern.test(sValToTest)
+        ? oFailureResult
+        : null;
+    };
+  },
+  validateNoFullName: (firstName: string, lastName: string) => {
+    const lastnameScrub = escapeRegExp(lastName);
+    const firstnameScrub = escapeRegExp(firstName);
+    return (control: AbstractControl) => {
+      let forbiddenName = '';
+      const sValToTest = requireNonNullOrElse(control.value);
+      if (lastName.length <= 2 && firstName.length <= 2) {
+        const fullNameP1 = new RegExp(
+          `^.*${lastnameScrub + '\\s*' + firstnameScrub}.*$`,
+          'gi'
+        );
+        const fullNameP2 = new RegExp(
+          `^.*${firstnameScrub + '\\s*' + lastnameScrub}.*$`,
+          'gi'
+        );
+        if (fullNameP1.test(sValToTest) || fullNameP2.test(sValToTest)) {
+          forbiddenName = 'full name';
+        }
+      }
+    return forbiddenName.length > 0
+      ? { forbiddenFullName: forbiddenName }
+      : null;
+    };
   }
 };
 
