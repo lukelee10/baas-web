@@ -27,7 +27,11 @@ import { NonFspRequestsComponent } from '../non-fsp/non-fsp-requests.component';
 import { ProviderCheckboxesComponent } from '../provider-checkboxes/provider-checkboxes.component';
 import { RequestsComponent } from '../requests.component';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
-import { PackageModel, SavedPackageModel } from './../../models/request-model';
+import {
+  PackageModel,
+  SavedPackageModel,
+  SavedRequestModel
+} from './../../models/request-model';
 import { FspRequestsComponent } from './fsp-requests.component';
 
 // Mock the SortService class, its method and return it with mock data
@@ -58,15 +62,17 @@ describe('RequestsComponent::(*FSP Version):', () => {
       // Else, we need to return something intelligent.
       const respData: SavedPackageModel = {
         PackageId: Guid.create().toString(),
-        Requests: new Array(value.requests.length).fill(null).map(() => ({
-          RequestId: Guid.create().toString(),
-          // TODO: Be advised, this value is set to NULL because we do not have
-          // an adequate method for intercepting S3 file uploads. Ultimately,
-          // the NULL value here causes a TypeError down the chain when the
-          // Angular HTTP library (specifically HttpXsrfInterceptor) attempts to
-          // call .toLowerCase(). This is a hacky workaround and a bad practice.
-          UploadUrl: null
-        }))
+        Requests: new Array(value.requests.length).fill(null).map(
+          (): SavedRequestModel => ({
+            RequestId: Guid.create().toString(),
+            // TODO: Be advised, this value is set to NULL because we do not have
+            // an adequate method for intercepting S3 file uploads. Ultimately,
+            // the NULL value here causes a TypeError down the chain when the
+            // Angular HTTP library (specifically HttpXsrfInterceptor) attempts to
+            // call .toLowerCase(). This is a hacky workaround and a bad practice.
+            UploadUrl: null
+          })
+        )
       };
       return of(respData);
     },

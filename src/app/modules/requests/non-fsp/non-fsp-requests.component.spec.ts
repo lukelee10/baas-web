@@ -63,15 +63,17 @@ describe('RequestsComponent::(*NON-FSP Version)', () => {
       // Else, we need to return something intelligent.
       const respData: SavedPackageModel = {
         PackageId: Guid.create().toString(),
-        Requests: new Array(value.requests.length).fill(null).map(() => ({
-          RequestId: Guid.create().toString(),
-          // TODO: Be advised, this value is set to NULL because we do not have
-          // an adequate method for intercepting S3 file uploads. Ultimately,
-          // the NULL value here causes a TypeError down the chain when the
-          // Angular HTTP library (specifically HttpXsrfInterceptor) attempts to
-          // call .toLowerCase(). This is a hacky workaround and a bad practice.
-          UploadUrl: null
-        }))
+        Requests: new Array(value.requests.length).fill(null).map(
+          (): SavedRequestModel => ({
+            RequestId: Guid.create().toString(),
+            // TODO: Be advised, this value is set to NULL because we do not have
+            // an adequate method for intercepting S3 file uploads. Ultimately,
+            // the NULL value here causes a TypeError down the chain when the
+            // Angular HTTP library (specifically HttpXsrfInterceptor) attempts to
+            // call .toLowerCase(). This is a hacky workaround and a bad practice.
+            UploadUrl: null
+          })
+        )
       };
       return of(respData);
     },
