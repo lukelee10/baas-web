@@ -17,6 +17,7 @@ import { AwsLambdaService } from '../../../core/services/aws-lambda.service';
 
 import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-change-password',
@@ -37,7 +38,8 @@ export class ChangePasswordComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private awsLambdaService: AwsLambdaService,
     private loaderService: LoaderService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -46,6 +48,12 @@ export class ChangePasswordComponent implements OnInit {
       Validators.required,
       Validators.minLength(AppGlobalConstants.MinPasswordLength),
       PasswordValidators.buildForbiddenUserIdValidator(this.LoggedUser),
+      PasswordValidators.validateNoFirstName(this.userService.Firstname),
+      PasswordValidators.validateNoLastName(this.userService.Lastname),
+      PasswordValidators.validateNoFullName(
+        this.userService.Firstname,
+        this.userService.Lastname
+      ),
       ...PasswordValidators.CharClassValidators
     ];
 
