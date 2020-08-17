@@ -22,7 +22,7 @@
   <div
     fxFlex="100"
     fxFlexOffset=".3"
-    fxLayout="row wrap"
+    fxLayout="row"
     *ngIf="!showSpinner"
     class="request-details-summary-info"
   >
@@ -30,7 +30,7 @@
       <div class="pic-frame pic-frame--quick-zoom">
         <img
           class="resize-keep-aspect"
-          src="{{ request.ImageUrl }}"
+          src="{{ request.OriginalImageUrl || request.ImageUrl }}"
           alt="Preview Unavailable"
           style="font-weight: bold;text-align: center;"
         />
@@ -41,7 +41,7 @@
         {{ request.Status | vettingStatusPipe }}
       </div>
     </div>
-    <div fxLayout="column" fxFlex="75">
+    <div fxFlexOffset="2" fxLayout="column" fxFlex="73">
       <div fxLayout="row">
         <div
           fxFlex="80"
