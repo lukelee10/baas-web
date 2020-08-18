@@ -125,7 +125,8 @@ export class FspRequestsComponent implements OnInit, AfterContentChecked {
           ? itemData.FileType
           : itemData.BinaryMimetype,
         fileSize: itemData.FileSize,
-        modality: itemData.Modality
+        modality: itemData.Modality,
+        clientSideAssociationId: item.Id
       };
       this.packageToSubmit.requests.push(newRequest);
     });

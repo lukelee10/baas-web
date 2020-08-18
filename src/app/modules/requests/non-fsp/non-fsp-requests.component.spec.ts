@@ -30,6 +30,7 @@ import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { LookupStaticDataService } from './../../../shared/services/lookup-static-data.service';
 import {
   PackageModel,
+  RequestModel,
   SavedPackageModel,
   SavedRequestModel
 } from './../../models/request-model';
@@ -61,17 +62,19 @@ describe('RequestsComponent::(*NON-FSP Version)', () => {
         return throwError({ status: 404 });
       }
       // Else, we need to return something intelligent.
+      // Else, we need to return something intelligent.
       const respData: SavedPackageModel = {
         PackageId: Guid.create().toString(),
-        Requests: new Array(value.requests.length).fill(null).map(
-          (): SavedRequestModel => ({
+        Requests: Array.from(value.requests).map(
+          (val: RequestModel): SavedRequestModel => ({
             RequestId: Guid.create().toString(),
             // TODO: Be advised, this value is set to NULL because we do not have
             // an adequate method for intercepting S3 file uploads. Ultimately,
             // the NULL value here causes a TypeError down the chain when the
             // Angular HTTP library (specifically HttpXsrfInterceptor) attempts to
             // call .toLowerCase(). This is a hacky workaround and a bad practice.
-            UploadUrl: null
+            UploadUrl: null,
+            ClientSideAssociationId: val.clientSideAssociationId
           })
         )
       };

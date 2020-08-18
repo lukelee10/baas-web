@@ -149,7 +149,8 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
         fileSize: itemData.FileSize,
         modality: itemData.Modality,
         imageClassification: itemData.ImageClassification,
-        isUSPerson: !itemData.IsNotUSPerson
+        isUSPerson: !itemData.IsNotUSPerson,
+        clientSideAssociationId: item.Id
       };
       this.packageToSubmit.requests.push(newRequest);
     });
