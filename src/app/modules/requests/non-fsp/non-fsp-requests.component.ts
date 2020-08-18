@@ -9,8 +9,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment_ from 'moment';
 import { from } from 'rxjs';
 import { concatMap, finalize } from 'rxjs/operators';
-import { MatFileUploadQueueComponent } from 'src/app/shared/components/multi-file-upload/matFileUpload';
-
+import {
+  MatFileUploadQueueComponent,
+  MatFileUploadComponent
+} from 'src/app/shared/components/multi-file-upload/matFileUpload';
 import { ProviderCheckboxesComponent } from '../provider-checkboxes/provider-checkboxes.component';
 import { environment } from './../../../../environments/environment';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
@@ -184,16 +186,27 @@ export class NonFspRequestsComponent implements OnInit, AfterContentChecked {
           const queueData = this.matFileUploadQueueComponent
             .getQueueData()
             .toArray();
+          const recQueueData: Record<
+            string | number,
+            MatFileUploadComponent
+          > = {};
+          queueData.forEach(
+            queueFile => (recQueueData[queueFile.Id] = queueFile)
+          );
 
           // Sanity checking with a debug log
           this.notificationService.debugLogging(
-            'QueueData.length: %d; Package.Requests.length: %d',
+            'QueueData.length: %d; Package.Requests.length: %d; Record count: %d',
             queueData.length,
-            aAllReqs.length
+            aAllReqs.length,
+            Object.keys(recQueueData).length
           );
-          queueData.map((fileUpComponent, idx) => {
-            fileUpComponent.FileUploadUrl = aAllReqs[idx].UploadUrl;
-          });
+          aAllReqs.forEach(
+            requestRecord =>
+              (recQueueData[
+                requestRecord.ClientSideAssociationId
+              ].FileUploadUrl = requestRecord.UploadUrl)
+          );
         },
         error => {
           this.notificationService.error('Submitting package is failed.');
