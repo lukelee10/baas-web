@@ -1,3 +1,6 @@
+final SONARQUBE_INSTALLATION_NAME = 'UnofficialSonarQube'
+final SONARQUBE_CREDENTIALS_ID = 'sonarqube-doaks-token'
+
 pipeline {
     agent { node { label 'BAASU' } }
 
@@ -16,9 +19,10 @@ pipeline {
     }
 
     environment {
-        PATH = "$WORKSPACE/.npm-packages:$WORKSPACE/node-v10.16.3-linux-x64/bin:$WORKSPACE/node_modules/@angular/cli/bin:$PATH"
+        PATH = "$WORKSPACE/.npm-packages:$WORKSPACE/node-v10.16.3-linux-x64/bin:$WORKSPACE/node_modules/@angular/cli/bin:$WORKSPACE/sonar-scanner/bin:$PATH"
         NPM_CONFIG_USERCONFIG = "$WORKSPACE/.npmrc"
         NG_CLI_ANALYTICS = "ci"
+        SONAR_SCANNER_OPTS='-Xmx1024m'
     }
 
     stages {
@@ -33,6 +37,26 @@ pipeline {
                       wget -q "https://nodejs.org/dist/v10.16.3/${NODE_JS_FILENAME}"
                     fi
                     tar -xaf "${NODE_JS_FILENAME}"
+                    env
+                '''
+
+                sh label: 'Install SonarQube', script: '''
+                    declare -r EXPECTED_SONAR_HASH='889f75c535471d426fcc4d75d4496ec6df6dd0a34c805988329fa58300775b4a'
+                    declare -r SONAR_SCANNER_FILENAME='sonar-scanner-cli-4.4.0.2170-linux.zip'
+                    if [[ -s "${SONAR_SCANNER_FILENAME}" ]]; then
+                        echo 'Existing SonarScanner installation will be used'
+                    else
+                        wget -q "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/${SONAR_SCANNER_FILENAME}"
+                    fi
+                    # Before we unzip, verify that the file hash matches expected checksum
+                    echo -e "${EXPECTED_SONAR_HASH}\t*${SONAR_SCANNER_FILENAME}" | sha256sum --strict --check -
+                    hashMatchExitCode=$?
+                    if [[ "${hashMatchExitCode}" -ne '0' ]]; then
+                        echo "Hash of downloaded ${SONAR_SCANNER_FILENAME} file did not match ${EXPECTED_SONAR_HASH}"
+                        exit 1
+                    fi
+                    unzip -qou "${SONAR_SCANNER_FILENAME}"
+                    ln -sfT 'sonar-scanner-4.4.0.2170-linux' 'sonar-scanner'
                     env
                 '''
             }
@@ -90,6 +114,35 @@ pipeline {
                     conditionalCoverageTargets: '54, 0, 54'
               }
             }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                echo 'SonarQube Analysis...'
+                withSonarQubeEnv(installationName: "${SONARQUBE_INSTALLATION_NAME}",
+                                 credentialsId: "${SONARQUBE_CREDENTIALS_ID}") {
+                    sh label: 'Upload tests to SonarQube', script: """
+                        # Removing remote from branch name
+                        BRANCH=\${GIT_BRANCH#*/}
+
+                        # Unset BRANCH if it is Master
+                        [[ BRANCH == "master" ]] && BRANCH=""
+
+                        TARGET_BRANCH=\$(case \$BRANCH in
+                        dev | release | release-*)  echo -n "master";;
+                        origin/master | master)     echo -n "";;
+                        *)                          echo -n "dev";;
+                        esac)
+
+                        sonar-scanner -Dsonar.branch.name="\${BRANCH}" -Dsonar.branch.target="\${TARGET_BRANCH}"
+              """
+            }
+
+            // Wait for SonarQube analysis to confirm code passes quality-gate
+            timeout(time: 1, unit: 'HOURS') {
+              waitForQualityGate abortPipeline: true
+            }
+          }
         }
     }
 }
