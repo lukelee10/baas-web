@@ -1,6 +1,20 @@
 pipeline {
     agent { node { label 'BAASU' } }
 
+    tools {
+        git 'Default'
+    }
+
+    triggers {
+        // Poll GitLab every 2 minutes for updates.
+        pollSCM('H/2 * * * *')
+    }
+
+    options {
+        disableConcurrentBuilds()
+        timestamps()
+    }
+
     environment {
         PATH = "$WORKSPACE/.npm-packages:$WORKSPACE/node-v10.16.3-linux-x64/bin:$WORKSPACE/node_modules/@angular/cli/bin:$PATH"
         NPM_CONFIG_USERCONFIG = "$WORKSPACE/.npmrc"
