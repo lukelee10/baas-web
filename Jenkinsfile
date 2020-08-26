@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Initialize') {
             steps {
-                echo 'Initialize..'
+                echo 'Initialize...'
                 sh '''
                     declare -r NODE_JS_FILENAME='node-v10.16.3-linux-x64.tar.gz'
                     if [[ -s "${NODE_JS_FILENAME}" ]]; then
@@ -26,7 +26,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Build..'
+                echo 'Build...'
                 sh label: '', script: '''
                     export PATH
                     echo $PATH
@@ -40,7 +40,7 @@ pipeline {
 
         stage('Linting') {
             steps {
-                echo 'Linting..'
+                echo 'Linting...'
                 sh label: '', script: '''
                     mkdir -p ./coverage
                     npm run lint-jenkins
