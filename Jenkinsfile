@@ -135,14 +135,14 @@ pipeline {
                         esac)
 
                         sonar-scanner -Dsonar.branch.name="\${BRANCH}" -Dsonar.branch.target="\${TARGET_BRANCH}"
-              """
-            }
+                    """
+                }
 
-            // Wait for SonarQube analysis to confirm code passes quality-gate
-            timeout(time: 1, unit: 'HOURS') {
-              waitForQualityGate abortPipeline: true
+                // Wait for SonarQube analysis to confirm code passes quality-gate
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
-          }
         }
     }
 }
