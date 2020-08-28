@@ -13,7 +13,22 @@ body {
 .flex-container {
   display: flex;
   flex-direction: column;
-  padding: 1% 12%;
+}
+
+@media only screen and (max-width: 1024px) {
+  .flex-container {
+    padding: 1% 2%;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .flex-container {
+    padding: 1% 5%;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  .flex-container {
+    padding: 1% 12%;
+  }
 }
 
 .flex-container-row {
