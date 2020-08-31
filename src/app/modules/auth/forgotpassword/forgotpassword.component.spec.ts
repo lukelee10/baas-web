@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of, throwError } from 'rxjs';
 import { AwsLambdaService } from 'src/app/core/services/aws-lambda.service';
 import { LoaderService } from 'src/app/shared/services/loader.service';
@@ -43,7 +44,8 @@ describe('ForgotpasswordComponent', () => {
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        RouterTestingModule.withRoutes([])
       ],
       declarations: [FooterComponent, ForgotPasswordComponent],
       providers: [
