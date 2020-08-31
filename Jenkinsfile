@@ -1,5 +1,5 @@
 final SONARQUBE_INSTALLATION_NAME = 'UnofficialSonarQube'
-final SONARQUBE_CREDENTIALS_ID = 'sonarqube-doaks-token'
+final SONARQUBE_CREDENTIALS_ID = 'sonarqube-baasu-token'
 
 pipeline {
   agent { node { label 'BAASU' } }
