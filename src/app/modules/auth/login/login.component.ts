@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { environment } from './../../../../environments/environment';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
+import { environment } from './../../../../environments/environment';
 import { UserService } from './../../../core/services/user.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { UserService } from './../../../core/services/user.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  static readonly canShowPasswordResetLink: boolean = environment.ses.enabled;
+  readonly canShowPasswordResetLink: boolean = environment.ses.enabled;
   email = new FormControl('', [Validators.required, Validators.email]);
   passWord = new FormControl('', [Validators.required]);
 
