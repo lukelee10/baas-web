@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { environment } from 'src/environments/environment';
+import { environment } from './../../../../environments/environment';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
 import { UserService } from './../../../core/services/user.service';
