@@ -12,9 +12,7 @@ import { NotificationService } from './../../../shared/services/notification.ser
 @Component({
   selector: 'app-forgotpassword',
   templateUrl: './forgotpassword.component.html',
-  styles: [
-    '.grey-box { background-color: #ECEFF1 ; padding: 15px 60px 60px 150px; min - width: 520px;}'
-  ]
+  styleUrls: ['./forgotpassword.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
