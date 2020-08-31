@@ -82,8 +82,8 @@
       >
         Login
       </button>
-      <br />
       <div *ngIf="errorMessage != null; else blank" role="alert">
+        <br />
         <mat-chip-list>
           <mat-chip color="warn" selected="true" disabled>
             <mat-icon>error_outline</mat-icon>
@@ -93,6 +93,7 @@
         </mat-chip-list>
       </div>
       <div *ngIf="canShowPasswordResetLink">
+        <br />
         <a
           [routerLink]="['/forgotpassword']"
           style="font-size:x-small"
