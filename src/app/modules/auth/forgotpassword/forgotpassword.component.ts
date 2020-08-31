@@ -6,6 +6,7 @@ import {
 } from 'src/app/core/services/app-messages.service';
 
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
+import { environment } from './../../../../environments/environment';
 import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
 
@@ -15,6 +16,7 @@ import { NotificationService } from './../../../shared/services/notification.ser
   styleUrls: ['./forgotpassword.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
+  readonly canSendForgotPasswordEmail: boolean = environment.ses.enabled;
   email = new FormControl('', [Validators.required, Validators.email]);
   message: string;
   errorMessage: string;
