@@ -6,17 +6,17 @@ import {
 } from 'src/app/core/services/app-messages.service';
 
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
+import { environment } from './../../../../environments/environment';
 import { LoaderService } from './../../../shared/services/loader.service';
 import { NotificationService } from './../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-forgotpassword',
   templateUrl: './forgotpassword.component.html',
-  styles: [
-    '.grey-box { background-color: #ECEFF1 ; padding: 15px 60px 60px 150px; min - width: 520px;}'
-  ]
+  styleUrls: ['./forgotpassword.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
+  readonly canSendForgotPasswordEmail: boolean = environment.ses.enabled;
   email = new FormControl('', [Validators.required, Validators.email]);
   message: string;
   errorMessage: string;
