@@ -1,0 +1,43 @@
+<div
+  #matDiv
+  fxLayout="column"
+  class="{{ iCounter > 0 ? 'matdiv' : 'matdiv matdiv-selected' }}"
+  *ngFor="let package of userPackages; let iCounter = index"
+>
+  <mat-card
+    fxFlex="100"
+    fxFlexOffset="1"
+    (click)="packageClick(iCounter, package)"
+    class="matdiv-card"
+    fxLayout="column"
+    style="height: 170px; "
+  >
+    <mat-card-header>
+      <mat-card-title>
+        {{ package.Name }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ package.Created | date: 'medium' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div fxLayout="row">
+        <div fxFlex="95">
+          <span class="packageCount" title="Package Request Count">{{
+            package.RequestCount
+          }}</span>
+        </div>
+        <div>
+          <span class="numberedCircle">{{ iCounter + 1 }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div fxLayout="column" *ngIf="showSpinner" fxLayoutAlign="center center">
+  <mat-spinner
+    matTooltip="Loading data"
+    style="text-align: center"
+    diameter="40"
+  ></mat-spinner>
+</div>

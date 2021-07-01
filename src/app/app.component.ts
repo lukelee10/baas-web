@@ -3,10 +3,14 @@ import { Router } from '@angular/router';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 
-import { AuthenticationService } from './core/services/authentication.service';
-import { NotificationService } from './shared/services/notification.service';
-
 import { AppGlobalConstants } from './core/app-global-constants';
+import {
+  AppMessage,
+  AppMessagesService
+} from './core/services/app-messages.service';
+import { AuthenticationService } from './core/services/authentication.service';
+import { UserService } from './core/services/user.service';
+import { NotificationService } from './shared/services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +28,9 @@ export class AppComponent implements OnInit {
     private keepalive: Keepalive,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private appMessagesService: AppMessagesService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -42,9 +48,10 @@ export class AppComponent implements OnInit {
       this.idleState = 'Timed out!';
       this.timedOut = true;
       this.notificationService.debugLogging(this.idleState);
+
       this.notificationService.warning(
-        'Your session has timed out.',
-        'BaaS Alert'
+        this.appMessagesService.getMessage(AppMessage.SessionTimeOut),
+        this.appMessagesService.getTitle(AppMessage.SessionTimeOut)
       );
       this.authenticationService.Logout();
       this.router.navigate(['/login']);
@@ -78,6 +85,8 @@ export class AppComponent implements OnInit {
         this.idle.stop();
       }
     });
+
+    this.userService.GetLatestMenuContext();
   }
 
   private reset() {

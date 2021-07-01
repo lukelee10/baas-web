@@ -1,0 +1,101 @@
+.dropzone {
+  background-color: brown;
+  width: 100px;
+  height: 100px;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 10px;
+}
+
+.file-info {
+  font-size: 0.85rem;
+}
+
+#drop_zone {
+  border: 5px solid blue;
+  width: 200px;
+  height: 100px;
+}
+
+.action {
+  cursor: pointer;
+  outline: none;
+}
+
+a.disabled {
+  pointer-events: none;
+}
+
+.upload-drop-zone {
+  height: 200px;
+  border-width: 2px;
+  margin-bottom: 20px;
+}
+
+.upload-drop-zone:hover,
+.upload-drop-zone:focus {
+  cursor: pointer;
+  color: #232323;
+  border-color: #2196f3;
+}
+
+/* skin.css Style*/
+.upload-drop-zone {
+  color: #ccc;
+  border-style: solid;
+  border-color: #ccc;
+  line-height: 200px;
+  text-align: center;
+}
+.upload-drop-zone.drop {
+  color: #222;
+  border-color: #222;
+}
+.fileRows {
+  background-color: brown;
+}
+
+.file-upload-header {
+  min-width: 1000px;
+  background-color: rgba(63, 81, 181, 0.85);
+  font-weight: bold;
+  color: white;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+}
+.file-upload-sub-header {
+  min-width: 1000px;
+  background-color: rgba(63, 81, 181, 0.45);
+  padding: 5px;
+}
+.file-upload-content-body {
+  background-color: #f1f1f1;
+  border-radius: 7px;
+  min-height: 200px;
+  min-width: 1000px;
+}
+.file-upload-content-row {
+  border: 10px solid #f1f1f1;
+  background-color: white;
+  padding-top: 10px;
+  min-width: 1000px;
+  border-radius: 0 0 10px 10px;
+}
+.modalityApplyAll {
+  font-size: smaller;
+  font-weight: bold;
+  padding: 4px;
+  width: 180px;
+  background-color: #f1f1f1;
+}
+.classificationApplyAll {
+  font-size: smaller;
+  font-weight: bold;
+  padding: 4px;
+  width: 200px;
+  background-color: #f1f1f1;
+}

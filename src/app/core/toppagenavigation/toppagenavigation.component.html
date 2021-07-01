@@ -1,4 +1,4 @@
-<div *ngIf="authenticationService.IsAgreementAccepted">
+<div *ngIf="showMenu">
   <mat-toolbar>
     <div fxHide.gt-xs>
       <button mat-icon-button (click)="onToggleSidenav()">
@@ -17,14 +17,23 @@
       </a>
     </div>
 
-    <div fxFlex fxLayout fxFlexOffset="1" fxHide.xs fxLayoutGap="20px">
+    <div
+      *ngIf="showMenu"
+      fxFlex
+      fxLayout
+      fxFlexOffset="1"
+      fxHide.xs
+      fxLayoutGap="20px"
+    >
       <button
         mat-button
         *ngFor="let item of navItems"
         matTooltip="{{ item.title }}"
         [routerLink]="[item.link]"
         routerLinkActive="active-link"
-        [ngStyle]="{ color: item.title === 'Admin' ? 'orange' : 'default' }"
+        [ngStyle]="{
+          color: item.title === 'Administration' ? 'orange' : 'default'
+        }"
       >
         <mat-icon>{{ item.icon }}</mat-icon>
         {{ item.title }}
@@ -49,6 +58,15 @@
           <mat-icon>edit</mat-icon>
           Edit Profile
         </button>
+        <button
+          mat-menu-item
+          routerLink="/changepassword"
+          routerLinkActive="active-link"
+        >
+          <mat-icon>vpn_key</mat-icon>
+          Change Password
+        </button>
+
         <button mat-menu-item (click)="LogOut()">
           <mat-icon>exit_to_app</mat-icon>
           Log Out

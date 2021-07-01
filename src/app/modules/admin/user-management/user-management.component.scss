@@ -33,10 +33,25 @@
   flex: 0 0 30px;
 }
 
-.mat-column-UserId {
-  flex: 0 0 250px;
+.mat-column-username {
+  min-width: 250px;
 }
 
-.mat-column-Fullname {
-  flex: 0 0 250px;
+.mat-column-fullname {
+  min-width: 200px;
+}
+
+.mat-column-group {
+  min-width: 150px;
+}
+
+.mat-column-role {
+  min-width: 80px;
+}
+
+.mat-column-isDisabled {
+  flex: 0 0 80px;
+}
+.mat-column-actions {
+  flex: 0 0 80px;
 }

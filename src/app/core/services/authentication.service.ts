@@ -76,6 +76,7 @@ export class AuthenticationService {
     sessionStorage.setItem('loggedUser', value);
   }
 
+  // TODO This property can be removed as it is hard-coded. Use the new implementation UserService.IsAdmin
   get isAdmin(): boolean {
     return true;
   }
@@ -93,6 +94,6 @@ export class AuthenticationService {
   }
 
   getUserLoggedIn(): Observable<boolean> {
-    return this.userLoggedIn.asObservable();
+    return this.userLoggedIn;
   }
 }

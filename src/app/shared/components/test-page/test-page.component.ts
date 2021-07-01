@@ -3,6 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { NotificationService } from '../../services/notification.service';
 
+// TODO -- This component can be removed and clean any references
+// Not Used any where
+
 @Component({
   selector: 'app-test-page',
   templateUrl: './test-page.component.html',

@@ -28,13 +28,14 @@
         <mat-icon aria-label="Enter your email" matTooltip="Enter your email"
           >email</mat-icon
         >
-        <mat-form-field>
+        <mat-form-field class="login-mat-form-field">
           <input
             matInput
             placeholder="Email"
             [formControl]="email"
             required
             aria-label="Enter Email"
+            (keyup.enter)="clickLogin()"
           />
           <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
         </mat-form-field>
@@ -51,13 +52,14 @@
           matTooltip="Enter your password"
           >vpn_key</mat-icon
         >
-        <mat-form-field>
+        <mat-form-field class="login-mat-form-field">
           <input
             matInput
             placeholder="Password"
             [type]="hide ? 'password' : 'text'"
             aria-label="Enter Password"
             [formControl]="passWord"
+            (keyup.enter)="clickLogin()"
           />
           <button
             mat-icon-button
@@ -74,14 +76,14 @@
       <button
         mat-raised-button
         color="primary"
-        style="width:220px"
         (click)="clickLogin()"
+        style="width: 100%;"
         matTooltip="Login"
       >
         Login
       </button>
-      <br />
       <div *ngIf="errorMessage != null; else blank" role="alert">
+        <br />
         <mat-chip-list>
           <mat-chip color="warn" selected="true" disabled>
             <mat-icon>error_outline</mat-icon>
@@ -90,12 +92,15 @@
           </mat-chip>
         </mat-chip-list>
       </div>
-      <a
-        [routerLink]="['/forgotpassword']"
-        style="font-size:x-small"
-        matTooltip="Forgot Password"
-        >FORGOT PASSWORD</a
-      >
+      <div *ngIf="canShowPasswordResetLink">
+        <br />
+        <a
+          [routerLink]="['/forgotpassword']"
+          class="forgot-password-link"
+          matTooltip="Forgot Password"
+          >Forgot Password</a
+        >
+      </div>
     </div>
   </div>
   <ng-template #blank></ng-template>

@@ -1,0 +1,31 @@
+<mat-card fxLayout="column" fxLayoutGap="20px">
+  <mat-label>Vetting System</mat-label>
+  <mat-card-content fxLayout="row wrap" fxLayoutGap="2px">
+    <div
+      fxFlex
+      *ngFor="
+        let provider of formProviders?.controls.providerControls?.controls;
+        let i = index
+      "
+      class="flex-container  align-center multi-checkbox"
+    >
+      <mat-checkbox
+        color="primary"
+        [formControl]="provider"
+        fxFlex
+        class="mat-checkbox"
+        matTooltip="{{ providersViewModel[i].Description }}"
+      >
+        {{ providersViewModel[i].ProviderId }}</mat-checkbox
+      >
+    </div>
+  </mat-card-content>
+  <mat-card-footer>
+    <div role="note" class="footer-note">
+      <span *ngIf="showFooter">
+        At least one Vetting System needs to be selected
+      </span>
+      &nbsp;
+    </div>
+  </mat-card-footer>
+</mat-card>

@@ -26,7 +26,25 @@ export const environment = {
    *
    * For API Gateway
    */
-  apiGateway: awsConfig.apiGateway
+  apiGateway: awsConfig.apiGateway,
+
+  /**
+   * This setting determines whether SES is enabled, and thereby whether or not
+   * features that depend on SES can be displayed on the client-side.
+   * As a reminder, SES stands for "Simple Email Service." It enables
+   * functionalities like Password Reset/Forgot Password.
+   */
+  ses: awsConfig.ses,
+
+  /**
+   * Maximum file count that can up uploaded for creating a package
+   */
+  MaxFileCountForPackage: 100,
+
+  /**
+   * Maximum size of a file im MB that can be uploaded for creating a package
+   */
+  MaxFileSizeForPackage: 10
 };
 
 /*

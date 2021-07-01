@@ -1,0 +1,257 @@
+<div
+  class="draggable-request-details"
+  fxLayout="column"
+  fxFlexAlign="center center"
+  cdkDrag
+  cdkDragRootElement=".cdk-overlay-pane"
+  cdkDragBoundary=".cdk-overlay-container"
+>
+  <div class="reqdetails-title-bar no-scrolling-overflow" cdkDragHandle>
+    <div class="request-details-title">Request Details</div>
+    <div class="request-details-close-button">
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="closePopup()"
+        class="baas-mat-close-button"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div
+    fxFlex="100"
+    fxFlexOffset=".3"
+    fxLayout="row"
+    *ngIf="!showSpinner"
+    class="request-details-summary-info"
+  >
+    <div fxLayout="column" fxFlex="25" class="image-status-overview">
+      <div class="pic-frame pic-frame--quick-zoom">
+        <img
+          class="resize-keep-aspect"
+          src="{{ request.OriginalImageUrl || request.ImageUrl }}"
+          alt="Preview Unavailable"
+          style="font-weight: bold;text-align: center;"
+        />
+      </div>
+      <div
+        class="status-flag  status-{{ request.Status | vettingStatusShorten }}"
+      >
+        {{ request.Status | vettingStatusPipe }}
+      </div>
+    </div>
+    <div fxFlexOffset="2" fxLayout="column" fxFlex="73">
+      <div fxLayout="row">
+        <div
+          fxFlex="80"
+          class="head-alert head-alert--{{
+            requestDetails?.Alert.Level.toLowerCase()
+          }}"
+        >
+          <i
+            style="display: none; font-size: small !important"
+            class="material-icons head-alert--{{
+              requestDetails?.Alert.Level.toLowerCase()
+            }}"
+            >warning</i
+          >
+          {{ requestDetails?.Alert.Message }}
+        </div>
+        <div fxFlex="10"></div>
+        <div fxFlex="10" class="modality-flag">{{ request.Modality }}</div>
+      </div>
+      <div
+        fxLayout="row wrap"
+        fxFlexOffset="1"
+        class="request-detail-line-item"
+      >
+        <div fxFlex="15" class="request-detail-label">Request:</div>
+        <div fxFlex="nogrow" class="digit-bar">
+          {{ request.Id }}
+        </div>
+
+        <div fxFlex="20">
+          <i class="material-icons baas-copy-icon" title="Copy to Clip-board"
+            >content_copy</i
+          >&nbsp;
+        </div>
+      </div>
+      <div fxLayout="row" fxFlexOffset="1" class="request-detail-line-item">
+        <div fxFlex="15" class="request-detail-label">File:</div>
+        <div fxFlex="85" class="request-detail-text">
+          {{ requestDetails?.Filename }}
+        </div>
+      </div>
+      <div fxLayout="row" fxFlexOffset="1" class="request-detail-line-item">
+        <div fxFlex="15" class="request-detail-label">Submitted:</div>
+        <div fxFlex="85" class="request-detail-text">
+          {{ request.StatusTimestamp | date: 'medium' }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="!showSpinner"
+    fxLayout="row"
+    [fxFlex]="100"
+    fxFlexOffset="1"
+    class="no-scrolling-overflow"
+  >
+    <div [fxFlex]="pageSettings.FlexLeft" class="details-H2">
+      VETTING SYSTEM RESPONSES
+    </div>
+    <div
+      [fxFlex]="pageSettings.FlexRight"
+      (click)="toggleLogs(pageSettings.DivExpandedRight)"
+      fxFlexOffset="0.5"
+      class="details-H2"
+    >
+      {{ pageSettings.TitleRight }}
+      <button
+        *ngIf="pageSettings.DivExpandedRight"
+        mat-icon-button
+        title="{{ pageSettings.ToolTipToggleButton + ' ' + 'Logs' }}"
+        style="vertical-align: top; position: relative; top:-10px;"
+      >
+        <mat-icon>history</mat-icon>
+      </button>
+
+      <button
+        *ngIf="!pageSettings.DivExpandedRight"
+        mat-icon-button
+        title="{{ pageSettings.ToolTipToggleButton + ' ' + 'Logs' }}"
+        style="vertical-align: top; position: relative; top:-10px;"
+      >
+        <mat-icon>{{ pageSettings.ButtonIcon }}</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!showSpinner" fxLayout="row" fxFlex="100">
+    <div fxFlex="column" class="response-details-log">
+      <mat-accordion [togglePosition]="'before'" [multi]="false">
+        <div
+          *ngFor="
+            let vettingSystem of requestDetails?.VettingSystems;
+            let isFirst = first
+          "
+          class="baas-mat-expansion-panel"
+        >
+          <mat-expansion-panel [expanded]="isFirst">
+            <mat-expansion-panel-header class="disable_ripple">
+              <mat-panel-title class="baas-mat-panel-title">
+                {{ vettingSystem.SystemName }}
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-chip-list>
+                  <mat-chip
+                    [disableRipple]="true"
+                    [ngStyle]="
+                      getMatChipStyle(
+                        vettingSystem.Status | vettingStatusShorten
+                      )
+                    "
+                  >
+                    {{ vettingSystem.Status | vettingStatusPipe }}
+                  </mat-chip>
+                </mat-chip-list>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div fxLayout="column">
+              <div fxLayout="row" fxFlex="100">
+                <div fxFlex="20">{{ vettingSystem.IdFieldName }}:</div>
+                <ul
+                  [ngClass]="{
+                    'response-match-id': vettingSystem.Ids.toString()
+                  }"
+                >
+                  <li *ngFor="let Id of vettingSystem.Ids">
+                    {{ Id }}
+                  </li>
+                </ul>
+              </div>
+
+              <div fxFlex="100" class="details-H3">
+                Department Contact Information:
+              </div>
+
+              <div
+                fxLayout="column"
+                class="details-text"
+                *ngFor="let poc of vettingSystem.POC"
+              >
+                <div fxLayout="row">
+                  <div title="{{ poc.Label }}" fxFlex="20">
+                    <i
+                      class="material-icons"
+                      style="font-size: 11pt; font-weight: normal; color:#99A3A4"
+                    >
+                      {{ getContextIcon(poc.Label) }}
+                    </i>
+                  </div>
+                  <div fxFlex="80">
+                    {{ poc.Value }}
+                  </div>
+                </div>
+                <div>
+                  <p class="details-remarks">
+                    {{ poc.Remarks }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+      </mat-accordion>
+    </div>
+    <div
+      [fxFlex]="pageSettings.FlexRight"
+      fxFlexOffset="0.5"
+      class="response-details-log"
+    >
+      <div *ngIf="pageSettings.DivExpandedRight">
+        <div
+          *ngFor="let logItem of requestDetails?.RequestLogs"
+          style="padding: 5px;"
+        >
+          <mat-card>
+            <mat-card-content>
+              <p class="details-remarks">
+                {{ logItem.Message }}
+                <br />
+                - {{ logItem.Timestamp | date: 'medium' }}
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div
+        *ngIf="!pageSettings.DivExpandedRight"
+        (click)="toggleLogs(pageSettings.DivExpandedRight)"
+        class="collapsed-log-div"
+      >
+        <button
+          mat-icon-button
+          title="{{ pageSettings.ToolTipToggleButton + ' ' + 'Logs' }}"
+        >
+          <mat-icon>history</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    fxLayout="column"
+    *ngIf="showSpinner"
+    fxFlexOffset="20"
+    fxLayoutAlign="center center"
+    class="no-scrolling-overflow"
+  >
+    <mat-spinner
+      matTooltip="Loading data"
+      style="text-align: center"
+      diameter="40"
+    ></mat-spinner>
+  </div>
+</div>

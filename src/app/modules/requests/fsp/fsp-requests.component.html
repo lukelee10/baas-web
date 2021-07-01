@@ -1,0 +1,96 @@
+<form
+  fxLayout="column"
+  [formGroup]="form"
+  class="flex-container"
+  fxLayoutGap="20px"
+>
+  <h2 class="fspClass">Submit Images</h2>
+  <div
+    class="input-row"
+    fxLayout="row"
+    fxLayout.lt-md="column"
+    fxLayoutGap="20px"
+    fxLayoutGap.lt-md="0px"
+    role="form"
+  >
+    <mat-form-field appearance="outline" fxFlex>
+      <mat-label>Package Title</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Package Title"
+        formControlName="packageTitle"
+        maxlength="64"
+        aria-label="Package Title"
+      />
+      <mat-icon matSuffix>library_books</mat-icon>
+      <mat-error *ngIf="!form.hasError('packageTitle')">Required</mat-error>
+      <mat-hint>64 Character Limit </mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row" style="padding: 1% 15%;"></div>
+  <fieldset style="margin-left: 15%; margin-right: 35%;">
+    <legend>Files:</legend>
+    <div
+      class="flex-container-row"
+      style="padding-left: 0px; padding-right: 0px;"
+    >
+      <div
+        [fileUploadInputFor]="fileUploadQueue"
+        class="upload-drop-zone"
+        style="width:100%"
+      >
+        Drag and drop files here or
+        <input
+          id="singleFile"
+          type="file"
+          multiple="multiple"
+          style="display:none"
+          [fileUploadInputFor]="fileUploadQueue"
+        />
+        <label for="singleFile" class="mat-raised-button mat-primary"
+          >BROWSE...</label
+        >
+      </div>
+    </div>
+    <mat-error style="font-size: 12px;" *ngIf="filesValidationError">
+      {{ filesValidationMessage }}
+    </mat-error>
+    <mat-hint style="font-size: 12px;" *ngIf="!filesValidationError">
+      {{ filesValidationMessage }}
+    </mat-hint>
+    <div>
+      <mat-hint style="font-size: 12px;">
+        Allowed file types are image/jpeg, image/png, image/jp2, image/bmp
+      </mat-hint>
+    </div>
+    <div>
+      <mat-hint style="font-size: 12px;">
+        {{ allowedFileSize }}
+      </mat-hint>
+    </div>
+  </fieldset>
+
+  <app-mat-file-upload-queue
+    #fileUploadQueue
+    multiple
+    (eventOnUploadFilesListChanged)="UploadFilesListChanged($event)"
+  >
+    <app-mat-file-upload
+      [File]="file"
+      [Id]="i"
+      *ngFor="let file of fileUploadQueue.files; let i = index"
+    ></app-mat-file-upload>
+  </app-mat-file-upload-queue>
+
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!form.valid || !IsFileUploadFormValid()"
+    style="width: 250px;"
+    (click)="onSubmitRequest()"
+  >
+    Submit Request
+  </button>
+</form>

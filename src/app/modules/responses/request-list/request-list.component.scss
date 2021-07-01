@@ -1,0 +1,123 @@
+.viewImagesDiv {
+  background-color: rgba(gray, 0.1);
+  height: 700px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.response-head {
+  background-color: rgba(#3f51b5, 0.85);
+  color: white !important;
+  font-weight: 500;
+  padding: 7px;
+  text-align: left;
+  border: 1px solid gray;
+  cursor: pointer;
+}
+
+.infoBar {
+  background-color: #e5e8e8;
+  padding: 4px;
+  font-size: small;
+}
+
+.infoBar-Head {
+  @extend .infoBar;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.requestContainer {
+  height: 690px;
+  overflow-x: auto !important;
+  background-color: rgba(gray, 0.1);
+  scrollbar-width: thin;
+  scrollbar-color: #90a4ae #cfd8dc;
+  &::-webkit-scrollbar {
+    width: 0.8em;
+    height: 0.5em;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(gray, 0.1);
+    border-radius: 3px;
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.modality-flag {
+  text-align: center;
+  padding: 2px;
+  background-color: #e5e8e8;
+  font-weight: bold;
+  font-size: small;
+}
+
+.pic-card {
+  margin-top: 10px;
+  height: 200px;
+  width: 250px;
+}
+.pic-frame {
+  width: 130px;
+  height: 170px;
+  background-color: #e5e8e8;
+  padding: 4px;
+}
+.resize-keep-aspect {
+  display: block;
+  max-width: 130px;
+  max-height: 170px;
+  width: auto;
+  height: auto;
+}
+.status-flag {
+  width: 130px !important;
+  font-size: smaller;
+  font-weight: bold;
+}
+.status-label {
+  padding-top: 12px;
+  padding-right: 2px;
+  width: 90px;
+  font-size: small;
+  font-weight: bold;
+  color: #5d6d7e;
+}
+.status-container {
+  padding-top: 10px;
+  font-size: small;
+  font-weight: bold;
+  color: #5d6d7e;
+}
+
+.status-PND {
+  background-color: #d6dbdf;
+  color: #5d6d7e;
+  padding: 4px;
+}
+.status-INV {
+  background-color: rgba(red, 0.6);
+  color: white;
+  padding: 4px;
+}
+.status-NA {
+  background-color: rgba(lightgray, 0.6);
+  color: #5d6d7e;
+  padding: 4px;
+}
+.status-ERR {
+  background-color: rgba(yellow, 0.6);
+  color: #5d6d7e;
+  padding: 4px;
+
+  border: 1px solid yellow;
+}
+.status-NL {
+  background-color: #fdfefe;
+  color: #5d6d7e;
+  padding: 4px;
+
+  border: 1px solid #ebedef;
+}

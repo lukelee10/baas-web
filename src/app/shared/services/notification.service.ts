@@ -20,7 +20,6 @@ import { environment } from './../../../environments/environment';
 export class NotificationService {
   private popUpTitle: string;
   private logLevel: boolean;
-  private durationInSeconds = 5;
 
   constructor(private dialog: MatDialog, private matSnackBar: MatSnackBar) {
     this.logLevel = environment.production;
@@ -76,10 +75,14 @@ export class NotificationService {
    * Display a MatSnackbar notification and return the reference.
    * Will set the duration to the global configuration if present.
    */
-  notify(message: string, buttonLabel: string = 'OK'): MatSnackBarRef<any> {
-    if (this.durationInSeconds > 0) {
+  notify(
+    message: string,
+    buttonLabel: string = 'OK',
+    durationInSeconds: number = 5
+  ): MatSnackBarRef<any> {
+    if (durationInSeconds > 0) {
       return this.matSnackBar.open(message, buttonLabel, {
-        duration: this.durationInSeconds * 1000
+        duration: durationInSeconds * 1000
       });
     } else {
       return this.matSnackBar.open(message, buttonLabel, {});

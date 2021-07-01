@@ -1,47 +1,147 @@
-<div class="flex-container form>">
-  <h2>Create User</h2>
-  <mat-form-field>
-    <input
-      matInput
-      placeholder="Email"
-      type="email"
-      autocomplete="email"
-      required
-    />
-  </mat-form-field>
-
-  <div fxLayout>
-    <mat-form-field fxFlex="40%">
-      <input matInput placeholder="First Name" required class="form-control" />
+<form [formGroup]="form">
+  <div class="flex-container form>">
+    <h2>{{ editFlag ? 'Edit' : 'Create' }} User</h2>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Email"
+        type="email"
+        autocomplete="email"
+        required
+        formControlName="email"
+      />
     </mat-form-field>
-    <span fxFlex>&nbsp;</span>
 
-    <mat-form-field fxFlex="40%">
-      <input matInput placeholder="Last Name" required />
+    <mat-form-field *ngIf="!editFlag">
+      <input
+        matInput
+        placeholder="Password"
+        type="password"
+        required
+        class="form-control"
+        formControlName="password"
+        (focus)="initPasswordValidators()"
+      />
+      <mat-error *ngIf="password.length > 0 && password.errors?.required"
+        >You must enter a password</mat-error
+      >
+      <mat-error *ngIf="password.errors?.minlength"
+        >Password does not have minimal length</mat-error
+      >
+      <mat-error
+        *ngIf="
+          password.errors?.validateHasAlphaLower ||
+          password.errors?.validateHasAlphaUpper ||
+          password.errors?.validateHasNumeric ||
+          password.errors?.validateHasSpecialChar
+        "
+      >
+        <p>
+          Password must contain characters from the following character classes:
+        </p>
+        [uppercase, lowercase, digit, special char]
+      </mat-error>
+      <mat-error *ngIf="form.controls.password.errors?.validateNo3Duplicate">
+        Password cannot contain more than 3 consecutive letters from the same
+        character class.
+      </mat-error>
+      <mat-error *ngIf="form.controls.password.errors?.validateNoUserID">
+        Password cannot contain user ID
+      </mat-error>
+      <mat-error *ngIf="form.controls.password.errors?.compare"
+        >Mismatched password</mat-error
+      >
     </mat-form-field>
+
+    <div fxLayout>
+      <mat-form-field fxFlex="40%">
+        <input
+          matInput
+          placeholder="First Name"
+          required
+          class="form-control"
+          formControlName="firstname"
+        />
+      </mat-form-field>
+      <span fxFlex>&nbsp;</span>
+
+      <mat-form-field fxFlex="40%">
+        <input
+          matInput
+          placeholder="Last Name"
+          required
+          formControlName="lastname"
+        />
+      </mat-form-field>
+    </div>
+
+    <div fxLayout>
+      <mat-accordion fxFlex="100%">
+        <mat-expansion-panel
+          class="mat-elevation-z1"
+          style="margin-bottom: 15px;"
+        >
+          <mat-expansion-panel-header
+            [collapsedHeight]="'90px'"
+            [expandedHeight]="'90px'"
+          >
+            <mat-form-field fxFlexFill>
+              <input
+                matInput
+                placeholder="Group"
+                required
+                formControlName="group"
+              />
+            </mat-form-field>
+          </mat-expansion-panel-header>
+          <app-group-management
+            (selectGroup)="setGroup($event)"
+          ></app-group-management>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <mat-form-field>
+      <mat-select placeholder="Role" required formControlName="role">
+        <mat-option
+          *ngFor="let role of this?.userRolesArr"
+          [value]="role.value"
+        >
+          {{ role.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Status" required formControlName="disabled">
+        <mat-option
+          *ngFor="let disabled of lookupStaticDataService.userStatusData"
+          [value]="disabled.value"
+        >
+          {{ disabled.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div fxLayout>
+      <button
+        fxFlex="200px"
+        mat-raised-button
+        (mousedown)="cancel()"
+        matTooltip="Cancel"
+      >
+        Cancel
+      </button>
+      <button
+        fxFlex="200px"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!form.valid || !form.controls.group.value"
+        (click)="submit()"
+        matTooltip="Create User"
+      >
+        Submit
+      </button>
+    </div>
   </div>
-
-  <mat-form-field>
-    <input matInput placeholder="Group" required />
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput placeholder="Role" required />
-  </mat-form-field>
-
-  <mat-form-field>
-    <input matInput placeholder="Status" required />
-  </mat-form-field>
-
-  <div fxLayout>
-    <button
-      fxFlex="200px"
-      mat-raised-button
-      color="primary"
-      type="submit"
-      matTooltip="Create User"
-    >
-      Submit
-    </button>
-  </div>
-</div>
+</form>

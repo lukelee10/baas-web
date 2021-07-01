@@ -1,0 +1,26 @@
+// TODO Once we address Advanced interactive password validation
+// (https://jira.sdo.leidos.com/browse/BAASU-379), following style block can be removed
+
+/* work around for mat-error */
+
+// https://angular.io/guide/component-styles
+// Use the :host pseudo-class selector to target styles in the element that hosts the component
+// (as opposed to targeting elements inside the component's template).
+// Applying the ::ng-deep pseudo-class to any CSS rule completely disables view-encapsulation for that rule.
+// Any style with ::ng-deep applied becomes a global style.
+// In order to scope the specified style to the current component and all its descendants,
+// be sure to include the :host selector before ::ng-deep.
+// If the ::ng-deep combinator is used without the :host pseudo-class selector,
+// the style can bleed into other components.
+// There are lot of forum discussions on usage of ng-deep; some says it is not going to be deprecated
+// There is alternative for ng-deep and that is set the component to encapsulation: ViewEncapsulation.None
+// But we are using ng-deep
+:host ::ng-deep .mat-form-field {
+  &-underline {
+    position: static;
+  }
+
+  &-subscript-wrapper {
+    position: static;
+  }
+}

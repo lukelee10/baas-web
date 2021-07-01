@@ -1,0 +1,399 @@
+$requestDetailsZIndex: 1;
+$longestRequestStatusChar: 18ch;
+$lengthOfStandardRequestId: 36ch;
+
+.reqdetails-title-bar {
+  background-color: rgba(#3f51b5, 0.85);
+  color: white !important;
+  padding: 0;
+  text-align: left;
+  border: 2px solid #3f51b5;
+  border-radius: 5px;
+  // Not all WebBrowsers support the grab cursor, so move is assinged as a
+  // fallback value.
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  &:active {
+    cursor: grabbing;
+    cursor: grab;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
+
+  & > * {
+    align-self: center;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .request-details-title {
+    padding-left: 1ch;
+  }
+
+  .request-details-close-button {
+    float: right;
+    cursor: pointer !important;
+  }
+}
+
+.image-status-overview {
+  min-width: calc(#{$longestRequestStatusChar} + 1ch);
+  min-height: 170px;
+  padding: 0;
+  box-sizing: border-box;
+  // Set baseline font-size that will be used for calculating sizes of children
+  font-size: 16px;
+}
+
+.pic-frame {
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #e5e8e8;
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  width: 100%;
+  vertical-align: middle;
+}
+
+.resize-keep-aspect {
+  display: block;
+  max-width: 100%;
+  max-height: 170px;
+  width: auto;
+  height: auto;
+}
+
+.pic-frame--quick-zoom {
+  text-align: center;
+  img {
+    transform-origin: 0 0;
+    transition: transform 0.25s, visibility 0.25s ease-in;
+    display: inline-block;
+  }
+  // Transformation to zoom-in on image
+  &:hover {
+    // Set explicit sizing prior to zoom transformation, otherwise the image
+    // will fill the Right and Bottom of the page.
+    max-width: calc(#{$longestRequestStatusChar} + 1ch);
+    max-height: 170px;
+
+    text-align: left;
+
+    position: fixed;
+    z-index: calc(#{$requestDetailsZIndex} + 1);
+
+    img {
+      transform: scale(3);
+      box-shadow: 0px 0px 1px 1px lightgray;
+      overflow: visible;
+    }
+  }
+}
+
+.modality-flag {
+  text-align: center;
+  padding: 2px;
+  background-color: #e5e8e8;
+  font-weight: bold;
+  // Specify height using most-likely supported unit ascending to least-likely
+  // supported units.
+  height: 30px;
+  height: 4ex;
+  line-height: 4ex;
+  min-width: 130px;
+  display: inline-block;
+}
+
+.head-alert {
+  height: 30px;
+  padding: 5px;
+  background-color: #e5e8e8;
+}
+
+// When the "Alert.Level" field on a response is an empty string, this becomes
+// rule is activated, since class is populated as: "head-alert--" + ""
+.head-alert-- {
+  visibility: hidden;
+}
+
+.head-alert--warning {
+  color: white;
+  display: inline !important;
+  vertical-align: middle;
+  background-color: #d98880;
+}
+
+.viewImagesDiv {
+  background-color: rgba(gray, 0.1);
+  height: 700px;
+  padding: 10px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.response-head {
+  background-color: rgba(#3f51b5, 0.85);
+  color: white !important;
+  font-weight: 500;
+  padding: 7px;
+  text-align: left;
+  border: 1px solid gray;
+  cursor: pointer;
+}
+
+.infoBar {
+  background-color: #e5e8e8;
+  padding: 4px;
+  font-size: small;
+  font-weight: bold;
+}
+
+.requestContainer {
+  height: 690px;
+  overflow-x: hidden;
+  background-color: rgba(gray, 0.1);
+  scrollbar-width: thin;
+  scrollbar-color: #90a4ae #cfd8dc;
+  &::-webkit-scrollbar {
+    width: 0.8em;
+    height: 0.5em;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(gray, 0.1);
+    border-radius: 3px;
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.pic-card {
+  margin-top: 10px;
+  height: 200px;
+  width: 250px;
+}
+
+.status-flag {
+  padding: 2px 4px;
+  box-sizing: border-box;
+  text-align: center;
+  width: 100%;
+  font-size: small;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-grid-left {
+  font-size: small;
+  font-weight: bold;
+  padding: 4px;
+}
+
+.status-PND {
+  background-color: rgba(gray, 0.6);
+  color: black;
+}
+.status-INV {
+  background-color: rgba(red, 0.6);
+  color: white;
+}
+.status-NA {
+  background-color: rgba(lightgray, 0.6);
+  color: black;
+}
+.status-ERR {
+  background-color: rgba(yellow, 0.6);
+  color: black;
+  border: 1px solid yellow;
+}
+.status-NL {
+  background-color: #fdfefe;
+  color: black;
+  border: 1px solid #ebedef;
+}
+
+.response-details-log {
+  height: 360px;
+  background-color: #e5e7e9;
+  overflow: auto;
+  border-bottom: 3px solid #cacfd2;
+  scrollbar-width: thin;
+  scrollbar-color: #90a4ae #cfd8dc;
+  &::-webkit-scrollbar {
+    width: 0.8em;
+    height: 0.5em;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(gray, 0.1);
+    border-radius: 3px;
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.details-H2 {
+  background-color: #d6dbdf;
+  height: 30px;
+  padding: 4px 0px 0px 4px;
+  color: #5d6d7e;
+  font-weight: bold;
+}
+
+.details-H3 {
+  height: 30px;
+  color: #5d6d7e;
+  font-weight: bold;
+  font-size: small;
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+.details-text {
+  color: #5d6d7e;
+  font-size: small;
+}
+
+.digit-bar {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #e5e7e9;
+  font-size: small;
+  font-weight: bold;
+  color: #616a6b;
+  padding: 0 0.5ch;
+  height: 3ex;
+  line-height: 3ex;
+  width: calc(#{$lengthOfStandardRequestId} + 2ch);
+  min-width: calc(#{$lengthOfStandardRequestId} + 2ch);
+}
+
+.response-match-id {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: smaller;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  list-style-position: inside;
+  padding: 0;
+
+  & > li {
+    padding-left: 1ch;
+    text-indent: -1ch;
+  }
+}
+
+.request-details-summary-info {
+  border: 1px solid gray;
+  border-radius: 5px;
+  overflow-y: hidden !important;
+  min-height: 205px;
+  // The following line can be enabled to disable wrapping on the flex
+  // containers:
+  // min-width: 688px;
+}
+
+.request-detail-line-item {
+  font-size: small;
+  color: rgb(93, 109, 126);
+  .request-detail-label {
+    font-weight: bold;
+    min-width: 10ch;
+  }
+}
+
+.baas-copy-icon {
+  color: #616a6b;
+  cursor: pointer;
+}
+
+.toggle-icon {
+  color: rgb(93, 109, 126);
+  font-family: 'Courier New', Courier, monospace;
+  padding: 0px 4px;
+  font-weight: bold;
+  border: 1px solid rgb(93, 109, 126);
+  cursor: pointer;
+  background-color: #ccd1d1;
+}
+
+.response-card-head {
+  border: 1px gray solid;
+  padding: 3px;
+  background-color: #d6dbdf;
+  color: #5d6d7e;
+  font-weight: bold;
+  width: 315px;
+}
+
+.baas-mat-close-button {
+  color: white;
+  font-size: small;
+}
+
+.baas-mat-expansion-panel {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.baas-mat-panel-title {
+  padding: 3px;
+  color: #5d6d7e;
+  font-weight: bold;
+}
+
+// style to get the description right justify in
+// mat-panel-description
+.mat-expansion-panel-header-description {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 0 !important;
+}
+
+.collapsed-log-div {
+  font-weight: bold;
+  color: #5d6d7e;
+  cursor: pointer;
+  text-align: right;
+}
+.response-card-short {
+  border: 1px gray solid;
+  padding: 10px;
+  min-height: 100px;
+  background-color: white;
+  font-size: smaller;
+}
+.details-remarks {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: small;
+}
+
+.draggable-request-details {
+  z-index: $requestDetailsZIndex;
+  position: relative;
+  transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
+  display: flex;
+  min-width: 10vw;
+  min-height: 5vh;
+  padding: 5px;
+
+  > *:not(.no-scrolling-overflow) {
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #90a4ae #cfd8dc;
+    &::-webkit-scrollbar {
+      width: 0.8em;
+      height: 0.5em;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(gray, 0.1);
+      border-radius: 3px;
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}

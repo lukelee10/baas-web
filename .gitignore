@@ -48,3 +48,44 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# executable and cert files
+*.exe
+*.jar
+*.iso
+*.zip
+*.tar
+*.so
+*.ko
+*.dll
+*.pyc
+*.msi
+*.war
+*.jsk
+*.pem
+*.p12
+*.pfx
+*.class
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+*.doc
+*.docx
+
+# Created by https://www.toptal.com/developers/gitignore/api/sonarqube
+# Edit at https://www.toptal.com/developers/gitignore?templates=sonarqube
+
+### SonarQube ###
+# SonarQube ignore files.
+#
+# https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
+# Sonar Scanner working directories
+.sonar/
+.scannerwork/
+
+# http://www.sonarlint.org/commandline/
+# SonarLint working directories, configuration files (including credentials)
+.sonarlint/
+
+# End of https://www.toptal.com/developers/gitignore/api/sonarqube

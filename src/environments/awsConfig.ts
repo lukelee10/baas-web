@@ -28,5 +28,15 @@ export const awsConfig = {
   apiGateway: {
     url: 'https://2qkxtancaa.execute-api.us-east-1.amazonaws.com/DevVer1',
     awsRegion: 'us-east-1'
+  },
+
+  /**
+   * This setting determines whether SES is enabled, and thereby whether or not
+   * features that depend on SES can be displayed on the client-side.
+   * As a reminder, SES stands for "Simple Email Service." It enables
+   * functionalities like Password Reset/Forgot Password.
+   */
+  ses: {
+    enabled: true
   }
 };

@@ -1,10 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import 'hammerjs';
+
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
+  MAT_DIALOG_DATA,
   MatDialogModule,
-  MatDialogRef,
-  MAT_DIALOG_DATA
+  MatDialogRef
 } from '@angular/material';
+
 import { MessageDialogComponent } from './message-dialog.component';
 
 describe('MessageDialogComponent', () => {
@@ -74,6 +76,14 @@ describe('MessageDialogComponent', () => {
       component.onClose();
       expect(mockDialogRef.close).toHaveBeenCalled();
     });
+
+    it('should be a success dialog', () => {
+      expect(component.options.success).toBe(true);
+    });
+
+    it('should have the title "SUCCESS"', () => {
+      expect(component.options.title).toBe('SUCCESS');
+    });
   });
 
   describe('Warning Message Dialog box', () => {
@@ -107,6 +117,14 @@ describe('MessageDialogComponent', () => {
       component.onClose();
       expect(mockDialogRef.close).toHaveBeenCalled();
     });
+
+    it('should be a warning dialog', () => {
+      expect(component.options.warn).toBe(true);
+    });
+
+    it('should have the title "WARNING"', () => {
+      expect(component.options.title).toBe('WARNING');
+    });
   });
 
   describe('Error Message Dialog box', () => {
@@ -139,6 +157,14 @@ describe('MessageDialogComponent', () => {
     it('onClose should close the dialog', () => {
       component.onClose();
       expect(mockDialogRef.close).toHaveBeenCalled();
+    });
+
+    it('should be an error dialog', () => {
+      expect(component.options.error).toBe(true);
+    });
+
+    it('should have the title "ERROR"', () => {
+      expect(component.options.title).toBe('ERROR');
     });
   });
 });

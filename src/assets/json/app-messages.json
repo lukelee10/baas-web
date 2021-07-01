@@ -1,0 +1,32 @@
+[
+  {
+    "index": 1,
+    "title": "Session Timeout",
+    "message": "Your session has expired. Please log back in to continue your session."
+  },
+  {
+    "index": 2,
+    "title": "API Error",
+    "message": "An Error occurred while retrieving the packages, please try again."
+  },
+  {
+    "index": 3,
+    "title": "API Error",
+    "message": "An Error occurred while retrieving the requests, please try again."
+  },
+  {
+    "index": 4,
+    "title": "API Error",
+    "message": "An Error occurred while retrieving the request details, please try again."
+  },
+  {
+    "index": 5,
+    "title": "API Error",
+    "message": "An Error occurred while performing a server operation, please try again."
+  },
+  {
+    "index": 1000,
+    "title": "Password Reset Submission",
+    "message": "Your password reset request has been submitted. Please check your email for a link to reset your password."
+  }
+]

@@ -1,6 +1,205 @@
-<h3>Org/Groups Management</h3>
-<p>
-  Proin faucibus neque elementum semper dictum. Cras vitae justo et nisi
-  fermentum maximus volutpat et lacus. Praesent auctor ante eget ultricies
-  volutpat.
-</p>
+<mat-toolbar color="primary" *ngIf="addActionOn">
+  Org/Groups Management
+</mat-toolbar>
+
+<button
+  *ngIf="isAddOrgOn"
+  matTooltip="Add organization"
+  mat-raised-button
+  color="primary"
+  (click)="askGroupNameAndAddRoot(solicitGroupName)"
+>
+  Add New Organization
+</button>
+
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <!-- This is the tree node template for leaf nodes -->
+  <mat-tree-node
+    *matTreeNodeDef="let node"
+    matTreeNodeToggle
+    matTreeNodePadding
+  >
+    <button mat-icon-button disabled>
+      <mat-icon style="transform: scale(0.8);">
+        fiber_manual_record
+      </mat-icon>
+    </button>
+    <div class="group-wrap-hover" (click)="selectNode(node)">
+      {{ node.item }}
+    </div>
+    <span class="spacer"></span>
+    <button
+      *ngIf="addActionOn"
+      mat-icon-button
+      (click)="askGroupNameAndAddToNode(solicitGroupName, node)"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <!-- EditGroupName -->
+    <button
+      *ngIf="addActionOn"
+      mat-icon-button
+      (click)="askGroupNameAndRenameNode(solicitEditedGroupName, node)"
+    >
+      <mat-icon matTooltip="Edit Group Name" style="font-size: 15px"
+        >edit</mat-icon
+      >
+    </button>
+    <mat-slide-toggle
+      *ngIf="addActionOn"
+      [checked]="node.disabled"
+      (change)="toggleDisable($event, node)"
+      class="fixed-width-content"
+    >
+      {{ node.disabled ? 'Disabled' : 'Disable' }}
+    </mat-slide-toggle>
+  </mat-tree-node>
+
+  <!-- This is the tree node template for expandable nodes -->
+  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+    <button
+      mat-icon-button
+      matTreeNodeToggle
+      [attr.aria-label]="'toggle ' + node.filename"
+    >
+      <mat-icon class="mat-icon-rtl-mirror">
+        {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+      </mat-icon>
+    </button>
+    <div class="group-wrap-hover" (click)="selectNode(node)">
+      {{ node.item }}
+    </div>
+    <span class="spacer"></span>
+    <button
+      *ngIf="addActionOn"
+      mat-icon-button
+      (click)="askGroupNameAndAddToNode(solicitGroupName, node)"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <!-- EditGroupName -->
+    <button
+      *ngIf="addActionOn"
+      mat-icon-button
+      (click)="askGroupNameAndRenameNode(solicitEditedGroupName, node)"
+    >
+      <mat-icon matTooltip="Edit Group Name" style="font-size: 15px"
+        >edit</mat-icon
+      >
+    </button>
+    <mat-slide-toggle
+      *ngIf="addActionOn"
+      [checked]="node.disabled"
+      (change)="toggleDisable($event, node)"
+      class="fixed-width-content"
+    >
+      {{ node.disabled ? 'Disabled' : 'Disable' }}
+    </mat-slide-toggle>
+  </mat-tree-node>
+</mat-tree>
+<!-- tempalte for soliciting group name -->
+<ng-template #solicitGroupName>
+  <div [formGroup]="newEntityFormGroup">
+    <h2 matDialogTitle>
+      Please enter {{ isDialogOrg ? 'organization' : 'group' }} name
+    </h2>
+    <mat-dialog-content>
+      <mat-form-field style="width: 100%;">
+        <input
+          matInput
+          formControlName="newEntity"
+          placeholder="Name of your {{
+            isDialogOrg ? 'organization' : 'group'
+          }}"
+          required
+          [errorStateMatcher]="matcher"
+          attr.aria-label="Enter {{ isDialogOrg ? 'organization' : 'group' }}"
+        />
+        <mat-error
+          *ngIf="newEntityFormGroup.controls.newEntity.errors?.required"
+        >
+          You must enter {{ isDialogOrg ? 'organization' : 'group' }} name.
+        </mat-error>
+        <mat-error
+          *ngIf="newEntityFormGroup.controls.newEntity.errors?.forbiddenName"
+        >
+          {{ isDialogOrg ? 'Organization' : 'Group' }} cannot contain forward
+          slash.
+        </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button [matDialogClose]>
+        Cancel
+      </button>
+      <button
+        mat-button
+        color="primary"
+        [matDialogClose]="newEntityFormGroup.controls.newEntity.value"
+        [disabled]="newEntityFormGroup.invalid"
+      >
+        Save
+      </button>
+    </mat-dialog-actions>
+  </div>
+</ng-template>
+
+<!-- tempalte for soliciting new group name -->
+<ng-template #solicitEditedGroupName>
+  <div [formGroup]="updateEntityFormGroup">
+    <h2 matDialogTitle>
+      Please edit your {{ isDialogOrg ? 'organization' : 'group' }} name
+    </h2>
+    <mat-dialog-content>
+      <mat-form-field style="width: 100%;">
+        <input
+          matInput
+          formControlName="updateEntity"
+          placeholder="Rename of your {{
+            isDialogOrg ? 'organization' : 'group'
+          }}"
+          required
+          [errorStateMatcher]="matcher"
+          attr.aria-label="Enter {{ isDialogOrg ? 'organization' : 'group' }}"
+        />
+        <mat-error
+          *ngIf="updateEntityFormGroup.controls.updateEntity.errors?.required"
+        >
+          You must enter {{ isDialogOrg ? 'organization' : 'group' }} name.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            updateEntityFormGroup.controls.updateEntity.errors?.forbiddenName
+          "
+        >
+          {{ isDialogOrg ? 'Organization' : 'Group' }} cannot contain forward
+          slash.
+        </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button [matDialogClose]>
+        Cancel
+      </button>
+      <button
+        mat-button
+        color="primary"
+        [matDialogClose]="updateEntityFormGroup.controls.updateEntity.value"
+        [disabled]="updateEntityFormGroup.invalid"
+      >
+        Save
+      </button>
+    </mat-dialog-actions>
+  </div>
+</ng-template>
+<div
+  *ngIf="showSpinner"
+  style="position:absolute; top:50%; left:50%; z-index: 1000;"
+>
+  <mat-spinner
+    matTooltip="Processing..."
+    style="text-align: center"
+    diameter="40"
+  ></mat-spinner>
+</div>

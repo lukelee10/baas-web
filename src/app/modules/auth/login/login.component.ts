@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
+import { environment } from './../../../../environments/environment';
+import { UserService } from './../../../core/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +13,10 @@ import { AwsLambdaService } from './../../../core/services/aws-lambda.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  readonly canShowPasswordResetLink: boolean = environment.ses.enabled;
   email = new FormControl('', [Validators.required, Validators.email]);
   passWord = new FormControl('', [Validators.required]);
+
   hide = true; // #password
   errorMessage: string;
 
@@ -20,10 +24,14 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authenticationSVC: AuthenticationService,
-    private awsLambdaService: AwsLambdaService
+    private awsLambdaService: AwsLambdaService,
+    private userService: UserService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.authenticationSVC.Logout();
+    this.userService.GetLatestMenuContext(false);
+  }
 
   getErrorMessage() {
     return this.email.hasError('required')
@@ -35,13 +43,17 @@ export class LoginComponent implements OnInit {
 
   clickLogin() {
     this.authenticationSVC.AuthenticateUser(
-      this.email.value,
+      this.getEmail(),
       this.passWord.value,
       this
     );
   }
 
-  cognitoCallback(message: string, result: any) {
+  getEmail() {
+    return this.email.value.toLowerCase();
+  }
+
+  async cognitoCallback(message: string, result: any) {
     if (message != null) {
       // error
       // As per the wireframe, we display all the time 'Unknown User and Password Combination',
@@ -50,6 +62,7 @@ export class LoginComponent implements OnInit {
     } else {
       // success
       this.setAuthenticationVals(result);
+      this.userService.InitializeUserSession(this.getEmail());
       const returnUrl = this.activatedRoute.snapshot.queryParams[
         'returnUrl'.toString()
       ];
@@ -62,8 +75,8 @@ export class LoginComponent implements OnInit {
   }
 
   private setAuthenticationVals(result: any) {
-    this.authenticationSVC.LoggedUser = this.email.value;
+    this.authenticationSVC.LoggedUser = this.getEmail();
     this.authenticationSVC.JwtToken = result.getIdToken().getJwtToken();
-    this.awsLambdaService.auditLog(this.email.value, 'Login');
+    this.awsLambdaService.auditLog(this.getEmail(), 'Login');
   }
 }

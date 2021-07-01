@@ -1,11 +1,13 @@
-<mat-nav-list>
+<mat-nav-list *ngIf="showMenu">
   <a
     mat-list-item
     *ngFor="let item of sideNavItems"
     matTooltip="{{ item.title }}"
     [routerLink]="[item.link]"
     routerLinkActive="active-link"
-    [ngStyle]="{ color: item.title === 'Admin' ? 'orange' : 'default' }"
+    [ngStyle]="{
+      color: item.title === 'Administration' ? 'orange' : 'default'
+    }"
     (click)="onSidenavClose(item.title)"
   >
     <mat-icon>{{ item.icon }}</mat-icon>

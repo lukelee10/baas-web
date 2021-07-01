@@ -1,0 +1,135 @@
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { RequestStatusFlags } from 'src/app/core/app-global-constants';
+import { VettingStatusShortenPipe } from 'src/app/core/pipes/vetting-status-shorten.pipe';
+import {
+  AppMessage,
+  AppMessagesService
+} from 'src/app/core/services/app-messages.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { PackageRequestService } from 'src/app/core/services/package-request.service';
+import { Request } from 'src/app/shared/models/package-requests';
+import { UserPackage } from 'src/app/shared/models/user-package';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+
+import { RequestDetailsComponent } from '../request-details/request-details.component';
+
+@Component({
+  selector: 'app-request-list',
+  templateUrl: './request-list.component.html',
+  styleUrls: ['./request-list.component.scss']
+})
+export class RequestListComponent implements OnInit, OnChanges {
+  showSpinner = false;
+  detailsPopup: MatDialogRef<RequestDetailsComponent, any>;
+  Object = Object;
+
+  packageRequests = new Array<Request>();
+  packageRequestRaw = new Array<Request>();
+
+  @Input()
+  packageObj: UserPackage;
+
+  constructor(
+    private packageRequestService: PackageRequestService,
+    private notificationService: NotificationService,
+    private appMessagesService: AppMessagesService,
+    private authenticationService: AuthenticationService,
+    public dialog: MatDialog
+  ) {}
+
+  ngOnInit() {
+    this.packageObj = {
+      PackageId: '',
+      Created: undefined,
+      Name: '',
+      RequestCount: undefined,
+      User: undefined,
+      Group: undefined
+    };
+    this.authenticationService.getUserLoggedIn().subscribe(userLoggedIn => {
+      if (!userLoggedIn && this.detailsPopup) {
+        this.detailsPopup.close();
+      }
+    });
+  }
+
+  ngOnChanges(changes: any) {
+    const selectedPackage: UserPackage = changes.packageObj
+      .currentValue as UserPackage;
+    if (selectedPackage !== undefined) {
+      this.getRequests(selectedPackage.PackageId);
+    }
+  }
+
+  getRequests(packageId: string) {
+    this.showSpinner = true;
+    this.packageRequestService.packageId = packageId;
+    this.notificationService.debugLogging(
+      this.packageRequestService.getEndPointURL()
+    );
+    this.packageRequestService.getPackageRequests().subscribe(
+      packageRequestResponse => {
+        this.packageRequestRaw = packageRequestResponse.requests;
+        this.packageRequests = this.getRequestsProcessedData();
+        this.notificationService.debugLogging(this.packageRequests);
+      },
+      error => {
+        this.notificationService.error(
+          this.appMessagesService.getMessage(
+            AppMessage.ViewResponseRequestsAPIError
+          ),
+          this.appMessagesService.getTitle(
+            AppMessage.ViewResponseRequestsAPIError
+          )
+        );
+        this.showSpinner = false;
+        this.notificationService.debugLogging(error);
+      },
+      () => {
+        this.showSpinner = false;
+      }
+    );
+  }
+
+  private getRequestsProcessedData(): Array<Request> {
+    const pkgRequests = new Array<Request>();
+    this.packageRequestRaw.forEach(pkgRequest => {
+      const status = new VettingStatusShortenPipe().transform(
+        pkgRequest.Status
+      );
+      switch (status) {
+        case RequestStatusFlags.InvestigativeLead:
+          pkgRequest.StatusPrecedence = 1;
+          break;
+        case RequestStatusFlags.Error:
+          pkgRequest.StatusPrecedence = 2;
+          break;
+        case RequestStatusFlags.Pending:
+          pkgRequest.StatusPrecedence = 3;
+          break;
+        case RequestStatusFlags.NoLead:
+          pkgRequest.StatusPrecedence = 4;
+          break;
+        default:
+          pkgRequest.StatusPrecedence = 2;
+      }
+      pkgRequests.push(pkgRequest);
+    });
+
+    return pkgRequests.sort(
+      (n1: Request, n2: Request) => n1.StatusPrecedence - n2.StatusPrecedence
+    );
+  }
+
+  openDialog(request: Request): void {
+    this.detailsPopup = this.dialog.open(RequestDetailsComponent, {
+      maxWidth: '95%',
+      maxHeight: '90%',
+      minHeight: '10%',
+      minWidth: '36%',
+      panelClass: ['cdk-overlay-pane', 'baas-request-details-dialog-container'],
+      data: request
+    });
+  }
+}

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
   CanActivateChild,
+  CanDeactivate,
   Router,
   RouterStateSnapshot,
   UrlTree
@@ -10,7 +12,11 @@ import {
 import { Observable, of } from 'rxjs';
 
 import { AuthenticationService } from '../services/authentication.service';
+import { UserService } from '../services/user.service';
 
+export interface FormComponent {
+  form: FormGroup;
+}
 /*
  * AuthenticationGuard is a router guard that checks if the user
  * is authenticated.  To check permissions (i.e. roles) use PermissionGuard
@@ -18,10 +24,12 @@ import { AuthenticationService } from '../services/authentication.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationGuard implements CanActivate, CanActivateChild {
+export class AuthenticationGuard
+  implements CanActivate, CanActivateChild, CanDeactivate<FormComponent> {
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private userService: UserService
   ) {}
 
   canActivate(
@@ -39,7 +47,20 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild {
       this.authenticationService.IsAuthenticated &&
       this.authenticationService.IsAgreementAccepted
     ) {
-      return of(true);
+      if (this.userService.IsFSPUser) {
+        if (stateURL === '/responses') {
+          this.router.navigate(['/Unauthorized'], {
+            queryParams: {
+              returnUrl: stateURL
+            }
+          });
+          return of(false);
+        } else {
+          return of(true);
+        }
+      } else {
+        return of(true);
+      }
     } else if (
       // Authenticated but NOT accepted the agreement -- redirect user only to the agreement page
       this.authenticationService.IsAuthenticated &&
@@ -70,6 +91,14 @@ export class AuthenticationGuard implements CanActivate, CanActivateChild {
         }
       });
       return of(false);
+    }
+  }
+
+  canDeactivate(component: FormComponent) {
+    if (component.form.dirty) {
+      return confirm('Are you sure you want to navigate away from this page?');
+    } else {
+      return true;
     }
   }
 

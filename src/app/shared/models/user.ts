@@ -1,9 +1,19 @@
+// TODO this file will need to be renamed after consensus.
 export interface BaaSUser {
-  UserId: string;
-  Fullname: string;
-  Group: string;
-  IsAdmin: boolean;
-  Role: string;
-  Disabled: boolean;
+  username: string;
+  fullname: string;
+  firstname: string;
+  lastname: string;
+  group: string | any;
+  isAdmin?: boolean;
+  role: string;
+  isDisabled: boolean;
   GUID?: string;
+}
+export interface BaaSGroup {
+  group: string;
+  disabled?: boolean;
+  subgroups: BaaSGroup[];
+  parent: string; // parent name
+  _GUID: string; // FQN
 }

@@ -1,5 +1,15 @@
 .login-box {
   background-color: #eceff1;
-  padding: 15px 60px 60px 150px;
+  padding: 15px 60px 60px 60px;
   min-width: 520px;
+}
+
+.login-mat-form-field {
+  width: 40ch;
+  max-width: 90vw;
+}
+
+.forgot-password-link {
+  font-size: x-small;
+  text-transform: uppercase;
 }

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   MatAutocompleteModule,
   MatBadgeModule,
@@ -8,35 +9,34 @@ import {
   MatCardModule,
   MatCheckboxModule,
   MatChipsModule,
-  MatStepperModule,
   MatDatepickerModule,
   MatDialogModule,
   MatDividerModule,
+  MatExpansionModule,
   MatGridListModule,
   MatIconModule,
   MatInputModule,
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
-  MatRippleModule,
   MatPaginatorModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
   MatRadioModule,
+  MatRippleModule,
   MatSelectModule,
   MatSidenavModule,
   MatSliderModule,
   MatSlideToggleModule,
   MatSnackBarModule,
   MatSortModule,
+  MatStepperModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
   MatTreeModule
 } from '@angular/material';
-
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 const MaterialComponents = [
   MatAutocompleteModule,
@@ -73,11 +73,12 @@ const MaterialComponents = [
   MatToolbarModule,
   MatTooltipModule,
   MatTreeModule,
-  FlexLayoutModule
+  FlexLayoutModule,
+  MatExpansionModule
 ];
 
 @NgModule({
-  imports: [MaterialComponents],
-  exports: [MaterialComponents]
+  imports: MaterialComponents,
+  exports: MaterialComponents
 })
 export class MaterialModule {}

@@ -1,9 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AwsLambdaService } from '../services/aws-lambda.service';
 import { AuthenticationService } from '../services/authentication.service';
-
+import { UserService } from '../services/user.service';
 import { NavItem } from './../../shared/models/nav-item';
 
 @Component({
@@ -13,13 +12,14 @@ import { NavItem } from './../../shared/models/nav-item';
 })
 export class SideNavigationComponent implements OnInit {
   @Output() sidenavClose = new EventEmitter();
+  showMenu = false;
 
   sideNavItems: NavItem[] = [];
 
   constructor(
     private router: Router,
-    private awsLambdaService: AwsLambdaService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -27,44 +27,62 @@ export class SideNavigationComponent implements OnInit {
   }
 
   private populateSideNavItems() {
-    this.sideNavItems.push({
-      link: '/announcements',
-      title: 'Home',
-      icon: 'home'
-    });
-    this.sideNavItems.push({
-      link: '/requests',
-      title: 'Submit Images',
-      icon: 'create'
-    });
-    this.sideNavItems.push({
-      link: '/responses',
-      title: 'View Responses',
-      icon: 'receipt'
-    });
-    this.sideNavItems.push({
-      link: '/resources',
-      title: 'Resources',
-      icon: 'pages'
-    });
+    this.userService.ShowMenuSubject.subscribe(showFlag => {
+      if (showFlag) {
+        if (
+          this.authenticationService.IsAuthenticated &&
+          this.authenticationService.IsAgreementAccepted
+        ) {
+          this.sideNavItems.push({
+            link: '/announcements',
+            title: 'Home',
+            icon: 'home'
+          });
+          this.sideNavItems.push({
+            link: '/requests',
+            title: 'Submit Images',
+            icon: 'photo_library'
+          });
+          if (!this.userService.IsFSPUser) {
+            this.sideNavItems.push({
+              link: '/responses',
+              title: 'View Responses',
+              icon: 'receipt'
+            });
+          }
 
-    if (this.authenticationService.isAdmin) {
-      this.sideNavItems.push({
-        link: '/admin',
-        title: 'Admin',
-        icon: 'supervisor_account'
-      });
-    }
-
-    this.sideNavItems.push({
-      link: '/editprofile',
-      title: 'Edit Profile',
-      icon: 'edit'
-    });
-    this.sideNavItems.push({
-      link: '/logout',
-      title: 'Log Out',
-      icon: 'exit_to_app'
+          this.sideNavItems.push({
+            link: '/resources',
+            title: 'Resources',
+            icon: 'pages'
+          });
+          if (this.userService.IsAdmin && !this.userService.IsFSPUser) {
+            this.sideNavItems.push({
+              link: '/admin',
+              title: 'Administration',
+              icon: 'supervisor_account'
+            });
+          }
+          this.sideNavItems.push({
+            link: '/editprofile',
+            title: 'Edit Profile',
+            icon: 'edit'
+          });
+          this.sideNavItems.push({
+            link: '/changepassword',
+            title: 'Change Password',
+            icon: 'vpn_key'
+          });
+          this.sideNavItems.push({
+            link: '/logout',
+            title: 'Log Out',
+            icon: 'exit_to_app'
+          });
+        } else {
+          this.sideNavItems = [];
+          this.showMenu = false;
+        }
+      }
     });
   }
 
@@ -72,11 +90,6 @@ export class SideNavigationComponent implements OnInit {
     this.sidenavClose.emit();
 
     if (elementTitle === 'Log Out') {
-      this.awsLambdaService.auditLog(
-        this.authenticationService.LoggedUser,
-        'LogOut'
-      );
-      this.authenticationService.Logout();
       this.router.navigate(['/logout']);
     }
   };

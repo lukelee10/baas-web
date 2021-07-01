@@ -1,0 +1,121 @@
+<div class="flex-container" role="application">
+  <h2>Responses</h2>
+  <mat-drawer-container autosize>
+    <mat-drawer
+      mode="side"
+      [ngStyle]="{
+        'width.em': sidenavWidth,
+        'background-color': middleNavBgColor
+      }"
+      opened="true"
+    >
+      <div fxLayout="column" style="  overflow-x: hidden">
+        <mat-card
+          fxLayout="row"
+          class="response-head primary"
+          fxFlex="100"
+          (click)="toggleSearch()"
+        >
+          <div fxFlex="{{ titleFlex }}" title="{{ sideNavToolTip }}">
+            {{ sideNavTitle }}
+          </div>
+          <div fxFlex="{{ iconFlex }}" title="{{ sideNavToolTip }}">
+            <i
+              style="vertical-align:middle; text-align: left; font-weight: normal !important"
+              class="material-icons"
+              >{{ sideNavIcon }}
+            </i>
+          </div>
+        </mat-card>
+      </div>
+      <div class="searchContents">
+        <mat-card
+          class="searchContentsDiv primary"
+          *ngIf="sideNavContentsShow"
+          fxFlex="100"
+        >
+          Search Contents Here
+        </mat-card>
+        <div
+          class="collapsedSearch"
+          title="Click to Expand"
+          *ngIf="!sideNavContentsShow"
+          (click)="toggleSearch()"
+        >
+          SEARCH
+        </div>
+      </div>
+    </mat-drawer>
+    <mat-drawer-content>
+      <mat-drawer-container autosize>
+        <mat-drawer
+          class="baas-packages-mat-drawer-outer"
+          fxLayout="column"
+          mode="side"
+          [ngStyle]="{
+            'width.em': middleNavWidth,
+            'background-color': middleNavBgColor
+          }"
+          opened="true"
+        >
+          <div fxLayout="column" style="  overflow-x: hidden; ">
+            <mat-card fxLayout="row" class="response-head primary" fxFlex="100">
+              <div
+                fxFlex="{{ titleMiddleFlex }}"
+                title="{{ middleNavToolTip }}"
+                (click)="togglePackages()"
+              >
+                {{ middleNavTitle }}
+              </div>
+              <div fxFlex="{{ iconMiddleFlex }}" title="{{ middleNavToolTip }}">
+                <i
+                  (click)="togglePackages()"
+                  style="vertical-align:middle; text-align: left"
+                  class="material-icons"
+                  >{{ middleNavIcon }}
+                </i>
+              </div>
+              <div
+                *ngIf="middleNavContentsShow"
+                title="{{ sortDirection }}"
+                class="sortIconDiv"
+                (click)="toggleSort()"
+              >
+                <i
+                  class="material-icons"
+                  style="vertical-align: middle; text-align: right; font-size: 14pt "
+                  >sort{{ currentSortIcon }}</i
+                >
+              </div>
+            </mat-card>
+          </div>
+          <div class="viewPackagesContainer">
+            <div class="viewPackagesList" fxFlex="100">
+              <app-package-list
+                (eventOnPackageClick)="packageClick($event)"
+                (eventFirstPackage)="updateStream.next($event)"
+                [sortOrder]="packageSortOrder"
+              >
+              </app-package-list>
+            </div>
+            <div
+              fxFlex="100"
+              class="collapsedPackages"
+              *ngIf="!middleNavContentsShow"
+              title="Click to Expand"
+              style="height: 94%"
+              (click)="togglePackages()"
+            >
+              PACKAGES
+            </div>
+          </div>
+        </mat-drawer>
+        <mat-drawer-content>
+          <app-request-list
+            [packageObj]="selectedPackageObj"
+          ></app-request-list>
+        </mat-drawer-content>
+      </mat-drawer-container>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

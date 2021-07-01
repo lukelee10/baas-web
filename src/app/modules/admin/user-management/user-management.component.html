@@ -18,7 +18,7 @@
       matTooltip="Clear the filter"
       aria-hidden="false"
       aria-label="Clear the filter"
-      (click)="ClearFilter()"
+      (click)="clearFilter()"
     >
       <mat-icon>clear</mat-icon>
       Clear Filter
@@ -40,10 +40,30 @@
       matTooltip="Disable selected users"
       aria-hidden="false"
       aria-label="Disable selected users"
+      [disabled]="selection.selected.length === 0"
+      (click)="disableSelectedUsers()"
     >
-      <mat-icon>delete_sweep</mat-icon>
+      <mat-icon>lock</mat-icon>
       Disable User(s)
     </button>
+    <button
+      mat-button
+      matTooltip="Enable selected users"
+      aria-hidden="false"
+      aria-label="Enable selected users"
+      [disabled]="selection.selected.length === 0"
+      (click)="disableSelectedUsers(false)"
+    >
+      <mat-icon>lock_open</mat-icon>
+      Enable User(s)
+    </button>
+    <div fxLayout="column" *ngIf="showSpinner" fxLayoutAlign="center center">
+      <mat-spinner
+        matTooltip="Processing request"
+        style="text-align: center"
+        diameter="40"
+      ></mat-spinner>
+    </div>
   </div>
 
   <mat-table [dataSource]="dataSource" matSort class="mat-cell">
@@ -51,11 +71,11 @@
     <ng-container matColumnDef="select">
       <mat-header-cell *matHeaderCellDef>
         <mat-checkbox
-          (change)="$event ? masterToggle() : null"
-          [checked]="selection.hasValue() && isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          (change)="masterToggle($event)"
+          [checked]="isAllSelectedInPage()"
+          [indeterminate]="isOnlySomeSelectedInPage()"
           aria-hidden="false"
-          [aria-label]="checkboxLabel()"
+          [aria-label]="isAnySelectedInPage() ? 'deselect all' : 'select all'"
         >
         </mat-checkbox>
       </mat-header-cell>
@@ -72,49 +92,53 @@
     </ng-container>
 
     <!-- User ID Column -->
-    <ng-container matColumnDef="UserId">
+    <ng-container matColumnDef="username">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >User ID</mat-header-cell
       >
-      <mat-cell *matCellDef="let row" matTooltip="{{ row.UserId }}">
-        {{ row.UserId }}
+      <mat-cell *matCellDef="let row" matTooltip="{{ row.username }}">
+        {{ row.username }}
       </mat-cell>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="Fullname">
+    <ng-container matColumnDef="fullname">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell *matCellDef="let row" matTooltip="{{ row.Firstname }}">
-        {{ row.Fullname }}
+      <mat-cell *matCellDef="let row" matTooltip="{{ row.firstname }}">
+        {{ row.fullname }}
       </mat-cell>
     </ng-container>
 
     <!-- Org/Group Column -->
-    <ng-container matColumnDef="Group">
+    <ng-container matColumnDef="group">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Org/Group</mat-header-cell
       >
-      <mat-cell *matCellDef="let row"> {{ row.Group }} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row.group }} </mat-cell>
     </ng-container>
 
     <!-- Role Column -->
-    <ng-container matColumnDef="Role">
+    <ng-container matColumnDef="role">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.Role }} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ roleMap.get(row.role) }} </mat-cell>
     </ng-container>
 
     <!-- Status Column -->
-    <ng-container matColumnDef="Disabled">
+    <ng-container matColumnDef="isDisabled">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Disabled</mat-header-cell
       >
       <mat-cell *matCellDef="let row">
-        <mat-icon
-          *ngIf="row.Disabled"
+        <mat-slide-toggle
           aria-hidden="false"
-          aria-label="Disabled User"
-          >check</mat-icon
+          aria-label="{{
+            row.isDisabled ? 'Disabled' : 'Enabled'
+          }} selected user"
+          (click)="$event.stopPropagation()"
+          [(ngModel)]="row.isDisabled"
+          (change)="toggleDisable($event, row)"
         >
+        </mat-slide-toggle>
       </mat-cell>
     </ng-container>
 
@@ -126,15 +150,9 @@
           mat-icon-button
           aria-hidden="false"
           aria-label="Edit selected user"
+          (click)="openDialog(row); $event.stopPropagation()"
         >
           <mat-icon matTooltip="Edit">edit</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          aria-hidden="false"
-          aria-label="Disable selected user"
-        >
-          <mat-icon color="warn" matTooltip="Disable">delete</mat-icon>
         </button>
       </mat-cell>
     </ng-container>

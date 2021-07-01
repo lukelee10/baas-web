@@ -1,0 +1,36 @@
+mat-tree-node {
+  cursor: pointer;
+}
+
+mat-tree-node:hover {
+  background-color: lightgoldenrodyellow;
+}
+mat-toolbar {
+  margin-bottom: 5px;
+}
+mat-icon {
+  transform: scale(1.5);
+}
+mat-slide-toggle {
+  margin-right: 2rem;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+.group-wrap-hover {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &:hover {
+    text-overflow: clip;
+    white-space: normal;
+    word-break: break-all;
+  }
+}
+
+// TODO: FYI, '::ng-deep' is deprecated, but no replacement is available yet
+mat-slide-toggle.fixed-width-content::ng-deep {
+  & span.mat-slide-toggle-content {
+    min-width: 8ch;
+  }
+}

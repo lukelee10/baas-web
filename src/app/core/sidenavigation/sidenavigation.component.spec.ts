@@ -1,16 +1,41 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BehaviorSubject } from 'rxjs';
 
+import { UserRoles } from '../app-global-constants';
+import { CoreModule } from '../core.module';
+import { AuthenticationService } from '../services/authentication.service';
+import { AwsLambdaService } from '../services/aws-lambda.service';
+import { UserService } from '../services/user.service';
+import { NavItem } from './../../shared/models/nav-item';
 import { SideNavigationComponent } from './sidenavigation.component';
 
-describe('SidenavigationComponent', () => {
+// Mock the SortService class, its method and return it with mock data
+class MockUserService extends UserService {
+  get Role(): string {
+    return UserRoles.NonFSPUser;
+  }
+  public ShowMenuSubject: BehaviorSubject<boolean> = new BehaviorSubject<
+    boolean
+  >(true);
+
+  get IsAdmin(): boolean {
+    return true;
+  }
+}
+
+class AwsLambdaServiceMock extends AwsLambdaService {}
+class AuthenticationServiceMock extends AuthenticationService {}
+
+describe('SideNavigationComponent', () => {
   let component: SideNavigationComponent;
   let fixture: ComponentFixture<SideNavigationComponent>;
+  const navItems: NavItem[] = [];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,14 +43,25 @@ describe('SidenavigationComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         MatIconModule,
-        MatListModule,
-        MatTooltipModule
+        MatMenuModule,
+        MatToolbarModule,
+        MatTooltipModule,
+        CoreModule
       ],
-      declarations: [SideNavigationComponent]
+      providers: [
+        { provide: UserService, useClass: MockUserService },
+        { provide: AuthenticationService, useClass: AuthenticationServiceMock },
+        { provide: AwsLambdaService, useClass: AwsLambdaServiceMock }
+      ]
     }).compileComponents();
   }));
-
   beforeEach(() => {
+    navItems.push({
+      link: '/resources',
+      title: 'Resources',
+      icon: 'pages'
+    });
+
     fixture = TestBed.createComponent(SideNavigationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
